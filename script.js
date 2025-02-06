@@ -10,41 +10,40 @@ document.addEventListener('DOMContentLoaded', function() {
   const closeGuide = document.getElementById('closeGuide');
   const guideItems = document.querySelectorAll('.tv-guide nav ul li');
 
-  // --- Landing Sequence with GSAP Timeline ---
+  // --- Landing Sequence using GSAP Timeline ---
   powerButton.addEventListener('click', function() {
-    // Disable further clicks on the power button
-    powerButton.style.pointerEvents = 'none';
-    
-    // Create a GSAP timeline
+    // Fade out and shrink the power button immediately
+    gsap.to(powerButton, { duration: 0.3, opacity: 0, scale: 0, ease: "power2.in" });
+
+    // Create a GSAP timeline for the landing sequence
     const tl = gsap.timeline({
       onComplete: () => {
-        // Hide landing and show main content
+        // Hide landing overlay, show main content, enable scrolling, fade in header
         landing.style.display = 'none';
         mainContent.style.display = 'block';
-        document.body.style.overflow = 'auto'; // Enable scrolling
-        // Fade in header (persistent small name & menu button)
+        document.body.style.overflow = 'auto';
         gsap.to(header, { duration: 0.5, opacity: 1 });
       }
     });
 
-    // Flash overlay: quickly flash the screen (simulate TV turning on)
+    // Flash effect: simulate TV turning on
     tl.to(flash, { duration: 0.3, opacity: 1 })
       .to(flash, { duration: 0.5, opacity: 0 });
-
-    // Animate the landing name (flash across the screen)
+    
+    // Animate the landing name:
+    // Step 1: Expand the name from 0 width to full width (end-to-end) with fade-in
     tl.to(landingName, {
-      duration: 1.5,
-      opacity: 1,
-      scale: 1.2,
-      ease: "power2.out"
-    })
-    .to(landingName, {
       duration: 1,
-      scale: 1,
-      ease: "power2.out",
-      onComplete: () => {
-        // (Optional) You can add an extra pause here if desired.
-      }
+      opacity: 1,
+      width: "100%",
+      ease: "power2.out"
+    });
+    
+    // Step 2: Scroll the name upward to center (vertically centered)
+    tl.to(landingName, {
+      duration: 1,
+      y: "-50vh",
+      ease: "power2.inOut"
     });
   });
 
@@ -81,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // --- Channel Glitch Effect on Scroll ---
-  // Throttle function to improve performance
+  // Throttle function for better performance
   function throttle(func, delay) {
     let timeout = null;
     return function() {
