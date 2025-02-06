@@ -1,120 +1,203 @@
-/* Reset & Base Styles */
+/* --- CSS Variables for easy theme adjustments --- */
+:root {
+  --bg-color: #000;
+  --primary-color: #fff;
+  --header-bg: rgba(0, 0, 0, 0.8);
+  --glitch-duration: 0.5s;
+}
+
+/* --- Import Merova Bold (ensure Merova.otf is in your project) --- */
+@font-face {
+  font-family: 'Merova';
+  src: url('Merova.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* --- Base Styles --- */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-html, body {
-  height: 100%;
-  background: #000;
-  overflow: hidden;
-  font-family: sans-serif; /* Replace with your Bottega Veneta font when available */
+body {
+  background: var(--bg-color);
+  color: var(--primary-color);
+  font-family: 'Merova', sans-serif;
+  overflow: hidden; /* Disable scrolling on landing */
+  cursor: url('remote.png'), auto; /* Custom remote cursor */
 }
 
-/* Landing Page Container */
-.landing {
+/* --- Landing Page Styles --- */
+#landing {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: #000;
+  background: var(--bg-color);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 100;
-  overflow: hidden;
 }
 
-/* Static Noise Overlay */
-.noise-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('noise.gif') repeat;
-  opacity: 0.1; /* Adjust opacity for subtle effect */
-  pointer-events: none;
-}
-
-/* Power Button Styles */
+/* Power Button */
 .power-button {
   width: 80px;
   height: 80px;
-  border: 3px solid #fff;
+  border: 3px solid var(--primary-color);
   border-radius: 50%;
-  position: relative;
-  z-index: 10;
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin-bottom: 20px;
 }
 
-.power-button::before {
-  content: "";
-  width: 10px;
-  height: 40px;
-  background: #fff;
-  border-radius: 5px;
+/* Landing Name (Full Screen Flash) */
+#landingName {
+  font-size: 5rem;
+  opacity: 0;
+  animation: flashName 3s forwards;
 }
 
-/* Flash Overlay for TV-On Effect */
-.flash {
+/* Keyframes for the landing name flash animation */
+@keyframes flashName {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Flash Overlay for TV Turn-On Effect */
+#flash {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: #fff;
+  background: var(--primary-color);
   opacity: 0;
-  z-index: 200;
+  z-index: 150;
   pointer-events: none;
 }
 
-/* Name Element - initial (landing) styling */
-.name {
-  position: absolute;
-  bottom: 20%;
+/* --- Header (Persistent Name & Menu) --- */
+#header {
+  position: fixed;
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  color: #fff;
-  font-size: 3rem;
+  width: 90%;
+  background: var(--header-bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  z-index: 300;
   opacity: 0;
-  white-space: nowrap;
-  z-index: 10;
-  transition: all 0.5s ease;
-  animation: slideIn 3s forwards;
+  transition: opacity 0.5s;
+}
+#header .name {
+  font-size: 1.5rem;
 }
 
-/* Keyframes for the initial sliding animation */
-@keyframes slideIn {
-  0% {
-    opacity: 0;
-    transform: translateX(-150%);
-  }
-  50% {
-    opacity: 1;
-    transform: translateX(-50%);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(-50%);
-  }
+/* Menu Button */
+.menu-button {
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 10px 15px;
+  cursor: pointer;
 }
 
-/* Main Content (Channels) */
+/* --- Main Content Sections (Channels) --- */
 .channel-section {
   height: 100vh;
-  background: #222;
-  color: #fff;
+  padding: 50px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
-/* Enable scrolling once landing is complete */
-body.active {
-  overflow: auto;
+/* --- TV Guide Overlay Menu --- */
+.tv-guide {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 400;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.tv-guide nav ul {
+  list-style: none;
+  text-align: center;
+}
+.tv-guide nav ul li {
+  font-size: 2rem;
+  margin: 20px 0;
+  cursor: pointer;
+}
+.close-guide {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+/* --- Channel Changing (Glitch) Effect on Scroll --- */
+.channel-section.glitch {
+  animation: channelChange var(--glitch-duration);
+}
+@keyframes channelChange {
+  0% { opacity: 1; filter: contrast(1); }
+  50% { opacity: 0.8; filter: contrast(1.5) blur(1px); }
+  100% { opacity: 1; filter: contrast(1); }
+}
+
+/* --- Responsive & Accessibility Enhancements --- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@media (max-width: 600px) {
+  #landingName {
+    font-size: 3rem;
+  }
+  #header .name {
+    font-size: 1rem;
+  }
+  .menu-button {
+    padding: 5px 10px;
+  }
+  .tv-guide nav ul li {
+    font-size: 1.5rem;
+  }
 }
