@@ -10,23 +10,22 @@ document.addEventListener('DOMContentLoaded', function() {
   const closeGuide = document.getElementById('closeGuide');
   const guideItems = document.querySelectorAll('.tv-guide nav ul li');
 
+  let landingSequenceComplete = false;
+
   // --- Landing Sequence using GSAP Timeline ---
   powerButton.addEventListener('click', function() {
     // Disable further clicks
     powerButton.style.pointerEvents = 'none';
     
-    // Animate power button out (fade and scale down)
+    // Animate power button out (fade & scale down)
     gsap.to(powerButton, { duration: 0.3, opacity: 0, scale: 0, ease: "power2.in" });
     
-    // Create a GSAP timeline
+    // Create a GSAP timeline for the landing sequence
     const tl = gsap.timeline({
       onComplete: () => {
-        // When complete, hide the landing overlay, show main content, and enable scrolling.
-        landing.style.display = 'none';
-        mainContent.style.display = 'block';
-        document.body.style.overflow = 'auto';
-        // Fade in header (which remains centered at the top)
-        gsap.to(header, { duration: 0.5, opacity: 1 });
+        // Mark that the landing sequence is complete.
+        landingSequenceComplete = true;
+        // (Do not automatically hide the landing overlay – wait for user scroll)
       }
     });
     
@@ -34,17 +33,27 @@ document.addEventListener('DOMContentLoaded', function() {
     tl.to(flash, { duration: 0.3, opacity: 1 })
       .to(flash, { duration: 0.5, opacity: 0 });
     
-    // Animate the landing name:
-    // Step 1: Expand the name's width from 0 to 100% with a fade-in (left-to-right wipe)
+    // Animate landing name: expand width from 0 to 100% and fade in
     tl.to(landingName, {
       duration: 1,
       width: "100%",
       opacity: 1,
       ease: "power2.out"
     });
-    // (Note: We no longer animate upward—the landing overlay simply disappears
-    // and the fixed header takes over, ensuring the name stays centered.)
   });
+
+  // On first scroll after landing sequence, fade out landing overlay and reveal main content
+  window.addEventListener('scroll', function() {
+    if (landingSequenceComplete && landing.style.display !== "none") {
+      // Fade out the landing overlay
+      gsap.to(landing, { duration: 0.5, opacity: 0, onComplete: () => {
+        landing.style.display = "none";
+        mainContent.style.display = "block";
+        document.body.style.overflow = "auto"; // enable scrolling
+        gsap.to(header, { duration: 0.5, opacity: 1 });
+      }});
+    }
+  }, { once: true });  // Run only once on first scroll
 
   // --- TV Guide Menu Interactions ---
   menuButton.addEventListener('click', function() {
@@ -78,8 +87,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // --- Channel Glitch Effect on Scroll ---
-  // Throttle function to improve performance
+  // --- Channel Blink Effect on Scroll ---
+  // Throttle function for performance
   function throttle(func, delay) {
     let timeout = null;
     return function() {
@@ -91,13 +100,13 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
   }
-
+  
   window.addEventListener('scroll', throttle(() => {
     document.querySelectorAll('.channel-section').forEach(section => {
       section.classList.add('glitch');
       setTimeout(() => {
         section.classList.remove('glitch');
-      }, 500);
+      }, 300);
     });
   }, 200));
 });
