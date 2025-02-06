@@ -7,8 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const menuButton = document.getElementById('menuButton');
   const tvGuide = document.getElementById('tvGuide');
   const closeGuide = document.getElementById('closeGuide');
-  const guideItems = document.querySelectorAll('.tv-guide nav ul li');
-  const channelFlash = document.getElementById('channelFlash');
+  const guideItems = document.querySelectorAll('.tv-guide-list nav ul li');
   const staticOverlay = document.getElementById('staticOverlay');
   const clickSound = document.getElementById('clickSound');
 
@@ -19,16 +18,12 @@ document.addEventListener('DOMContentLoaded', function() {
   // --- Landing Sequence using GSAP Timeline ---
   powerButton.addEventListener('click', function() {
     powerButton.style.pointerEvents = 'none';
-    // Play the click sound when the power button is pressed
     clickSound.play();
-
-    // Animate the power button out
     gsap.to(powerButton, { duration: 0.3, opacity: 0, scale: 0, ease: "power2.in" });
     
     const tl = gsap.timeline({
       onComplete: () => {
         landingSequenceComplete = true;
-        // Start auto-scroll timer (3 seconds)
         autoScrollTimeout = setTimeout(() => {
           if (landing.style.display !== "none") {
             autoScrollToContent();
@@ -37,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     
-    // Instead of a full flash, use a static overlay with lower opacity
+    // Use static overlay for TV turn-on effect instead of a full flash
     tl.to(staticOverlay, { duration: 0.2, opacity: 0.3 })
       .to(staticOverlay, { duration: 0.2, opacity: 0 });
     
@@ -61,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }});
   }
 
-  // On first scroll after landing, cancel auto-scroll and transition out landing overlay
+  // On first scroll after landing, cancel auto-scroll and remove landing overlay
   window.addEventListener('scroll', function() {
     if (landingSequenceComplete && landing.style.display !== "none") {
       clearTimeout(autoScrollTimeout);
@@ -106,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
-  // --- Rigid Scroll & Channel Change Blink Effect ---
+  // --- Rigid Scroll & Channel Change Static Effect ---
   const observerOptions = {
     root: mainContent,
     threshold: 0.7
@@ -118,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const newChannel = entry.target.id;
         if (currentChannel !== newChannel) {
           currentChannel = newChannel;
-          triggerChannelFlash();
+          triggerChannelStatic();
         }
       }
     });
@@ -129,14 +124,15 @@ document.addEventListener('DOMContentLoaded', function() {
     observer.observe(section);
   });
   
-  function triggerChannelFlash() {
-    channelFlash.style.opacity = 1;
+  // Function to trigger static overlay for channel change
+  function triggerChannelStatic() {
+    staticOverlay.style.opacity = 0.3;
     setTimeout(() => {
-      channelFlash.style.opacity = 0;
-    }, 200);
+      staticOverlay.style.opacity = 0;
+    }, 200);  // 200ms duration for channel static effect
   }
   
-  // Optional throttled scroll event
+  // Optional throttled scroll event (if additional handling is needed)
   function throttle(func, delay) {
     let timeout = null;
     return function() {
@@ -146,10 +142,10 @@ document.addEventListener('DOMContentLoaded', function() {
           timeout = null;
         }, delay);
       }
-    }
+    };
   }
   
   window.addEventListener('scroll', throttle(() => {
-    // Additional scroll handling if needed.
+    // Additional scroll handling can be added here if needed.
   }, 200));
 });
