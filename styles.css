@@ -1,8 +1,8 @@
-/* --- CSS Variables --- */
+/* --- CSS Variables for easy adjustments --- */
 :root {
   --bg-color: #000;
   --primary-color: #fff;
-  --header-bg: rgba(0, 0, 0, 0.8);
+  --header-bg: rgba(0, 0, 0, 0.85);
   --glitch-duration: 0.5s;
 }
 
@@ -25,11 +25,11 @@ body {
   color: var(--primary-color);
   font-family: 'Merova', sans-serif;
   overflow: hidden; /* Disable scrolling on landing */
-  /* Use remote.png as custom cursor; adjust hotspot (16 16) if needed */
+  /* Use remote.png as the custom cursor (adjust hotspot coordinates as needed) */
   cursor: url('remote.png') 16 16, auto;
 }
 
-/* --- Landing Page Styles --- */
+/* --- Landing Overlay --- */
 #landing {
   position: fixed;
   top: 0;
@@ -44,64 +44,52 @@ body {
   z-index: 100;
 }
 
-/* Power Button (a clean, simple circle) */
+/* Redesigned Power Button: modern, sleek, cool */
 .power-button {
-  width: 80px;
-  height: 80px;
-  border: 3px solid var(--primary-color);
+  width: 100px;
+  height: 100px;
+  border: none;
   border-radius: 50%;
+  background: linear-gradient(145deg, #333, #555);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.6);
   cursor: pointer;
+  position: relative;
+  transition: transform 0.3s ease;
   margin-bottom: 20px;
 }
-
-/* Landing Name: hidden initially */
-#landingName {
-  font-size: 5rem;
-  opacity: 0;
-}
-
-/* This class will be added by GSAP to animate the landing name flash */
-.animate-landing-name {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* Flash keyframe (if you wish to tweak further, use GSAP for timing) */
-@keyframes flashName {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  20% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-  40% {
-    transform: scale(1);
-  }
-  60% {
-    opacity: 0.8;
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* --- Flash Overlay for TV Turn-On Effect --- */
-#flash {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.power-button::before,
+.power-button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 6px;
   background: var(--primary-color);
-  opacity: 0;
-  z-index: 150;
-  pointer-events: none;
+  border-radius: 3px;
+}
+.power-button::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.power-button::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.power-button:hover {
+  transform: scale(1.1);
 }
 
-/* --- Header: Persistent small name and menu button --- */
+/* Landing Name: Initially hidden, then expands end-to-end */
+.landing-name {
+  font-size: 4rem;
+  color: var(--primary-color);
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: width 1s ease, opacity 1s ease;
+}
+
+/* Header: persistent small name & menu button */
 #header {
   position: fixed;
   top: 10px;
@@ -117,7 +105,7 @@ body {
   opacity: 0;
   transition: opacity 0.5s;
 }
-#header .name {
+.header-name {
   font-size: 1.5rem;
 }
 
@@ -130,7 +118,7 @@ body {
   cursor: pointer;
 }
 
-/* --- Main Content Sections (Channels) --- */
+/* Main Content Sections (Channels) */
 .channel-section {
   height: 100vh;
   padding: 50px;
@@ -141,39 +129,43 @@ body {
   position: relative;
 }
 
-/* --- TV Guide Overlay Menu --- */
+/* TV Guide Overlay: styled like a cable TV guide */
 .tv-guide {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(0,0,0,0.95);
   z-index: 400;
   display: none;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start; /* Align to left for a guide look */
-  padding-left: 50px;
+  align-items: flex-start;
+  padding: 50px;
   opacity: 0;
   transition: opacity 0.5s;
 }
 .tv-guide nav ul {
   list-style: none;
+  width: 100%;
 }
 .tv-guide nav ul li {
   font-size: 2rem;
-  margin: 20px 0;
-  cursor: pointer;
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  border-bottom: 1px solid var(--primary-color);
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 .channel-number {
+  margin-right: 20px;
   font-weight: bold;
-  margin-right: 10px;
 }
 .channel-title {
-  /* Additional styling if needed */
+  flex: 1;
 }
 
 /* Close Button for TV Guide */
@@ -188,7 +180,7 @@ body {
   cursor: pointer;
 }
 
-/* --- Channel Glitch Effect on Scroll --- */
+/* Glitch Effect for Channel Change on Scroll */
 .channel-section.glitch {
   animation: channelChange var(--glitch-duration);
 }
@@ -198,19 +190,19 @@ body {
   100% { opacity: 1; filter: contrast(1); }
 }
 
-/* --- Responsive & Accessibility Enhancements --- */
+/* Responsive & Accessibility Enhancements */
 @media (prefers-reduced-motion: reduce) {
   * {
-    animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
   }
 }
 
 @media (max-width: 600px) {
-  #landingName {
-    font-size: 3rem;
+  .landing-name {
+    font-size: 2.5rem;
   }
-  #header .name {
+  .header-name {
     font-size: 1rem;
   }
   .menu-button {
