@@ -9,29 +9,45 @@
 </head>
 <body>
   <!-- Landing Page -->
-  <div class="landing" id="landing">
-    <!-- Static Noise Overlay (make sure noise.gif is in your folder or replace it with a data URI) -->
-    <div class="noise-overlay"></div>
+  <div id="landing">
     <!-- Power Button -->
-    <div class="power-button" id="powerButton"></div>
-    <!-- Animated Name (full-screen version) -->
-    <div class="name" id="name">Your Name</div>
+    <div class="power-button" id="powerButton" role="button" tabindex="0"></div>
+    <!-- Landing Name (full-screen) -->
+    <div class="name" id="landingName">Kayron Calloway</div>
   </div>
 
-  <!-- Flash Overlay for TV-On Effect -->
-  <div class="flash" id="flash"></div>
+  <!-- Flash Overlay for TV Turn-On Effect -->
+  <div id="flash"></div>
 
   <!-- Main Content (hidden initially) -->
   <div id="mainContent" style="display: none;">
-    <section id="creative" class="channel-section">
+    <!-- Header with persistent name and menu button -->
+    <header id="header">
+      <div class="name" id="headerName">Kayron Calloway</div>
+      <button id="menuButton" class="menu-button" aria-label="Open TV Guide">Menu</button>
+    </header>
+    <!-- First Section (and additional sections as needed) -->
+    <section id="section1" class="channel-section">
       <h2>Creative Work</h2>
-      <!-- Your featured project details go here -->
+      <p>Featured project content...</p>
     </section>
-    <section id="consultant" class="channel-section">
+    <section id="section2" class="channel-section">
       <h2>Consultant Work</h2>
-      <!-- Your featured project details go here -->
+      <p>Featured project content...</p>
     </section>
-    <!-- Add more sections as needed (e.g., Career, Role Models, Interests) -->
+    <!-- Add further sections (Career, Role Models, Interests, etc.) -->
+  </div>
+
+  <!-- TV Guide Overlay Menu -->
+  <div id="tvGuide" class="tv-guide" aria-hidden="true">
+    <button id="closeGuide" class="close-guide" aria-label="Close TV Guide">Close</button>
+    <nav>
+      <ul>
+        <li data-target="section1" tabindex="0">Creative Work</li>
+        <li data-target="section2" tabindex="0">Consultant Work</li>
+        <!-- Additional guide items for other sections -->
+      </ul>
+    </nav>
   </div>
 
   <!-- Link to your JavaScript file -->
