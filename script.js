@@ -2,34 +2,53 @@ document.addEventListener('DOMContentLoaded', function() {
   const powerButton = document.getElementById('powerButton');
   const landing = document.getElementById('landing');
   const flash = document.getElementById('flash');
+  const landingName = document.getElementById('landingName');
   const mainContent = document.getElementById('mainContent');
   const header = document.getElementById('header');
   const menuButton = document.getElementById('menuButton');
   const tvGuide = document.getElementById('tvGuide');
   const closeGuide = document.getElementById('closeGuide');
   const guideItems = document.querySelectorAll('.tv-guide nav ul li');
-  
-  // Power Button: Trigger TV turn-on sequence
+
+  // --- Landing Sequence with GSAP Timeline ---
   powerButton.addEventListener('click', function() {
-    // 1. Trigger the flash effect
-    flash.style.opacity = 1;
-    setTimeout(() => {
-      flash.style.transition = 'opacity 0.5s ease-out';
-      flash.style.opacity = 0;
-    }, 50);
+    // Disable further clicks on the power button
+    powerButton.style.pointerEvents = 'none';
     
-    // 2. Allow landing name animation to play, then transition
-    setTimeout(() => {
-      landing.style.display = 'none';
-      mainContent.style.display = 'block';
-      document.body.style.overflow = 'auto'; // Enable scrolling
-      
-      // Show header with persistent name and menu button
-      header.style.opacity = 1;
-    }, 3500); // Adjust timing to match your landing animation
+    // Create a GSAP timeline
+    const tl = gsap.timeline({
+      onComplete: () => {
+        // Hide landing and show main content
+        landing.style.display = 'none';
+        mainContent.style.display = 'block';
+        document.body.style.overflow = 'auto'; // Enable scrolling
+        // Fade in header (persistent small name & menu button)
+        gsap.to(header, { duration: 0.5, opacity: 1 });
+      }
+    });
+
+    // Flash overlay: quickly flash the screen (simulate TV turning on)
+    tl.to(flash, { duration: 0.3, opacity: 1 })
+      .to(flash, { duration: 0.5, opacity: 0 });
+
+    // Animate the landing name (flash across the screen)
+    tl.to(landingName, {
+      duration: 1.5,
+      opacity: 1,
+      scale: 1.2,
+      ease: "power2.out"
+    })
+    .to(landingName, {
+      duration: 1,
+      scale: 1,
+      ease: "power2.out",
+      onComplete: () => {
+        // (Optional) You can add an extra pause here if desired.
+      }
+    });
   });
-  
-  // Menu Button: Show TV guide overlay with fade-in
+
+  // --- TV Guide Menu Interactions ---
   menuButton.addEventListener('click', function() {
     tvGuide.style.display = 'flex';
     setTimeout(() => {
@@ -37,8 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
       tvGuide.setAttribute('aria-hidden', 'false');
     }, 10);
   });
-  
-  // Close TV guide overlay with fade-out
+
   closeGuide.addEventListener('click', function() {
     tvGuide.style.opacity = 0;
     tvGuide.setAttribute('aria-hidden', 'true');
@@ -46,8 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
       tvGuide.style.display = 'none';
     }, 500);
   });
-  
-  // TV Guide Navigation: Scroll to section when an item is clicked
+
   guideItems.forEach(item => {
     item.addEventListener('click', function() {
       const targetId = item.getAttribute('data-target');
@@ -62,8 +79,9 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
-  
-  // Throttle function for performance
+
+  // --- Channel Glitch Effect on Scroll ---
+  // Throttle function to improve performance
   function throttle(func, delay) {
     let timeout = null;
     return function() {
@@ -76,7 +94,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
   
-  // Channel Changing Effect on Scroll (apply glitch effect briefly)
   window.addEventListener('scroll', throttle(() => {
     document.querySelectorAll('.channel-section').forEach(section => {
       section.classList.add('glitch');
