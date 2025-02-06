@@ -207,3 +207,21 @@ body {
     font-size: 1.5rem;
   }
 }
+@media (max-width: 600px) {
+  .landing-name {
+    font-size: 2.5rem;      /* Reduce font size on mobile */
+    letter-spacing: 0.1em;  /* Reduce letter spacing */
+    max-width: 90%;         /* Ensure it doesn't exceed 90% of the viewport width */
+    margin: 0 auto;         /* Center horizontally */
+    padding: 0 5%;          /* Optional: add horizontal padding */
+  }
+  .header-name {
+    font-size: 1rem;
+  }
+  .menu-button {
+    padding: 5px 10px;
+  }
+  .tv-guide-list nav ul li {
+    font-size: 1.5rem;
+  }
+}
