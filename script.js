@@ -12,39 +12,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // --- Landing Sequence using GSAP Timeline ---
   powerButton.addEventListener('click', function() {
-    // Fade out and shrink the power button immediately
+    // Disable further clicks
+    powerButton.style.pointerEvents = 'none';
+    
+    // Animate power button out (fade and scale down)
     gsap.to(powerButton, { duration: 0.3, opacity: 0, scale: 0, ease: "power2.in" });
-
-    // Create a GSAP timeline for the landing sequence
+    
+    // Create a GSAP timeline
     const tl = gsap.timeline({
       onComplete: () => {
-        // Hide landing overlay, show main content, enable scrolling, fade in header
+        // When complete, hide the landing overlay, show main content, and enable scrolling.
         landing.style.display = 'none';
         mainContent.style.display = 'block';
         document.body.style.overflow = 'auto';
+        // Fade in header (which remains centered at the top)
         gsap.to(header, { duration: 0.5, opacity: 1 });
       }
     });
-
+    
     // Flash effect: simulate TV turning on
     tl.to(flash, { duration: 0.3, opacity: 1 })
       .to(flash, { duration: 0.5, opacity: 0 });
     
     // Animate the landing name:
-    // Step 1: Expand the name from 0 width to full width (end-to-end) with fade-in
+    // Step 1: Expand the name's width from 0 to 100% with a fade-in (left-to-right wipe)
     tl.to(landingName, {
       duration: 1,
-      opacity: 1,
       width: "100%",
+      opacity: 1,
       ease: "power2.out"
     });
-    
-    // Step 2: Scroll the name upward to center (vertically centered)
-    tl.to(landingName, {
-      duration: 1,
-      y: "-50vh",
-      ease: "power2.inOut"
-    });
+    // (Note: We no longer animate upward—the landing overlay simply disappears
+    // and the fixed header takes over, ensuring the name stays centered.)
   });
 
   // --- TV Guide Menu Interactions ---
@@ -80,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // --- Channel Glitch Effect on Scroll ---
-  // Throttle function for better performance
+  // Throttle function to improve performance
   function throttle(func, delay) {
     let timeout = null;
     return function() {
@@ -92,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
   }
-  
+
   window.addEventListener('scroll', throttle(() => {
     document.querySelectorAll('.channel-section').forEach(section => {
       section.classList.add('glitch');
