@@ -27,10 +27,8 @@
     <div class="landing-name" id="landingName">Kayron Calloway</div>
   </div>
 
-  <!-- Static Overlay for TV Turn-On (uses a static noise image and reduced opacity) -->
+  <!-- Static Overlay for TV Turn-On and Channel Change Effect -->
   <div id="staticOverlay"></div>
-  <!-- Channel Flash Overlay for Channel Change (Blink) Effect -->
-  <div id="channelFlash"></div>
 
   <!-- Main Content -->
   <div id="mainContent">
@@ -39,7 +37,7 @@
       <div class="header-name" id="headerName">Kayron Calloway</div>
       <button id="menuButton" class="menu-button" aria-label="Open TV Guide">Menu</button>
     </header>
-    <!-- Channel Sections with rigid (snap) scrolling -->
+    <!-- Channel Sections (Rigid Snap Scroll) -->
     <section id="section1" class="channel-section">
       <h2>Creative Work</h2>
       <p>Featured project content for Creative Work...</p>
@@ -62,35 +60,38 @@
     </section>
   </div>
 
-  <!-- TV Guide Overlay Menu (Vertical List) -->
+  <!-- TV Guide Overlay Menu -->
   <div id="tvGuide" class="tv-guide" aria-hidden="true">
-    <!-- TV Guide Header (stretched across the top) -->
+    <!-- TV Guide Header (centered) -->
     <div class="tv-guide-header">Kayron Calloway</div>
+    <!-- Channel List Container, positioned to the left -->
+    <div class="tv-guide-list">
+      <nav>
+        <ul>
+          <li data-target="section1">
+            <span class="channel-number">CH 01</span>
+            <span class="channel-title">Creative Work</span>
+          </li>
+          <li data-target="section2">
+            <span class="channel-number">CH 02</span>
+            <span class="channel-title">Consultant Work</span>
+          </li>
+          <li data-target="section3">
+            <span class="channel-number">CH 03</span>
+            <span class="channel-title">Career Work</span>
+          </li>
+          <li data-target="section4">
+            <span class="channel-number">CH 04</span>
+            <span class="channel-title">Role Models</span>
+          </li>
+          <li data-target="section5">
+            <span class="channel-number">CH 05</span>
+            <span class="channel-title">Interests</span>
+          </li>
+        </ul>
+      </nav>
+    </div>
     <button id="closeGuide" class="close-guide" aria-label="Close TV Guide">Close</button>
-    <nav>
-      <ul>
-        <li data-target="section1">
-          <span class="channel-number">CH 01</span>
-          <span class="channel-title">Creative Work</span>
-        </li>
-        <li data-target="section2">
-          <span class="channel-number">CH 02</span>
-          <span class="channel-title">Consultant Work</span>
-        </li>
-        <li data-target="section3">
-          <span class="channel-number">CH 03</span>
-          <span class="channel-title">Career Work</span>
-        </li>
-        <li data-target="section4">
-          <span class="channel-number">CH 04</span>
-          <span class="channel-title">Role Models</span>
-        </li>
-        <li data-target="section5">
-          <span class="channel-number">CH 05</span>
-          <span class="channel-title">Interests</span>
-        </li>
-      </ul>
-    </nav>
   </div>
 
   <script src="script.js"></script>
