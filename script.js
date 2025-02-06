@@ -9,32 +9,29 @@ document.addEventListener('DOMContentLoaded', function() {
   const tvGuide = document.getElementById('tvGuide');
   const closeGuide = document.getElementById('closeGuide');
   const guideItems = document.querySelectorAll('.tv-guide nav ul li');
+  const channelFlash = document.getElementById('channelFlash');
 
   let landingSequenceComplete = false;
   let autoScrollTimeout;
+  let currentChannel = null;  // To track which channel is currently active
 
   // --- Landing Sequence using GSAP Timeline ---
   powerButton.addEventListener('click', function() {
-    // Disable further clicks
     powerButton.style.pointerEvents = 'none';
-    
-    // Animate power button out (fade & scale down)
     gsap.to(powerButton, { duration: 0.3, opacity: 0, scale: 0, ease: "power2.in" });
     
-    // Create a GSAP timeline for the landing sequence
     const tl = gsap.timeline({
       onComplete: () => {
         landingSequenceComplete = true;
-        // Start an auto-scroll timer (e.g., 5 seconds) if the user doesn't scroll manually
+        // Start auto-scroll timer (set to 3 seconds)
         autoScrollTimeout = setTimeout(() => {
           if (landing.style.display !== "none") {
             autoScrollToContent();
           }
-        }, 5000);
+        }, 3000);
       }
     });
     
-    // Flash effect: simulate TV turning on
     tl.to(flash, { duration: 0.3, opacity: 1 })
       .to(flash, { duration: 0.5, opacity: 0 });
     
@@ -47,11 +44,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Function to auto scroll to the main content
+  // Function to auto-scroll to main content
   function autoScrollToContent() {
-    // Trigger a smooth scroll to the main content
     window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
-    // Also, remove the landing overlay
     gsap.to(landing, { duration: 0.5, opacity: 0, onComplete: () => {
       landing.style.display = "none";
       mainContent.style.display = "block";
@@ -60,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }});
   }
 
-  // On first scroll after landing sequence, cancel auto-scroll and fade out landing overlay
+  // On first scroll after landing sequence, cancel auto-scroll and transition out landing overlay
   window.addEventListener('scroll', function() {
     if (landingSequenceComplete && landing.style.display !== "none") {
       clearTimeout(autoScrollTimeout);
@@ -105,7 +100,41 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // --- Channel Blink Effect on Scroll ---
+  // --- Rigid Scroll with Snap & Channel Change Blink Effect ---
+  // (CSS scroll-snap properties are set on #mainContent and .channel-section)
+  
+  // Use IntersectionObserver to detect when a new channel becomes active
+  const observerOptions = {
+    root: mainContent,
+    threshold: 0.7  // Adjust threshold as needed
+  };
+  
+  const observerCallback = (entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const newChannel = entry.target.id;
+        if (currentChannel !== newChannel) {
+          currentChannel = newChannel;
+          triggerChannelFlash();
+        }
+      }
+    });
+  };
+  
+  const observer = new IntersectionObserver(observerCallback, observerOptions);
+  document.querySelectorAll('.channel-section').forEach(section => {
+    observer.observe(section);
+  });
+  
+  // Function to trigger full-page blink (channel flash)
+  function triggerChannelFlash() {
+    channelFlash.style.opacity = 1;
+    setTimeout(() => {
+      channelFlash.style.opacity = 0;
+    }, 200); // 200ms blink
+  }
+  
+  // Additionally, a throttled scroll event to catch manual scrolls (if needed)
   function throttle(func, delay) {
     let timeout = null;
     return function() {
@@ -115,15 +144,10 @@ document.addEventListener('DOMContentLoaded', function() {
           timeout = null;
         }, delay);
       }
-    }
+    };
   }
   
   window.addEventListener('scroll', throttle(() => {
-    document.querySelectorAll('.channel-section').forEach(section => {
-      section.classList.add('glitch');
-      setTimeout(() => {
-        section.classList.remove('glitch');
-      }, 300);
-    });
+    // (This additional scroll event is optional since IntersectionObserver handles channel changes.)
   }, 200));
 });
