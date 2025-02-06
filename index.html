@@ -11,23 +11,30 @@
 <body>
   <!-- Landing Overlay -->
   <div id="landing">
-    <!-- Redesigned Power Button -->
-    <div class="power-button" id="powerButton" role="button" tabindex="0"></div>
-    <!-- Landing Name (hidden until activated) -->
+    <!-- Redesigned Power Button with inline SVG -->
+    <div class="power-button" id="powerButton" role="button" tabindex="0">
+      <svg class="power-icon" viewBox="0 0 100 100">
+        <!-- 270° arc (almost full circle) -->
+        <path d="M50,10 A40,40 0 1,1 49.9,10" stroke="var(--primary-color)" stroke-width="10" fill="none"/>
+        <!-- Vertical line -->
+        <line x1="50" y1="0" x2="50" y2="40" stroke="var(--primary-color)" stroke-width="10"/>
+      </svg>
+    </div>
+    <!-- Landing Name: Initially hidden (width 0) -->
     <div class="landing-name" id="landingName">Kayron Calloway</div>
   </div>
 
-  <!-- Flash Overlay (for TV turn-on effect) -->
+  <!-- Flash Overlay for TV Turn-On Effect -->
   <div id="flash"></div>
 
   <!-- Main Content (hidden until landing sequence completes) -->
   <div id="mainContent" style="display: none;">
-    <!-- Header: persistent small name and menu button -->
+    <!-- Header: Fixed at top center -->
     <header id="header">
       <div class="header-name" id="headerName">Kayron Calloway</div>
       <button id="menuButton" class="menu-button" aria-label="Open TV Guide">Menu</button>
     </header>
-    <!-- Content Sections (channels) -->
+    <!-- Content Sections (Channels) -->
     <section id="section1" class="channel-section">
       <h2>Creative Work</h2>
       <p>Featured project content for Creative Work...</p>
@@ -52,6 +59,8 @@
 
   <!-- TV Guide Overlay Menu -->
   <div id="tvGuide" class="tv-guide" aria-hidden="true">
+    <!-- TV Guide Header (stretches across the screen) -->
+    <div class="tv-guide-header">Kayron Calloway</div>
     <button id="closeGuide" class="close-guide" aria-label="Close TV Guide">Close</button>
     <nav>
       <ul>
