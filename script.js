@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
   const powerButton = document.getElementById('powerButton');
   const landing = document.getElementById('landing');
-  const flash = document.getElementById('flash');
   const landingName = document.getElementById('landingName');
   const mainContent = document.getElementById('mainContent');
   const header = document.getElementById('header');
@@ -13,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let landingSequenceComplete = false;
   let autoScrollTimeout;
-  let currentChannel = null;  // To track which channel is currently active
+  let currentChannel = null;
 
   // --- Landing Sequence using GSAP Timeline ---
   powerButton.addEventListener('click', function() {
@@ -23,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const tl = gsap.timeline({
       onComplete: () => {
         landingSequenceComplete = true;
-        // Start auto-scroll timer (set to 3 seconds)
         autoScrollTimeout = setTimeout(() => {
           if (landing.style.display !== "none") {
             autoScrollToContent();
@@ -31,9 +29,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
       }
     });
-    
-    tl.to(flash, { duration: 0.3, opacity: 1 })
-      .to(flash, { duration: 0.5, opacity: 0 });
     
     // Animate landing name: expand width from 0 to 100% and fade in
     tl.to(landingName, {
@@ -55,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }});
   }
 
-  // On first scroll after landing sequence, cancel auto-scroll and transition out landing overlay
+  // On first scroll after landing, cancel auto-scroll and remove landing overlay
   window.addEventListener('scroll', function() {
     if (landingSequenceComplete && landing.style.display !== "none") {
       clearTimeout(autoScrollTimeout);
@@ -76,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
       tvGuide.setAttribute('aria-hidden', 'false');
     }, 10);
   });
-
+  
   closeGuide.addEventListener('click', function() {
     tvGuide.style.opacity = 0;
     tvGuide.setAttribute('aria-hidden', 'true');
@@ -84,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
       tvGuide.style.display = 'none';
     }, 500);
   });
-
+  
   guideItems.forEach(item => {
     item.addEventListener('click', function() {
       const targetId = item.getAttribute('data-target');
@@ -99,14 +94,11 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
-
-  // --- Rigid Scroll with Snap & Channel Change Blink Effect ---
-  // (CSS scroll-snap properties are set on #mainContent and .channel-section)
   
-  // Use IntersectionObserver to detect when a new channel becomes active
+  // --- Rigid Scroll & Channel Change Blink Effect ---
   const observerOptions = {
     root: mainContent,
-    threshold: 0.7  // Adjust threshold as needed
+    threshold: 0.7
   };
   
   const observerCallback = (entries) => {
@@ -126,15 +118,13 @@ document.addEventListener('DOMContentLoaded', function() {
     observer.observe(section);
   });
   
-  // Function to trigger full-page blink (channel flash)
   function triggerChannelFlash() {
     channelFlash.style.opacity = 1;
     setTimeout(() => {
       channelFlash.style.opacity = 0;
-    }, 200); // 200ms blink
+    }, 200);
   }
   
-  // Additionally, a throttled scroll event to catch manual scrolls (if needed)
   function throttle(func, delay) {
     let timeout = null;
     return function() {
@@ -144,10 +134,10 @@ document.addEventListener('DOMContentLoaded', function() {
           timeout = null;
         }, delay);
       }
-    };
+    }
   }
   
   window.addEventListener('scroll', throttle(() => {
-    // (This additional scroll event is optional since IntersectionObserver handles channel changes.)
+    // Additional scroll logic if needed
   }, 200));
 });
