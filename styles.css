@@ -1,9 +1,9 @@
-/* --- CSS Variables for easy adjustments --- */
+/* --- CSS Variables --- */
 :root {
   --bg-color: #000;
   --primary-color: #fff;
   --header-bg: rgba(0, 0, 0, 0.85);
-  --glitch-duration: 0.3s; /* For blink effect on channel change */
+  --blink-duration: 0.3s;
 }
 
 /* --- Import Merova Font --- */
@@ -24,7 +24,7 @@ body {
   background: var(--bg-color);
   color: var(--primary-color);
   font-family: 'Merova', sans-serif;
-  overflow: hidden; /* Disable scrolling on landing */
+  overflow: hidden;
   cursor: url('remote.png') 16 16, auto;
 }
 
@@ -63,6 +63,21 @@ body {
   text-align: center;
   letter-spacing: 0.2em;
   transition: width 1s ease, opacity 1s ease;
+}
+
+/* --- Static Overlay for TV Turn-On Effect --- */
+/* Use a static noise image; if not available, you can use a CSS gradient or remove this background */
+#staticOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('static.png') repeat;
+  opacity: 0;
+  z-index: 150;
+  pointer-events: none;
+  transition: opacity 0.3s ease-out;
 }
 
 /* --- Main Content Container with Scroll Snap --- */
@@ -112,7 +127,7 @@ body {
   position: relative;
 }
 
-/* --- TV Guide Overlay Menu --- */
+/* --- TV Guide Overlay Menu (Vertical List) --- */
 .tv-guide {
   position: fixed;
   top: 0;
@@ -137,33 +152,17 @@ body {
   width: 100%;
   margin-bottom: 40px;
 }
-/* Arrange channel items across the full width */
 .tv-guide nav ul {
   list-style: none;
   width: 100%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 0;
-  margin: 0;
+  text-align: center;
 }
 .tv-guide nav ul li {
   font-size: 2rem;
+  margin: 20px 0;
   padding: 10px;
-  position: relative;
+  border-bottom: 1px solid var(--primary-color);
   cursor: pointer;
-  flex: 1;
-  text-align: center;
-}
-.tv-guide nav ul li::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 25%;
-  height: 1px;
-  background: var(--primary-color);
 }
 .close-guide {
   position: absolute;
@@ -190,7 +189,7 @@ body {
   transition: opacity 0.2s ease-out;
 }
 
-/* --- Responsive & Accessibility Enhancements --- */
+/* --- Responsive Enhancements --- */
 @media (prefers-reduced-motion: reduce) {
   * {
     transition-duration: 0.001ms !important;
