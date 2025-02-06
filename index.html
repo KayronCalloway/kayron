@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TV Portfolio</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
   <!-- Include GSAP from CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
 </head>
 <body>
   <!-- Landing Overlay -->
   <div id="landing">
-    <!-- Redesigned Power Button with inline SVG -->
+    <!-- Redesigned Power Button (SVG design: 270° arc with a vertical line) -->
     <div class="power-button" id="powerButton" role="button" tabindex="0">
       <svg class="power-icon" viewBox="0 0 100 100">
-        <!-- 270° arc (almost full circle) -->
+        <!-- 270° arc -->
         <path d="M50,10 A40,40 0 1,1 49.9,10" stroke="var(--primary-color)" stroke-width="10" fill="none"/>
         <!-- Vertical line -->
         <line x1="50" y1="0" x2="50" y2="40" stroke="var(--primary-color)" stroke-width="10"/>
@@ -27,9 +27,9 @@
   <!-- Flash Overlay for TV Turn-On Effect -->
   <div id="flash"></div>
 
-  <!-- Main Content (hidden until landing sequence completes) -->
+  <!-- Main Content (hidden until landing overlay is removed) -->
   <div id="mainContent" style="display: none;">
-    <!-- Header: Fixed at top center -->
+    <!-- Fixed Header with small name and Menu Button -->
     <header id="header">
       <div class="header-name" id="headerName">Kayron Calloway</div>
       <button id="menuButton" class="menu-button" aria-label="Open TV Guide">Menu</button>
@@ -59,7 +59,7 @@
 
   <!-- TV Guide Overlay Menu -->
   <div id="tvGuide" class="tv-guide" aria-hidden="true">
-    <!-- TV Guide Header (stretches across the screen) -->
+    <!-- TV Guide Header (stretched across the top) -->
     <div class="tv-guide-header">Kayron Calloway</div>
     <button id="closeGuide" class="close-guide" aria-label="Close TV Guide">Close</button>
     <nav>
