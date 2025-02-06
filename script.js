@@ -15,6 +15,21 @@ document.addEventListener('DOMContentLoaded', function() {
   let autoScrollTimeout;
   let currentChannel = null;
 
+  // --- Preload Channel Sounds ---
+  const channelSoundFiles = [];
+  for (let i = 1; i <= 14; i++) {
+    channelSoundFiles.push(`channel-click${i}.aif`);
+  }
+  const channelSounds = channelSoundFiles.map(src => {
+    const audio = new Audio(src);
+    audio.preload = "auto";
+    return audio;
+  });
+  function playRandomChannelSound() {
+    const randomIndex = Math.floor(Math.random() * channelSounds.length);
+    channelSounds[randomIndex].play();
+  }
+
   // --- Landing Sequence using GSAP Timeline ---
   powerButton.addEventListener('click', function() {
     powerButton.style.pointerEvents = 'none';
@@ -32,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     
-    // Use static overlay for TV turn-on effect instead of a full flash
+    // Use static overlay for TV turn-on effect
     tl.to(staticOverlay, { duration: 0.2, opacity: 0.3 })
       .to(staticOverlay, { duration: 0.2, opacity: 0 });
     
@@ -124,15 +139,16 @@ document.addEventListener('DOMContentLoaded', function() {
     observer.observe(section);
   });
   
-  // Function to trigger static overlay for channel change
+  // Function to trigger static overlay and play a random channel sound
   function triggerChannelStatic() {
+    playRandomChannelSound();
     staticOverlay.style.opacity = 0.3;
     setTimeout(() => {
       staticOverlay.style.opacity = 0;
-    }, 200);  // 200ms duration for channel static effect
+    }, 200);
   }
   
-  // Optional throttled scroll event (if additional handling is needed)
+  // Optional: Throttled scroll event (if additional handling is needed)
   function throttle(func, delay) {
     let timeout = null;
     return function() {
