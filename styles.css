@@ -3,7 +3,7 @@
   --bg-color: #000;
   --primary-color: #fff;
   --header-bg: rgba(0, 0, 0, 0.85);
-  --glitch-duration: 0.3s; /* Faster blink */
+  --glitch-duration: 0.3s; /* For blink effect */
 }
 
 /* --- Import Merova Font --- */
@@ -44,7 +44,7 @@ body {
   z-index: 100;
 }
 
-/* Redesigned Power Button: Common 270° circle with line */
+/* Redesigned Power Button (270° arc with vertical line) */
 .power-button {
   width: 100px;
   height: 100px;
@@ -57,7 +57,7 @@ body {
   display: block;
 }
 
-/* Landing Name: Initially hidden with zero width, centered, and large */
+/* Landing Name: Initially hidden with zero width; extra letter-spacing for a double‑spaced effect */
 .landing-name {
   font-size: 4rem;
   color: var(--primary-color);
@@ -66,6 +66,7 @@ body {
   overflow: hidden;
   white-space: nowrap;
   text-align: center;
+  letter-spacing: 0.2em;  /* Adjust this value for "double spacing" */
   transition: width 1s ease, opacity 1s ease;
 }
 
@@ -120,7 +121,7 @@ body {
   z-index: 400;
   display: none;
   flex-direction: column;
-  align-items: center; /* Center items horizontally */
+  align-items: center; /* Center horizontally */
   justify-content: center; /* Center vertically */
   padding: 20px;
   opacity: 0;
@@ -152,7 +153,7 @@ body {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 25%; /* 1/4th length */
+  width: 25%; /* Underline length: 1/4th of container */
   height: 1px;
   background: var(--primary-color);
 }
