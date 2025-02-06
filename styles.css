@@ -3,7 +3,7 @@
   --bg-color: #000;
   --primary-color: #fff;
   --header-bg: rgba(0, 0, 0, 0.85);
-  --glitch-duration: 0.5s;
+  --glitch-duration: 0.3s; /* Faster blink */
 }
 
 /* --- Import Merova Font --- */
@@ -25,7 +25,7 @@ body {
   color: var(--primary-color);
   font-family: 'Merova', sans-serif;
   overflow: hidden; /* Disable scrolling on landing */
-  /* Use remote.png as the custom cursor; adjust hotspot as needed */
+  /* Custom remote cursor (adjust hotspot as needed) */
   cursor: url('remote.png') 16 16, auto;
 }
 
@@ -44,13 +44,12 @@ body {
   z-index: 100;
 }
 
-/* Redesigned Power Button with inline SVG */
+/* Redesigned Power Button: Common 270° circle with line */
 .power-button {
   width: 100px;
   height: 100px;
   cursor: pointer;
   margin-bottom: 20px;
-  /* Remove default background; the SVG inside will be styled */
 }
 .power-icon {
   width: 100%;
@@ -58,7 +57,7 @@ body {
   display: block;
 }
 
-/* Landing Name: Initially hidden (width 0), centered */
+/* Landing Name: Initially hidden with zero width, centered, and large */
 .landing-name {
   font-size: 4rem;
   color: var(--primary-color);
@@ -70,7 +69,7 @@ body {
   transition: width 1s ease, opacity 1s ease;
 }
 
-/* Header: persistent small name and menu button */
+/* Header: Fixed at top center */
 #header {
   position: fixed;
   top: 10px;
@@ -121,38 +120,41 @@ body {
   z-index: 400;
   display: none;
   flex-direction: column;
-  align-items: stretch;
-  padding: 20px 50px;
+  align-items: center; /* Center items horizontally */
+  justify-content: center; /* Center vertically */
+  padding: 20px;
   opacity: 0;
   transition: opacity 0.5s;
 }
-/* TV Guide Header (stretches across the top) */
 .tv-guide-header {
   font-size: 2rem;
   text-align: center;
   padding-bottom: 20px;
   border-bottom: 1px solid var(--primary-color);
-  margin-bottom: 20px;
+  width: 100%;
+  margin-bottom: 40px; /* Double spacing */
 }
 .tv-guide nav ul {
   list-style: none;
   width: 100%;
+  text-align: center;
 }
 .tv-guide nav ul li {
   font-size: 2rem;
-  margin: 10px 0;
-  padding: 10px;
-  border-bottom: 1px solid var(--primary-color);
-  display: flex;
-  align-items: center;
+  margin: 20px 0; /* Increased vertical spacing */
+  padding-bottom: 10px;
+  position: relative;
   cursor: pointer;
 }
-.channel-number {
-  margin-right: 20px;
-  font-weight: bold;
-}
-.channel-title {
-  flex: 1;
+.tv-guide nav ul li::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 25%; /* 1/4th length */
+  height: 1px;
+  background: var(--primary-color);
 }
 
 /* Close Button for TV Guide */
@@ -181,15 +183,14 @@ body {
   transition: opacity 0.5s ease-out;
 }
 
-/* --- Channel Glitch Effect on Scroll ---
-     Enhanced with a slight translation and rotation */
-@keyframes channelChange {
-  0% { opacity: 1; filter: contrast(1); transform: translateX(0) rotate(0deg); }
-  50% { opacity: 0.8; filter: contrast(1.8) blur(1px); transform: translateX(2px) rotate(1deg); }
-  100% { opacity: 1; filter: contrast(1); transform: translateX(0) rotate(0deg); }
+/* --- Channel Change (Blink) Effect on Scroll --- */
+@keyframes channelBlink {
+  0% { opacity: 1; }
+  50% { opacity: 0.2; }
+  100% { opacity: 1; }
 }
 .channel-section.glitch {
-  animation: channelChange var(--glitch-duration);
+  animation: channelBlink var(--glitch-duration);
 }
 
 /* --- Responsive & Accessibility Enhancements --- */
