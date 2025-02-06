@@ -25,7 +25,6 @@ body {
   color: var(--primary-color);
   font-family: 'Merova', sans-serif;
   overflow: hidden; /* Disable scrolling on landing */
-  /* Custom remote cursor (adjust hotspot as needed) */
   cursor: url('remote.png') 16 16, auto;
 }
 
@@ -43,8 +42,6 @@ body {
   align-items: center;
   z-index: 100;
 }
-
-/* Redesigned Power Button (270° arc with vertical line) */
 .power-button {
   width: 100px;
   height: 100px;
@@ -56,8 +53,6 @@ body {
   height: 100%;
   display: block;
 }
-
-/* Landing Name: Initially hidden (width 0); extra letter-spacing for double-spaced effect */
 .landing-name {
   font-size: 4rem;
   color: var(--primary-color);
@@ -66,19 +61,19 @@ body {
   overflow: hidden;
   white-space: nowrap;
   text-align: center;
-  letter-spacing: 0.2em;  /* Adjust for desired spacing */
+  letter-spacing: 0.2em;
   transition: width 1s ease, opacity 1s ease;
 }
 
 /* --- Main Content Container with Scroll Snap --- */
 #mainContent {
-  display: none; /* Initially hidden */
+  display: none;
   overflow-y: auto;
   scroll-snap-type: y mandatory;
   height: 100vh;
 }
 
-/* Fixed Header: Appears after landing sequence */
+/* --- Fixed Header --- */
 #header {
   position: fixed;
   top: 10px;
@@ -97,8 +92,6 @@ body {
 .header-name {
   font-size: 1.5rem;
 }
-
-/* Menu Button */
 .menu-button {
   background: transparent;
   border: 2px solid var(--primary-color);
@@ -107,7 +100,7 @@ body {
   cursor: pointer;
 }
 
-/* --- Content Sections (Channels) with Scroll Snap --- */
+/* --- Channel Sections with Scroll Snap --- */
 .channel-section {
   height: 100vh;
   padding: 50px;
@@ -130,7 +123,7 @@ body {
   z-index: 400;
   display: none;
   flex-direction: column;
-  align-items: center;  /* Center vertically and horizontally */
+  align-items: center;
   justify-content: center;
   padding: 20px;
   opacity: 0;
@@ -142,19 +135,25 @@ body {
   padding-bottom: 20px;
   border-bottom: 1px solid var(--primary-color);
   width: 100%;
-  margin-bottom: 40px; /* Extra spacing */
+  margin-bottom: 40px;
 }
+/* Arrange channel items across the full width */
 .tv-guide nav ul {
   list-style: none;
   width: 100%;
-  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0;
+  margin: 0;
 }
 .tv-guide nav ul li {
   font-size: 2rem;
-  margin: 20px 0;  /* Extra vertical spacing */
-  padding-bottom: 10px;
+  padding: 10px;
   position: relative;
   cursor: pointer;
+  flex: 1;
+  text-align: center;
 }
 .tv-guide nav ul li::after {
   content: "";
@@ -162,12 +161,10 @@ body {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 25%;  /* Underline set to 25% of container width */
+  width: 25%;
   height: 1px;
   background: var(--primary-color);
 }
-
-/* Close Button for TV Guide */
 .close-guide {
   position: absolute;
   top: 20px;
@@ -177,20 +174,6 @@ body {
   color: var(--primary-color);
   padding: 10px 15px;
   cursor: pointer;
-}
-
-/* --- Flash Overlay for TV Turn-On Effect --- */
-#flash {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--primary-color);
-  opacity: 0;
-  z-index: 150;
-  pointer-events: none;
-  transition: opacity 0.5s ease-out;
 }
 
 /* --- Channel Flash Overlay for Channel Change (Blink) Effect --- */
@@ -207,14 +190,6 @@ body {
   transition: opacity 0.2s ease-out;
 }
 
-/* --- Channel Blink (Full Page) Effect on Scroll --- */
-@keyframes channelBlink {
-  0% { opacity: 1; }
-  50% { opacity: 0.2; }
-  100% { opacity: 1; }
-}
-/* We won’t use a CSS animation class here; instead we’ll trigger the channel flash via JS */
-
 /* --- Responsive & Accessibility Enhancements --- */
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -222,7 +197,6 @@ body {
     animation-duration: 0.001ms !important;
   }
 }
-
 @media (max-width: 600px) {
   .landing-name {
     font-size: 2.5rem;
