@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // --- Preload Channel Sounds ---
   const channelSoundFiles = [];
-  for (let i = 1; i <= 14; i++) {
+  for (let i = 1; i <= 12; i++) {
     channelSoundFiles.push(`channel-click${i}.aif`);
   }
   const channelSounds = channelSoundFiles.map(src => {
