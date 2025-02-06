@@ -3,7 +3,7 @@
   --bg-color: #000;
   --primary-color: #fff;
   --header-bg: rgba(0, 0, 0, 0.85);
-  --glitch-duration: 0.3s; /* For blink effect */
+  --glitch-duration: 0.3s; /* For blink effect on channel change */
 }
 
 /* --- Import Merova Font --- */
@@ -57,7 +57,7 @@ body {
   display: block;
 }
 
-/* Landing Name: Initially hidden with zero width; extra letter-spacing for a double‑spaced effect */
+/* Landing Name: Initially hidden (width 0); extra letter-spacing for double-spaced effect */
 .landing-name {
   font-size: 4rem;
   color: var(--primary-color);
@@ -66,11 +66,19 @@ body {
   overflow: hidden;
   white-space: nowrap;
   text-align: center;
-  letter-spacing: 0.2em;  /* Adjust this value for "double spacing" */
+  letter-spacing: 0.2em;  /* Adjust for desired spacing */
   transition: width 1s ease, opacity 1s ease;
 }
 
-/* Header: Fixed at top center */
+/* --- Main Content Container with Scroll Snap --- */
+#mainContent {
+  display: none; /* Initially hidden */
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  height: 100vh;
+}
+
+/* Fixed Header: Appears after landing sequence */
 #header {
   position: fixed;
   top: 10px;
@@ -99,7 +107,7 @@ body {
   cursor: pointer;
 }
 
-/* Main Content Sections (Channels) */
+/* --- Content Sections (Channels) with Scroll Snap --- */
 .channel-section {
   height: 100vh;
   padding: 50px;
@@ -107,6 +115,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  scroll-snap-align: start;
   position: relative;
 }
 
@@ -121,8 +130,8 @@ body {
   z-index: 400;
   display: none;
   flex-direction: column;
-  align-items: center; /* Center horizontally */
-  justify-content: center; /* Center vertically */
+  align-items: center;  /* Center vertically and horizontally */
+  justify-content: center;
   padding: 20px;
   opacity: 0;
   transition: opacity 0.5s;
@@ -133,7 +142,7 @@ body {
   padding-bottom: 20px;
   border-bottom: 1px solid var(--primary-color);
   width: 100%;
-  margin-bottom: 40px; /* Double spacing */
+  margin-bottom: 40px; /* Extra spacing */
 }
 .tv-guide nav ul {
   list-style: none;
@@ -142,7 +151,7 @@ body {
 }
 .tv-guide nav ul li {
   font-size: 2rem;
-  margin: 20px 0; /* Increased vertical spacing */
+  margin: 20px 0;  /* Extra vertical spacing */
   padding-bottom: 10px;
   position: relative;
   cursor: pointer;
@@ -153,7 +162,7 @@ body {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 25%; /* Underline length: 1/4th of container */
+  width: 25%;  /* Underline set to 25% of container width */
   height: 1px;
   background: var(--primary-color);
 }
@@ -184,15 +193,27 @@ body {
   transition: opacity 0.5s ease-out;
 }
 
-/* --- Channel Change (Blink) Effect on Scroll --- */
+/* --- Channel Flash Overlay for Channel Change (Blink) Effect --- */
+#channelFlash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-color);
+  opacity: 0;
+  z-index: 180;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out;
+}
+
+/* --- Channel Blink (Full Page) Effect on Scroll --- */
 @keyframes channelBlink {
   0% { opacity: 1; }
   50% { opacity: 0.2; }
   100% { opacity: 1; }
 }
-.channel-section.glitch {
-  animation: channelBlink var(--glitch-duration);
-}
+/* We won’t use a CSS animation class here; instead we’ll trigger the channel flash via JS */
 
 /* --- Responsive & Accessibility Enhancements --- */
 @media (prefers-reduced-motion: reduce) {
