@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const guideItems = document.querySelectorAll('.tv-guide nav ul li');
 
   let landingSequenceComplete = false;
+  let autoScrollTimeout;
 
   // --- Landing Sequence using GSAP Timeline ---
   powerButton.addEventListener('click', function() {
@@ -23,9 +24,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Create a GSAP timeline for the landing sequence
     const tl = gsap.timeline({
       onComplete: () => {
-        // Mark that the landing sequence is complete.
         landingSequenceComplete = true;
-        // (Do not automatically hide the landing overlay – wait for user scroll)
+        // Start an auto-scroll timer (e.g., 5 seconds) if the user doesn't scroll manually
+        autoScrollTimeout = setTimeout(() => {
+          if (landing.style.display !== "none") {
+            autoScrollToContent();
+          }
+        }, 5000);
       }
     });
     
@@ -42,19 +47,32 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // On first scroll after landing sequence, fade out landing overlay and reveal main content
+  // Function to auto scroll to the main content
+  function autoScrollToContent() {
+    // Trigger a smooth scroll to the main content
+    window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
+    // Also, remove the landing overlay
+    gsap.to(landing, { duration: 0.5, opacity: 0, onComplete: () => {
+      landing.style.display = "none";
+      mainContent.style.display = "block";
+      document.body.style.overflow = "auto";
+      gsap.to(header, { duration: 0.5, opacity: 1 });
+    }});
+  }
+
+  // On first scroll after landing sequence, cancel auto-scroll and fade out landing overlay
   window.addEventListener('scroll', function() {
     if (landingSequenceComplete && landing.style.display !== "none") {
-      // Fade out the landing overlay
+      clearTimeout(autoScrollTimeout);
       gsap.to(landing, { duration: 0.5, opacity: 0, onComplete: () => {
         landing.style.display = "none";
         mainContent.style.display = "block";
-        document.body.style.overflow = "auto"; // enable scrolling
+        document.body.style.overflow = "auto";
         gsap.to(header, { duration: 0.5, opacity: 1 });
       }});
     }
-  }, { once: true });  // Run only once on first scroll
-
+  }, { once: true });
+  
   // --- TV Guide Menu Interactions ---
   menuButton.addEventListener('click', function() {
     tvGuide.style.display = 'flex';
@@ -88,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // --- Channel Blink Effect on Scroll ---
-  // Throttle function for performance
   function throttle(func, delay) {
     let timeout = null;
     return function() {
