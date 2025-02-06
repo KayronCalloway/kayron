@@ -9,6 +9,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
 </head>
 <body>
+  <!-- Audio for click sound -->
+  <audio id="clickSound" src="click.mp3" preload="auto"></audio>
+
   <!-- Landing Overlay -->
   <div id="landing">
     <!-- Redesigned Power Button (270° arc with vertical line) -->
@@ -24,8 +27,9 @@
     <div class="landing-name" id="landingName">Kayron Calloway</div>
   </div>
 
-  <!-- (Flash overlay removed per your feedback) -->
-  <!-- Channel Flash Overlay for Channel Change Effect -->
+  <!-- Static Overlay for TV Turn-On (uses a static noise image and reduced opacity) -->
+  <div id="staticOverlay"></div>
+  <!-- Channel Flash Overlay for Channel Change (Blink) Effect -->
   <div id="channelFlash"></div>
 
   <!-- Main Content -->
@@ -35,7 +39,7 @@
       <div class="header-name" id="headerName">Kayron Calloway</div>
       <button id="menuButton" class="menu-button" aria-label="Open TV Guide">Menu</button>
     </header>
-    <!-- Content Sections (Channels) -->
+    <!-- Channel Sections with rigid (snap) scrolling -->
     <section id="section1" class="channel-section">
       <h2>Creative Work</h2>
       <p>Featured project content for Creative Work...</p>
@@ -58,7 +62,7 @@
     </section>
   </div>
 
-  <!-- TV Guide Overlay Menu -->
+  <!-- TV Guide Overlay Menu (Vertical List) -->
   <div id="tvGuide" class="tv-guide" aria-hidden="true">
     <!-- TV Guide Header (stretched across the top) -->
     <div class="tv-guide-header">Kayron Calloway</div>
