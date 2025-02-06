@@ -8,7 +8,7 @@ html, body {
   height: 100%;
   background: #000;
   overflow: hidden;
-  font-family: sans-serif; /* Replace with your Bottega-style font later */
+  font-family: sans-serif; /* Replace with your Bottega Veneta font when available */
 }
 
 /* Landing Page Container */
@@ -34,7 +34,7 @@ html, body {
   width: 100%;
   height: 100%;
   background: url('noise.gif') repeat;
-  opacity: 0.1; /* Adjust opacity for subtlety */
+  opacity: 0.1; /* Adjust opacity for subtle effect */
   pointer-events: none;
 }
 
@@ -73,34 +73,38 @@ html, body {
   pointer-events: none;
 }
 
-/* Name Animation */
+/* Name Element - initial (landing) styling */
 .name {
   position: absolute;
   bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
   color: #fff;
   font-size: 3rem;
   opacity: 0;
   white-space: nowrap;
-  transform: translateX(-100%);
   z-index: 10;
+  transition: all 0.5s ease;
+  animation: slideIn 3s forwards;
 }
 
-/* Keyframes for the Sliding Name Animation */
+/* Keyframes for the initial sliding animation */
 @keyframes slideIn {
   0% {
     opacity: 0;
-    transform: translateX(-100%);
+    transform: translateX(-150%);
   }
   50% {
     opacity: 1;
+    transform: translateX(-50%);
   }
   100% {
     opacity: 1;
-    transform: translateX(100%);
+    transform: translateX(-50%);
   }
 }
 
-/* Main Content Sections (Channels) */
+/* Main Content (Channels) */
 .channel-section {
   height: 100vh;
   background: #222;
@@ -110,7 +114,7 @@ html, body {
   justify-content: center;
 }
 
-/* Once the landing animation finishes, allow scrolling */
+/* Enable scrolling once landing is complete */
 body.active {
   overflow: auto;
 }
