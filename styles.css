@@ -3,7 +3,7 @@
   --bg-color: #000;
   --primary-color: #fff;
   --header-bg: rgba(0, 0, 0, 0.85);
-  --blink-duration: 0.3s;
+  --static-duration: 0.3s;  /* Duration for static effect */
 }
 
 /* --- Import Merova Font --- */
@@ -65,15 +65,14 @@ body {
   transition: width 1s ease, opacity 1s ease;
 }
 
-/* --- Static Overlay for TV Turn-On Effect --- */
-/* Use a static noise image; if not available, you can use a CSS gradient or remove this background */
+/* --- Static Overlay for Turn-On & Channel Change --- */
 #staticOverlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('static.png') repeat;
+  background: url('static.png') repeat;  /* Use your static noise image */
   opacity: 0;
   z-index: 150;
   pointer-events: none;
@@ -127,7 +126,7 @@ body {
   position: relative;
 }
 
-/* --- TV Guide Overlay Menu (Vertical List) --- */
+/* --- TV Guide Overlay Menu --- */
 .tv-guide {
   position: fixed;
   top: 0;
@@ -137,12 +136,13 @@ body {
   background: rgba(0,0,0,0.95);
   z-index: 400;
   display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
   opacity: 0;
   transition: opacity 0.5s;
+  /* Use flex to stack header on top and then content */
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 40px;
 }
 .tv-guide-header {
   font-size: 2rem;
@@ -152,18 +152,29 @@ body {
   width: 100%;
   margin-bottom: 40px;
 }
-.tv-guide nav ul {
-  list-style: none;
-  width: 100%;
-  text-align: center;
+/* New container for the channel list, aligned to the left */
+.tv-guide-list {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  width: auto;
 }
-.tv-guide nav ul li {
+.tv-guide-list nav ul {
+  list-style: none;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+}
+.tv-guide-list nav ul li {
   font-size: 2rem;
   margin: 20px 0;
-  padding: 10px;
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--primary-color);
   cursor: pointer;
 }
+
+/* Close Button for TV Guide */
 .close-guide {
   position: absolute;
   top: 20px;
@@ -173,20 +184,6 @@ body {
   color: var(--primary-color);
   padding: 10px 15px;
   cursor: pointer;
-}
-
-/* --- Channel Flash Overlay for Channel Change (Blink) Effect --- */
-#channelFlash {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--primary-color);
-  opacity: 0;
-  z-index: 180;
-  pointer-events: none;
-  transition: opacity 0.2s ease-out;
 }
 
 /* --- Responsive Enhancements --- */
@@ -206,7 +203,7 @@ body {
   .menu-button {
     padding: 5px 10px;
   }
-  .tv-guide nav ul li {
+  .tv-guide-list nav ul li {
     font-size: 1.5rem;
   }
 }
