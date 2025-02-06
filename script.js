@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const closeGuide = document.getElementById('closeGuide');
   const guideItems = document.querySelectorAll('.tv-guide nav ul li');
   const channelFlash = document.getElementById('channelFlash');
+  const staticOverlay = document.getElementById('staticOverlay');
+  const clickSound = document.getElementById('clickSound');
 
   let landingSequenceComplete = false;
   let autoScrollTimeout;
@@ -17,11 +19,16 @@ document.addEventListener('DOMContentLoaded', function() {
   // --- Landing Sequence using GSAP Timeline ---
   powerButton.addEventListener('click', function() {
     powerButton.style.pointerEvents = 'none';
+    // Play the click sound when the power button is pressed
+    clickSound.play();
+
+    // Animate the power button out
     gsap.to(powerButton, { duration: 0.3, opacity: 0, scale: 0, ease: "power2.in" });
     
     const tl = gsap.timeline({
       onComplete: () => {
         landingSequenceComplete = true;
+        // Start auto-scroll timer (3 seconds)
         autoScrollTimeout = setTimeout(() => {
           if (landing.style.display !== "none") {
             autoScrollToContent();
@@ -29,6 +36,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
       }
     });
+    
+    // Instead of a full flash, use a static overlay with lower opacity
+    tl.to(staticOverlay, { duration: 0.2, opacity: 0.3 })
+      .to(staticOverlay, { duration: 0.2, opacity: 0 });
     
     // Animate landing name: expand width from 0 to 100% and fade in
     tl.to(landingName, {
@@ -50,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }});
   }
 
-  // On first scroll after landing, cancel auto-scroll and remove landing overlay
+  // On first scroll after landing, cancel auto-scroll and transition out landing overlay
   window.addEventListener('scroll', function() {
     if (landingSequenceComplete && landing.style.display !== "none") {
       clearTimeout(autoScrollTimeout);
@@ -125,6 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 200);
   }
   
+  // Optional throttled scroll event
   function throttle(func, delay) {
     let timeout = null;
     return function() {
@@ -138,6 +150,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   window.addEventListener('scroll', throttle(() => {
-    // Additional scroll logic if needed
+    // Additional scroll handling if needed.
   }, 200));
 });
