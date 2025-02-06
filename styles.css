@@ -1,4 +1,4 @@
-/* --- CSS Variables for easy theme adjustments --- */
+/* --- CSS Variables --- */
 :root {
   --bg-color: #000;
   --primary-color: #fff;
@@ -6,7 +6,7 @@
   --glitch-duration: 0.5s;
 }
 
-/* --- Import Merova Bold (ensure Merova.otf is in your project) --- */
+/* --- Import Merova Font --- */
 @font-face {
   font-family: 'Merova';
   src: url('Merova.otf') format('opentype');
@@ -25,7 +25,8 @@ body {
   color: var(--primary-color);
   font-family: 'Merova', sans-serif;
   overflow: hidden; /* Disable scrolling on landing */
-  cursor: url('remote.png'), auto; /* Custom remote cursor */
+  /* Use remote.png as custom cursor; adjust hotspot (16 16) if needed */
+  cursor: url('remote.png') 16 16, auto;
 }
 
 /* --- Landing Page Styles --- */
@@ -43,7 +44,7 @@ body {
   z-index: 100;
 }
 
-/* Power Button */
+/* Power Button (a clean, simple circle) */
 .power-button {
   width: 80px;
   height: 80px;
@@ -53,14 +54,19 @@ body {
   margin-bottom: 20px;
 }
 
-/* Landing Name (Full Screen Flash) */
+/* Landing Name: hidden initially */
 #landingName {
   font-size: 5rem;
   opacity: 0;
-  animation: flashName 3s forwards;
 }
 
-/* Keyframes for the landing name flash animation */
+/* This class will be added by GSAP to animate the landing name flash */
+.animate-landing-name {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Flash keyframe (if you wish to tweak further, use GSAP for timing) */
 @keyframes flashName {
   0% {
     opacity: 0;
@@ -71,8 +77,10 @@ body {
     transform: scale(1.2);
   }
   40% {
-    opacity: 1;
     transform: scale(1);
+  }
+  60% {
+    opacity: 0.8;
   }
   100% {
     opacity: 1;
@@ -80,7 +88,7 @@ body {
   }
 }
 
-/* Flash Overlay for TV Turn-On Effect */
+/* --- Flash Overlay for TV Turn-On Effect --- */
 #flash {
   position: fixed;
   top: 0;
@@ -93,7 +101,7 @@ body {
   pointer-events: none;
 }
 
-/* --- Header (Persistent Name & Menu) --- */
+/* --- Header: Persistent small name and menu button --- */
 #header {
   position: fixed;
   top: 10px;
@@ -145,19 +153,30 @@ body {
   display: none;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* Align to left for a guide look */
+  padding-left: 50px;
   opacity: 0;
   transition: opacity 0.5s;
 }
 .tv-guide nav ul {
   list-style: none;
-  text-align: center;
 }
 .tv-guide nav ul li {
   font-size: 2rem;
   margin: 20px 0;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
+.channel-number {
+  font-weight: bold;
+  margin-right: 10px;
+}
+.channel-title {
+  /* Additional styling if needed */
+}
+
+/* Close Button for TV Guide */
 .close-guide {
   position: absolute;
   top: 20px;
@@ -169,7 +188,7 @@ body {
   cursor: pointer;
 }
 
-/* --- Channel Changing (Glitch) Effect on Scroll --- */
+/* --- Channel Glitch Effect on Scroll --- */
 .channel-section.glitch {
   animation: channelChange var(--glitch-duration);
 }
