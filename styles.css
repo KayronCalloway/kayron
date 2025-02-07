@@ -250,15 +250,18 @@ body {
     font-size: 0.9rem;
     padding: 5px 8px;
   }
-  /* Adjust channel number overlay placement on mobile */
+  /* Adjust channel number overlay so it’s not obscured by the URL bar.
+     Using env(safe-area-inset-bottom) helps on iOS devices. */
   .channel-number-overlay {
-    font-size: 3rem; /* Increased size */
-    bottom: 10px;   /* Move higher from the bottom */
-    right: 10px;    /* Slightly adjusted */
-  }
-  /* Adjust the close button so it doesn't touch the header */
-  .close-guide {
-    top: 40px; /* Increase top offset */
+    font-size: 3rem; /* Increase size for clarity */
+    bottom: calc(20px + env(safe-area-inset-bottom)); /* Push it up */
     right: 20px;
+  }
+  /* Revert the close button to its original top position (20px)
+     and make it a bit smaller */
+  .close-guide {
+    top: 20px; 
+    font-size: 0.9rem;
+    padding: 5px 8px;
   }
 }
