@@ -28,6 +28,12 @@ body {
   overflow: hidden;
 }
 
+.landing-name,
+#staticOverlay,
+.channel-number-overlay {
+  will-change: transform, opacity;
+}
+
 /* --- Landing Overlay --- */
 #landing {
   position: fixed;
@@ -95,7 +101,7 @@ body {
   cursor: pointer;
   z-index: 350;
   transition: opacity 0.3s;
-  display: none; /* Initially hidden; shown after power on */
+  display: none; /* Initially hidden; will show after power on */
 }
 
 /* --- Main Content Container with Scroll Snap --- */
@@ -242,5 +248,10 @@ body {
   .mute-button {
     font-size: 0.9rem;
     padding: 5px 8px;
+  }
+  .channel-number-overlay {
+    font-size: 3rem; /* Increase channel number size on mobile */
+    bottom: 30px;
+    right: 20px;
   }
 }
