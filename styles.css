@@ -26,7 +26,7 @@ body {
   color: var(--primary-color);
   font-family: 'Merova', sans-serif;
   overflow: hidden;
-  /* Removed custom cursor for remote */
+  /* Removed custom cursor code */
 }
 
 /* --- Landing Overlay --- */
@@ -83,15 +83,17 @@ body {
   transition: opacity 0.3s ease-out;
 }
 
-/* --- Rolling Line: a slow rolling static line that rises every 7 seconds --- */
+/* --- Rolling Line: a one-line static roll that rises from the bottom --- */
 #rollingLine {
   position: fixed;
   left: 0;
+  bottom: 0;
   width: 100%;
-  height: 4px; /* Adjust thickness */
+  height: 4px;  /* Adjust thickness as needed */
   background: url('static.png') repeat-x;
   opacity: 0;
   z-index: 160;
+  display: none;
 }
 
 /* --- Mute Button (Bottom Left) --- */
@@ -167,7 +169,7 @@ body {
   font-size: 2rem;
   color: var(--primary-color);
   opacity: 0.8;
-  /* We'll animate this with GSAP on channel change */
+  /* Will be animated via GSAP on channel change */
 }
 
 /* --- TV Guide Overlay Menu --- */
