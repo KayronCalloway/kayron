@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const channelSounds = channelSoundFiles.map(src => {
     const audio = new Audio(src);
     audio.preload = "auto";
+    audio.volume = 0.8;  // Set a moderate volume level
     return audio;
   });
   
