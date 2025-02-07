@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const guideItems = document.querySelectorAll('.tv-guide-list nav ul li');
   const staticOverlay = document.getElementById('staticOverlay');
   const clickSound = document.getElementById('clickSound');
-  const rollingLine = document.getElementById('rollingLine');
   const muteButton = document.getElementById('muteButton');
   
   let soundMuted = false;
@@ -35,33 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
     channelSounds[randomIndex].play();
   }
   
-// --- Rolling Line Effect: Trigger randomly between 7 and 15 seconds ---
-function triggerRollingLine() {
-  rollingLine.style.display = 'block';
-  rollingLine.style.opacity = 0.8;
-  // Animate the rolling line from the top (y:"0%") to the bottom (y:"100%") over 3 seconds
-  gsap.fromTo(rollingLine,
-    { y: "0%" },
-    { y: "100%", duration: 3, ease: "power2.out", onComplete: () => {
-        // After reaching the bottom, fade out over 0.5 seconds
-        gsap.to(rollingLine, { duration: 0.5, opacity: 0, onComplete: () => {
-            rollingLine.style.display = 'none';
-            // Schedule the next rolling line trigger randomly between 7 and 15 seconds
-            triggerRollingLineRandomly();
-        }});
-    }}
-  );
-}
-
-function triggerRollingLineRandomly() {
-  let delay = Math.random() * 8000 + 7000; // Random delay between 7s and 15s
-  setTimeout(triggerRollingLine, delay);
-}
-
-// Start the rolling line effect after page load
-triggerRollingLineRandomly();
-
-  
   // --- Function to briefly distort the main content (CRT effect) ---
   function distortContent() {
     gsap.fromTo(mainContent, { filter: "none" }, { filter: "blur(2px) contrast(1.2)", duration: 0.2, yoyo: true, repeat: 1 });
@@ -76,7 +48,7 @@ triggerRollingLineRandomly();
     const tl = gsap.timeline({
       onComplete: () => {
         landingSequenceComplete = true;
-        // Show mute button after power on
+        // Show mute button after power-on
         muteButton.style.display = 'block';
         gsap.to(muteButton, { duration: 0.5, opacity: 1 });
         autoScrollTimeout = setTimeout(() => {
