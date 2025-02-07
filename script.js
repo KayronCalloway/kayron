@@ -35,24 +35,32 @@ document.addEventListener('DOMContentLoaded', function() {
     channelSounds[randomIndex].play();
   }
   
-  // --- Rolling Line Effect: Trigger randomly every 7-15 seconds ---
-  function triggerRollingLineRandomly() {
-    let delay = Math.random() * 8000 + 7000; // Random delay between 7s and 15s
-    setTimeout(() => {
-      rollingLine.style.display = 'block';
-      rollingLine.style.opacity = 0.8;
-      // Animate from top (0%) to bottom (100% of viewport)
-      gsap.fromTo(rollingLine,
-        { y: "0%" },
-        { y: "100%", duration: 1, ease: "power2.out", onComplete: () => {
-            rollingLine.style.opacity = 0;
+// --- Rolling Line Effect: Trigger randomly between 7 and 15 seconds ---
+function triggerRollingLine() {
+  rollingLine.style.display = 'block';
+  rollingLine.style.opacity = 0.8;
+  // Animate the rolling line from the top (y:"0%") to the bottom (y:"100%") over 3 seconds
+  gsap.fromTo(rollingLine,
+    { y: "0%" },
+    { y: "100%", duration: 3, ease: "power2.out", onComplete: () => {
+        // After reaching the bottom, fade out over 0.5 seconds
+        gsap.to(rollingLine, { duration: 0.5, opacity: 0, onComplete: () => {
             rollingLine.style.display = 'none';
-            triggerRollingLineRandomly(); // Schedule next trigger
-        }}
-      );
-    }, delay);
-  }
-  triggerRollingLineRandomly();
+            // Schedule the next rolling line trigger randomly between 7 and 15 seconds
+            triggerRollingLineRandomly();
+        }});
+    }}
+  );
+}
+
+function triggerRollingLineRandomly() {
+  let delay = Math.random() * 8000 + 7000; // Random delay between 7s and 15s
+  setTimeout(triggerRollingLine, delay);
+}
+
+// Start the rolling line effect after page load
+triggerRollingLineRandomly();
+
   
   // --- Function to briefly distort the main content (CRT effect) ---
   function distortContent() {
