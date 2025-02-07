@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const guideItems = document.querySelectorAll('.tv-guide-list nav ul li');
   const staticOverlay = document.getElementById('staticOverlay');
   const clickSound = document.getElementById('clickSound');
+  const scanLine = document.getElementById('scanLine');
 
   let landingSequenceComplete = false;
   let autoScrollTimeout;
@@ -17,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // --- Preload Channel Click Sounds ---
   const channelSoundFiles = [];
-  // Assuming files channel-click1.aif through channel-click11.aif
   for (let i = 1; i <= 11; i++) {
     channelSoundFiles.push(`channel-click${i}.aif`);
   }
@@ -32,12 +32,19 @@ document.addEventListener('DOMContentLoaded', function() {
     channelSounds[randomIndex].play();
   }
 
-  // --- Randomize Static Roll Duration for each channel section ---
-  document.querySelectorAll('.channel-section').forEach(section => {
-    // Random duration between 15s and 25s
-    const randomDuration = Math.random() * 10 + 15;
-    section.style.setProperty('--static-roll-duration', `${randomDuration}s`);
-  });
+  // --- Function to Trigger Scan Line Effect ---
+  function triggerScanLine() {
+    // Show the scan line element
+    scanLine.style.display = 'block';
+    // Animate it from bottom to top using GSAP
+    gsap.fromTo(
+      scanLine,
+      { y: "100%", opacity: 0.8 },
+      { y: "-10%", opacity: 0, duration: 0.5, ease: "power2.out", onComplete: () => {
+          scanLine.style.display = 'none';
+      }}
+    );
+  }
 
   // --- Landing Sequence using GSAP Timeline ---
   powerButton.addEventListener('click', function() {
@@ -56,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     
-    // Use static overlay for TV turn-on effect (white-to-static transition)
+    // Use static overlay for TV turn-on effect
     tl.to(staticOverlay, { duration: 0.2, opacity: 0.3 })
       .to(staticOverlay, { duration: 0.2, opacity: 0 });
     
@@ -125,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
-  // --- Rigid Scroll & Channel Change Static Effect ---
+  // --- Rigid Scroll & Channel Change Effect ---
   const observerOptions = {
     root: mainContent,
     threshold: 0.7
@@ -137,7 +144,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const newChannel = entry.target.id;
         if (currentChannel !== newChannel) {
           currentChannel = newChannel;
-          triggerChannelStatic();
+          // Play a random channel sound and trigger scan line effect
+          playRandomChannelSound();
+          triggerScanLine();
         }
       }
     });
@@ -147,15 +156,6 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.channel-section').forEach(section => {
     observer.observe(section);
   });
-  
-  // Function to trigger static overlay and play a random channel sound
-  function triggerChannelStatic() {
-    playRandomChannelSound();
-    staticOverlay.style.opacity = 0.3;
-    setTimeout(() => {
-      staticOverlay.style.opacity = 0;
-    }, 200);
-  }
   
   // Optional: Throttled scroll event (if additional handling is needed)
   function throttle(func, delay) {
@@ -171,6 +171,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   window.addEventListener('scroll', throttle(() => {
-    // Additional scroll handling can be added here if needed.
+    // Additional scroll handling if needed.
   }, 200));
 });
