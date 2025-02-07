@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // --- Preload Channel Click Sounds ---
   const channelSoundFiles = [];
-  // Assuming you now have files channel-click1.aif ... channel-click11.aif
+  // Assuming files channel-click1.aif through channel-click11.aif
   for (let i = 1; i <= 11; i++) {
     channelSoundFiles.push(`channel-click${i}.aif`);
   }
@@ -26,10 +26,18 @@ document.addEventListener('DOMContentLoaded', function() {
     audio.preload = "auto";
     return audio;
   });
+  
   function playRandomChannelSound() {
     const randomIndex = Math.floor(Math.random() * channelSounds.length);
     channelSounds[randomIndex].play();
   }
+
+  // --- Randomize Static Roll Duration for each channel section ---
+  document.querySelectorAll('.channel-section').forEach(section => {
+    // Random duration between 15s and 25s
+    const randomDuration = Math.random() * 10 + 15;
+    section.style.setProperty('--static-roll-duration', `${randomDuration}s`);
+  });
 
   // --- Landing Sequence using GSAP Timeline ---
   powerButton.addEventListener('click', function() {
@@ -48,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     
-    // Use static overlay for TV turn-on effect
+    // Use static overlay for TV turn-on effect (white-to-static transition)
     tl.to(staticOverlay, { duration: 0.2, opacity: 0.3 })
       .to(staticOverlay, { duration: 0.2, opacity: 0 });
     
@@ -149,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 200);
   }
   
-  // Optional throttled scroll event
+  // Optional: Throttled scroll event (if additional handling is needed)
   function throttle(func, delay) {
     let timeout = null;
     return function() {
@@ -163,6 +171,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   window.addEventListener('scroll', throttle(() => {
-    // Additional scroll handling if needed.
+    // Additional scroll handling can be added here if needed.
   }, 200));
 });
