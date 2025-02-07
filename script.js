@@ -35,9 +35,13 @@ document.addEventListener('DOMContentLoaded', function() {
     channelSounds[randomIndex].play();
   }
   
-  // --- Function to briefly distort the main content (CRT effect) ---
-  function distortContent() {
-    gsap.fromTo(mainContent, { filter: "none" }, { filter: "blur(2px) contrast(1.2)", duration: 0.2, yoyo: true, repeat: 1 });
+  // --- Function to combine distortion and warping (CRT effect) ---
+  function distortAndWarpContent() {
+    gsap.fromTo(
+      mainContent,
+      { filter: "none", transform: "skewX(0deg)" },
+      { filter: "blur(2px) contrast(1.2)", transform: "skewX(5deg)", duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }
+    );
   }
   
   // --- Landing Sequence using GSAP Timeline ---
@@ -143,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
           currentChannel = newChannel;
           playRandomChannelSound();
           triggerChannelStatic();
-          distortContent();
+          distortAndWarpContent();
           animateChannelNumber(newChannel);
         }
       }
