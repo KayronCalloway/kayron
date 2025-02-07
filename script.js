@@ -37,18 +37,18 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // --- Rolling Line Effect: Trigger every 7 seconds ---
   function triggerRollingLine() {
-    // Reset position and show the rolling line
     rollingLine.style.display = 'block';
     rollingLine.style.opacity = 0.8;
+    // Animate the rolling line from bottom (0%) to top (-100% of its own height relative to viewport)
     gsap.fromTo(rollingLine,
-      { y: "100%" },
-      { y: "-10%", duration: 1, ease: "power2.out", onComplete: () => {
+      { y: "0%" },
+      { y: "-100%", duration: 1, ease: "power2.out", onComplete: () => {
           rollingLine.style.opacity = 0;
           rollingLine.style.display = 'none';
-      } }
+      }}
     );
   }
-  setInterval(triggerRollingLine, 7000);  // Every 7 seconds
+  setInterval(triggerRollingLine, 7000);  // Trigger every 7 seconds
   
   // --- Function to briefly distort the main content (CRT effect) ---
   function distortContent() {
