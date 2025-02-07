@@ -15,9 +15,10 @@ document.addEventListener('DOMContentLoaded', function() {
   let autoScrollTimeout;
   let currentChannel = null;
 
-  // --- Preload Channel Sounds ---
+  // --- Preload Channel Click Sounds ---
   const channelSoundFiles = [];
-  for (let i = 1; i <= 12; i++) {
+  // Assuming you now have files channel-click1.aif ... channel-click11.aif
+  for (let i = 1; i <= 11; i++) {
     channelSoundFiles.push(`channel-click${i}.aif`);
   }
   const channelSounds = channelSoundFiles.map(src => {
@@ -148,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 200);
   }
   
-  // Optional: Throttled scroll event (if additional handling is needed)
+  // Optional throttled scroll event
   function throttle(func, delay) {
     let timeout = null;
     return function() {
@@ -162,6 +163,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   window.addEventListener('scroll', throttle(() => {
-    // Additional scroll handling can be added here if needed.
+    // Additional scroll handling if needed.
   }, 200));
 });
