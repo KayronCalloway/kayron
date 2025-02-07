@@ -10,12 +10,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const guideItems = document.querySelectorAll('.tv-guide-list nav ul li');
   const staticOverlay = document.getElementById('staticOverlay');
   const clickSound = document.getElementById('clickSound');
-  const scanLine = document.getElementById('scanLine');
-
+  const rollingLine = document.getElementById('rollingLine');
+  const muteButton = document.getElementById('muteButton');
+  
+  let soundMuted = false;
   let landingSequenceComplete = false;
   let autoScrollTimeout;
   let currentChannel = null;
-
+  
   // --- Preload Channel Click Sounds ---
   const channelSoundFiles = [];
   for (let i = 1; i <= 11; i++) {
@@ -28,24 +30,31 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   
   function playRandomChannelSound() {
+    if (soundMuted) return;
     const randomIndex = Math.floor(Math.random() * channelSounds.length);
     channelSounds[randomIndex].play();
   }
-
-  // --- Function to Trigger Scan Line Effect ---
-  function triggerScanLine() {
-    // Show the scan line element
-    scanLine.style.display = 'block';
-    // Animate it from bottom to top using GSAP
-    gsap.fromTo(
-      scanLine,
-      { y: "100%", opacity: 0.8 },
-      { y: "-10%", opacity: 0, duration: 0.5, ease: "power2.out", onComplete: () => {
-          scanLine.style.display = 'none';
-      }}
+  
+  // --- Rolling Line Effect: Trigger every 7 seconds ---
+  function triggerRollingLine() {
+    // Reset position and show the rolling line
+    rollingLine.style.display = 'block';
+    rollingLine.style.opacity = 0.8;
+    gsap.fromTo(rollingLine,
+      { y: "100%" },
+      { y: "-10%", duration: 1, ease: "power2.out", onComplete: () => {
+          rollingLine.style.opacity = 0;
+          rollingLine.style.display = 'none';
+      } }
     );
   }
-
+  setInterval(triggerRollingLine, 7000);  // Every 7 seconds
+  
+  // --- Function to briefly distort the main content (CRT effect) ---
+  function distortContent() {
+    gsap.fromTo(mainContent, { filter: "none" }, { filter: "blur(2px) contrast(1.2)", duration: 0.2, yoyo: true, repeat: 1 });
+  }
+  
   // --- Landing Sequence using GSAP Timeline ---
   powerButton.addEventListener('click', function() {
     powerButton.style.pointerEvents = 'none';
@@ -75,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
       ease: "power2.out"
     });
   });
-
+  
   // Function to auto-scroll to main content
   function autoScrollToContent() {
     window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
@@ -86,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
       gsap.to(header, { duration: 0.5, opacity: 1 });
     }});
   }
-
+  
   // On first scroll after landing, cancel auto-scroll and remove landing overlay
   window.addEventListener('scroll', function() {
     if (landingSequenceComplete && landing.style.display !== "none") {
@@ -132,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
-  // --- Rigid Scroll & Channel Change Effect ---
+  // --- Rigid Scroll & Channel Change Effects ---
   const observerOptions = {
     root: mainContent,
     threshold: 0.7
@@ -144,9 +153,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const newChannel = entry.target.id;
         if (currentChannel !== newChannel) {
           currentChannel = newChannel;
-          // Play a random channel sound and trigger scan line effect
           playRandomChannelSound();
-          triggerScanLine();
+          triggerChannelStatic();
+          distortContent();
+          animateChannelNumber(newChannel);
         }
       }
     });
@@ -155,6 +165,31 @@ document.addEventListener('DOMContentLoaded', function() {
   const observer = new IntersectionObserver(observerCallback, observerOptions);
   document.querySelectorAll('.channel-section').forEach(section => {
     observer.observe(section);
+  });
+  
+  // Function to trigger static overlay for channel change effect
+  function triggerChannelStatic() {
+    staticOverlay.style.opacity = 0.3;
+    setTimeout(() => {
+      staticOverlay.style.opacity = 0;
+    }, 200);
+  }
+  
+  // Function to animate the channel number overlay for the active channel
+  function animateChannelNumber(channelId) {
+    const channelOverlay = document.querySelector(`#${channelId} .channel-number-overlay`);
+    if (channelOverlay) {
+      gsap.fromTo(channelOverlay,
+        { scale: 1, filter: "brightness(1)" },
+        { scale: 1.2, filter: "brightness(2)", duration: 0.2, yoyo: true, repeat: 1 }
+      );
+    }
+  }
+  
+  // --- Mute Button Interactions ---
+  muteButton.addEventListener('click', function() {
+    soundMuted = !soundMuted;
+    muteButton.textContent = soundMuted ? "Unmute" : "Mute";
   });
   
   // Optional: Throttled scroll event (if additional handling is needed)
