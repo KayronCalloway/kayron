@@ -35,20 +35,24 @@ document.addEventListener('DOMContentLoaded', function() {
     channelSounds[randomIndex].play();
   }
   
-  // --- Rolling Line Effect: Trigger every 7 seconds ---
-  function triggerRollingLine() {
-    rollingLine.style.display = 'block';
-    rollingLine.style.opacity = 0.8;
-    // Animate the rolling line from bottom (0%) to top (-100% of its own height relative to viewport)
-    gsap.fromTo(rollingLine,
-      { y: "0%" },
-      { y: "-100%", duration: 1, ease: "power2.out", onComplete: () => {
-          rollingLine.style.opacity = 0;
-          rollingLine.style.display = 'none';
-      }}
-    );
+  // --- Rolling Line Effect: Trigger randomly every 7-15 seconds ---
+  function triggerRollingLineRandomly() {
+    let delay = Math.random() * 8000 + 7000; // Random delay between 7s and 15s
+    setTimeout(() => {
+      rollingLine.style.display = 'block';
+      rollingLine.style.opacity = 0.8;
+      // Animate from top (0%) to bottom (100% of viewport)
+      gsap.fromTo(rollingLine,
+        { y: "0%" },
+        { y: "100%", duration: 1, ease: "power2.out", onComplete: () => {
+            rollingLine.style.opacity = 0;
+            rollingLine.style.display = 'none';
+            triggerRollingLineRandomly(); // Schedule next trigger
+        }}
+      );
+    }, delay);
   }
-  setInterval(triggerRollingLine, 7000);  // Trigger every 7 seconds
+  triggerRollingLineRandomly();
   
   // --- Function to briefly distort the main content (CRT effect) ---
   function distortContent() {
@@ -64,6 +68,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const tl = gsap.timeline({
       onComplete: () => {
         landingSequenceComplete = true;
+        // Show mute button after power on
+        muteButton.style.display = 'block';
+        gsap.to(muteButton, { duration: 0.5, opacity: 1 });
         autoScrollTimeout = setTimeout(() => {
           if (landing.style.display !== "none") {
             autoScrollToContent();
