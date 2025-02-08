@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let landingSequenceComplete = false;
   let autoScrollTimeout;
   let currentChannel = null;
+  let sporadicGlitchStarted = false;
   
   // --- Preload Channel Click Sounds ---
   const channelSoundFiles = [];
@@ -44,6 +45,16 @@ document.addEventListener('DOMContentLoaded', function() {
     );
   }
   
+  // --- Schedule Sporadic Glitch Effects ---
+  function scheduleSporadicGlitch() {
+    // Random delay between 10 and 20 seconds
+    const delay = Math.random() * 10000 + 10000;
+    setTimeout(() => {
+      distortAndWarpContent();
+      scheduleSporadicGlitch();
+    }, delay);
+  }
+  
   // --- Landing Sequence using GSAP Timeline ---
   powerButton.addEventListener('click', function() {
     powerButton.style.pointerEvents = 'none';
@@ -61,6 +72,11 @@ document.addEventListener('DOMContentLoaded', function() {
             autoScrollToContent();
           }
         }, 3000);
+        // Start sporadic glitch effects once main content is visible
+        if (!sporadicGlitchStarted) {
+          sporadicGlitchStarted = true;
+          scheduleSporadicGlitch();
+        }
       }
     });
     
@@ -133,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
-  // --- Rigid Scroll & Channel Change Effects ---
+  // --- Rigid Scroll & Channel Change Effects (Excluding distortion/warping) ---
   const observerOptions = {
     root: mainContent,
     threshold: 0.7
@@ -147,7 +163,6 @@ document.addEventListener('DOMContentLoaded', function() {
           currentChannel = newChannel;
           playRandomChannelSound();
           triggerChannelStatic();
-          distortAndWarpContent();
           animateChannelNumber(newChannel);
         }
       }
