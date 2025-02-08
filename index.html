@@ -18,9 +18,9 @@
     <div class="power-button" id="powerButton" role="button" tabindex="0">
       <svg class="power-icon" viewBox="0 0 100 100">
         <!-- 270° arc -->
-        <path d="M50,10 A40,40 0 1,1 49.9,10" stroke="var(--primary-color)" stroke-width="10" fill="none"/>
+        <path d="M50,10 A40,40 0 1,1 49.9,10" />
         <!-- Vertical line -->
-        <line x1="50" y1="0" x2="50" y2="40" stroke="var(--primary-color)" stroke-width="10"/>
+        <line x1="50" y1="0" x2="50" y2="40" stroke-width="10"/>
       </svg>
     </div>
     <!-- Landing Name -->
@@ -30,7 +30,7 @@
   <!-- Static Overlay for TV Turn-On & Channel Change Effects -->
   <div id="staticOverlay"></div>
   
-  <!-- Mute Button (hidden until power-on completes) -->
+  <!-- Mute Button (shown after power on) -->
   <button id="muteButton" class="mute-button" aria-label="Mute Sound">Mute</button>
   
   <!-- Main Content -->
@@ -40,7 +40,7 @@
       <div class="header-name" id="headerName">Kayron Calloway</div>
       <button id="menuButton" class="menu-button" aria-label="Open TV Guide">Menu</button>
     </header>
-    <!-- Channel Sections -->
+    <!-- Channel Sections (Rigid Snap Scroll) -->
     <section id="section1" class="channel-section">
       <h2>Creative Work</h2>
       <p>Featured project content for Creative Work...</p>
@@ -72,7 +72,7 @@
   <div id="tvGuide" class="tv-guide" aria-hidden="true">
     <!-- TV Guide Header -->
     <div class="tv-guide-header">Kayron Calloway</div>
-    <!-- Channel List (vertical list aligned to the left) -->
+    <!-- Channel List Container (vertical list aligned to the left) -->
     <div class="tv-guide-list">
       <nav>
         <ul>
