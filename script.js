@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
     channelSounds[randomIndex].play();
   }
   
-  // --- Function to combine distortion and warping (CRT effect) ---
+  // --- Function to combine distortion and warping (CRT glitch) ---
   function distortAndWarpContent() {
     gsap.fromTo(
       mainContent,
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
     );
   }
   
-  // --- Schedule Sporadic Glitch Effects ---
+  // --- Schedule Sporadic Glitch Effects (independent of scroll) ---
   function scheduleSporadicGlitch() {
     // Random delay between 10 and 20 seconds
     const delay = Math.random() * 10000 + 10000;
@@ -59,7 +59,9 @@ document.addEventListener('DOMContentLoaded', function() {
   powerButton.addEventListener('click', function() {
     powerButton.style.pointerEvents = 'none';
     clickSound.play();
-    gsap.to(powerButton, { duration: 0.3, opacity: 0, scale: 0, ease: "power2.in" });
+    // Animate power button press (simulate push)
+    gsap.to(powerButton, { duration: 0.1, scale: 0.9, ease: "power2.in" });
+    gsap.to(powerButton, { duration: 0.1, scale: 1, ease: "power2.out", delay: 0.1 });
     
     const tl = gsap.timeline({
       onComplete: () => {
@@ -80,11 +82,15 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     
-    // Use static overlay for TV turn-on effect
+    // Power-on white flash effect on the landing overlay:
+    tl.to("#landing", { duration: 0.15, backgroundColor: "#fff", ease: "power2.out" })
+      .to("#landing", { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" });
+    
+    // Also trigger the static overlay for turn-on effect
     tl.to(staticOverlay, { duration: 0.2, opacity: 0.3 })
       .to(staticOverlay, { duration: 0.2, opacity: 0 });
     
-    // Animate landing name: expand width from 0 to 100% and fade in
+    // Animate landing name: expand width and fade in
     tl.to(landingName, {
       duration: 1,
       width: "100%",
@@ -149,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
-  // --- Rigid Scroll & Channel Change Effects (Excluding distortion/warping) ---
+  // --- Rigid Scroll & Channel Change Effects ---
   const observerOptions = {
     root: mainContent,
     threshold: 0.7
