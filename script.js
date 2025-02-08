@@ -59,9 +59,10 @@ document.addEventListener('DOMContentLoaded', function() {
   powerButton.addEventListener('click', function() {
     powerButton.style.pointerEvents = 'none';
     clickSound.play();
-    // Animate power button press (simulate push)
-    gsap.to(powerButton, { duration: 0.1, scale: 0.9, ease: "power2.in" });
-    gsap.to(powerButton, { duration: 0.1, scale: 1, ease: "power2.out", delay: 0.1 });
+    // Fade out the power button after it is pressed
+    gsap.to(powerButton, { duration: 0.3, opacity: 0, ease: "power2.out", onComplete: () => {
+      powerButton.style.display = "none";
+    }});
     
     const tl = gsap.timeline({
       onComplete: () => {
@@ -90,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
     tl.to(staticOverlay, { duration: 0.2, opacity: 0.3 })
       .to(staticOverlay, { duration: 0.2, opacity: 0 });
     
-    // Animate landing name: expand width and fade in
+    // Animate landing name: expand width from 0 to 100% and fade in
     tl.to(landingName, {
       duration: 1,
       width: "100%",
