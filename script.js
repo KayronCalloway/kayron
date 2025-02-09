@@ -120,13 +120,14 @@ document.addEventListener('DOMContentLoaded', () => {
       .to(staticOverlay, { duration: 0.2, opacity: 0 })
       // Reveal landing name first
       .to(landingName, { duration: 1, width: "100%", opacity: 1, ease: "power2.out" })
-      // Then animate each subtitle item sequentially with a stagger
+      // Then animate each subtitle item sequentially with a stagger;
+      // using a positive offset to ensure they animate after the landing name.
       .to("#landingSubtitle .subtitle-item", {
           duration: 0.8,
           opacity: 1,
           ease: "power2.out",
           stagger: 0.3
-      }, "-=0.5");
+      }, "+=0.2");
   });
 
   // --- Reveal Main Content on First Scroll (Cancel Auto-scroll) ---
