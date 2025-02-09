@@ -120,8 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
       .to(landing, { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" })
       .to(staticOverlay, { duration: 0.2, opacity: 0.3 })
       .to(staticOverlay, { duration: 0.2, opacity: 0 })
-      // Animate the power-text: drop it down (y:50) and fade out over 0.5s.
-      .to(".power-text", { duration: 0.5, y: 50, opacity: 0, ease: "power2.in" }, "-=0.5")
+      // Animate .power-text concurrently: drop it down (y:70) and fade out over 0.5s
+      .to(".power-text", { duration: 0.5, y: 70, opacity: 0, ease: "power2.in" }, 0)
       .to(landingName, { duration: 1, width: "100%", opacity: 1, ease: "power2.out" })
       .to(landingSubtitle, { duration: 1, opacity: 1, ease: "power2.out" }, "-=0.5");
   });
