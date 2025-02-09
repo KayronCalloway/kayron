@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   };
 
-  // --- Glitch Effect ---
+  // --- Glitch Effect using GSAP ---
   const distortAndWarpContent = () => {
     gsap.fromTo(
       mainContent,
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   };
 
-  // --- Schedule Sporadic Glitch ---
+  // --- Recursively Schedule Sporadic Glitch ---
   const scheduleSporadicGlitch = () => {
     const delay = Math.random() * 10000 + 10000; // Delay between 10-20 seconds
     setTimeout(() => {
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, delay);
   };
 
-  // --- Touch Event for Power Button (mobile glow effect) ---
+  // --- Touch Events for Mobile (Power Button Glow) ---
   powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
   powerButton.addEventListener('touchend', () =>
     setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
@@ -95,19 +95,17 @@ document.addEventListener('DOMContentLoaded', () => {
       duration: 0.3,
       opacity: 0,
       ease: "power2.out",
-      onComplete: () => (powerButton.style.display = "none")
+      onComplete: () => powerButton.style.display = "none"
     });
 
-    // Build the landing sequence timeline
+    // Build GSAP timeline for landing sequence
     const tl = gsap.timeline({
       onComplete: () => {
         landingSequenceComplete = true;
         muteButton.style.display = 'block';
         gsap.to(muteButton, { duration: 0.5, opacity: 1 });
         autoScrollTimeout = setTimeout(() => {
-          if (landing.style.display !== "none") {
-            revealMainContent();
-          }
+          if (landing.style.display !== "none") revealMainContent();
         }, 3000);
         if (!sporadicGlitchStarted) {
           sporadicGlitchStarted = true;
@@ -120,23 +118,20 @@ document.addEventListener('DOMContentLoaded', () => {
       .to(landing, { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" })
       .to(staticOverlay, { duration: 0.2, opacity: 0.3 })
       .to(staticOverlay, { duration: 0.2, opacity: 0 })
-      // Animate .power-text concurrently: drop it down (y:70) and fade out over 0.5s
-      .to(".power-text", { duration: 0.5, y: 70, opacity: 0, ease: "power2.in" }, 0)
+      // Fade out the power-text concurrently (no vertical shift)
+      .to(".power-text", { duration: 0.5, opacity: 0, ease: "power2.in" }, 0)
+      // Reveal landing name and subtitle only after the power button is pushed
       .to(landingName, { duration: 1, width: "100%", opacity: 1, ease: "power2.out" })
       .to(landingSubtitle, { duration: 1, opacity: 1, ease: "power2.out" }, "-=0.5");
   });
 
-  // --- Reveal Main Content on First Scroll (cancel auto-scroll) ---
-  window.addEventListener(
-    'scroll',
-    () => {
-      if (landingSequenceComplete && landing.style.display !== "none") {
-        clearTimeout(autoScrollTimeout);
-        revealMainContent();
-      }
-    },
-    { once: true, passive: true }
-  );
+  // --- Reveal Main Content on First Scroll (Cancel Auto-scroll) ---
+  window.addEventListener('scroll', () => {
+    if (landingSequenceComplete && landing.style.display !== "none") {
+      clearTimeout(autoScrollTimeout);
+      revealMainContent();
+    }
+  }, { once: true, passive: true });
 
   // --- TV Guide Menu Interactions ---
   menuButton.addEventListener('click', () => {
@@ -150,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
   closeGuide.addEventListener('click', () => {
     tvGuide.style.opacity = 0;
     tvGuide.setAttribute('aria-hidden', 'true');
-    setTimeout(() => (tvGuide.style.display = 'none'), 500);
+    setTimeout(() => tvGuide.style.display = 'none', 500);
   });
 
   guideItems.forEach(item => {
@@ -160,17 +155,13 @@ document.addEventListener('DOMContentLoaded', () => {
         targetSection.scrollIntoView({ behavior: 'smooth' });
         tvGuide.style.opacity = 0;
         tvGuide.setAttribute('aria-hidden', 'true');
-        setTimeout(() => (tvGuide.style.display = 'none'), 500);
+        setTimeout(() => tvGuide.style.display = 'none', 500);
       }
     });
   });
 
   // --- IntersectionObserver for Channel Change Effects ---
-  const observerOptions = {
-    root: mainContent,
-    threshold: 0.7
-  };
-
+  const observerOptions = { root: mainContent, threshold: 0.7 };
   const observerCallback = entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -188,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const observer = new IntersectionObserver(observerCallback, observerOptions);
   document.querySelectorAll('.channel-section').forEach(section => observer.observe(section));
 
-  // Trigger static overlay effect on channel change
+  // --- Trigger Static Overlay Effect on Channel Change ---
   const triggerChannelStatic = () => {
     gsap.to(staticOverlay, {
       duration: 0.2,
@@ -197,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Animate the active channel number overlay
+  // --- Animate the Active Channel Number Overlay ---
   const animateChannelNumber = channelId => {
     const channelOverlay = document.querySelector(`#${channelId} .channel-number-overlay`);
     if (channelOverlay) {
@@ -228,11 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   };
 
-  window.addEventListener(
-    'scroll',
-    throttle(() => {
-      // Additional scroll handling logic if needed.
-    }, 200),
-    { passive: true }
-  );
+  window.addEventListener('scroll', throttle(() => {
+    // Additional scroll handling logic if needed.
+  }, 200), { passive: true });
 });
