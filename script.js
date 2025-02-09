@@ -1,7 +1,9 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
+  // Cache DOM elements
   const powerButton = document.getElementById('powerButton');
   const landing = document.getElementById('landing');
   const landingName = document.getElementById('landingName');
+  const landingSubtitle = document.getElementById('landingSubtitle');
   const mainContent = document.getElementById('mainContent');
   const header = document.getElementById('header');
   const menuButton = document.getElementById('menuButton');
@@ -11,158 +13,163 @@ document.addEventListener('DOMContentLoaded', function() {
   const staticOverlay = document.getElementById('staticOverlay');
   const clickSound = document.getElementById('clickSound');
   const muteButton = document.getElementById('muteButton');
-  
+
+  // State variables
   let soundMuted = false;
   let landingSequenceComplete = false;
   let autoScrollTimeout;
   let currentChannel = null;
   let sporadicGlitchStarted = false;
-  
+
   // --- Preload Channel Click Sounds ---
-  const channelSoundFiles = [];
-  for (let i = 1; i <= 11; i++) {
-    channelSoundFiles.push(`channel-click${i}.aif`);
-  }
-  const channelSounds = channelSoundFiles.map(src => {
-    const audio = new Audio(src);
-    audio.preload = "auto";
+  const channelSounds = Array.from({ length: 11 }, (_, i) => {
+    const audio = new Audio(`channel-click${i + 1}.aif`);
+    audio.preload = 'auto';
     audio.volume = 0.8;
     return audio;
   });
-  
-  function playRandomChannelSound() {
+
+  const playRandomChannelSound = () => {
     if (soundMuted) return;
     const randomIndex = Math.floor(Math.random() * channelSounds.length);
-    channelSounds[randomIndex].play();
-  }
-  
-  // --- Function to combine distortion and warping (CRT glitch) ---
-  function distortAndWarpContent() {
+    channelSounds[randomIndex].play().catch(error =>
+      console.error('Audio playback failed:', error)
+    );
+  };
+
+  // --- Glitch Effect ---
+  const distortAndWarpContent = () => {
     gsap.fromTo(
       mainContent,
       { filter: "none", transform: "skewX(0deg)" },
-      { filter: "blur(2px) contrast(1.2)", transform: "skewX(5deg)", duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }
+      {
+        filter: "blur(2px) contrast(1.2)",
+        transform: "skewX(5deg)",
+        duration: 0.3,
+        ease: "power2.out",
+        yoyo: true,
+        repeat: 1
+      }
     );
-  }
-  
-  // --- Schedule Sporadic Glitch Effects (independent of scroll) ---
-  function scheduleSporadicGlitch() {
-    // Random delay between 10 and 20 seconds
-    const delay = Math.random() * 10000 + 10000;
+  };
+
+  // --- Schedule Sporadic Glitch ---
+  const scheduleSporadicGlitch = () => {
+    const delay = Math.random() * 10000 + 10000; // Delay between 10-20 seconds
     setTimeout(() => {
       distortAndWarpContent();
       scheduleSporadicGlitch();
     }, delay);
-  }
-  
-  // --- Landing Sequence using GSAP Timeline ---
-  powerButton.addEventListener('click', function() {
+  };
+
+  // --- Touch Event for Power Button (mobile glow effect) ---
+  powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
+  powerButton.addEventListener('touchend', () =>
+    setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
+  );
+
+  // --- Helper: Reveal Main Content ---
+  const revealMainContent = () => {
+    window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
+    gsap.to(landing, {
+      duration: 0.5,
+      opacity: 0,
+      onComplete: () => {
+        landing.style.display = "none";
+        mainContent.style.display = "block";
+        document.body.style.overflow = "auto";
+        gsap.to(header, { duration: 0.5, opacity: 1 });
+      }
+    });
+  };
+
+  // --- Landing Sequence Animation ---
+  powerButton.addEventListener('click', () => {
     powerButton.style.pointerEvents = 'none';
-    clickSound.play();
-    // Fade out the power button after it is pressed
-    gsap.to(powerButton, { duration: 0.3, opacity: 0, ease: "power2.out", onComplete: () => {
-      powerButton.style.display = "none";
-    }});
-    
+    clickSound.play().catch(error =>
+      console.error('Click sound failed:', error)
+    );
+
+    // Fade out the power button
+    gsap.to(powerButton, {
+      duration: 0.3,
+      opacity: 0,
+      ease: "power2.out",
+      onComplete: () => (powerButton.style.display = "none")
+    });
+
+    // Build the landing sequence timeline
     const tl = gsap.timeline({
       onComplete: () => {
         landingSequenceComplete = true;
-        // Show mute button after power-on
         muteButton.style.display = 'block';
         gsap.to(muteButton, { duration: 0.5, opacity: 1 });
         autoScrollTimeout = setTimeout(() => {
           if (landing.style.display !== "none") {
-            autoScrollToContent();
+            revealMainContent();
           }
         }, 3000);
-        // Start sporadic glitch effects once main content is visible
         if (!sporadicGlitchStarted) {
           sporadicGlitchStarted = true;
           scheduleSporadicGlitch();
         }
       }
     });
-    
-    // Power-on white flash effect on the landing overlay:
-    tl.to("#landing", { duration: 0.15, backgroundColor: "#fff", ease: "power2.out" })
-      .to("#landing", { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" });
-    
-    // Also trigger the static overlay for turn-on effect
-    tl.to(staticOverlay, { duration: 0.2, opacity: 0.3 })
-      .to(staticOverlay, { duration: 0.2, opacity: 0 });
-    
-    // Animate landing name: expand width from 0 to 100% and fade in
-    tl.to(landingName, {
-      duration: 1,
-      width: "100%",
-      opacity: 1,
-      ease: "power2.out"
-    });
+
+    tl.to(landing, { duration: 0.15, backgroundColor: "#fff", ease: "power2.out" })
+      .to(landing, { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" })
+      .to(staticOverlay, { duration: 0.2, opacity: 0.3 })
+      .to(staticOverlay, { duration: 0.2, opacity: 0 })
+      .to(landingName, { duration: 1, width: "100%", opacity: 1, ease: "power2.out" })
+      .to(landingSubtitle, { duration: 1, opacity: 1, ease: "power2.out" }, "-=0.5");
   });
-  
-  // Function to auto-scroll to main content
-  function autoScrollToContent() {
-    window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
-    gsap.to(landing, { duration: 0.5, opacity: 0, onComplete: () => {
-      landing.style.display = "none";
-      mainContent.style.display = "block";
-      document.body.style.overflow = "auto";
-      gsap.to(header, { duration: 0.5, opacity: 1 });
-    }});
-  }
-  
-  // On first scroll after landing, cancel auto-scroll and remove landing overlay
-  window.addEventListener('scroll', function() {
-    if (landingSequenceComplete && landing.style.display !== "none") {
-      clearTimeout(autoScrollTimeout);
-      gsap.to(landing, { duration: 0.5, opacity: 0, onComplete: () => {
-        landing.style.display = "none";
-        mainContent.style.display = "block";
-        document.body.style.overflow = "auto";
-        gsap.to(header, { duration: 0.5, opacity: 1 });
-      }});
-    }
-  }, { once: true });
-  
+
+  // --- Reveal Main Content on First Scroll (cancel auto-scroll) ---
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (landingSequenceComplete && landing.style.display !== "none") {
+        clearTimeout(autoScrollTimeout);
+        revealMainContent();
+      }
+    },
+    { once: true, passive: true }
+  );
+
   // --- TV Guide Menu Interactions ---
-  menuButton.addEventListener('click', function() {
+  menuButton.addEventListener('click', () => {
     tvGuide.style.display = 'flex';
     setTimeout(() => {
       tvGuide.style.opacity = 1;
       tvGuide.setAttribute('aria-hidden', 'false');
     }, 10);
   });
-  
-  closeGuide.addEventListener('click', function() {
+
+  closeGuide.addEventListener('click', () => {
     tvGuide.style.opacity = 0;
     tvGuide.setAttribute('aria-hidden', 'true');
-    setTimeout(() => {
-      tvGuide.style.display = 'none';
-    }, 500);
+    setTimeout(() => (tvGuide.style.display = 'none'), 500);
   });
-  
+
   guideItems.forEach(item => {
-    item.addEventListener('click', function() {
-      const targetId = item.getAttribute('data-target');
-      const targetSection = document.getElementById(targetId);
+    item.addEventListener('click', () => {
+      const targetSection = document.getElementById(item.getAttribute('data-target'));
       if (targetSection) {
         targetSection.scrollIntoView({ behavior: 'smooth' });
         tvGuide.style.opacity = 0;
         tvGuide.setAttribute('aria-hidden', 'true');
-        setTimeout(() => {
-          tvGuide.style.display = 'none';
-        }, 500);
+        setTimeout(() => (tvGuide.style.display = 'none'), 500);
       }
     });
   });
-  
-  // --- Rigid Scroll & Channel Change Effects ---
+
+  // --- IntersectionObserver for Channel Change Effects ---
   const observerOptions = {
     root: mainContent,
     threshold: 0.7
   };
-  
-  const observerCallback = (entries) => {
+
+  const observerCallback = entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const newChannel = entry.target.id;
@@ -175,51 +182,55 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   };
-  
+
   const observer = new IntersectionObserver(observerCallback, observerOptions);
-  document.querySelectorAll('.channel-section').forEach(section => {
-    observer.observe(section);
-  });
-  
-  // Function to trigger static overlay for channel change effect
-  function triggerChannelStatic() {
-    staticOverlay.style.opacity = 0.3;
-    setTimeout(() => {
-      staticOverlay.style.opacity = 0;
-    }, 200);
-  }
-  
-  // Function to animate the channel number overlay for the active channel
-  function animateChannelNumber(channelId) {
+  document.querySelectorAll('.channel-section').forEach(section => observer.observe(section));
+
+  // Trigger static overlay effect on channel change
+  const triggerChannelStatic = () => {
+    gsap.to(staticOverlay, {
+      duration: 0.2,
+      opacity: 0.3,
+      onComplete: () => gsap.to(staticOverlay, { duration: 0.2, opacity: 0 })
+    });
+  };
+
+  // Animate the active channel number overlay
+  const animateChannelNumber = channelId => {
     const channelOverlay = document.querySelector(`#${channelId} .channel-number-overlay`);
     if (channelOverlay) {
-      gsap.fromTo(channelOverlay,
+      gsap.fromTo(
+        channelOverlay,
         { scale: 1, filter: "brightness(1)" },
         { scale: 1.2, filter: "brightness(2)", duration: 0.2, yoyo: true, repeat: 1 }
       );
     }
-  }
-  
-  // --- Mute Button Interactions ---
-  muteButton.addEventListener('click', function() {
+  };
+
+  // --- Mute Button Interaction ---
+  muteButton.addEventListener('click', () => {
     soundMuted = !soundMuted;
     muteButton.textContent = soundMuted ? "Unmute" : "Mute";
   });
-  
-  // Optional: Throttled scroll event (if additional handling is needed)
-  function throttle(func, delay) {
+
+  // --- Optional: Throttle Function for Additional Scroll Handling ---
+  const throttle = (func, delay) => {
     let timeout = null;
-    return function() {
+    return (...args) => {
       if (!timeout) {
         timeout = setTimeout(() => {
-          func();
+          func(...args);
           timeout = null;
         }, delay);
       }
     };
-  }
-  
-  window.addEventListener('scroll', throttle(() => {
-    // Additional scroll handling if needed.
-  }, 200));
+  };
+
+  window.addEventListener(
+    'scroll',
+    throttle(() => {
+      // Additional scroll handling logic if needed.
+    }, 200),
+    { passive: true }
+  );
 });
