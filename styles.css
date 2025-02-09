@@ -106,15 +106,6 @@ body {
   stroke-width: 8; /* Sleeker look */
 }
 
-/* Power Text positioning */
-.power-text {
-  font-size: 1rem;
-  color: var(--primary-color);
-  margin-top: 40px;  /* Lowered further below the button */
-  text-align: center;
-  opacity: 0.8;
-}
-
 /* Landing Name & Subtitle (hidden initially) */
 .landing-name {
   font-size: 4rem;
@@ -135,6 +126,13 @@ body {
   text-align: center;
   opacity: 0;
   transition: opacity 1s ease;
+}
+
+/* New: Style for individual subtitle items */
+.landing-subtitle .subtitle-item {
+  display: inline-block;
+  opacity: 0;
+  margin-right: 10px;
 }
 
 /* Static Overlay for Effects */
