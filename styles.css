@@ -3,7 +3,7 @@
   --bg-color: #000;
   --primary-color: #fff;
   --header-bg: rgba(0, 0, 0, 0.85);
-  --static-duration: 0.3s;  /* Duration for static effects */
+  --static-duration: 0.3s;
 }
 
 /* --- Import Merova Font --- */
@@ -14,8 +14,10 @@
   font-style: normal;
 }
 
-/* --- Base Styles --- */
-* {
+/* --- Base Styles & Reset --- */
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -54,28 +56,20 @@ body {
   width: 100px;
   height: 100px;
   cursor: pointer;
-  margin-bottom: 20px;
-}
-
-/* Make the power icon illuminated red */
-.power-icon path {
-  stroke: red;
-}
-
-.power-button:hover .power-icon {
-  filter: drop-shadow(0 0 10px red);
-  transition: filter 0.3s ease;
-}
-
-.power-icon line {
-  stroke: red;
-  stroke-width: 10;
+  margin-bottom: 10px;
 }
 
 .power-icon {
   width: 100%;
   height: 100%;
   display: block;
+}
+
+/* Always illuminated red */
+.power-icon path,
+.power-icon line {
+  stroke: red;
+  stroke-width: 10;
 }
 
 .landing-name {
@@ -90,7 +84,26 @@ body {
   transition: width 1s ease, opacity 1s ease;
 }
 
-/* --- Static Overlay for TV Turn-On & Channel Change Effects --- */
+/* Power text under the button */
+.power-text {
+  font-size: 1rem;
+  color: var(--primary-color);
+  margin-top: 5px;
+  text-align: center;
+  opacity: 0.8;
+}
+
+/* Landing subtitle */
+.landing-subtitle {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  margin-top: 5px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+/* --- Static Overlay for Effects --- */
 #staticOverlay {
   position: fixed;
   top: 0;
@@ -104,7 +117,7 @@ body {
   transition: opacity 0.3s ease-out;
 }
 
-/* --- Mute Button (Bottom Left) --- */
+/* --- Mute Button --- */
 .mute-button {
   position: fixed;
   bottom: 20px;
@@ -120,7 +133,7 @@ body {
   display: none;
 }
 
-/* --- Main Content Container with Scroll Snap --- */
+/* --- Main Content with Scroll Snap --- */
 #mainContent {
   display: none;
   overflow-y: auto;
@@ -157,7 +170,7 @@ body {
   cursor: pointer;
 }
 
-/* --- Channel Sections with Scroll Snap --- */
+/* --- Channel Sections --- */
 .channel-section {
   height: 100vh;
   padding: 50px;
@@ -170,7 +183,6 @@ body {
   background: var(--bg-color);
 }
 
-/* Channel Number Overlay in the Bottom Right with Animation */
 .channel-number-overlay {
   position: absolute;
   bottom: 20px;
@@ -207,7 +219,6 @@ body {
   margin-bottom: 40px;
 }
 
-/* Channel list container aligned to the left */
 .tv-guide-list {
   position: absolute;
   top: 50%;
@@ -242,7 +253,7 @@ body {
   cursor: pointer;
 }
 
-/* --- Responsive Enhancements for Mobile --- */
+/* --- Responsive Mobile Enhancements --- */
 @media (max-width: 600px) {
   .landing-name {
     font-size: 2.2rem;
@@ -270,7 +281,6 @@ body {
     bottom: calc(20px + env(safe-area-inset-bottom));
     right: 20px;
   }
-  /* Close button stays at its original position */
   .close-guide {
     top: 20px;
     font-size: 0.9rem;
