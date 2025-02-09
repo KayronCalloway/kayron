@@ -120,8 +120,9 @@ document.addEventListener('DOMContentLoaded', () => {
       .to(staticOverlay, { duration: 0.2, opacity: 0 })
       // Reveal landing name first
       .to(landingName, { duration: 1, width: "100%", opacity: 1, ease: "power2.out" })
-      // Then animate each subtitle item sequentially with a stagger;
-      // using a positive offset to ensure they animate after the landing name.
+      // Then reveal the landing subtitle container (its opacity)
+      .to(landingSubtitle, { duration: 0.5, opacity: 1, ease: "power2.out" }, "-=0.5")
+      // Then animate each subtitle item sequentially with a stagger
       .to("#landingSubtitle .subtitle-item", {
           duration: 0.8,
           opacity: 1,
