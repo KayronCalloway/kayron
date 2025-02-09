@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
       onComplete: () => powerButton.style.display = "none"
     });
 
-    // Build GSAP timeline for landing sequence
+    // Build GSAP timeline for landing sequence with adjusted timing
     const tl = gsap.timeline({
       onComplete: () => {
         landingSequenceComplete = true;
@@ -118,17 +118,17 @@ document.addEventListener('DOMContentLoaded', () => {
       .to(landing, { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" })
       .to(staticOverlay, { duration: 0.2, opacity: 0.3 })
       .to(staticOverlay, { duration: 0.2, opacity: 0 })
-      // Reveal landing name first
-      .to(landingName, { duration: 1, width: "100%", opacity: 1, ease: "power2.out" })
-      // Then reveal the landing subtitle container (its opacity)
-      .to(landingSubtitle, { duration: 0.5, opacity: 1, ease: "power2.out" }, "-=0.5")
-      // Then animate each subtitle item sequentially with a stagger
+      // Reveal landing name over 1.2 seconds
+      .to(landingName, { duration: 1.2, width: "100%", opacity: 1, ease: "power2.out" })
+      // Fade in the landing subtitle container over 0.7 seconds
+      .to(landingSubtitle, { duration: 0.7, opacity: 1, ease: "power2.out" }, "-=0.3")
+      // Then animate each subtitle item sequentially over 1 second each, staggered by 0.5 seconds
       .to("#landingSubtitle .subtitle-item", {
-          duration: 0.8,
+          duration: 1,
           opacity: 1,
           ease: "power2.out",
-          stagger: 0.3
-      }, "+=0.2");
+          stagger: 0.5
+      }, "+=0.3");
   });
 
   // --- Reveal Main Content on First Scroll (Cancel Auto-scroll) ---
