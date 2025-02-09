@@ -118,11 +118,15 @@ document.addEventListener('DOMContentLoaded', () => {
       .to(landing, { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" })
       .to(staticOverlay, { duration: 0.2, opacity: 0.3 })
       .to(staticOverlay, { duration: 0.2, opacity: 0 })
-      // Fade out the power-text concurrently (no vertical shift)
-      .to(".power-text", { duration: 0.5, opacity: 0, ease: "power2.in" }, 0)
-      // Reveal landing name and subtitle only after the power button is pushed
+      // Reveal landing name first
       .to(landingName, { duration: 1, width: "100%", opacity: 1, ease: "power2.out" })
-      .to(landingSubtitle, { duration: 1, opacity: 1, ease: "power2.out" }, "-=0.5");
+      // Then animate each subtitle item sequentially with a stagger
+      .to("#landingSubtitle .subtitle-item", {
+          duration: 0.8,
+          opacity: 1,
+          ease: "power2.out",
+          stagger: 0.3
+      }, "-=0.5");
   });
 
   // --- Reveal Main Content on First Scroll (Cancel Auto-scroll) ---
