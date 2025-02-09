@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TV Portfolio</title>
   <link rel="stylesheet" href="styles.css" />
-  <!-- Include GSAP from CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+  <!-- GSAP for animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" defer></script>
+  <script src="script.js" defer></script>
 </head>
 <body>
   <!-- Audio for power button click sound -->
@@ -16,21 +17,27 @@
   <div id="landing">
     <!-- Power Button -->
     <div class="power-button" id="powerButton" role="button" tabindex="0">
-      <svg class="power-icon" viewBox="0 0 100 100">
+      <svg class="power-icon" viewBox="0 0 100 100" aria-hidden="true">
         <!-- 270° arc -->
-        <path d="M50,10 A40,40 0 1,1 49.9,10" />
+        <path d="M50,10 A40,40 0 1,1 49.9,10"></path>
         <!-- Vertical line -->
-        <line x1="50" y1="0" x2="50" y2="40" stroke-width="10"/>
+        <line x1="50" y1="0" x2="50" y2="40" stroke-width="10"></line>
       </svg>
     </div>
+    <!-- POWER ON Text Under the Button -->
+    <div class="power-text">POWER ON</div>
     <!-- Landing Name -->
     <div class="landing-name" id="landingName">Kayron Calloway</div>
+    <!-- Landing Subtitle -->
+    <div class="landing-subtitle" id="landingSubtitle">
+      Creative Strategist. Digital Storyteller. Problem Solver.
+    </div>
   </div>
   
-  <!-- Static Overlay for TV Turn-On & Channel Change Effects -->
+  <!-- Static Overlay (for turn-on and channel change effects) -->
   <div id="staticOverlay"></div>
   
-  <!-- Mute Button (shown after power on) -->
+  <!-- Mute Button (appears after power on) -->
   <button id="muteButton" class="mute-button" aria-label="Mute Sound">Mute</button>
   
   <!-- Main Content -->
@@ -40,7 +47,7 @@
       <div class="header-name" id="headerName">Kayron Calloway</div>
       <button id="menuButton" class="menu-button" aria-label="Open TV Guide">Menu</button>
     </header>
-    <!-- Channel Sections (Rigid Snap Scroll) -->
+    <!-- Channel Sections -->
     <section id="section1" class="channel-section">
       <h2>Creative Work</h2>
       <p>Featured project content for Creative Work...</p>
@@ -70,9 +77,7 @@
   
   <!-- TV Guide Overlay Menu -->
   <div id="tvGuide" class="tv-guide" aria-hidden="true">
-    <!-- TV Guide Header -->
     <div class="tv-guide-header">Kayron Calloway</div>
-    <!-- Channel List Container (vertical list aligned to the left) -->
     <div class="tv-guide-list">
       <nav>
         <ul>
@@ -101,7 +106,5 @@
     </div>
     <button id="closeGuide" class="close-guide" aria-label="Close TV Guide">Close</button>
   </div>
-  
-  <script src="script.js"></script>
 </body>
 </html>
