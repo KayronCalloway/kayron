@@ -48,9 +48,9 @@
       <button id="menuButton" class="menu-button" aria-label="Open TV Guide">Menu</button>
     </header>
     
-    <!-- Channel 1: Home (Now Playing) -->
+    <!-- Channel 1: Home -->
     <section id="section1" class="channel-section">
-      <h2 class="channel-title">Now Playing: Kayron Calloway</h2>
+      <h2 class="channel-title">HOME</h2>
       <!-- Three-button layout for Resume, About Me, and Contact -->
       <div class="channel-buttons">
         <button id="resumeButton" class="channel-button" aria-label="View Resume">Resume</button>
@@ -59,7 +59,7 @@
       </div>
     </section>
     
-    <!-- Additional Channels (Example content, can be expanded as needed) -->
+    <!-- Additional Channels (Example content) -->
     <section id="section2" class="channel-section">
       <h2>Consultant Work</h2>
       <p>Featured project content for Consultant Work...</p>
@@ -90,7 +90,7 @@
         <ul>
           <li data-target="section1">
             <span class="channel-number">CH 01</span>
-            <span class="channel-title">Now Playing</span>
+            <span class="channel-title">Home</span>
           </li>
           <li data-target="section2">
             <span class="channel-number">CH 02</span>
@@ -116,10 +116,9 @@
   
   <!-- Resume Modal -->
   <div id="resumeModal" class="modal-overlay" role="dialog" aria-modal="true">
-    <!-- Static Effect -->
-    <div id="resumeStatic" class="modal-static"></div>
-    <div class="modal-content">
+    <div class="modal-box">
       <button id="closeResume" class="close-modal" aria-label="Close Resume">&times;</button>
+      <div class="modal-static" id="resumeStatic"></div>
       <h2 class="modal-title">KAYRON E. CALLOWAY</h2>
       <p class="modal-subtitle">Los Angeles, CA | 310.498.8059 | KayronCalloway@gmail.com</p>
       <section class="modal-section">
@@ -177,14 +176,14 @@
   
   <!-- About Me Modal -->
   <div id="aboutModal" class="modal-overlay" role="dialog" aria-modal="true">
-    <div id="aboutStatic" class="modal-static"></div>
-    <div class="modal-content">
+    <div class="modal-box">
       <button id="closeAbout" class="close-modal" aria-label="Close About Me">&times;</button>
+      <div class="modal-static" id="aboutStatic"></div>
       <h2 class="modal-title">About Me</h2>
-      <p class="modal-subtitle">A creative and analytical mind behind the innovative projects.</p>
+      <p class="modal-subtitle">A creative and analytical mind behind innovative projects.</p>
       <section class="modal-section">
         <p>
-          I am a financial analyst, strategic consultant, and entrepreneur with a passion for merging data-driven insights with creative storytelling. My background in finance and business strategy has empowered me to innovate and lead transformative projects. I thrive in dynamic environments where analytical rigor meets creative expression.
+          I am a financial analyst, strategic consultant, and entrepreneur with a passion for merging data-driven insights with creative storytelling. My background in finance and business strategy empowers me to lead transformative projects where analytical rigor meets creative expression.
         </p>
       </section>
     </div>
@@ -192,9 +191,9 @@
   
   <!-- Contact Modal -->
   <div id="contactModal" class="modal-overlay" role="dialog" aria-modal="true">
-    <div id="contactStatic" class="modal-static"></div>
-    <div class="modal-content">
+    <div class="modal-box">
       <button id="closeContact" class="close-modal" aria-label="Close Contact">&times;</button>
+      <div class="modal-static" id="contactStatic"></div>
       <h2 class="modal-title">Contact Information</h2>
       <section class="modal-section">
         <p><strong>Location:</strong> Los Angeles, CA</p>
@@ -202,4 +201,5 @@
         <p><strong>Email:</strong> <a href="mailto:KayronCalloway@gmail.com">KayronCalloway@gmail.com</a></p>
       </section>
       <section class="modal-section social">
-        
+        <!-- Optional social media icons/links can go here -->
+    
