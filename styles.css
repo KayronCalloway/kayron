@@ -76,9 +76,10 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -1; /* Slightly higher so it's visible behind content */
+  z-index: -1; /* Slightly behind content */
   overflow: hidden;
-  opacity: 1; /* Debug: visible by default */
+  /* For debugging, set opacity to 1 so it’s visible */
+  opacity: 1;
   transition: opacity 0.5s ease;
 }
 .video-background iframe {
