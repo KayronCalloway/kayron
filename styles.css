@@ -52,7 +52,6 @@ body {
   z-index: 100;
 }
 
-/* Power Button styling */
 .power-button {
   width: 100px;
   height: 100px;
@@ -63,7 +62,6 @@ body {
   background-color: #111;
 }
 
-/* Pulsating glow effect */
 .power-button::after {
   content: "";
   position: absolute;
@@ -106,7 +104,6 @@ body {
   stroke-width: 8;
 }
 
-/* Landing Name (hidden initially) */
 .landing-name {
   font-size: 4rem;
   color: var(--primary-color);
@@ -119,7 +116,6 @@ body {
   transition: width 1s ease, opacity 1s ease;
 }
 
-/* Landing Subtitle (hidden initially) */
 .landing-subtitle {
   font-size: 1.2rem;
   color: var(--primary-color);
@@ -129,7 +125,6 @@ body {
   transition: opacity 1s ease;
 }
 
-/* Each subtitle item for staggered animation */
 .landing-subtitle .subtitle-item {
   display: inline-block;
   opacity: 0;
@@ -203,7 +198,7 @@ body {
   cursor: pointer;
 }
 
-/* Channel Sections */
+/* --- Channel Sections --- */
 .channel-section {
   height: 100vh;
   padding: 50px;
@@ -214,6 +209,34 @@ body {
   scroll-snap-align: start;
   position: relative;
   background: var(--bg-color);
+  text-align: center;
+}
+
+.channel-title {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+}
+
+.channel-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.channel-button {
+  padding: 12px 20px;
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.channel-button:hover {
+  background: var(--primary-color);
+  color: var(--bg-color);
 }
 
 .channel-number-overlay {
@@ -232,7 +255,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.95);
+  background: rgba(0, 0, 0, 0.95);
   z-index: 400;
   display: none;
   opacity: 0;
@@ -286,28 +309,9 @@ body {
   cursor: pointer;
 }
 
-/* Resume Modal Integration */
-/* Resume Button */
-.resume-button {
-  display: block;
-  margin: 20px auto;
-  padding: 12px 20px;
-  background: transparent;
-  border: 2px solid var(--primary-color);
-  color: var(--primary-color);
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.resume-button:hover {
-  background: var(--primary-color);
-  color: var(--bg-color);
-}
-
-/* Resume Modal - Transparent Sci-Fi Projection */
-.resume-modal {
-  display: none;
+/* --- Modal Overlays (for Resume, About, Contact) --- */
+.modal-overlay {
+  display: none; /* Hidden by default */
   position: fixed;
   top: 50%;
   left: 50%;
@@ -315,7 +319,7 @@ body {
   width: 80%;
   max-width: 800px;
   height: 80vh;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.85); /* Semi-transparent background */
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.3);
   color: var(--primary-color);
@@ -323,10 +327,10 @@ body {
   padding: 20px;
   opacity: 0;
   overflow-y: auto;
+  animation: glitch 0.5s infinite alternate ease-in-out;
 }
 
-/* Static Effect for Resume */
-.resume-static {
+.modal-static {
   position: absolute;
   top: 0;
   left: 0;
@@ -338,25 +342,36 @@ body {
   z-index: -1;
 }
 
-/* Resume Content */
-.resume-content {
+.modal-content {
   position: relative;
   z-index: 2;
 }
 
-.resume-title {
+.modal-title {
   font-size: 2rem;
   text-align: center;
+  margin-bottom: 10px;
 }
 
-.resume-subtitle {
+.modal-subtitle {
   font-size: 1.2rem;
   text-align: center;
   margin-bottom: 20px;
 }
 
-/* Close Button for Resume */
-.close-resume {
+.modal-section {
+  margin-top: 20px;
+  padding-left: 10px;
+  border-left: 2px solid var(--primary-color);
+  text-align: left;
+}
+
+.modal-section ul {
+  list-style: disc;
+  margin-left: 20px;
+}
+
+.close-modal {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -367,30 +382,6 @@ body {
   cursor: pointer;
 }
 
-/* Timeline */
-.resume-timeline {
-  margin-top: 20px;
-  padding-left: 20px;
-  border-left: 3px solid var(--primary-color);
-}
-
-.timeline-item {
-  position: relative;
-  margin-bottom: 20px;
-  padding-left: 20px;
-}
-
-.timeline-item::before {
-  content: '';
-  position: absolute;
-  left: -12px;
-  top: 6px;
-  width: 10px;
-  height: 10px;
-  background: var(--primary-color);
-  border-radius: 50%;
-}
-
 /* Glitch Animation */
 @keyframes glitch {
   0% { opacity: 1; transform: translate(0, 0); }
@@ -399,10 +390,6 @@ body {
   60% { opacity: 0.9; transform: translate(-2px, -2px); }
   80% { opacity: 1; transform: translate(2px, 2px); }
   100% { opacity: 1; transform: translate(0, 0); }
-}
-
-.resume-modal {
-  animation: glitch 0.5s infinite alternate ease-in-out;
 }
 
 /* Responsive Mobile Enhancements */
