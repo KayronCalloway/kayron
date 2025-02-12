@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Cache DOM elements for TV Portfolio
+  // Cache DOM elements
   const powerButton = document.getElementById('powerButton');
   const landing = document.getElementById('landing');
   const landingName = document.getElementById('landingName');
@@ -13,6 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const staticOverlay = document.getElementById('staticOverlay');
   const clickSound = document.getElementById('clickSound');
   const muteButton = document.getElementById('muteButton');
+  const backToTop = document.getElementById('backToTop');
+  const videoBackground = document.getElementById('videoBackground');
+  const videoIframe = videoBackground.querySelector('iframe');
+  
+  let lastFocusedElement;
   
   // State variables
   let soundMuted = false;
@@ -21,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentChannel = null;
   let sporadicGlitchStarted = false;
   
-  // --- Preload Channel Click Sounds ---
+  // Preload channel click sounds
   const channelSounds = Array.from({ length: 11 }, (_, i) => {
     const audio = new Audio(`channel-click${i + 1}.aif`);
     audio.preload = 'auto';
@@ -32,28 +37,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const playRandomChannelSound = () => {
     if (soundMuted) return;
     const randomIndex = Math.floor(Math.random() * channelSounds.length);
-    channelSounds[randomIndex].play().catch(error =>
-      console.error('Audio playback failed:', error)
-    );
+    channelSounds[randomIndex].play().catch(error => console.error('Audio playback failed:', error));
   };
   
-  // --- Glitch Effect using GSAP ---
+  // Glitch effect using GSAP for main content
   const distortAndWarpContent = () => {
-    gsap.fromTo(
-      mainContent,
-      { filter: "none", transform: "skewX(0deg)" },
-      {
-        filter: "blur(2px) contrast(1.2)",
-        transform: "skewX(5deg)",
-        duration: 0.3,
-        ease: "power2.out",
-        yoyo: true,
-        repeat: 1
-      }
-    );
+    gsap.fromTo(mainContent, { filter: "none", transform: "skewX(0deg)" }, {
+      filter: "blur(2px) contrast(1.2)",
+      transform: "skewX(5deg)",
+      duration: 0.3,
+      ease: "power2.out",
+      yoyo: true,
+      repeat: 1
+    });
   };
   
-  // --- Recursively Schedule Sporadic Glitch ---
   const scheduleSporadicGlitch = () => {
     const delay = Math.random() * 10000 + 10000; // 10-20 seconds delay
     setTimeout(() => {
@@ -62,13 +60,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }, delay);
   };
   
-  // --- Touch Events for Mobile (Power Button Glow) ---
+  // Touch events for power button glow
   powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
   powerButton.addEventListener('touchend', () =>
     setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
   );
   
-  // --- Helper: Reveal Main Content ---
+  // Helper: Reveal Main Content
   const revealMainContent = () => {
     window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
     gsap.to(landing, {
@@ -79,26 +77,26 @@ document.addEventListener('DOMContentLoaded', () => {
         mainContent.style.display = "block";
         document.body.style.overflow = "auto";
         gsap.to(header, { duration: 0.5, opacity: 1 });
+        // Lazy-load video: set src from data-src if not already set
+        if (!videoIframe.getAttribute('src')) {
+          videoIframe.setAttribute('src', videoIframe.getAttribute('data-src'));
+        }
       }
     });
   };
   
-  // --- Landing Sequence Animation ---
+  // Landing sequence animation
   powerButton.addEventListener('click', () => {
     powerButton.style.pointerEvents = 'none';
     if (clickSound) {
       clickSound.play().catch(error => console.error('Click sound failed:', error));
     }
-    
-    // Fade out the power button
     gsap.to(powerButton, {
       duration: 0.3,
       opacity: 0,
       ease: "power2.out",
       onComplete: () => powerButton.style.display = "none"
     });
-    
-    // Build GSAP timeline for landing sequence
     const tl = gsap.timeline({
       onComplete: () => {
         landingSequenceComplete = true;
@@ -113,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
-    
     tl.to(landing, { duration: 0.15, backgroundColor: "#fff", ease: "power2.out" })
       .to(landing, { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" })
       .to(staticOverlay, { duration: 0.2, opacity: 0.3 })
@@ -123,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .to("#landingSubtitle .subtitle-item", { duration: 1, opacity: 1, ease: "power2.out", stagger: 0.5 }, "+=0.3");
   });
   
-  // --- Reveal Main Content on First Scroll (Cancel Auto-scroll) ---
+  // Cancel auto-scroll on first manual scroll
   window.addEventListener('scroll', () => {
     if (landingSequenceComplete && landing.style.display !== "none") {
       clearTimeout(autoScrollTimeout);
@@ -131,7 +128,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { once: true, passive: true });
   
-  // --- TV Guide Menu Interactions ---
+  // Parallax effect for video background
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    videoBackground.style.transform = `translateY(${scrolled * 0.2}px)`;
+  });
+  
+  // Back-to-Top Button functionality
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      backToTop.style.display = 'block';
+    } else {
+      backToTop.style.display = 'none';
+    }
+  });
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+  
+  // TV Guide interactions
   menuButton.addEventListener('click', () => {
     tvGuide.style.display = 'flex';
     setTimeout(() => {
@@ -158,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   
-  // --- IntersectionObserver for Channel Change Effects ---
+  // IntersectionObserver for channel animations
   const observerOptions = { root: mainContent, threshold: 0.7 };
   const observerCallback = entries => {
     entries.forEach(entry => {
@@ -173,11 +188,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   };
-  
   const observer = new IntersectionObserver(observerCallback, observerOptions);
   document.querySelectorAll('.channel-section').forEach(section => observer.observe(section));
   
-  // --- Trigger Static Overlay Effect on Channel Change ---
   const triggerChannelStatic = () => {
     gsap.to(staticOverlay, {
       duration: 0.2,
@@ -186,25 +199,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
   
-  // --- Animate the Active Channel Number Overlay ---
   const animateChannelNumber = channelId => {
     const channelOverlay = document.querySelector(`#${channelId} .channel-number-overlay`);
     if (channelOverlay) {
-      gsap.fromTo(
-        channelOverlay,
-        { scale: 1, filter: "brightness(1)" },
-        { scale: 1.2, filter: "brightness(2)", duration: 0.2, yoyo: true, repeat: 1 }
-      );
+      gsap.fromTo(channelOverlay, { scale: 1, filter: "brightness(1)" }, { scale: 1.2, filter: "brightness(2)", duration: 0.2, yoyo: true, repeat: 1 });
     }
   };
   
-  // --- Mute Button Interaction ---
   muteButton.addEventListener('click', () => {
     soundMuted = !soundMuted;
     muteButton.textContent = soundMuted ? "Unmute" : "Mute";
   });
   
-  // --- Optional: Throttle Function for Additional Scroll Handling ---
   const throttle = (func, delay) => {
     let timeout = null;
     return (...args) => {
@@ -216,31 +222,59 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
   };
-  
   window.addEventListener('scroll', throttle(() => {
     // Additional scroll handling logic if needed.
   }, 200), { passive: true });
   
-  /* === Modal Functionality for Channel 1 Buttons === */
-  // Animate modal-box entrance with a pop-out effect
-  const animateModalIn = (modalOverlay, modalStaticId) => {
-    const modalBox = modalOverlay.querySelector('.modal-box');
-    gsap.fromTo(
-      modalBox,
-      { opacity: 0, y: 50, scale: 0.8 },
-      { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "back.out(1.7)" }
-    );
-    // Apply a subtle shake effect to the modal static background
-    gsap.fromTo(
-      document.getElementById(modalStaticId),
-      { x: -2, y: -2 },
-      { x: 2, y: 2, duration: 0.4, ease: "power2.inOut", yoyo: true, repeat: 1 }
-    );
+  /* --- Modal Functionality with Focus Trap --- */
+  const trapFocus = (modal) => {
+    const focusableSelectors = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]';
+    const focusableElements = modal.querySelectorAll(focusableSelectors);
+    const firstFocusable = focusableElements[0];
+    const lastFocusable = focusableElements[focusableElements.length - 1];
+    
+    const handleFocusTrap = (e) => {
+      if (e.key === 'Tab') {
+        if (e.shiftKey) { // Shift + Tab
+          if (document.activeElement === firstFocusable) {
+            e.preventDefault();
+            lastFocusable.focus();
+          }
+        } else { // Tab
+          if (document.activeElement === lastFocusable) {
+            e.preventDefault();
+            firstFocusable.focus();
+          }
+        }
+      }
+    };
+    
+    modal.addEventListener('keydown', handleFocusTrap);
+    modal._handleFocusTrap = handleFocusTrap;
+    firstFocusable.focus();
   };
   
-  // Function to close a modal overlay
+  const releaseFocusTrap = (modal) => {
+    if (modal._handleFocusTrap) {
+      modal.removeEventListener('keydown', modal._handleFocusTrap);
+      delete modal._handleFocusTrap;
+    }
+    if (lastFocusedElement) {
+      lastFocusedElement.focus();
+    }
+  };
+  
+  // Animate modal-box entrance with a pop-out effect and trap focus
+  const animateModalIn = (modalOverlay, modalStaticId) => {
+    const modalBox = modalOverlay.querySelector('.modal-box');
+    gsap.fromTo(modalBox, { opacity: 0, y: 50, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "back.out(1.7)" });
+    gsap.fromTo(document.getElementById(modalStaticId), { x: -2, y: -2 }, { x: 2, y: 2, duration: 0.4, ease: "power2.inOut", yoyo: true, repeat: 1 });
+    trapFocus(modalOverlay);
+  };
+  
   const closeModal = (modalOverlay) => {
     const modalBox = modalOverlay.querySelector('.modal-box');
+    releaseFocusTrap(modalOverlay);
     gsap.to(modalBox, {
       opacity: 0,
       y: 50,
@@ -259,13 +293,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeResume = document.getElementById('closeResume');
   
   resumeButton.addEventListener('click', () => {
+    lastFocusedElement = document.activeElement;
     resumeModal.style.display = 'flex';
     animateModalIn(resumeModal, 'resumeStatic');
   });
-  
-  closeResume.addEventListener('click', () => {
-    closeModal(resumeModal);
-  });
+  closeResume.addEventListener('click', () => closeModal(resumeModal));
   
   // About Me Modal
   const aboutButton = document.getElementById('aboutButton');
@@ -273,13 +305,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeAbout = document.getElementById('closeAbout');
   
   aboutButton.addEventListener('click', () => {
+    lastFocusedElement = document.activeElement;
     aboutModal.style.display = 'flex';
     animateModalIn(aboutModal, 'aboutStatic');
   });
-  
-  closeAbout.addEventListener('click', () => {
-    closeModal(aboutModal);
-  });
+  closeAbout.addEventListener('click', () => closeModal(aboutModal));
   
   // Contact Modal
   const contactButton = document.getElementById('contactButton');
@@ -287,13 +317,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeContact = document.getElementById('closeContact');
   
   contactButton.addEventListener('click', () => {
+    lastFocusedElement = document.activeElement;
     contactModal.style.display = 'flex';
     animateModalIn(contactModal, 'contactStatic');
   });
-  
-  closeContact.addEventListener('click', () => {
-    closeModal(contactModal);
-  });
+  closeContact.addEventListener('click', () => closeModal(contactModal));
   
   // Close modals on Escape key
   document.addEventListener('keydown', (e) => {
