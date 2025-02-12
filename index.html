@@ -8,22 +8,26 @@
   <!-- Viewport and PWA Settings -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TV Portfolio</title>
-  <!-- Content Security Policy with reporting (update report-uri accordingly) -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://www.youtube.com; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; report-uri https://yourdomain.report-uri.com/r/d/csp/enforce">
-  <!-- Preload critical assets -->
+  <!-- Content Security Policy (Note: report-uri is not effective via meta) -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self' https://www.youtube.com;
+    script-src 'self' https://cdnjs.cloudflare.com https://www.youtube.com https://unpkg.com;
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' data:;">
+  <!-- Preload Critical Assets -->
   <link rel="preload" href="Merova.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="click.mp3" as="audio" crossorigin>
   <!-- Web App Manifest -->
   <link rel="manifest" href="manifest.json">
-  <!-- Preconnect to external domains -->
+  <!-- Preconnect / DNS Prefetch -->
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="dns-prefetch" href="https://www.youtube.com">
   <!-- Your CSS -->
   <link rel="stylesheet" href="styles.css" />
-  <!-- Load YouTube IFrame API (do not add any extra iframe here) -->
+  <!-- Load YouTube IFrame API (no extra iframe in head) -->
   <script src="https://www.youtube.com/iframe_api"></script>
-  <!-- Load GSAP with SRI (dummy hash used; update with real hash) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" integrity="sha384-INSERT_REAL_HASH_HERE" crossorigin="anonymous" defer></script>
+  <!-- Load GSAP without integrity attribute -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" defer></script>
   <!-- Load Web Vitals for performance monitoring -->
   <script src="https://unpkg.com/web-vitals@2/dist/web-vitals.umd.js" defer></script>
   <!-- Your Custom JavaScript -->
@@ -46,20 +50,23 @@
   <!-- Video Background Container -->
   <div id="videoBackground" class="video-background">
     <div id="videoContainer">
-      <!-- The YouTube IFrame API initializes the player in this iframe -->
+      <!-- YouTube IFrame API creates the player here -->
       <iframe id="videoIframe" loading="lazy" poster="video-poster.jpg" frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen></iframe>
     </div>
-    <!-- Use a picture element for a modern-format fallback image -->
+    <!-- Use a picture element for fallback (if you have modern formats) -->
     <picture id="videoFallbackContainer" style="display:none;">
+      <!-- Uncomment below if you have these assets; otherwise, rely on the <img> fallback -->
+      <!--
       <source srcset="video-fallback.avif" type="image/avif">
       <source srcset="video-fallback.webp" type="image/webp">
+      -->
       <img id="videoFallback" src="video-fallback.jpg" alt="Video fallback" style="width:100%; height:100%; object-fit:cover;">
     </picture>
   </div>
   
-  <!-- Accessibility Live Region for Channel Announcements -->
+  <!-- Accessibility Live Region -->
   <div id="a11y-channel" aria-live="polite" class="sr-only">Now viewing channel 1</div>
   
   <!-- Landing Overlay -->
@@ -92,7 +99,7 @@
       <button id="menuButton" class="menu-button" aria-label="Open TV Guide">Menu</button>
     </header>
     
-    <!-- Channel Sections (each with a data-module attribute for dynamic loading) -->
+    <!-- Channel Sections (each can have a data-module attribute for dynamic loading) -->
     <section id="section1" class="channel-section" data-module="home">
       <div class="channel-buttons">
         <button id="resumeButton" class="channel-button" aria-label="View Resume">Resume</button>
