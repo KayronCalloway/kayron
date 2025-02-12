@@ -12,7 +12,7 @@ function onYouTubeIframeAPIReady() {
       modestbranding: 1,
       showinfo: 0,
       rel: 0,
-      origin: window.location.origin  // Use your domain; hard-code if necessary
+      origin: window.location.origin
     },
     events: {
       'onReady': onPlayerReady,
@@ -197,7 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   // IntersectionObserver for channel animations & video background visibility
-  // Using the viewport as the root (root: null)
   const observerOptions = { root: null, threshold: 0.7 };
   const observerCallback = entries => {
     entries.forEach(entry => {
