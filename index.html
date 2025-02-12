@@ -47,12 +47,19 @@
       <div class="header-name" id="headerName">Kayron Calloway</div>
       <button id="menuButton" class="menu-button" aria-label="Open TV Guide">Menu</button>
     </header>
-    <!-- Channel Sections -->
+    
+    <!-- Channel 1: Home (Now Playing) -->
     <section id="section1" class="channel-section">
-      <h2>Creative Work</h2>
-      <p>Featured project content for Creative Work...</p>
-      <div class="channel-number-overlay">CH 01</div>
+      <h2 class="channel-title">Now Playing: Kayron Calloway</h2>
+      <!-- Three-button layout for Resume, About Me, and Contact -->
+      <div class="channel-buttons">
+        <button id="resumeButton" class="channel-button" aria-label="View Resume">Resume</button>
+        <button id="aboutButton" class="channel-button" aria-label="About Me">About Me</button>
+        <button id="contactButton" class="channel-button" aria-label="Contact Info">Contact</button>
+      </div>
     </section>
+    
+    <!-- Additional Channels (Example content, can be expanded as needed) -->
     <section id="section2" class="channel-section">
       <h2>Consultant Work</h2>
       <p>Featured project content for Consultant Work...</p>
@@ -73,8 +80,6 @@
       <p>Featured project content for Interests...</p>
       <div class="channel-number-overlay">CH 05</div>
     </section>
-    <!-- Resume Button (fixed at the bottom center) -->
-    <button id="resumeButton" class="resume-button" aria-label="View Resume">View Resume</button>
   </div>
   
   <!-- TV Guide Overlay Menu -->
@@ -85,7 +90,7 @@
         <ul>
           <li data-target="section1">
             <span class="channel-number">CH 01</span>
-            <span class="channel-title">Creative Work</span>
+            <span class="channel-title">Now Playing</span>
           </li>
           <li data-target="section2">
             <span class="channel-number">CH 02</span>
@@ -110,47 +115,91 @@
   </div>
   
   <!-- Resume Modal -->
-  <div id="resumeModal" class="resume-modal" role="dialog" aria-modal="true">
+  <div id="resumeModal" class="modal-overlay" role="dialog" aria-modal="true">
     <!-- Static Effect -->
-    <div id="resumeStatic" class="resume-static"></div>
-    <div class="resume-content">
-      <button id="closeResume" class="close-resume" aria-label="Close Resume">&times;</button>
-      <h2 class="resume-title">Kayron Calloway</h2>
-      <p class="resume-subtitle">Creative Strategist | Digital Consultant | Entrepreneur</p>
-      <div class="resume-timeline">
-        <h3>Professional Experience</h3>
-        <div class="timeline-item">
-          <h4>Financial Analyst (Residuals) - Cast and Crew</h4>
-          <span class="timeline-dates">April 2019 - Present</span>
-          <p>Managed residual payments and contracts for entertainment clients like HBO and Netflix.</p>
-        </div>
-        <div class="timeline-item">
-          <h4>Freelance Consultant - Business Strategy & Development</h4>
-          <span class="timeline-dates">March 2016 - Present</span>
-          <p>Led corporate structuring and investment optimization for emerging brands.</p>
-        </div>
-        <div class="timeline-item">
-          <h4>Founder & Creative Director - Coloring with Gray</h4>
-          <span class="timeline-dates">2024 - Present</span>
-          <p>Launched Reflections of You, a bespoke fragrance inspired by luxury.</p>
-        </div>
-      </div>
-      <div class="resume-details">
-        <h3>Skills</h3>
+    <div id="resumeStatic" class="modal-static"></div>
+    <div class="modal-content">
+      <button id="closeResume" class="close-modal" aria-label="Close Resume">&times;</button>
+      <h2 class="modal-title">KAYRON E. CALLOWAY</h2>
+      <p class="modal-subtitle">Los Angeles, CA | 310.498.8059 | KayronCalloway@gmail.com</p>
+      <section class="modal-section">
+        <h3>PROFESSIONAL SUMMARY</h3>
+        <p>Accomplished financial analyst, strategic consultant, and entrepreneurial innovator with extensive expertise.</p>
+      </section>
+      <section class="modal-section">
+        <h3>PROFESSIONAL EXPERIENCE</h3>
+        <h4>Financial Analyst (Residuals) – Cast and Crew</h4>
+        <p>Los Angeles, CA | April 2019 - Present</p>
         <ul>
-          <li>Financial & Business Analytics</li>
-          <li>Luxury Brand Development</li>
-          <li>AI Governance & Ethics</li>
-          <li>Strategic Consulting</li>
+          <li>Administer and validate residual payment infrastructures.</li>
+          <li>Employ advanced econometric modeling and data visualization.</li>
+          <li>Conduct contractual analyses and liaise with executive-level stakeholders at HBO, Netflix, Starz, and Amazon.</li>
+          <li>Spearheaded automation initiatives reducing processing time by 30%.</li>
         </ul>
-        <h3>Certifications</h3>
+        <h4>Freelance Consultant – Business Strategy & Development</h4>
+        <p>March 2016 - Present</p>
         <ul>
-          <li>AI Policy & Ethics (Q3 2025)</li>
-          <li>Financial Modeling & Valuation (Q3 2025)</li>
-          <li>Advanced Brand Strategy (Q3 2025)</li>
+          <li>Delivered high-caliber consultancy in corporate structuring and operational streamlining.</li>
+          <li>Architected holistic project frameworks integrating advanced financial modeling.</li>
+          <li>Negotiated acquisitions and devised dynamic compensation paradigms.</li>
         </ul>
-      </div>
+        <h4>Founder & Creative Director – Coloring with Gray</h4>
+        <p>Los Angeles, CA | 2024 - Present</p>
+        <ul>
+          <li>Launched Reflections of You, a bespoke fragrance portfolio.</li>
+          <li>Engineered a brand ecosystem merging consumer psychology with artistic narrative.</li>
+          <li>Oversaw end-to-end product development and sustainability-driven production strategies.</li>
+        </ul>
+      </section>
+      <section class="modal-section">
+        <h3>EDUCATION</h3>
+        <p>Bachelor of Arts (B.A.) in Philosophy, California State University, Fullerton | 2014 (GPA: 3.03/4.0)</p>
+      </section>
+      <section class="modal-section">
+        <h3>CERTIFICATIONS & SKILLS</h3>
+        <ul>
+          <li>AI Policy & Ethics Certification (Expected Q3 2025)</li>
+          <li>Financial Modeling & Valuation (Expected Q3 2025)</li>
+          <li>Advanced Brand Strategy (Expected Q3 2025)</li>
+          <li>Financial & Business Analytics, Brand & Market Development, AI Governance</li>
+        </ul>
+      </section>
+      <section class="modal-section">
+        <h3>VOLUNTEER & ADDITIONAL INFO</h3>
+        <ul>
+          <li>Lead Basketball Camp Instructor</li>
+          <li>Academic Mentor & Research Facilitator</li>
+          <li>Engaged in Urban Sustainability & Philanthropy Initiatives</li>
+        </ul>
+      </section>
     </div>
   </div>
-</body>
-</html>
+  
+  <!-- About Me Modal -->
+  <div id="aboutModal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div id="aboutStatic" class="modal-static"></div>
+    <div class="modal-content">
+      <button id="closeAbout" class="close-modal" aria-label="Close About Me">&times;</button>
+      <h2 class="modal-title">About Me</h2>
+      <p class="modal-subtitle">A creative and analytical mind behind the innovative projects.</p>
+      <section class="modal-section">
+        <p>
+          I am a financial analyst, strategic consultant, and entrepreneur with a passion for merging data-driven insights with creative storytelling. My background in finance and business strategy has empowered me to innovate and lead transformative projects. I thrive in dynamic environments where analytical rigor meets creative expression.
+        </p>
+      </section>
+    </div>
+  </div>
+  
+  <!-- Contact Modal -->
+  <div id="contactModal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div id="contactStatic" class="modal-static"></div>
+    <div class="modal-content">
+      <button id="closeContact" class="close-modal" aria-label="Close Contact">&times;</button>
+      <h2 class="modal-title">Contact Information</h2>
+      <section class="modal-section">
+        <p><strong>Location:</strong> Los Angeles, CA</p>
+        <p><strong>Phone:</strong> 310.498.8059</p>
+        <p><strong>Email:</strong> <a href="mailto:KayronCalloway@gmail.com">KayronCalloway@gmail.com</a></p>
+      </section>
+      <section class="modal-section social">
+        
