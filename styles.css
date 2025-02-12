@@ -76,9 +76,9 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -1; /* Slightly behind content */
+  z-index: -1; /* Behind content */
   overflow: hidden;
-  /* For debugging, set opacity to 1 so it's visible */
+  /* Start with opacity: 1 for debugging */
   opacity: 1;
   transition: opacity 0.5s ease;
 }
@@ -106,7 +106,7 @@ body {
   opacity: 0.5;
 }
 
-/* --- Header (Fixed at Top Left) --- */
+/* --- Header (Persistent, Fixed at Top Left) --- */
 #header {
   position: fixed;
   top: 0;
@@ -117,12 +117,10 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  z-index: 300;
-  opacity: 0;
-  transition: opacity 0.5s;
+  z-index: 1000;
+  opacity: 1; /* Always visible */
 }
 
-/* Header Name on the left, Menu on the right */
 .header-name {
   font-size: 1.5rem;
   text-align: left;
