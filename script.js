@@ -1,7 +1,5 @@
-// Declare global variable(s) needed by the YouTube API
-var soundMuted = false; // global variable for video mute state
-
-// Global variable for YouTube Player
+// Global variables for video mute state and YouTube Player
+let soundMuted = false;
 let videoPlayer;
 function onYouTubeIframeAPIReady() {
   videoPlayer = new YT.Player('videoIframe', {
@@ -22,7 +20,6 @@ function onYouTubeIframeAPIReady() {
   });
 }
 function onPlayerReady(event) {
-  // Use the global soundMuted variable
   if (soundMuted) {
     event.target.mute();
   } else {
@@ -52,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const videoBackground = document.getElementById('videoBackground');
   
   let lastFocusedElement;
-  // Note: soundMuted is global now.
   let landingSequenceComplete = false;
   let autoScrollTimeout;
   let currentChannel = null;
@@ -71,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     channelSounds[randomIndex].play().catch(error => console.error('Audio playback failed:', error));
   };
   
-  // Glitch effect using GSAP for main content
+  // Glitch effect for main content
   const distortAndWarpContent = () => {
     gsap.fromTo(mainContent, { filter: "none", transform: "skewX(0deg)" }, {
       filter: "blur(2px) contrast(1.2)",
@@ -96,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
   );
   
-  // Helper: Reveal Main Content after power button pressed
+  // Reveal Main Content after power button is pressed
   const revealMainContent = () => {
     window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
     gsap.to(landing, {
@@ -146,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .to("#landingSubtitle .subtitle-item", { duration: 1, opacity: 1, ease: "power2.out", stagger: 0.5 }, "+=0.3");
   });
   
-  // Cancel auto-scroll if user scrolls manually before timeout
+  // Cancel auto-scroll if user manually scrolls before timeout
   window.addEventListener('scroll', () => {
     if (landingSequenceComplete && landing.style.display !== "none") {
       clearTimeout(autoScrollTimeout);
@@ -210,11 +206,11 @@ document.addEventListener('DOMContentLoaded', () => {
           playRandomChannelSound();
           triggerChannelStatic();
           animateChannelNumber(newChannel);
-          // Show video background only on Channel 1; hide on others
+          // Fade video background in/out when Channel 1 is active
           if (currentChannel === 'section1') {
-            videoBackground.style.display = 'block';
+            gsap.to(videoBackground, { duration: 0.5, opacity: 1, onStart: () => videoBackground.style.display = 'block' });
           } else {
-            videoBackground.style.display = 'none';
+            gsap.to(videoBackground, { duration: 0.5, opacity: 0, onComplete: () => videoBackground.style.display = 'none' });
           }
         }
       }
@@ -237,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
   
-  // Mute Button: Toggle both channel sounds and video
+  // Mute Button: Toggle sound for channel sounds and video
   muteButton.addEventListener('click', () => {
     soundMuted = !soundMuted;
     muteButton.textContent = soundMuted ? "Unmute" : "Mute";
@@ -306,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Animate modal-box entrance with a gentle flow-out from the top
   const animateModalIn = (modalOverlay, modalStaticId) => {
     const modalBox = modalOverlay.querySelector('.modal-box');
-    gsap.fromTo(modalBox, { opacity: 0, y: -100, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power2.out" });
+    gsap.fromTo(modalBox, { opacity: 0, y: -50, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power2.out" });
     gsap.fromTo(document.getElementById(modalStaticId), { x: -2, y: -2 }, { x: 2, y: 2, duration: 0.4, ease: "power2.inOut", yoyo: true, repeat: 1 });
     trapFocus(modalOverlay);
   };
@@ -316,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
     releaseFocusTrap(modalOverlay);
     gsap.to(modalBox, {
       opacity: 0,
-      y: -100,
+      y: -50,
       scale: 0.95,
       duration: 0.5,
       ease: "power2.in",
