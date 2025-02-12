@@ -78,7 +78,7 @@ body {
   height: 100vh;
   z-index: -1; /* Slightly behind content */
   overflow: hidden;
-  /* For debugging, set opacity to 1 so it’s visible */
+  /* For debugging, set opacity to 1 so it's visible */
   opacity: 1;
   transition: opacity 0.5s ease;
 }
