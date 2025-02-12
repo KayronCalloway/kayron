@@ -6,6 +6,38 @@
   --static-duration: 0.3s;
 }
 
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--primary-color);
+  color: var(--bg-color);
+  padding: 8px 16px;
+  z-index: 1000;
+  transition: top 0.3s;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+/* Back to Top Button */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: var(--primary-color);
+  color: var(--bg-color);
+  border: none;
+  padding: 10px;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+  z-index: 400;
+  transition: opacity 0.3s;
+}
+
 /* --- Import Merova Font --- */
 @font-face {
   font-family: 'Merova';
@@ -242,12 +274,13 @@ body {
   color: var(--primary-color);
   font-size: 1.2rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
 
 .channel-button:hover {
   background: var(--primary-color);
   color: var(--bg-color);
+  transform: scale(1.05);
 }
 
 .channel-number-overlay {
@@ -334,6 +367,7 @@ body {
   align-items: center;
   justify-content: center;
   padding: 20px;
+  backdrop-filter: blur(4px);
 }
 
 .modal-box {
