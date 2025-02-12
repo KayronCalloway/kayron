@@ -13,10 +13,8 @@ function onYouTubeIframeAPIReady() {
       modestbranding: 1,
       showinfo: 0,
       rel: 0,
-      // Hard-coded origin to ensure it matches the expected pattern:
-      origin: "https://kayroncalloway.github.io"
-      // Alternatively, if you prefer dynamic, try:
-      // origin: window.location.protocol + '//' + window.location.host
+      // Commenting out origin parameter to see if this resolves the error:
+      // origin: "https://kayroncalloway.github.io"
     },
     events: {
       'onReady': onPlayerReady,
