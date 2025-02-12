@@ -6,8 +6,7 @@
   <title>TV Portfolio</title>
   <link rel="stylesheet" href="styles.css" />
   <!-- Load YouTube IFrame API -->
- <iframe width="560" height="315" src="https://www.youtube.com/embed/KISNE4qOIBM?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
-
+  <script src="https://www.youtube.com/iframe_api"></script>
   <!-- GSAP for animations -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" defer></script>
   <script src="script.js" defer></script>
@@ -19,7 +18,7 @@
   <!-- Audio for Power Button Click -->
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
   
-  <!-- Video Background (always in DOM; debugging: visible by default) -->
+  <!-- Video Background (always in DOM; visibility controlled via opacity) -->
   <div id="videoBackground" class="video-background">
     <div id="videoContainer">
       <!-- The YouTube player will be created via the IFrame API -->
