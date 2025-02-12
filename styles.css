@@ -6,6 +6,11 @@
   --static-duration: 0.3s;
 }
 
+/* Responsive Typography */
+:root {
+  font-size: clamp(16px, 1.5vw, 20px);
+}
+
 /* Skip Link */
 .skip-link {
   position: absolute;
@@ -41,9 +46,9 @@
 /* --- Import Merova Font --- */
 @font-face {
   font-family: 'Merova';
-  src: url('Merova.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
+  src: url('Merova.var.woff2') format('woff2-variations'),
+       url('Merova.otf') format('opentype');
+  font-display: swap;
 }
 
 /* --- Base Styles & Reset --- */
@@ -78,7 +83,8 @@ body {
   height: 100vh;
   z-index: -1; /* Behind content */
   overflow: hidden;
-  /* Start with opacity: 1 for debugging */
+  transform: translateZ(0);
+  backface-visibility: hidden;
   opacity: 1;
   transition: opacity 0.5s ease;
 }
@@ -87,23 +93,27 @@ body {
   height: 100%;
   pointer-events: none;
 }
-/* Ambient overlay for vintage scanlines */
-.video-background::after {
-  content: "";
-  position: absolute;
+
+/* --- Static Overlay (CSS Gradient & Animation) --- */
+#staticOverlay {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: repeating-linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.1),
-      rgba(0, 0, 0, 0.1) 1px,
-      transparent 1px,
-      transparent 3px
-    );
+    0deg,
+    rgba(0, 0, 0, 0.15) 0px,
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 2px,
+    transparent 3px
+  );
+  animation: static 0.2s infinite;
+  z-index: 150;
   pointer-events: none;
-  opacity: 0.5;
+}
+@keyframes static {
+  100% { background-position: 0 3px; }
 }
 
 /* --- Header (Persistent, Fixed at Top Left) --- */
@@ -118,9 +128,8 @@ body {
   align-items: center;
   padding: 10px 20px;
   z-index: 1000;
-  opacity: 1; /* Always visible */
+  opacity: 1;
 }
-
 .header-name {
   font-size: 1.5rem;
   text-align: left;
@@ -147,7 +156,6 @@ body {
   align-items: center;
   z-index: 100;
 }
-
 .power-button {
   width: 100px;
   height: 100px;
@@ -157,7 +165,6 @@ body {
   border-radius: 50%;
   background-color: #111;
 }
-
 .power-button::after {
   content: "";
   position: absolute;
@@ -172,34 +179,21 @@ body {
   pointer-events: none;
   animation: pulsate 1.5s infinite;
 }
-
 @keyframes pulsate {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.7;
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.1);
-    opacity: 0.9;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.7;
-  }
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.9; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
 }
-
 .power-icon {
   width: 100%;
   height: 100%;
   display: block;
 }
-
 .power-icon path,
 .power-icon line {
   stroke: red;
   stroke-width: 8;
 }
-
 .landing-name {
   font-size: 4rem;
   color: var(--primary-color);
@@ -211,7 +205,6 @@ body {
   letter-spacing: 0.2em;
   transition: width 1s ease, opacity 1s ease;
 }
-
 .landing-subtitle {
   font-size: 1.2rem;
   color: var(--primary-color);
@@ -220,41 +213,10 @@ body {
   opacity: 0;
   transition: opacity 1s ease;
 }
-
 .landing-subtitle .subtitle-item {
   display: inline-block;
   opacity: 0;
   margin-right: 10px;
-}
-
-/* --- Static Overlay --- */
-#staticOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('static.png') repeat;
-  opacity: 0;
-  z-index: 150;
-  pointer-events: none;
-  transition: opacity 0.3s ease-out;
-}
-
-/* --- Mute Button --- */
-.mute-button {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  background: transparent;
-  border: 2px solid var(--primary-color);
-  color: var(--primary-color);
-  padding: 8px 12px;
-  font-size: 1rem;
-  cursor: pointer;
-  z-index: 350;
-  transition: opacity 0.3s;
-  display: none;
 }
 
 /* --- Main Content --- */
@@ -278,14 +240,12 @@ body {
   background: transparent;
   text-align: center;
 }
-
 .channel-buttons {
   display: flex;
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
 }
-
 .channel-button {
   padding: 12px 20px;
   background: transparent;
@@ -295,7 +255,6 @@ body {
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
-
 .channel-button:hover,
 .channel-button:active {
   background: var(--primary-color);
@@ -303,7 +262,6 @@ body {
   transform: scale(1.05);
   box-shadow: 0 0 10px var(--primary-color);
 }
-
 .channel-number-overlay {
   position: absolute;
   bottom: 20px;
@@ -330,7 +288,6 @@ body {
   justify-content: flex-start;
   padding-top: 40px;
 }
-
 .tv-guide-header {
   font-size: 2rem;
   text-align: center;
@@ -339,7 +296,6 @@ body {
   width: 100%;
   margin-bottom: 40px;
 }
-
 .tv-guide-list {
   position: absolute;
   top: 50%;
@@ -347,14 +303,12 @@ body {
   transform: translateY(-50%);
   width: auto;
 }
-
 .tv-guide-list nav ul {
   list-style: none;
   text-align: left;
   padding: 0;
   margin: 0;
 }
-
 .tv-guide-list nav ul li {
   font-size: 2rem;
   margin: 20px 0;
@@ -362,7 +316,6 @@ body {
   border-bottom: 1px solid var(--primary-color);
   cursor: pointer;
 }
-
 .close-guide {
   position: absolute;
   top: 20px;
@@ -376,7 +329,7 @@ body {
 
 /* --- Modal Overlays --- */
 .modal-overlay {
-  display: none; /* Hidden by default */
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -390,7 +343,6 @@ body {
   padding: 20px;
   backdrop-filter: blur(4px);
 }
-
 .modal-box {
   background: rgba(0, 0, 0, 0.85);
   border: 2px solid rgba(255, 255, 255, 0.3);
@@ -401,7 +353,6 @@ body {
   overflow-y: auto;
   position: relative;
 }
-
 .modal-static {
   position: absolute;
   top: 0;
@@ -413,31 +364,26 @@ body {
   mix-blend-mode: overlay;
   z-index: -1;
 }
-
 .modal-title {
   font-size: 2rem;
   text-align: center;
   margin-bottom: 10px;
 }
-
 .modal-subtitle {
   font-size: 1.2rem;
   text-align: center;
   margin-bottom: 20px;
 }
-
 .modal-section {
   margin-top: 20px;
   padding-left: 10px;
   border-left: 2px solid var(--primary-color);
   text-align: left;
 }
-
 .modal-section ul {
   list-style: disc;
   margin-left: 20px;
 }
-
 .close-modal {
   position: absolute;
   top: 10px;
@@ -481,5 +427,16 @@ body {
     top: 20px;
     font-size: 0.9rem;
     padding: 5px 8px;
+  }
+}
+
+/* 4K+ Display Optimization */
+@media (min-width: 3840px) {
+  .channel-section {
+    padding: 120px 80px;
+  }
+  .channel-button {
+    font-size: 2rem;
+    padding: 20px 32px;
   }
 }
