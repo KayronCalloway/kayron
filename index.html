@@ -10,13 +10,16 @@
   <script src="script.js" defer></script>
 </head>
 <body>
+  <!-- Skip Navigation (visible on focus) -->
+  <a href="#mainContent" class="skip-link">Skip to Content</a>
+  
   <!-- Audio for power button click sound -->
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
   
-  <!-- Video Background -->
+  <!-- Video Background (lazy loaded) -->
   <div id="videoBackground" class="video-background">
-    <!-- Use updated URL parameters for autoplay, loop, and playlist -->
-    <iframe src="https://www.youtube.com/embed/KISNE4qOIBM?autoplay=1&loop=1&playlist=KISNE4qOIBM" 
+    <!-- The iframe’s src is stored in data-src and will be set via JS after landing -->
+    <iframe data-src="https://www.youtube.com/embed/KISNE4qOIBM?autoplay=1&loop=1&playlist=KISNE4qOIBM" 
             title="YouTube video player" frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
             allowfullscreen></iframe>
@@ -27,15 +30,13 @@
     <!-- Power Button -->
     <div class="power-button" id="powerButton" role="button" tabindex="0" aria-label="Turn on">
       <svg class="power-icon" viewBox="0 0 100 100" aria-hidden="true">
-        <!-- 270° arc -->
         <path d="M50,10 A40,40 0 1,1 49.9,10"></path>
-        <!-- Vertical line -->
         <line x1="50" y1="0" x2="50" y2="40"></line>
       </svg>
     </div>
     <!-- Landing Name (hidden initially) -->
     <div class="landing-name" id="landingName">Kayron Calloway</div>
-    <!-- Landing Subtitle with each item wrapped in a span for staggered animation -->
+    <!-- Landing Subtitle -->
     <div class="landing-subtitle" id="landingSubtitle">
       <span class="subtitle-item">Creative Strategist.</span>
       <span class="subtitle-item">Digital Storyteller.</span>
@@ -43,10 +44,10 @@
     </div>
   </div>
   
-  <!-- Static Overlay (for turn-on and channel change effects) -->
+  <!-- Static Overlay for Effects -->
   <div id="staticOverlay"></div>
   
-  <!-- Mute Button (appears after power on) -->
+  <!-- Mute Button -->
   <button id="muteButton" class="mute-button" aria-label="Mute Sound">Mute</button>
   
   <!-- Main Content -->
@@ -57,19 +58,17 @@
       <button id="menuButton" class="menu-button" aria-label="Open TV Guide">Menu</button>
     </header>
     
-    <!-- Channel 1: (No "HOME" text; the background video sets the tone) -->
+    <!-- Channel 1 -->
     <section id="section1" class="channel-section">
-      <!-- Three-button layout for Resume, About Me, and Contact -->
       <div class="channel-buttons">
         <button id="resumeButton" class="channel-button" aria-label="View Resume">Resume</button>
         <button id="aboutButton" class="channel-button" aria-label="About Me">About Me</button>
         <button id="contactButton" class="channel-button" aria-label="Contact Info">Contact</button>
       </div>
-      <!-- Channel Number Overlay -->
       <div class="channel-number-overlay">CH 01</div>
     </section>
     
-    <!-- Additional Channels (Example content) -->
+    <!-- Additional Channels (Example Content) -->
     <section id="section2" class="channel-section">
       <h2>Consultant Work</h2>
       <p>Featured project content for Consultant Work...</p>
@@ -126,7 +125,7 @@
   
   <!-- Resume Modal -->
   <div id="resumeModal" class="modal-overlay" role="dialog" aria-modal="true">
-    <div class="modal-box">
+    <div class="modal-box" tabindex="-1">
       <button id="closeResume" class="close-modal" aria-label="Close Resume">&times;</button>
       <div class="modal-static" id="resumeStatic"></div>
       <h2 class="modal-title">KAYRON E. CALLOWAY</h2>
@@ -186,7 +185,7 @@
   
   <!-- About Me Modal -->
   <div id="aboutModal" class="modal-overlay" role="dialog" aria-modal="true">
-    <div class="modal-box">
+    <div class="modal-box" tabindex="-1">
       <button id="closeAbout" class="close-modal" aria-label="Close About Me">&times;</button>
       <div class="modal-static" id="aboutStatic"></div>
       <h2 class="modal-title">About Me</h2>
@@ -199,9 +198,9 @@
     </div>
   </div>
   
-  <!-- Contact Modal -->
+  <!-- Contact Modal (social media info removed) -->
   <div id="contactModal" class="modal-overlay" role="dialog" aria-modal="true">
-    <div class="modal-box">
+    <div class="modal-box" tabindex="-1">
       <button id="closeContact" class="close-modal" aria-label="Close Contact">&times;</button>
       <div class="modal-static" id="contactStatic"></div>
       <h2 class="modal-title">Contact Information</h2>
@@ -210,12 +209,11 @@
         <p><strong>Phone:</strong> 310.498.8059</p>
         <p><strong>Email:</strong> <a href="mailto:KayronCalloway@gmail.com">KayronCalloway@gmail.com</a></p>
       </section>
-      <section class="modal-section social">
-        <!-- Optional social media icons/links can go here -->
-        <p>Connect with me on LinkedIn, Twitter, and Instagram.</p>
-      </section>
     </div>
   </div>
+  
+  <!-- Back to Top Button -->
+  <button id="backToTop" class="back-to-top" aria-label="Back to Top">↑</button>
   
 </body>
 </html>
