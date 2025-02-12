@@ -3,12 +3,12 @@ let soundMuted = false;
 let videoPlayer;
 function onYouTubeIframeAPIReady() {
   videoPlayer = new YT.Player('videoIframe', {
-    videoId: 'KISNE4qOIBM',  // Using the video ID from your provided link
+    videoId: 'KISNE4qOIBM',  // Use your video ID
     playerVars: {
       autoplay: 1,
       controls: 0,
       loop: 1,
-      playlist: 'KISNE4qOIBM',
+      playlist: 'KISNE4qOIBM',  // Required for looping
       modestbranding: 1,
       showinfo: 0,
       rel: 0
@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   // IntersectionObserver for channel animations & video background visibility
-  // Use viewport as the root so that channels are observed correctly
+  // Using the viewport as the root
   const observerOptions = { root: null, threshold: 0.7 };
   const observerCallback = entries => {
     entries.forEach(entry => {
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
   
-  // Mute Button: Toggle sound for both channel sounds and video
+  // Mute Button: Toggle sound for channel sounds and video
   muteButton.addEventListener('click', () => {
     soundMuted = !soundMuted;
     muteButton.textContent = soundMuted ? "Unmute" : "Mute";
