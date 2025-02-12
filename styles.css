@@ -78,11 +78,30 @@ body {
   height: 100vh;
   z-index: -2;
   overflow: hidden;
+  display: none; /* Hidden by default */
 }
 .video-background iframe {
   width: 100%;
   height: 100%;
   pointer-events: none;
+}
+/* Ambient overlay for vintage scanlines */
+.video-background::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.1),
+      rgba(0, 0, 0, 0.1) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 /* --- Landing Overlay --- */
@@ -277,10 +296,12 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
 
-.channel-button:hover {
+.channel-button:hover,
+.channel-button:active {
   background: var(--primary-color);
   color: var(--bg-color);
   transform: scale(1.05);
+  box-shadow: 0 0 10px var(--primary-color);
 }
 
 .channel-number-overlay {
