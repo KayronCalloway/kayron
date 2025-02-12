@@ -1,0 +1,73 @@
+const CACHE_VERSION = 'tv-portfolio-cache-v1';
+const CACHE_ASSETS = [
+  '/',
+  '/index.html',
+  '/styles.css',
+  '/script.js',
+  '/Merova.woff2',
+  '/click.mp3',
+  '/video-poster.jpg',
+  '/video-fallback.jpg',
+  '/static-resume.pdf'
+];
+
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_VERSION)
+      .then(cache => {
+        console.log('Opened cache');
+        return cache.addAll(CACHE_ASSETS);
+      })
+  );
+});
+
+// Activate: Clean up old caches
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.map(key => {
+        if (key !== CACHE_VERSION) return caches.delete(key);
+      }))
+    )
+  );
+});
+
+// Fetch: Implement stale-while-revalidate strategy with background update
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(cached => {
+      const fetchPromise = fetch(event.request).then(networkResponse => {
+        const clone = networkResponse.clone();
+        caches.open(CACHE_VERSION).then(cache => cache.put(event.request, clone));
+        return networkResponse;
+      });
+      return cached || fetchPromise;
+    })
+  );
+});
+
+// Background Sync for Analytics (stub)
+self.addEventListener('sync', event => {
+  if (event.tag === 'analytics') {
+    event.waitUntil(sendAnalyticsData());
+  }
+});
+
+async function sendAnalyticsData() {
+  // Stub: send queued analytics data to server
+  console.log("Background Sync: Analytics data sent.");
+  return Promise.resolve();
+}
+
+// Periodic Sync for Content Updates (stub)
+self.addEventListener('periodicsync', event => {
+  if (event.tag === 'content-update') {
+    event.waitUntil(updateCachedContent());
+  }
+});
+
+async function updateCachedContent() {
+  // Stub: Fetch new content and update cache if necessary
+  console.log("Periodic Sync: Content updated.");
+  return Promise.resolve();
+}
