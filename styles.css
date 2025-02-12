@@ -37,6 +37,22 @@ body {
   will-change: transform, opacity;
 }
 
+/* --- Video Background --- */
+.video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2;
+  overflow: hidden;
+}
+.video-background iframe {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
 /* --- Landing Overlay --- */
 #landing {
   position: fixed;
@@ -201,20 +217,15 @@ body {
 /* --- Channel Sections --- */
 .channel-section {
   height: 100vh;
-  padding: 80px 50px; /* Increased top padding for more spacing */
+  padding: 80px 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   scroll-snap-align: start;
   position: relative;
-  background: var(--bg-color);
+  background: transparent;
   text-align: center;
-}
-
-.channel-title {
-  font-size: 3rem;
-  margin-bottom: 40px;
 }
 
 .channel-buttons {
@@ -317,11 +328,12 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(200,200,200,0.7); /* White/grey tinted overlay */
+  background: rgba(200,200,200,0.7);
   z-index: 500;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px;
 }
 
 .modal-box {
@@ -335,7 +347,6 @@ body {
   position: relative;
 }
 
-/* Modal Static (background effect) */
 .modal-static {
   position: absolute;
   top: 0;
