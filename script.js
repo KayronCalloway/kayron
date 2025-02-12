@@ -2,6 +2,8 @@
 let soundMuted = false;
 let videoPlayer;
 function onYouTubeIframeAPIReady() {
+  // For debugging, log the origin
+  console.log("Origin:", window.location.origin);
   videoPlayer = new YT.Player('videoIframe', {
     videoId: 'KISNE4qOIBM',  // Your video ID
     playerVars: {
@@ -12,6 +14,7 @@ function onYouTubeIframeAPIReady() {
       modestbranding: 1,
       showinfo: 0,
       rel: 0,
+      // If this line causes errors, try commenting it out or hard-coding your domain.
       origin: window.location.origin
     },
     events: {
