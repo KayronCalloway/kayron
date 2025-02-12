@@ -222,15 +222,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }, 200), { passive: true });
   
   /* === Modal Functionality for Channel 1 Buttons === */
-  // Helper function to animate modal-box entrance
+  // Animate modal-box entrance with a pop-out effect
   const animateModalIn = (modalOverlay, modalStaticId) => {
-    // Animate modal box entrance
+    const modalBox = modalOverlay.querySelector('.modal-box');
     gsap.fromTo(
-      modalOverlay.querySelector('.modal-box'),
-      { opacity: 0, y: 50, scale: 0.9 },
-      { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power2.out" }
+      modalBox,
+      { opacity: 0, y: 50, scale: 0.8 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "back.out(1.7)" }
     );
-    // Subtle shake effect on modal static background (one cycle)
+    // Apply a subtle shake effect to the modal static background
     gsap.fromTo(
       document.getElementById(modalStaticId),
       { x: -2, y: -2 },
@@ -240,10 +240,11 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Function to close a modal overlay
   const closeModal = (modalOverlay) => {
-    gsap.to(modalOverlay.querySelector('.modal-box'), {
+    const modalBox = modalOverlay.querySelector('.modal-box');
+    gsap.to(modalBox, {
       opacity: 0,
       y: 50,
-      scale: 0.9,
+      scale: 0.8,
       duration: 0.4,
       ease: "power2.in",
       onComplete: () => {
