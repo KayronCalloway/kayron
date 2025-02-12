@@ -12,32 +12,31 @@
   <script src="script.js" defer></script>
 </head>
 <body>
-  <!-- Skip Navigation -->
+  <!-- Skip Navigation for Accessibility -->
   <a href="#mainContent" class="skip-link">Skip to Content</a>
   
-  <!-- Audio for power button click sound -->
+  <!-- Audio for Power Button Click -->
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
   
-  <!-- Video Background (only for Channel 1) -->
+  <!-- Video Background (only for Channel 1; hidden by default) -->
   <div id="videoBackground" class="video-background">
     <div id="videoContainer">
-      <!-- The YouTube player will be inserted into this iframe -->
-      <iframe id="videoIframe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <!-- The YouTube player will be created via the IFrame API -->
+      <iframe id="videoIframe" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
     </div>
   </div>
   
-  <!-- Landing Overlay (shown before power button is pressed) -->
+  <!-- Landing Overlay (visible initially) -->
   <div id="landing">
-    <!-- Power Button -->
     <div class="power-button" id="powerButton" role="button" tabindex="0" aria-label="Turn on">
       <svg class="power-icon" viewBox="0 0 100 100" aria-hidden="true">
         <path d="M50,10 A40,40 0 1,1 49.9,10"></path>
         <line x1="50" y1="0" x2="50" y2="40"></line>
       </svg>
     </div>
-    <!-- Landing Name (initially hidden) -->
     <div class="landing-name" id="landingName">Kayron Calloway</div>
-    <!-- Landing Subtitle -->
     <div class="landing-subtitle" id="landingSubtitle">
       <span class="subtitle-item">Creative Strategist.</span>
       <span class="subtitle-item">Digital Storyteller.</span>
@@ -45,13 +44,13 @@
     </div>
   </div>
   
-  <!-- Static Overlay for Effects -->
+  <!-- Static Overlay for Transitional Effects -->
   <div id="staticOverlay"></div>
   
-  <!-- Mute Button -->
+  <!-- Mute Button (hidden by default) -->
   <button id="muteButton" class="mute-button" aria-label="Mute Sound">Mute</button>
   
-  <!-- Main Content (hidden until landing sequence completes) -->
+  <!-- Main Content (hidden by default) -->
   <div id="mainContent">
     <!-- Fixed Header -->
     <header id="header">
@@ -59,7 +58,7 @@
       <button id="menuButton" class="menu-button" aria-label="Open TV Guide">Menu</button>
     </header>
     
-    <!-- Channel 1 -->
+    <!-- Channel 1: Home -->
     <section id="section1" class="channel-section">
       <div class="channel-buttons">
         <button id="resumeButton" class="channel-button" aria-label="View Resume">Resume</button>
@@ -69,7 +68,7 @@
       <div class="channel-number-overlay">CH 01</div>
     </section>
     
-    <!-- Additional Channels (Example Content) -->
+    <!-- Additional Channel Sections (example markup) -->
     <section id="section2" class="channel-section">
       <h2>Consultant Work</h2>
       <p>Featured project content for Consultant Work...</p>
