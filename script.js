@@ -3,7 +3,7 @@ let soundMuted = false;
 let videoPlayer;
 function onYouTubeIframeAPIReady() {
   videoPlayer = new YT.Player('videoIframe', {
-    videoId: 'KISNE4qOIBM',  // Use your video ID
+    videoId: 'KISNE4qOIBM',  // Using your video ID
     playerVars: {
       autoplay: 1,
       controls: 0,
@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   // IntersectionObserver for channel animations & video background visibility
-  // Using the viewport as the root
+  // Using viewport as the root (root: null)
   const observerOptions = { root: null, threshold: 0.7 };
   const observerCallback = entries => {
     entries.forEach(entry => {
@@ -209,9 +209,9 @@ document.addEventListener('DOMContentLoaded', () => {
           animateChannelNumber(newChannel);
           // Fade video background in/out when Channel 1 is active
           if (currentChannel === 'section1') {
-            gsap.to(videoBackground, { duration: 0.5, opacity: 1, onStart: () => videoBackground.style.display = 'block' });
+            gsap.to(videoBackground, { duration: 0.5, opacity: 1 });
           } else {
-            gsap.to(videoBackground, { duration: 0.5, opacity: 0, onComplete: () => videoBackground.style.display = 'none' });
+            gsap.to(videoBackground, { duration: 0.5, opacity: 0 });
           }
         }
       }
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
   
-  // Mute Button: Toggle sound for channel sounds and video
+  // Mute Button: Toggle sound for both channel sounds and video
   muteButton.addEventListener('click', () => {
     soundMuted = !soundMuted;
     muteButton.textContent = soundMuted ? "Unmute" : "Mute";
