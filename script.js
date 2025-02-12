@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Cache DOM elements
+  // Cache DOM elements for TV Portfolio
   const powerButton = document.getElementById('powerButton');
   const landing = document.getElementById('landing');
   const landingName = document.getElementById('landingName');
@@ -13,14 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const staticOverlay = document.getElementById('staticOverlay');
   const clickSound = document.getElementById('clickSound');
   const muteButton = document.getElementById('muteButton');
-
+  
   // State variables
   let soundMuted = false;
   let landingSequenceComplete = false;
   let autoScrollTimeout;
   let currentChannel = null;
   let sporadicGlitchStarted = false;
-
+  
   // --- Preload Channel Click Sounds ---
   const channelSounds = Array.from({ length: 11 }, (_, i) => {
     const audio = new Audio(`channel-click${i + 1}.aif`);
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     audio.volume = 0.8;
     return audio;
   });
-
+  
   const playRandomChannelSound = () => {
     if (soundMuted) return;
     const randomIndex = Math.floor(Math.random() * channelSounds.length);
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Audio playback failed:', error)
     );
   };
-
+  
   // --- Glitch Effect using GSAP ---
   const distortAndWarpContent = () => {
     gsap.fromTo(
@@ -52,22 +52,22 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     );
   };
-
+  
   // --- Recursively Schedule Sporadic Glitch ---
   const scheduleSporadicGlitch = () => {
-    const delay = Math.random() * 10000 + 10000; // Delay between 10-20 seconds
+    const delay = Math.random() * 10000 + 10000; // 10-20 seconds
     setTimeout(() => {
       distortAndWarpContent();
       scheduleSporadicGlitch();
     }, delay);
   };
-
+  
   // --- Touch Events for Mobile (Power Button Glow) ---
   powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
   powerButton.addEventListener('touchend', () =>
     setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
   );
-
+  
   // --- Helper: Reveal Main Content ---
   const revealMainContent = () => {
     window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
@@ -82,14 +82,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   };
-
+  
   // --- Landing Sequence Animation ---
   powerButton.addEventListener('click', () => {
     powerButton.style.pointerEvents = 'none';
-    clickSound.play().catch(error =>
-      console.error('Click sound failed:', error)
-    );
-
+    if (clickSound) {
+      clickSound.play().catch(error => console.error('Click sound failed:', error));
+    }
+    
     // Fade out the power button
     gsap.to(powerButton, {
       duration: 0.3,
@@ -97,8 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ease: "power2.out",
       onComplete: () => powerButton.style.display = "none"
     });
-
-    // Build GSAP timeline for landing sequence with adjusted timing
+    
+    // Build GSAP timeline for landing sequence
     const tl = gsap.timeline({
       onComplete: () => {
         landingSequenceComplete = true;
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
-
+    
     tl.to(landing, { duration: 0.15, backgroundColor: "#fff", ease: "power2.out" })
       .to(landing, { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" })
       .to(staticOverlay, { duration: 0.2, opacity: 0.3 })
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
           stagger: 0.5
       }, "+=0.3");
   });
-
+  
   // --- Reveal Main Content on First Scroll (Cancel Auto-scroll) ---
   window.addEventListener('scroll', () => {
     if (landingSequenceComplete && landing.style.display !== "none") {
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
       revealMainContent();
     }
   }, { once: true, passive: true });
-
+  
   // --- TV Guide Menu Interactions ---
   menuButton.addEventListener('click', () => {
     tvGuide.style.display = 'flex';
@@ -147,13 +147,13 @@ document.addEventListener('DOMContentLoaded', () => {
       tvGuide.setAttribute('aria-hidden', 'false');
     }, 10);
   });
-
+  
   closeGuide.addEventListener('click', () => {
     tvGuide.style.opacity = 0;
     tvGuide.setAttribute('aria-hidden', 'true');
     setTimeout(() => tvGuide.style.display = 'none', 500);
   });
-
+  
   guideItems.forEach(item => {
     item.addEventListener('click', () => {
       const targetSection = document.getElementById(item.getAttribute('data-target'));
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
-
+  
   // --- IntersectionObserver for Channel Change Effects ---
   const observerOptions = { root: mainContent, threshold: 0.7 };
   const observerCallback = entries => {
@@ -181,10 +181,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   };
-
+  
   const observer = new IntersectionObserver(observerCallback, observerOptions);
   document.querySelectorAll('.channel-section').forEach(section => observer.observe(section));
-
+  
   // --- Trigger Static Overlay Effect on Channel Change ---
   const triggerChannelStatic = () => {
     gsap.to(staticOverlay, {
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
       onComplete: () => gsap.to(staticOverlay, { duration: 0.2, opacity: 0 })
     });
   };
-
+  
   // --- Animate the Active Channel Number Overlay ---
   const animateChannelNumber = channelId => {
     const channelOverlay = document.querySelector(`#${channelId} .channel-number-overlay`);
@@ -205,13 +205,13 @@ document.addEventListener('DOMContentLoaded', () => {
       );
     }
   };
-
+  
   // --- Mute Button Interaction ---
   muteButton.addEventListener('click', () => {
     soundMuted = !soundMuted;
     muteButton.textContent = soundMuted ? "Unmute" : "Mute";
   });
-
+  
   // --- Optional: Throttle Function for Additional Scroll Handling ---
   const throttle = (func, delay) => {
     let timeout = null;
@@ -224,8 +224,61 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
   };
-
+  
   window.addEventListener('scroll', throttle(() => {
     // Additional scroll handling logic if needed.
   }, 200), { passive: true });
+  
+  /* === Resume Modal Functionality === */
+  const resumeButton = document.getElementById('resumeButton');
+  const resumeModal = document.getElementById('resumeModal');
+  const resumeStatic = document.getElementById('resumeStatic');
+  const closeResume = document.getElementById('closeResume');
+  
+  // Open Resume Modal with GSAP animations
+  const openResumeModal = () => {
+    resumeModal.style.display = 'block';
+    gsap.fromTo(
+      resumeModal,
+      { opacity: 0, y: 50, scale: 0.9 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power2.out" }
+    );
+    // Trigger static flicker effect on resume modal
+    gsap.fromTo(
+      resumeStatic,
+      { opacity: 0.2 },
+      { opacity: 0, duration: 0.4, ease: "power2.inOut", repeat: 3, yoyo: true }
+    );
+  };
+  
+  // Close Resume Modal with GSAP animations
+  const closeResumeModal = () => {
+    gsap.to(resumeModal, {
+      opacity: 0,
+      y: 50,
+      scale: 0.9,
+      duration: 0.4,
+      ease: "power2.in",
+      onComplete: () => {
+        resumeModal.style.display = 'none';
+      }
+    });
+  };
+  
+  resumeButton.addEventListener('click', openResumeModal);
+  closeResume.addEventListener('click', closeResumeModal);
+  
+  // Close modal on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === "Escape" && resumeModal.style.display === 'block') {
+      closeResumeModal();
+    }
+  });
+  
+  // Optional: Close resume modal when clicking outside the content area
+  resumeModal.addEventListener('click', (e) => {
+    if (e.target === resumeModal) {
+      closeResumeModal();
+    }
+  });
 });
