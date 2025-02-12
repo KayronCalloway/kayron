@@ -50,7 +50,7 @@
   <!-- Mute Button (hidden by default) -->
   <button id="muteButton" class="mute-button" aria-label="Mute Sound">Mute</button>
   
-  <!-- Main Content (hidden by default) -->
+  <!-- Main Content (hidden by default via CSS) -->
   <div id="mainContent">
     <!-- Fixed Header -->
     <header id="header">
@@ -68,7 +68,7 @@
       <div class="channel-number-overlay">CH 01</div>
     </section>
     
-    <!-- Additional Channel Sections (example markup) -->
+    <!-- Additional Channels (example markup) -->
     <section id="section2" class="channel-section">
       <h2>Consultant Work</h2>
       <p>Featured project content for Consultant Work...</p>
@@ -91,8 +91,8 @@
     </section>
   </div>
   
-  <!-- TV Guide Overlay Menu -->
-  <div id="tvGuide" class="tv-guide" aria-hidden="true">
+  <!-- TV Guide Overlay Menu (hidden by inline style) -->
+  <div id="tvGuide" class="tv-guide" aria-hidden="true" style="display:none;">
     <div class="tv-guide-header">Kayron Calloway</div>
     <div class="tv-guide-list">
       <nav>
@@ -123,8 +123,8 @@
     <button id="closeGuide" class="close-guide" aria-label="Close TV Guide">Close</button>
   </div>
   
-  <!-- Resume Modal -->
-  <div id="resumeModal" class="modal-overlay" role="dialog" aria-modal="true">
+  <!-- Resume Modal (hidden by inline style) -->
+  <div id="resumeModal" class="modal-overlay" role="dialog" aria-modal="true" style="display:none;">
     <div class="modal-box" tabindex="-1">
       <button id="closeResume" class="close-modal" aria-label="Close Resume">&times;</button>
       <div class="modal-static" id="resumeStatic"></div>
@@ -183,8 +183,8 @@
     </div>
   </div>
   
-  <!-- About Me Modal -->
-  <div id="aboutModal" class="modal-overlay" role="dialog" aria-modal="true">
+  <!-- About Me Modal (hidden by inline style) -->
+  <div id="aboutModal" class="modal-overlay" role="dialog" aria-modal="true" style="display:none;">
     <div class="modal-box" tabindex="-1">
       <button id="closeAbout" class="close-modal" aria-label="Close About Me">&times;</button>
       <div class="modal-static" id="aboutStatic"></div>
@@ -198,8 +198,8 @@
     </div>
   </div>
   
-  <!-- Contact Modal -->
-  <div id="contactModal" class="modal-overlay" role="dialog" aria-modal="true">
+  <!-- Contact Modal (hidden by inline style) -->
+  <div id="contactModal" class="modal-overlay" role="dialog" aria-modal="true" style="display:none;">
     <div class="modal-box" tabindex="-1">
       <button id="closeContact" class="close-modal" aria-label="Close Contact">&times;</button>
       <div class="modal-static" id="contactStatic"></div>
