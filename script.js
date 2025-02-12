@@ -3,7 +3,7 @@ let soundMuted = false;
 let videoPlayer;
 function onYouTubeIframeAPIReady() {
   videoPlayer = new YT.Player('videoIframe', {
-    videoId: 'KISNE4qOIBM',  // Use your video ID
+    videoId: 'KISNE4qOIBM',  // Your video ID
     playerVars: {
       autoplay: 1,
       controls: 0,
@@ -12,7 +12,9 @@ function onYouTubeIframeAPIReady() {
       modestbranding: 1,
       showinfo: 0,
       rel: 0,
-      origin: window.location.origin  // Added origin for cross-origin support
+      // If needed, you can hard-code your origin below:
+      // origin: 'https://yourdomain.github.io'
+      origin: window.location.origin
     },
     events: {
       'onReady': onPlayerReady,
