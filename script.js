@@ -3,7 +3,7 @@ let soundMuted = false;
 let videoPlayer;
 function onYouTubeIframeAPIReady() {
   videoPlayer = new YT.Player('videoIframe', {
-    videoId: 'KISNE4qOIBM',  // Using your video ID
+    videoId: 'KISNE4qOIBM',  // Use your video ID
     playerVars: {
       autoplay: 1,
       controls: 0,
@@ -11,7 +11,8 @@ function onYouTubeIframeAPIReady() {
       playlist: 'KISNE4qOIBM',  // Required for looping
       modestbranding: 1,
       showinfo: 0,
-      rel: 0
+      rel: 0,
+      origin: window.location.origin  // Added origin for cross-origin support
     },
     events: {
       'onReady': onPlayerReady,
@@ -196,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   // IntersectionObserver for channel animations & video background visibility
-  // Using viewport as the root (root: null)
+  // Using the viewport as the root (root: null)
   const observerOptions = { root: null, threshold: 0.7 };
   const observerCallback = entries => {
     entries.forEach(entry => {
