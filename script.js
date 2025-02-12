@@ -3,7 +3,7 @@ let soundMuted = false;
 let videoPlayer;
 function onYouTubeIframeAPIReady() {
   videoPlayer = new YT.Player('videoIframe', {
-    videoId: 'KISNE4qOIBM',
+    videoId: 'KISNE4qOIBM',  // Using the video ID from your provided link
     playerVars: {
       autoplay: 1,
       controls: 0,
@@ -196,7 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   // IntersectionObserver for channel animations & video background visibility
-  const observerOptions = { root: null, threshold: 0.7 };  // Use viewport as root
+  // Use viewport as the root so that channels are observed correctly
+  const observerOptions = { root: null, threshold: 0.7 };
   const observerCallback = entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
