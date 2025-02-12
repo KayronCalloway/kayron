@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // --- Recursively Schedule Sporadic Glitch ---
   const scheduleSporadicGlitch = () => {
-    const delay = Math.random() * 10000 + 10000; // 10-20 seconds
+    const delay = Math.random() * 10000 + 10000; // Delay between 10-20 seconds
     setTimeout(() => {
       distortAndWarpContent();
       scheduleSporadicGlitch();
@@ -118,17 +118,9 @@ document.addEventListener('DOMContentLoaded', () => {
       .to(landing, { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" })
       .to(staticOverlay, { duration: 0.2, opacity: 0.3 })
       .to(staticOverlay, { duration: 0.2, opacity: 0 })
-      // Reveal landing name over 1.2 seconds
       .to(landingName, { duration: 1.2, width: "100%", opacity: 1, ease: "power2.out" })
-      // Fade in the landing subtitle container over 0.7 seconds
       .to(landingSubtitle, { duration: 0.7, opacity: 1, ease: "power2.out" }, "-=0.3")
-      // Then animate each subtitle item sequentially over 1 second each, staggered by 0.5 seconds
-      .to("#landingSubtitle .subtitle-item", {
-          duration: 1,
-          opacity: 1,
-          ease: "power2.out",
-          stagger: 0.5
-      }, "+=0.3");
+      .to("#landingSubtitle .subtitle-item", { duration: 1, opacity: 1, ease: "power2.out", stagger: 0.5 }, "+=0.3");
   });
   
   // --- Reveal Main Content on First Scroll (Cancel Auto-scroll) ---
@@ -229,13 +221,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Additional scroll handling logic if needed.
   }, 200), { passive: true });
   
-  /* === Resume Modal Functionality === */
+  /* === Modal Functionality for Channel 1 Buttons === */
+  // Resume Modal (already implemented)
   const resumeButton = document.getElementById('resumeButton');
   const resumeModal = document.getElementById('resumeModal');
-  const resumeStatic = document.getElementById('resumeStatic');
   const closeResume = document.getElementById('closeResume');
   
-  // Open Resume Modal with GSAP animations
   const openResumeModal = () => {
     resumeModal.style.display = 'block';
     gsap.fromTo(
@@ -243,15 +234,13 @@ document.addEventListener('DOMContentLoaded', () => {
       { opacity: 0, y: 50, scale: 0.9 },
       { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power2.out" }
     );
-    // Trigger static flicker effect on resume modal
     gsap.fromTo(
-      resumeStatic,
+      document.getElementById('resumeStatic'),
       { opacity: 0.2 },
       { opacity: 0, duration: 0.4, ease: "power2.inOut", repeat: 3, yoyo: true }
     );
   };
   
-  // Close Resume Modal with GSAP animations
   const closeResumeModal = () => {
     gsap.to(resumeModal, {
       opacity: 0,
@@ -268,17 +257,93 @@ document.addEventListener('DOMContentLoaded', () => {
   resumeButton.addEventListener('click', openResumeModal);
   closeResume.addEventListener('click', closeResumeModal);
   
-  // Close modal on Escape key
+  // About Me Modal
+  const aboutButton = document.getElementById('aboutButton');
+  const aboutModal = document.getElementById('aboutModal');
+  const closeAbout = document.getElementById('closeAbout');
+  
+  const openAboutModal = () => {
+    aboutModal.style.display = 'block';
+    gsap.fromTo(
+      aboutModal,
+      { opacity: 0, y: 50, scale: 0.9 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power2.out" }
+    );
+    gsap.fromTo(
+      document.getElementById('aboutStatic'),
+      { opacity: 0.2 },
+      { opacity: 0, duration: 0.4, ease: "power2.inOut", repeat: 3, yoyo: true }
+    );
+  };
+  
+  const closeAboutModal = () => {
+    gsap.to(aboutModal, {
+      opacity: 0,
+      y: 50,
+      scale: 0.9,
+      duration: 0.4,
+      ease: "power2.in",
+      onComplete: () => {
+        aboutModal.style.display = 'none';
+      }
+    });
+  };
+  
+  aboutButton.addEventListener('click', openAboutModal);
+  closeAbout.addEventListener('click', closeAboutModal);
+  
+  // Contact Modal
+  const contactButton = document.getElementById('contactButton');
+  const contactModal = document.getElementById('contactModal');
+  const closeContact = document.getElementById('closeContact');
+  
+  const openContactModal = () => {
+    contactModal.style.display = 'block';
+    gsap.fromTo(
+      contactModal,
+      { opacity: 0, y: 50, scale: 0.9 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power2.out" }
+    );
+    gsap.fromTo(
+      document.getElementById('contactStatic'),
+      { opacity: 0.2 },
+      { opacity: 0, duration: 0.4, ease: "power2.inOut", repeat: 3, yoyo: true }
+    );
+  };
+  
+  const closeContactModal = () => {
+    gsap.to(contactModal, {
+      opacity: 0,
+      y: 50,
+      scale: 0.9,
+      duration: 0.4,
+      ease: "power2.in",
+      onComplete: () => {
+        contactModal.style.display = 'none';
+      }
+    });
+  };
+  
+  contactButton.addEventListener('click', openContactModal);
+  closeContact.addEventListener('click', closeContactModal);
+  
+  // Close modals on Escape key
   document.addEventListener('keydown', (e) => {
-    if (e.key === "Escape" && resumeModal.style.display === 'block') {
-      closeResumeModal();
+    if (e.key === "Escape") {
+      if (resumeModal.style.display === 'block') closeResumeModal();
+      if (aboutModal.style.display === 'block') closeAboutModal();
+      if (contactModal.style.display === 'block') closeContactModal();
     }
   });
   
-  // Optional: Close resume modal when clicking outside the content area
-  resumeModal.addEventListener('click', (e) => {
-    if (e.target === resumeModal) {
-      closeResumeModal();
-    }
+  // Close modal when clicking outside the modal content
+  [resumeModal, aboutModal, contactModal].forEach(modal => {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        if (modal === resumeModal) closeResumeModal();
+        if (modal === aboutModal) closeAboutModal();
+        if (modal === contactModal) closeContactModal();
+      }
+    });
   });
 });
