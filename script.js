@@ -12,9 +12,7 @@ function onYouTubeIframeAPIReady() {
       modestbranding: 1,
       showinfo: 0,
       rel: 0,
-      // If needed, you can hard-code your origin below:
-      // origin: 'https://yourdomain.github.io'
-      origin: window.location.origin
+      origin: window.location.origin  // Use your domain; hard-code if necessary
     },
     events: {
       'onReady': onPlayerReady,
