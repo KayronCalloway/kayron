@@ -78,8 +78,9 @@ body {
   height: 100vh;
   z-index: -2;
   overflow: hidden;
-  /* Instead of display:none, we use opacity: 0 so the element is rendered */
+  /* Instead of display:none, we use opacity: 0 */
   opacity: 0;
+  transition: opacity 0.5s ease;
 }
 .video-background iframe {
   width: 100%;
