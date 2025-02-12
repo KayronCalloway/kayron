@@ -46,7 +46,7 @@
 /* --- Import Merova Font --- */
 @font-face {
   font-family: 'Merova';
-  src: url('Merova.var.woff2') format('woff2-variations'),
+  src: url('Merova.woff2') format('woff2'),
        url('Merova.otf') format('opentype');
   font-display: swap;
 }
@@ -433,10 +433,4 @@ body {
 /* 4K+ Display Optimization */
 @media (min-width: 3840px) {
   .channel-section {
-    padding: 120px 80px;
-  }
-  .channel-button {
-    font-size: 2rem;
-    padding: 20px 32px;
-  }
-}
+    padding
