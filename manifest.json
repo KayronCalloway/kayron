@@ -1,0 +1,501 @@
+// Global variables for video mute state and YouTube Player
+let soundMuted = true; // Start muted for autoplay
+let videoPlayer;
+
+function onYouTubeIframeAPIReady() {
+  console.log("Origin:", window.location.origin);
+  videoPlayer = new YT.Player('videoIframe', {
+    videoId: 'KISNE4qOIBM', // Your video ID
+    playerVars: {
+      autoplay: 1,
+      controls: 0,
+      loop: 1,
+      playlist: 'KISNE4qOIBM', // Required for looping
+      modestbranding: 1,
+      showinfo: 0,
+      rel: 0,
+      origin: "https://kayroncalloway.github.io/", // trailing slash
+      host: "https://www.youtube.com"
+    },
+    events: {
+      onReady: onPlayerReady,
+      onError: onPlayerError
+    }
+  });
+}
+
+function onPlayerReady(event) {
+  if (soundMuted) {
+    event.target.mute();
+  } else {
+    event.target.unMute();
+  }
+  // Adaptive video quality based on network conditions
+  if (navigator.connection) {
+    const qualityMap = {
+      '4g': 'hd1080',
+      '3g': 'large',
+      '2g': 'small'
+    };
+    event.target.setPlaybackQuality(qualityMap[navigator.connection.effectiveType] || 'default');
+  }
+}
+
+function onPlayerError(event) {
+  console.error("Video Player Error:", event.data);
+  // Show fallback image if video fails
+  document.getElementById('videoFallbackContainer').style.display = 'block';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Cache DOM elements
+  const powerButton = document.getElementById('powerButton');
+  const landing = document.getElementById('landing');
+  const landingName = document.getElementById('landingName');
+  const landingSubtitle = document.getElementById('landingSubtitle');
+  const mainContent = document.getElementById('mainContent');
+  const header = document.getElementById('header');
+  const menuButton = document.getElementById('menuButton');
+  const tvGuide = document.getElementById('tvGuide');
+  const closeGuide = document.getElementById('closeGuide');
+  const guideItems = document.querySelectorAll('.tv-guide-list nav ul li');
+  const staticOverlay = document.getElementById('staticOverlay');
+  const clickSound = document.getElementById('clickSound');
+  const muteButton = document.getElementById('muteButton');
+  const backToTop = document.getElementById('backToTop');
+  const videoBackground = document.getElementById('videoBackground');
+  const a11yChannel = document.getElementById('a11y-channel');
+
+  let lastFocusedElement;
+  let landingSequenceComplete = false;
+  let autoScrollTimeout;
+  let currentChannel = null;
+  let sporadicGlitchStarted = false;
+
+  // Preload channel click sounds
+  const channelSounds = Array.from({ length: 3 }, (_, i) => {
+    const audio = new Audio(`click-${i}.mp3`);
+    audio.setAttribute('preload', 'auto');
+    return audio;
+  });
+  const playRandomChannelSound = () => {
+    if (soundMuted) return;
+    const randomIndex = Math.floor(Math.random() * channelSounds.length);
+    channelSounds[randomIndex].play().catch(error => console.error('Audio playback failed:', error));
+  };
+
+  // Accessibility: Announce channel changes
+  function announce(message, priority = 'polite') {
+    a11yChannel.setAttribute('aria-live', priority);
+    a11yChannel.textContent = message;
+    setTimeout(() => a11yChannel.removeAttribute('aria-live'), 100);
+  }
+
+  // Performance Monitoring: Web Vitals tracking
+  webVitals.getCLS(metric => sendToAnalytics('CLS', metric));
+  webVitals.getFID(metric => sendToAnalytics('FID', metric));
+  webVitals.getLCP(metric => sendToAnalytics('LCP', metric));
+
+  function sendToAnalytics(metricName, metric) {
+    const body = {
+      [metricName]: metric.value,
+      path: window.location.pathname
+    };
+    navigator.sendBeacon('/analytics', JSON.stringify(body));
+    console.log(`Tracked ${metricName}:`, metric.value);
+  }
+
+  // Haptic Feedback for Mobile
+  function triggerHaptic() {
+    if (navigator.vibrate) {
+      navigator.vibrate([50, 30, 50]);
+    }
+  }
+
+  // Enhanced Touch: Swipe Navigation
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+  document.addEventListener('touchend', e => {
+    const touchEndX = e.changedTouches[0].screenX;
+    const diffX = touchStartX - touchEndX;
+    if (Math.abs(diffX) > 50) {
+      const direction = diffX > 0 ? 'next' : 'prev';
+      navigateChannels(direction);
+    }
+  });
+
+  function navigateChannels(direction) {
+    // A simple implementation: find current channel and navigate to next/prev section
+    const sections = Array.from(document.querySelectorAll('.channel-section'));
+    const currentIndex = sections.findIndex(sec => sec.id === currentChannel);
+    let targetIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
+    if (targetIndex < 0) targetIndex = 0;
+    if (targetIndex >= sections.length) targetIndex = sections.length - 1;
+    sections[targetIndex].scrollIntoView({ behavior: 'smooth' });
+    announce(`Now viewing channel ${targetIndex + 1}`);
+    triggerHaptic();
+  }
+
+  // Code Splitting: Dynamic module loading for channel content (stub)
+  async function loadChannelContent(channelId) {
+    try {
+      const module = await import(`./channels/${channelId}.js`);
+      module.init();
+    } catch (err) {
+      console.warn(`Module for ${channelId} failed to load.`, err);
+    }
+  }
+
+  // Service Worker Registration (for offline support)
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => console.log('Service Worker registered:', reg))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    });
+  }
+
+  // Touch events for power button glow
+  powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
+  powerButton.addEventListener('touchend', () =>
+    setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
+  );
+
+  // Reveal Main Content after power button press
+  const revealMainContent = () => {
+    window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
+    gsap.to(landing, {
+      duration: 0.5,
+      opacity: 0,
+      onComplete: () => {
+        landing.style.display = "none";
+        mainContent.style.display = "block";
+        document.body.style.overflow = "auto";
+        gsap.to(header, { duration: 0.5, opacity: 1 });
+      }
+    });
+  };
+
+  // Landing sequence animation
+  powerButton.addEventListener('click', () => {
+    powerButton.style.pointerEvents = 'none';
+    if (clickSound) {
+      clickSound.play().catch(error => console.error('Click sound failed:', error));
+    }
+    gsap.to(powerButton, {
+      duration: 0.3,
+      opacity: 0,
+      ease: "power2.out",
+      onComplete: () => powerButton.style.display = "none"
+    });
+    const tl = gsap.timeline({
+      onComplete: () => {
+        landingSequenceComplete = true;
+        muteButton.style.display = 'block';
+        gsap.to(muteButton, { duration: 0.5, opacity: 1 });
+        autoScrollTimeout = setTimeout(() => {
+          if (landing.style.display !== "none") revealMainContent();
+        }, 3000);
+        if (!sporadicGlitchStarted) {
+          sporadicGlitchStarted = true;
+          scheduleSporadicGlitch();
+        }
+      }
+    });
+    tl.to(landing, { duration: 0.15, backgroundColor: "#fff", ease: "power2.out" })
+      .to(landing, { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" })
+      .to(staticOverlay, { duration: 0.2, opacity: 0.3 })
+      .to(staticOverlay, { duration: 0.2, opacity: 0 })
+      .to(landingName, { duration: 1.2, width: "100%", opacity: 1, ease: "power2.out" })
+      .to(landingSubtitle, { duration: 0.7, opacity: 1, ease: "power2.out" }, "-=0.3")
+      .to("#landingSubtitle .subtitle-item", { duration: 1, opacity: 1, ease: "power2.out", stagger: 0.5 }, "+=0.3");
+  });
+
+  // Cancel auto-scroll on manual scroll
+  window.addEventListener('scroll', () => {
+    if (landingSequenceComplete && landing.style.display !== "none") {
+      clearTimeout(autoScrollTimeout);
+      revealMainContent();
+    }
+  }, { once: true, passive: true });
+
+  // Parallax effect for video background (only for Channel 1)
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    if (currentChannel === 'section1') {
+      videoBackground.style.transform = `translateY(${scrolled * 0.2}px)`;
+    }
+  });
+
+  // Back-to-Top Button
+  window.addEventListener('scroll', () => {
+    backToTop.style.display = window.pageYOffset > 300 ? 'block' : 'none';
+  });
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  // TV Guide interactions
+  menuButton.addEventListener('click', () => {
+    tvGuide.style.display = 'flex';
+    setTimeout(() => {
+      tvGuide.style.opacity = 1;
+      tvGuide.setAttribute('aria-hidden', 'false');
+    }, 10);
+  });
+  closeGuide.addEventListener('click', () => {
+    tvGuide.style.opacity = 0;
+    tvGuide.setAttribute('aria-hidden', 'true');
+    setTimeout(() => tvGuide.style.display = 'none', 500);
+  });
+  guideItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const targetSection = document.getElementById(item.getAttribute('data-target'));
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+        tvGuide.style.opacity = 0;
+        tvGuide.setAttribute('aria-hidden', 'true');
+        setTimeout(() => tvGuide.style.display = 'none', 500);
+        announce(`Now viewing ${item.querySelector('.channel-title').textContent}`);
+        triggerHaptic();
+      }
+    });
+  });
+
+  // IntersectionObserver for channel transitions & dynamic module loading
+  const observerOptions = { root: null, threshold: 0.7 };
+  const observerCallback = entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const newChannel = entry.target.id;
+        if (currentChannel !== newChannel) {
+          currentChannel = newChannel;
+          playRandomChannelSound();
+          triggerChannelStatic();
+          animateChannelNumber(newChannel);
+          announce(`Now viewing ${document.querySelector(`[data-target="${newChannel}"] .channel-title`)?.textContent || 'channel'}`);
+          // Lazy-load additional channel content (if defined)
+          const moduleName = entry.target.dataset.module;
+          if (moduleName) {
+            loadChannelContent(moduleName);
+          }
+          // Fade video background in/out depending on channel
+          if (currentChannel === 'section1') {
+            gsap.to(videoBackground, { duration: 0.5, opacity: 1 });
+          } else {
+            gsap.to(videoBackground, { duration: 0.5, opacity: 0 });
+          }
+        }
+      }
+    });
+  };
+  const observer = new IntersectionObserver(observerCallback, observerOptions);
+  document.querySelectorAll('.channel-section').forEach(section => observer.observe(section));
+
+  const triggerChannelStatic = () => {
+    gsap.to(staticOverlay, {
+      duration: 0.2,
+      opacity: 0.3,
+      onComplete: () => gsap.to(staticOverlay, { duration: 0.2, opacity: 0 })
+    });
+  };
+
+  const animateChannelNumber = channelId => {
+    const channelOverlay = document.querySelector(`#${channelId} .channel-number-overlay`);
+    if (channelOverlay) {
+      gsap.fromTo(channelOverlay, { scale: 1, filter: "brightness(1)" },
+        { scale: 1.2, filter: "brightness(2)", duration: 0.2, yoyo: true, repeat: 1 });
+    }
+  };
+
+  // Mute Button: Toggle sound
+  muteButton.addEventListener('click', () => {
+    soundMuted = !soundMuted;
+    muteButton.textContent = soundMuted ? "Unmute" : "Mute";
+    if (videoPlayer) {
+      soundMuted ? videoPlayer.mute() : videoPlayer.unMute();
+    }
+  });
+
+  const throttle = (func, delay) => {
+    let timeout = null;
+    return (...args) => {
+      if (!timeout) {
+        timeout = setTimeout(() => {
+          func(...args);
+          timeout = null;
+        }, delay);
+      }
+    };
+  };
+  window.addEventListener('scroll', throttle(() => {
+    // Additional scroll handling if needed.
+  }, 200), { passive: true });
+
+  /* --- Modal Functionality with Focus Trap --- */
+  const trapFocus = (modal) => {
+    const focusableSelectors = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]';
+    const focusableElements = modal.querySelectorAll(focusableSelectors);
+    if (focusableElements.length === 0) return;
+    const firstFocusable = focusableElements[0];
+    const lastFocusable = focusableElements[focusableElements.length - 1];
+
+    const handleFocusTrap = (e) => {
+      if (e.key === 'Tab') {
+        if (e.shiftKey) {
+          if (document.activeElement === firstFocusable) {
+            e.preventDefault();
+            lastFocusable.focus();
+          }
+        } else {
+          if (document.activeElement === lastFocusable) {
+            e.preventDefault();
+            firstFocusable.focus();
+          }
+        }
+      }
+    };
+
+    modal.addEventListener('keydown', handleFocusTrap);
+    modal._handleFocusTrap = handleFocusTrap;
+    firstFocusable.focus();
+  };
+
+  const releaseFocusTrap = (modal) => {
+    if (modal._handleFocusTrap) {
+      modal.removeEventListener('keydown', modal._handleFocusTrap);
+      delete modal._handleFocusTrap;
+    }
+    if (lastFocusedElement) {
+      lastFocusedElement.focus();
+    }
+  };
+
+  // Animate modal-box entrance with a dimensional effect
+  const animateModalIn = (modalOverlay, modalStaticId) => {
+    const modalBox = modalOverlay.querySelector('.modal-box');
+    gsap.fromTo(modalBox, { opacity: 0, y: -50, scale: 0.95, rotationX: 15, transformPerspective: 1000 },
+      { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 0.8, ease: "power2.out" });
+    gsap.fromTo(document.getElementById(modalStaticId), { x: -2, y: -2 },
+      { x: 2, y: 2, duration: 0.4, ease: "power2.inOut", yoyo: true, repeat: 1 });
+    trapFocus(modalOverlay);
+  };
+
+  const closeModal = (modalOverlay) => {
+    const modalBox = modalOverlay.querySelector('.modal-box');
+    releaseFocusTrap(modalOverlay);
+    gsap.to(modalBox, {
+      opacity: 0,
+      y: -50,
+      scale: 0.95,
+      duration: 0.5,
+      ease: "power2.in",
+      onComplete: () => {
+        modalOverlay.style.display = 'none';
+      }
+    });
+  };
+
+  // Resume Modal
+  const resumeButton = document.getElementById('resumeButton');
+  const resumeModal = document.getElementById('resumeModal');
+  const closeResume = document.getElementById('closeResume');
+
+  resumeButton.addEventListener('click', () => {
+    lastFocusedElement = document.activeElement;
+    resumeModal.style.display = 'flex';
+    animateModalIn(resumeModal, 'resumeStatic');
+  });
+  closeResume.addEventListener('click', () => closeModal(resumeModal));
+
+  // About Modal
+  const aboutButton = document.getElementById('aboutButton');
+  const aboutModal = document.getElementById('aboutModal');
+  const closeAbout = document.getElementById('closeAbout');
+
+  aboutButton.addEventListener('click', () => {
+    lastFocusedElement = document.activeElement;
+    aboutModal.style.display = 'flex';
+    animateModalIn(aboutModal, 'aboutStatic');
+  });
+  closeAbout.addEventListener('click', () => closeModal(aboutModal));
+
+  // Contact Modal
+  const contactButton = document.getElementById('contactButton');
+  const contactModal = document.getElementById('contactModal');
+  const closeContact = document.getElementById('closeContact');
+
+  contactButton.addEventListener('click', () => {
+    lastFocusedElement = document.activeElement;
+    contactModal.style.display = 'flex';
+    animateModalIn(contactModal, 'contactStatic');
+  });
+  closeContact.addEventListener('click', () => closeModal(contactModal));
+
+  // Close modals on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === "Escape") {
+      if (resumeModal.style.display === 'flex') closeModal(resumeModal);
+      if (aboutModal.style.display === 'flex') closeModal(aboutModal);
+      if (contactModal.style.display === 'flex') closeModal(contactModal);
+    }
+  });
+
+  // Close modal when clicking outside the modal box
+  [resumeModal, aboutModal, contactModal].forEach(modal => {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal(modal);
+      }
+    });
+  });
+
+  // Advanced: WebGL Scanline Effect (stub)
+  function addScanlines() {
+    if (typeof THREE !== 'undefined') {
+      const geometry = new THREE.PlaneGeometry(2, 2);
+      const scanlineShader = new THREE.ShaderMaterial({
+        uniforms: {
+          time: { value: 0 }
+        },
+        vertexShader: `
+          varying vec2 vUv;
+          void main() {
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+          }
+        `,
+        fragmentShader: `
+          uniform float time;
+          varying vec2 vUv;
+          void main() {
+            float scanline = sin(vUv.y * 800.0 + time * 10.0) * 0.1;
+            gl_FragColor = vec4(vec3(scanline), 0.2);
+          }
+        `,
+        transparent: true
+      });
+      // Stub: In a real implementation, you would set up a Three.js scene and add the mesh.
+      console.log("WebGL scanlines effect initialized.");
+    }
+  }
+  // Optionally, call addScanlines() if Three.js is loaded
+
+  // Advanced: AI-Powered Content Recommendations (stub)
+  async function analyzeInteractionPatterns() {
+    if (typeof tf !== 'undefined') {
+      try {
+        const model = await tf.loadGraphModel('rec-model.json');
+        const interactions = Array.from(document.querySelectorAll('.channel-section')).map(sec => sec.intersectionRatio || 0);
+        const prediction = model.predict(tf.tensor([interactions]));
+        console.log("AI Recommendation Prediction:", prediction.dataSync());
+        // Stub: update the UI based on prediction
+      } catch (err) {
+        console.error("Failed to load AI model:", err);
+      }
+    }
+  }
+  // Optionally, call analyzeInteractionPatterns() on a timer or specific event
+});
