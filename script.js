@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .to("#landingSubtitle .subtitle-item", { duration: 1, opacity: 1, ease: "power2.out", stagger: 0.5 }, "+=0.3");
   });
   
-  // Cancel auto-scroll if user manually scrolls before timeout
+  // Cancel auto-scroll on manual scroll before timeout
   window.addEventListener('scroll', () => {
     if (landingSequenceComplete && landing.style.display !== "none") {
       clearTimeout(autoScrollTimeout);
@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   // IntersectionObserver for channel animations & video background visibility
-  const observerOptions = { root: mainContent, threshold: 0.7 };
+  const observerOptions = { root: null, threshold: 0.7 };  // Use viewport as root
   const observerCallback = entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
   
-  // Mute Button: Toggle sound for channel sounds and video
+  // Mute Button: Toggle sound for both channel sounds and video
   muteButton.addEventListener('click', () => {
     soundMuted = !soundMuted;
     muteButton.textContent = soundMuted ? "Unmute" : "Mute";
