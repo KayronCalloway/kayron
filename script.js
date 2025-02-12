@@ -1,3 +1,6 @@
+// Declare global variable(s) needed by the YouTube API
+var soundMuted = false; // global variable for video mute state
+
 // Global variable for YouTube Player
 let videoPlayer;
 function onYouTubeIframeAPIReady() {
@@ -19,6 +22,7 @@ function onYouTubeIframeAPIReady() {
   });
 }
 function onPlayerReady(event) {
+  // Use the global soundMuted variable
   if (soundMuted) {
     event.target.mute();
   } else {
@@ -48,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const videoBackground = document.getElementById('videoBackground');
   
   let lastFocusedElement;
-  let soundMuted = false;
+  // Note: soundMuted is global now.
   let landingSequenceComplete = false;
   let autoScrollTimeout;
   let currentChannel = null;
@@ -299,10 +303,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
   
-  // Animate modal-box entrance with a flow-out effect from the top
+  // Animate modal-box entrance with a gentle flow-out from the top
   const animateModalIn = (modalOverlay, modalStaticId) => {
     const modalBox = modalOverlay.querySelector('.modal-box');
-    gsap.fromTo(modalBox, { opacity: 0, y: -30, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power2.out" });
+    gsap.fromTo(modalBox, { opacity: 0, y: -100, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power2.out" });
     gsap.fromTo(document.getElementById(modalStaticId), { x: -2, y: -2 }, { x: 2, y: 2, duration: 0.4, ease: "power2.inOut", yoyo: true, repeat: 1 });
     trapFocus(modalOverlay);
   };
@@ -312,7 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
     releaseFocusTrap(modalOverlay);
     gsap.to(modalBox, {
       opacity: 0,
-      y: -30,
+      y: -100,
       scale: 0.95,
       duration: 0.5,
       ease: "power2.in",
