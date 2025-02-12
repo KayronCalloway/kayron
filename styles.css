@@ -1,282 +1,476 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>TV Portfolio</title>
-    <link rel="stylesheet" href="styles.css" />
+/* --- CSS Variables --- */
+:root {
+  --bg-color: #000;
+  --primary-color: #fff;
+  --header-bg: rgba(0, 0, 0, 0.85);
+  --static-duration: 0.3s;
+  --font-family-base: 'Merova', sans-serif;
+  --spacing-small: 8px;
+  --spacing-medium: 16px;
+  --spacing-large: 24px;
+  --breakpoint-mobile: 600px;
+}
 
-    <!-- Load YouTube IFrame API -->
-    <script src="https://www.youtube.com/iframe_api"></script>
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--primary-color);
+  color: var(--bg-color);
+  padding: 8px 16px;
+  z-index: 1000;
+  transition: top 0.3s;
+}
+.skip-link:focus {
+  top: 0;
+}
 
-    <!-- GSAP for animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" defer></script>
-    <script src="script.js" defer></script>
+/* Back to Top Button */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: var(--primary-color);
+  color: var(--bg-color);
+  border: none;
+  padding: 10px;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+  z-index: 400;
+  transition: opacity 0.3s;
+}
 
-    <!-- Fallback message for no JavaScript -->
-    <noscript>
-      <p>
-        This site requires JavaScript to function properly. Please enable JavaScript in your browser settings.
-      </p>
-    </noscript>
-  </head>
-  <body>
-    <!-- Skip Navigation -->
-    <a href="#mainContent" class="skip-link">Skip to Content</a>
+/* --- Import Merova Font --- */
+@font-face {
+  font-family: 'Merova';
+  src: url('Merova.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
 
-    <!-- Audio for power button click sound -->
-    <audio id="clickSound" src="click.mp3" preload="auto"></audio>
+/* --- Base Styles & Reset --- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    <!-- Video Background (used only on Channel 1) -->
-    <div id="videoBackground" class="video-background">
-      <div id="videoContainer">
-        <!-- The iframe will be controlled by the YouTube IFrame API -->
-        <iframe
-          id="videoIframe"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        ></iframe>
-      </div>
-    </div>
+body {
+  background: var(--bg-color);
+  color: var(--primary-color);
+  font-family: var(--font-family-base);
+  overflow: hidden;
+}
 
-    <!-- Landing Overlay (shown before power button is pressed) -->
-    <div id="landing">
-      <!-- Power Button -->
-      <div
-        class="power-button"
-        id="powerButton"
-        role="button"
-        tabindex="0"
-        aria-label="Turn on"
-      >
-        <svg class="power-icon" viewBox="0 0 100 100" aria-hidden="true">
-          <title>Power Button Icon</title>
-          <path d="M50,10 A40,40 0 1,1 49.9,10"></path>
-          <line x1="50" y1="0" x2="50" y2="40"></line>
-        </svg>
-      </div>
-      <!-- Landing Name (initially hidden) -->
-      <div class="landing-name" id="landingName">Kayron Calloway</div>
-      <!-- Landing Subtitle -->
-      <div class="landing-subtitle" id="landingSubtitle">
-        <span class="subtitle-item">Creative Strategist.</span>
-        <span class="subtitle-item">Digital Storyteller.</span>
-        <span class="subtitle-item">Problem Solver.</span>
-      </div>
-    </div>
+/* Optimize animations */
+.landing-name,
+#staticOverlay,
+.channel-number-overlay {
+  will-change: transform, opacity;
+}
 
-    <!-- Static Overlay for Effects -->
-    <div id="staticOverlay"></div>
+/* --- Video Background --- */
+.video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2;
+  overflow: hidden;
+}
+.video-background iframe {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
 
-    <!-- Mute Button -->
-    <button id="muteButton" class="mute-button" aria-label="Mute Sound">
-      Mute
-    </button>
+/* --- Landing Overlay --- */
+#landing {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
 
-    <!-- Main Content (using semantic <main>) -->
-    <main id="mainContent">
-      <!-- Fixed Header -->
-      <header id="header">
-        <div class="header-name" id="headerName">Kayron Calloway</div>
-        <button id="menuButton" class="menu-button" aria-label="Open TV Guide">
-          Menu
-        </button>
-      </header>
+.power-button {
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  position: relative;
+  border-radius: 50%;
+  background-color: #111;
+}
 
-      <!-- Channel 1 -->
-      <section id="section1" class="channel-section">
-        <div class="channel-buttons">
-          <button id="resumeButton" class="channel-button" aria-label="View Resume">
-            Resume
-          </button>
-          <button id="aboutButton" class="channel-button" aria-label="About Me">
-            About Me
-          </button>
-          <button id="contactButton" class="channel-button" aria-label="Contact Info">
-            Contact
-          </button>
-        </div>
-        <div class="channel-number-overlay">CH 01</div>
-      </section>
+.power-button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 0, 0, 0.3);
+  filter: blur(10px);
+  pointer-events: none;
+  animation: pulsate 1.5s infinite;
+}
 
-      <!-- Additional Channels -->
-      <section id="section2" class="channel-section">
-        <h2>Consultant Work</h2>
-        <p>Featured project content for Consultant Work...</p>
-        <div class="channel-number-overlay">CH 02</div>
-      </section>
-      <section id="section3" class="channel-section">
-        <h2>Career Work</h2>
-        <p>Featured project content for Career Work...</p>
-        <div class="channel-number-overlay">CH 03</div>
-      </section>
-      <section id="section4" class="channel-section">
-        <h2>Role Models</h2>
-        <p>Featured project content for Role Models...</p>
-        <div class="channel-number-overlay">CH 04</div>
-      </section>
-      <section id="section5" class="channel-section">
-        <h2>Interests</h2>
-        <p>Featured project content for Interests...</p>
-        <div class="channel-number-overlay">CH 05</div>
-      </section>
-    </main>
+@keyframes pulsate {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.7;
+  }
+}
 
-    <!-- TV Guide Overlay Menu -->
-    <div id="tvGuide" class="tv-guide" aria-hidden="true">
-      <div class="tv-guide-header">Kayron Calloway</div>
-      <div class="tv-guide-list">
-        <nav>
-          <ul>
-            <li data-target="section1">
-              <span class="channel-number">CH 01</span>
-              <span class="channel-title">Home</span>
-            </li>
-            <li data-target="section2">
-              <span class="channel-number">CH 02</span>
-              <span class="channel-title">Consultant Work</span>
-            </li>
-            <li data-target="section3">
-              <span class="channel-number">CH 03</span>
-              <span class="channel-title">Career Work</span>
-            </li>
-            <li data-target="section4">
-              <span class="channel-number">CH 04</span>
-              <span class="channel-title">Role Models</span>
-            </li>
-            <li data-target="section5">
-              <span class="channel-number">CH 05</span>
-              <span class="channel-title">Interests</span>
-            </li>
-          </ul>
-        </nav>
-      </div>
-      <button id="closeGuide" class="close-guide" aria-label="Close TV Guide">
-        Close
-      </button>
-    </div>
+.power-icon {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.power-icon path,
+.power-icon line {
+  stroke: red;
+  stroke-width: 8;
+}
 
-    <!-- Resume Modal -->
-    <div id="resumeModal" class="modal-overlay" role="dialog" aria-modal="true">
-      <div class="modal-box" tabindex="-1">
-        <button id="closeResume" class="close-modal" aria-label="Close Resume">
-          &times;
-        </button>
-        <div class="modal-static" id="resumeStatic"></div>
-        <h2 class="modal-title">KAYRON E. CALLOWAY</h2>
-        <p class="modal-subtitle">
-          Los Angeles, CA | 310.498.8059 | KayronCalloway@gmail.com
-        </p>
-        <section class="modal-section">
-          <h3>PROFESSIONAL SUMMARY</h3>
-          <p>
-            Accomplished financial analyst, strategic consultant, and entrepreneurial innovator with extensive expertise.
-          </p>
-        </section>
-        <section class="modal-section">
-          <h3>PROFESSIONAL EXPERIENCE</h3>
-          <h4>Financial Analyst (Residuals) – Cast and Crew</h4>
-          <p>Los Angeles, CA | April 2019 - Present</p>
-          <ul>
-            <li>Administer and validate residual payment infrastructures.</li>
-            <li>Employ advanced econometric modeling and data visualization.</li>
-            <li>
-              Conduct contractual analyses and liaise with executive-level stakeholders at HBO,
-              Netflix, Starz, and Amazon.
-            </li>
-            <li>Spearheaded automation initiatives reducing processing time by 30%.</li>
-          </ul>
-          <h4>Freelance Consultant – Business Strategy & Development</h4>
-          <p>March 2016 - Present</p>
-          <ul>
-            <li>Delivered high-caliber consultancy in corporate structuring and operational streamlining.</li>
-            <li>
-              Architected holistic project frameworks integrating advanced financial modeling.
-            </li>
-            <li>Negotiated acquisitions and devised dynamic compensation paradigms.</li>
-          </ul>
-          <h4>Founder & Creative Director – Coloring with Gray</h4>
-          <p>Los Angeles, CA | 2024 - Present</p>
-          <ul>
-            <li>Launched Reflections of You, a bespoke fragrance portfolio.</li>
-            <li>
-              Engineered a brand ecosystem merging consumer psychology with artistic narrative.
-            </li>
-            <li>
-              Oversaw end-to-end product development and sustainability-driven production strategies.
-            </li>
-          </ul>
-        </section>
-        <section class="modal-section">
-          <h3>EDUCATION</h3>
-          <p>
-            Bachelor of Arts (B.A.) in Philosophy, California State University, Fullerton |
-            2014 (GPA: 3.03/4.0)
-          </p>
-        </section>
-        <section class="modal-section">
-          <h3>CERTIFICATIONS & SKILLS</h3>
-          <ul>
-            <li>AI Policy &amp; Ethics Certification (Expected Q3 2025)</li>
-            <li>Financial Modeling &amp; Valuation (Expected Q3 2025)</li>
-            <li>Advanced Brand Strategy (Expected Q3 2025)</li>
-            <li>
-              Financial &amp; Business Analytics, Brand &amp; Market Development, AI Governance
-            </li>
-          </ul>
-        </section>
-        <section class="modal-section">
-          <h3>VOLUNTEER &amp; ADDITIONAL INFO</h3>
-          <ul>
-            <li>Lead Basketball Camp Instructor</li>
-            <li>Academic Mentor &amp; Research Facilitator</li>
-            <li>Engaged in Urban Sustainability &amp; Philanthropy Initiatives</li>
-          </ul>
-        </section>
-      </div>
-    </div>
+.landing-name {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  color: var(--primary-color);
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+  letter-spacing: 0.2em;
+  transition: width 1s ease, opacity 1s ease;
+}
 
-    <!-- About Me Modal -->
-    <div id="aboutModal" class="modal-overlay" role="dialog" aria-modal="true">
-      <div class="modal-box" tabindex="-1">
-        <button id="closeAbout" class="close-modal" aria-label="Close About Me">
-          &times;
-        </button>
-        <div class="modal-static" id="aboutStatic"></div>
-        <h2 class="modal-title">About Me</h2>
-        <p class="modal-subtitle">
-          A creative and analytical mind behind innovative projects.
-        </p>
-        <section class="modal-section">
-          <p>
-            I am a financial analyst, strategic consultant, and entrepreneur with a passion for merging data-driven insights with creative storytelling.
-            My background in finance and business strategy empowers me to lead transformative projects where analytical rigor meets creative expression.
-          </p>
-        </section>
-      </div>
-    </div>
+.landing-subtitle {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  margin-top: 5px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
 
-    <!-- Contact Modal -->
-    <div id="contactModal" class="modal-overlay" role="dialog" aria-modal="true">
-      <div class="modal-box" tabindex="-1">
-        <button id="closeContact" class="close-modal" aria-label="Close Contact">
-          &times;
-        </button>
-        <div class="modal-static" id="contactStatic"></div>
-        <h2 class="modal-title">Contact Information</h2>
-        <section class="modal-section">
-          <p><strong>Location:</strong> Los Angeles, CA</p>
-          <p><strong>Phone:</strong> 310.498.8059</p>
-          <p>
-            <strong>Email:</strong>
-            <a href="mailto:KayronCalloway@gmail.com">KayronCalloway@gmail.com</a>
-          </p>
-        </section>
-      </div>
-    </div>
+.landing-subtitle .subtitle-item {
+  display: inline-block;
+  opacity: 0;
+  margin-right: 10px;
+}
 
-    <!-- Back to Top Button -->
-    <button id="backToTop" class="back-to-top" aria-label="Back to Top">↑</button>
-  </body>
-</html>
+/* --- Static Overlay for Effects --- */
+#staticOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('static.png') repeat;
+  opacity: 0;
+  z-index: 150;
+  pointer-events: none;
+  transition: opacity 0.3s ease-out;
+}
+
+/* --- Mute Button --- */
+.mute-button {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 8px 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  z-index: 350;
+  transition: opacity 0.3s;
+  display: none;
+}
+
+/* --- Main Content with Scroll Snap --- */
+#mainContent {
+  display: none;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  height: 100vh;
+}
+
+/* --- Fixed Header --- */
+#header {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  background: var(--header-bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  z-index: 300;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.header-name {
+  font-size: 1.5rem;
+}
+
+.menu-button {
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+/* --- Channel Sections --- */
+.channel-section {
+  height: 100vh;
+  padding: 80px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-align: start;
+  position: relative;
+  background: transparent;
+  text-align: center;
+}
+
+.channel-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.channel-button {
+  padding: 12px 20px;
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.channel-button:hover {
+  background: var(--primary-color);
+  color: var(--bg-color);
+  transform: scale(1.05);
+}
+
+.channel-number-overlay {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 2rem;
+  color: var(--primary-color);
+  opacity: 0.8;
+}
+
+/* --- TV Guide Overlay Menu --- */
+.tv-guide {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 400;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 40px;
+}
+
+.tv-guide-header {
+  font-size: 2rem;
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--primary-color);
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.tv-guide-list {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  width: auto;
+}
+
+.tv-guide-list nav ul {
+  list-style: none;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+}
+
+.tv-guide-list nav ul li {
+  font-size: 2rem;
+  margin: 20px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--primary-color);
+  cursor: pointer;
+}
+
+.close-guide {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+/* --- Modal Overlays --- */
+.modal-overlay {
+  display: none; /* Hidden by default; set to flex when activated via JS */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(200, 200, 200, 0.7);
+  z-index: 500;
+  /* Flex settings applied when shown */
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.modal-box {
+  background: rgba(0, 0, 0, 0.85);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: var(--primary-color);
+  padding: 20px;
+  max-width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modal-static {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('static.gif');
+  opacity: 0.1;
+  mix-blend-mode: overlay;
+  z-index: -1;
+}
+
+.modal-title {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.modal-subtitle {
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.modal-section {
+  margin-top: 20px;
+  padding-left: 10px;
+  border-left: 2px solid var(--primary-color);
+  text-align: left;
+}
+
+.modal-section ul {
+  list-style: disc;
+  margin-left: 20px;
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: var(--primary-color);
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+/* --- Responsive Mobile Enhancements --- */
+@media (max-width: 600px) {
+  .landing-name {
+    font-size: 2.2rem;
+    letter-spacing: 0.05em;
+    max-width: 95%;
+    margin: 0 auto;
+    padding: 0 2%;
+    overflow: visible;
+  }
+  .header-name {
+    font-size: 1rem;
+  }
+  .menu-button {
+    padding: 5px 10px;
+  }
+  .tv-guide-list nav ul li {
+    font-size: 1.5rem;
+  }
+  .mute-button {
+    font-size: 0.9rem;
+    padding: 5px 8px;
+  }
+  .channel-number-overlay {
+    font-size: 3rem;
+    bottom: calc(20px + env(safe-area-inset-bottom));
+    right: 20px;
+  }
+  .close-guide {
+    top: 20px;
+    font-size: 0.9rem;
+    padding: 5px 8px;
+  }
+}
+
+/* --- Reduce Motion Preference --- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation-duration: 0.001ms !important;
+  }
+}
