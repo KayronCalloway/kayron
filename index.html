@@ -4,9 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TV Portfolio</title>
-  <!-- Link to your CSS -->
   <link rel="stylesheet" href="styles.css" />
-  <!-- Load YouTube IFrame API (do not place any iframe tag here) -->
+  <!-- Load YouTube IFrame API (do not include any iframe here) -->
   <script src="https://www.youtube.com/iframe_api"></script>
   <!-- GSAP for animations -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" defer></script>
@@ -14,23 +13,23 @@
   <script src="script.js" defer></script>
 </head>
 <body>
-  <!-- Skip link for accessibility -->
+  <!-- Skip Navigation for Accessibility -->
   <a href="#mainContent" class="skip-link">Skip to Content</a>
   
-  <!-- Audio element for the power button click sound -->
+  <!-- Audio for Power Button Click -->
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
   
   <!-- Video Background Container -->
   <div id="videoBackground" class="video-background">
     <div id="videoContainer">
-      <!-- This iframe will be used by the YouTube IFrame API (do not add extra iframes elsewhere) -->
+      <!-- The YouTube IFrame API will create the player here -->
       <iframe id="videoIframe" frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen></iframe>
     </div>
   </div>
   
-  <!-- Landing Overlay (shown on initial load) -->
+  <!-- Landing Overlay (shown initially) -->
   <div id="landing">
     <div class="power-button" id="powerButton" role="button" tabindex="0" aria-label="Turn on">
       <svg class="power-icon" viewBox="0 0 100 100" aria-hidden="true">
@@ -52,9 +51,9 @@
   <!-- Mute Button (initially hidden) -->
   <button id="muteButton" class="mute-button" aria-label="Mute Sound">Mute</button>
   
-  <!-- Main Content (hidden until after the landing sequence) -->
+  <!-- Main Content (initially hidden) -->
   <div id="mainContent">
-    <!-- Fixed Header -->
+    <!-- Fixed Header: Now positioned at the top left -->
     <header id="header">
       <div class="header-name" id="headerName">Kayron Calloway</div>
       <button id="menuButton" class="menu-button" aria-label="Open TV Guide">Menu</button>
@@ -70,7 +69,7 @@
       <div class="channel-number-overlay">CH 01</div>
     </section>
     
-    <!-- Additional Channel Sections -->
+    <!-- Additional Channels -->
     <section id="section2" class="channel-section">
       <h2>Consultant Work</h2>
       <p>Featured project content for Consultant Work...</p>
