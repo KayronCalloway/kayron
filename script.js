@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // --- Recursively Schedule Sporadic Glitch ---
   const scheduleSporadicGlitch = () => {
-    const delay = Math.random() * 10000 + 10000; // Delay between 10-20 seconds
+    const delay = Math.random() * 10000 + 10000; // 10-20 seconds delay
     setTimeout(() => {
       distortAndWarpContent();
       scheduleSporadicGlitch();
@@ -222,127 +222,92 @@ document.addEventListener('DOMContentLoaded', () => {
   }, 200), { passive: true });
   
   /* === Modal Functionality for Channel 1 Buttons === */
-  // Resume Modal (already implemented)
-  const resumeButton = document.getElementById('resumeButton');
-  const resumeModal = document.getElementById('resumeModal');
-  const closeResume = document.getElementById('closeResume');
-  
-  const openResumeModal = () => {
-    resumeModal.style.display = 'block';
+  // Helper function to animate modal-box entrance
+  const animateModalIn = (modalOverlay, modalStaticId) => {
+    // Animate modal box entrance
     gsap.fromTo(
-      resumeModal,
+      modalOverlay.querySelector('.modal-box'),
       { opacity: 0, y: 50, scale: 0.9 },
       { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power2.out" }
     );
+    // Subtle shake effect on modal static background (one cycle)
     gsap.fromTo(
-      document.getElementById('resumeStatic'),
-      { opacity: 0.2 },
-      { opacity: 0, duration: 0.4, ease: "power2.inOut", repeat: 3, yoyo: true }
+      document.getElementById(modalStaticId),
+      { x: -2, y: -2 },
+      { x: 2, y: 2, duration: 0.4, ease: "power2.inOut", yoyo: true, repeat: 1 }
     );
   };
   
-  const closeResumeModal = () => {
-    gsap.to(resumeModal, {
+  // Function to close a modal overlay
+  const closeModal = (modalOverlay) => {
+    gsap.to(modalOverlay.querySelector('.modal-box'), {
       opacity: 0,
       y: 50,
       scale: 0.9,
       duration: 0.4,
       ease: "power2.in",
       onComplete: () => {
-        resumeModal.style.display = 'none';
+        modalOverlay.style.display = 'none';
       }
     });
   };
   
-  resumeButton.addEventListener('click', openResumeModal);
-  closeResume.addEventListener('click', closeResumeModal);
+  // Resume Modal
+  const resumeButton = document.getElementById('resumeButton');
+  const resumeModal = document.getElementById('resumeModal');
+  const closeResume = document.getElementById('closeResume');
+  
+  resumeButton.addEventListener('click', () => {
+    resumeModal.style.display = 'flex';
+    animateModalIn(resumeModal, 'resumeStatic');
+  });
+  
+  closeResume.addEventListener('click', () => {
+    closeModal(resumeModal);
+  });
   
   // About Me Modal
   const aboutButton = document.getElementById('aboutButton');
   const aboutModal = document.getElementById('aboutModal');
   const closeAbout = document.getElementById('closeAbout');
   
-  const openAboutModal = () => {
-    aboutModal.style.display = 'block';
-    gsap.fromTo(
-      aboutModal,
-      { opacity: 0, y: 50, scale: 0.9 },
-      { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power2.out" }
-    );
-    gsap.fromTo(
-      document.getElementById('aboutStatic'),
-      { opacity: 0.2 },
-      { opacity: 0, duration: 0.4, ease: "power2.inOut", repeat: 3, yoyo: true }
-    );
-  };
+  aboutButton.addEventListener('click', () => {
+    aboutModal.style.display = 'flex';
+    animateModalIn(aboutModal, 'aboutStatic');
+  });
   
-  const closeAboutModal = () => {
-    gsap.to(aboutModal, {
-      opacity: 0,
-      y: 50,
-      scale: 0.9,
-      duration: 0.4,
-      ease: "power2.in",
-      onComplete: () => {
-        aboutModal.style.display = 'none';
-      }
-    });
-  };
-  
-  aboutButton.addEventListener('click', openAboutModal);
-  closeAbout.addEventListener('click', closeAboutModal);
+  closeAbout.addEventListener('click', () => {
+    closeModal(aboutModal);
+  });
   
   // Contact Modal
   const contactButton = document.getElementById('contactButton');
   const contactModal = document.getElementById('contactModal');
   const closeContact = document.getElementById('closeContact');
   
-  const openContactModal = () => {
-    contactModal.style.display = 'block';
-    gsap.fromTo(
-      contactModal,
-      { opacity: 0, y: 50, scale: 0.9 },
-      { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power2.out" }
-    );
-    gsap.fromTo(
-      document.getElementById('contactStatic'),
-      { opacity: 0.2 },
-      { opacity: 0, duration: 0.4, ease: "power2.inOut", repeat: 3, yoyo: true }
-    );
-  };
+  contactButton.addEventListener('click', () => {
+    contactModal.style.display = 'flex';
+    animateModalIn(contactModal, 'contactStatic');
+  });
   
-  const closeContactModal = () => {
-    gsap.to(contactModal, {
-      opacity: 0,
-      y: 50,
-      scale: 0.9,
-      duration: 0.4,
-      ease: "power2.in",
-      onComplete: () => {
-        contactModal.style.display = 'none';
-      }
-    });
-  };
-  
-  contactButton.addEventListener('click', openContactModal);
-  closeContact.addEventListener('click', closeContactModal);
+  closeContact.addEventListener('click', () => {
+    closeModal(contactModal);
+  });
   
   // Close modals on Escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === "Escape") {
-      if (resumeModal.style.display === 'block') closeResumeModal();
-      if (aboutModal.style.display === 'block') closeAboutModal();
-      if (contactModal.style.display === 'block') closeContactModal();
+      if (resumeModal.style.display === 'flex') closeModal(resumeModal);
+      if (aboutModal.style.display === 'flex') closeModal(aboutModal);
+      if (contactModal.style.display === 'flex') closeModal(contactModal);
     }
   });
   
-  // Close modal when clicking outside the modal content
+  // Close modal when clicking outside the modal box
   [resumeModal, aboutModal, contactModal].forEach(modal => {
     modal.addEventListener('click', (e) => {
       if (e.target === modal) {
-        if (modal === resumeModal) closeResumeModal();
-        if (modal === aboutModal) closeAboutModal();
-        if (modal === contactModal) closeContactModal();
+        closeModal(modal);
       }
     });
   });
