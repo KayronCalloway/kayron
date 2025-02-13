@@ -33,10 +33,3 @@
     }
   ]
 }
-{
-  "scripts": {
-    "optimize": "imagemin assets/* --out-dir=dist/assets",
-    "bundle": "rollup -c",
-    "deploy": "npm run optimize && npm run bundle && firebase deploy"
-  }
-}
