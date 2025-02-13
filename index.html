@@ -11,7 +11,7 @@
   <!-- Content Security Policy -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' https://cdnjs.cloudflare.com https://unpkg.com;
+    script-src 'self' https://cdnjs.cloudflare.com https://unpkg.com https://www.youtube.com;
     style-src 'self' 'unsafe-inline';
     img-src 'self' data:;">
   <link rel="manifest" href="manifest.json">
@@ -20,10 +20,39 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" defer></script>
   <!-- Load Web Vitals -->
   <script src="https://unpkg.com/web-vitals@2/dist/web-vitals.umd.js" defer></script>
+  <!-- YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
   <!-- Your Custom JavaScript -->
   <script src="script.js" defer></script>
   <!-- Optional favicon -->
   <link rel="icon" href="favicon.ico" type="image/x-icon">
+  
+  <script>
+    // This function is called by the YouTube IFrame API when it's ready.
+    function onYouTubeIframeAPIReady() {
+      var player = new YT.Player('youtube-player', {
+        videoId: 'KISNE4qOIBM', // Video ID extracted from your link
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          loop: 1,
+          playlist: 'KISNE4qOIBM', // Required for looping the same video
+          modestbranding: 1,
+          rel: 0,
+          playsinline: 1,
+          fs: 0,
+          showinfo: 0
+        },
+        events: {
+          onReady: function(event) {
+            event.target.unMute(); // Attempt to play with sound (browsers might still restrict it)
+            event.target.playVideo();
+          }
+        }
+      });
+    }
+  </script>
+  
 </head>
 <body>
   <noscript>
@@ -67,7 +96,12 @@
     </header>
     
     <!-- Channel Sections -->
-    <section id="section1" class="channel-section" data-module="home">
+    <section id="section1" class="channel-section" data-module="home" style="position: relative;">
+      <!-- YouTube Video Background for Channel 1 -->
+      <div class="video-background">
+        <div id="youtube-player"></div>
+      </div>
+      
       <div class="channel-buttons">
         <!-- These buttons will trigger modals loaded by Channel 1 -->
         <button id="resumeButton" class="channel-button" aria-label="View Resume">Resume</button>
