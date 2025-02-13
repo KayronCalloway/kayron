@@ -10,25 +10,19 @@
   <title>TV Portfolio</title>
   <!-- Content Security Policy -->
   <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self' https://www.youtube.com;
-    script-src 'self' https://cdnjs.cloudflare.com https://www.youtube.com https://unpkg.com;
+    default-src 'self';
+    script-src 'self' https://cdnjs.cloudflare.com https://unpkg.com;
     style-src 'self' 'unsafe-inline';
     img-src 'self' data:;">
-  <!-- Removed Merova.woff2 preload (no longer needed) -->
-  <!-- <link rel="preload" href="Merova.woff2" as="font" type="font/woff2" crossorigin> -->
   <link rel="manifest" href="manifest.json">
-  <link rel="preconnect" href="https://www.youtube.com">
-  <link rel="dns-prefetch" href="https://www.youtube.com">
   <link rel="stylesheet" href="styles.css" />
-  <!-- Load YouTube IFrame API -->
-  <script src="https://www.youtube.com/iframe_api"></script>
   <!-- Load GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" defer></script>
   <!-- Load Web Vitals -->
   <script src="https://unpkg.com/web-vitals@2/dist/web-vitals.umd.js" defer></script>
   <!-- Your Custom JavaScript -->
   <script src="script.js" defer></script>
-  <!-- Optional favicon (ensure favicon.ico exists or update the link) -->
+  <!-- Optional favicon -->
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
@@ -43,18 +37,7 @@
   <a href="#mainContent" class="skip-link">Skip to Content</a>
   
   <!-- Audio for Power Button -->
-  <audio id="clickSound" src="click.mp3" preload="auto"></audio>
-  
-  <!-- Video Background Container -->
-  <div id="videoBackground" class="video-background">
-    <div id="videoContainer">
-      <!-- YouTube IFrame API initializes the player here -->
-      <iframe id="videoIframe" loading="lazy" poster="video-poster.jpg" frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen></iframe>
-    </div>
-    <!-- Removed video fallback container since video-fallback.jpg is not available -->
-  </div>
+  <audio id="clickSound" src="audio/click.mp3" preload="auto"></audio>
   
   <!-- Landing Overlay -->
   <div id="landing">
@@ -86,6 +69,7 @@
     <!-- Channel Sections -->
     <section id="section1" class="channel-section" data-module="home">
       <div class="channel-buttons">
+        <!-- These buttons will trigger modals loaded by Channel 1 -->
         <button id="resumeButton" class="channel-button" aria-label="View Resume">Resume</button>
         <button id="aboutButton" class="channel-button" aria-label="About Me">About Me</button>
         <button id="contactButton" class="channel-button" aria-label="Contact Info">Contact</button>
@@ -148,49 +132,6 @@
       </nav>
     </div>
     <button id="closeGuide" class="close-guide" aria-label="Close TV Guide">Close</button>
-  </div>
-  
-  <!-- Resume Modal -->
-  <div id="resumeModal" class="modal-overlay" role="dialog" aria-modal="true" style="display:none;">
-    <div class="modal-box" tabindex="-1">
-      <button id="closeResume" class="close-modal" aria-label="Close Resume">&times;</button>
-      <div class="modal-static" id="resumeStatic"></div>
-      <h2 class="modal-title">KAYRON E. CALLOWAY</h2>
-      <p class="modal-subtitle">Los Angeles, CA | 310.498.8059 | KayronCalloway@gmail.com</p>
-      <section class="modal-section">
-        <h3>PROFESSIONAL SUMMARY</h3>
-        <p>Accomplished financial analyst, strategic consultant, and entrepreneurial innovator with extensive expertise.</p>
-      </section>
-    </div>
-  </div>
-  
-  <!-- About Modal -->
-  <div id="aboutModal" class="modal-overlay" role="dialog" aria-modal="true" style="display:none;">
-    <div class="modal-box" tabindex="-1">
-      <button id="closeAbout" class="close-modal" aria-label="Close About Me">&times;</button>
-      <div class="modal-static" id="aboutStatic"></div>
-      <h2 class="modal-title">About Me</h2>
-      <p class="modal-subtitle">A creative and analytical mind behind innovative projects.</p>
-      <section class="modal-section">
-        <p>
-          I am a financial analyst, strategic consultant, and entrepreneur with a passion for merging data-driven insights with creative storytelling.
-        </p>
-      </section>
-    </div>
-  </div>
-  
-  <!-- Contact Modal -->
-  <div id="contactModal" class="modal-overlay" role="dialog" aria-modal="true" style="display:none;">
-    <div class="modal-box" tabindex="-1">
-      <button id="closeContact" class="close-modal" aria-label="Close Contact">&times;</button>
-      <div class="modal-static" id="contactStatic"></div>
-      <h2 class="modal-title">Contact Information</h2>
-      <section class="modal-section">
-        <p><strong>Location:</strong> Los Angeles, CA</p>
-        <p><strong>Phone:</strong> 310.498.8059</p>
-        <p><strong>Email:</strong> <a href="mailto:KayronCalloway@gmail.com">KayronCalloway@gmail.com</a></p>
-      </section>
-    </div>
   </div>
   
   <!-- Back to Top Button -->
