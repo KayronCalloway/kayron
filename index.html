@@ -8,7 +8,7 @@
   <!-- Viewport and PWA Settings -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TV Portfolio</title>
-  <!-- Content Security Policy (report-uri removed from meta) -->
+  <!-- Content Security Policy (report-uri removed) -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self' https://www.youtube.com;
     script-src 'self' https://cdnjs.cloudflare.com https://www.youtube.com https://unpkg.com;
@@ -44,20 +44,20 @@
   <!-- Skip Link for Accessibility -->
   <a href="#mainContent" class="skip-link">Skip to Content</a>
   
-  <!-- Audio for Power Button Click (if any) -->
+  <!-- Audio for Power Button (if needed) -->
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
   
   <!-- Video Background Container -->
   <div id="videoBackground" class="video-background">
     <div id="videoContainer">
-      <!-- The YouTube IFrame API will initialize the player here -->
+      <!-- The YouTube IFrame API will initialize the player in this iframe -->
       <iframe id="videoIframe" loading="lazy" poster="video-poster.jpg" frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen></iframe>
     </div>
-    <!-- Picture element fallback (if you have modern formats, otherwise just the image) -->
+    <!-- Picture element fallback -->
     <picture id="videoFallbackContainer" style="display:none;">
-      <!-- Uncomment these lines if you have AVIF/WebP versions -->
+      <!-- Uncomment these if you have AVIF/WebP versions -->
       <!-- <source srcset="video-fallback.avif" type="image/avif">
       <source srcset="video-fallback.webp" type="image/webp"> -->
       <img id="videoFallback" src="video-fallback.jpg" alt="Video fallback" style="width:100%; height:100%; object-fit:cover;">
@@ -85,7 +85,7 @@
   
   <!-- Main Content -->
   <div id="mainContent">
-    <!-- Persistent Fixed Header (always on top) -->
+    <!-- Persistent Fixed Header -->
     <header id="header">
       <div class="header-name" id="headerName">Kayron Calloway</div>
       <button id="menuButton" class="menu-button" aria-label="Toggle TV Guide">Menu</button>
@@ -169,7 +169,6 @@
         <h3>PROFESSIONAL SUMMARY</h3>
         <p>Accomplished financial analyst, strategic consultant, and entrepreneurial innovator with extensive expertise.</p>
       </section>
-      <!-- Add additional resume sections as needed -->
     </div>
   </div>
   
