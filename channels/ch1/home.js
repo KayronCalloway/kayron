@@ -1,5 +1,4 @@
 // channels/ch1/home.js
-// channels/ch1/home.js
 
 export function init() {
   // Fetch the modal HTML fragment for Channel 1
@@ -16,12 +15,12 @@ export function init() {
 
 function setupModalEventListeners() {
   // ------------------------------
-  // GSAP Animations (MacBook-style)
+  // GSAP Animations (Genie Effect)
   // ------------------------------
   function animateModalIn(modal) {
     gsap.fromTo(
       modal,
-      { opacity: 0, scale: 0.8, y: -100, rotationX: 10 },
+      { opacity: 0, scale: 0.8, y: -100, rotationX: 15 },
       { opacity: 1, scale: 1, y: 0, rotationX: 0, duration: 0.6, ease: "power2.out", transformOrigin: "top center" }
     );
   }
@@ -31,7 +30,7 @@ function setupModalEventListeners() {
       opacity: 0,
       scale: 0.8,
       y: -100,
-      rotationX: 10,
+      rotationX: 15,
       duration: 0.5,
       ease: "power2.in",
       transformOrigin: "top center",
