@@ -1,4 +1,6 @@
-// We'll define onYouTubeIframeAPIReady on window so the YouTube API can find it
+// -------------------------
+// YouTube IFrame API Setup
+// -------------------------
 window.onYouTubeIframeAPIReady = function() {
   console.log("Origin:", window.location.origin);
   videoPlayer = new YT.Player('videoIframe', {
@@ -36,7 +38,9 @@ function onPlayerError(event) {
   document.getElementById('videoFallbackContainer').style.display = 'block';
 }
 
-// Distort warp effect
+// -------------------------
+// Distort/Warp Effect
+// -------------------------
 function distortAndWarpContent() {
   gsap.fromTo(
     document.getElementById('mainContent'),
@@ -45,7 +49,11 @@ function distortAndWarpContent() {
   );
 }
 
+// -------------------------
+// DOMContentLoaded Handler
+// -------------------------
 document.addEventListener('DOMContentLoaded', () => {
+  // DOM elements
   const powerButton = document.getElementById('powerButton');
   const landing = document.getElementById('landing');
   const landingName = document.getElementById('landingName');
@@ -65,7 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let autoScrollTimeout;
   let currentChannel = null;
 
-  // Original channel-click sounds
+  // -------------------------
+  // Channel-Click Sounds
+  // -------------------------
   const channelSounds = Array.from({ length: 11 }, (_, i) => {
     const audio = new Audio(`channel-click${i + 1}.aif`);
     audio.preload = 'auto';
@@ -80,7 +90,9 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(message);
   }
 
-  // Web Vitals
+  // -------------------------
+  // Web Vitals Reporting
+  // -------------------------
   webVitals.getCLS(metric => sendToAnalytics('CLS', metric));
   webVitals.getFID(metric => sendToAnalytics('FID', metric));
   webVitals.getLCP(metric => sendToAnalytics('LCP', metric));
@@ -90,14 +102,18 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(`Tracked ${metricName}:`, metric.value);
   }
 
-  // Haptic feedback
+  // -------------------------
+  // Haptic Feedback
+  // -------------------------
   function triggerHaptic() {
     if (navigator.vibrate) {
       navigator.vibrate([50, 30, 50]);
     }
   }
 
-  // Swipe navigation
+  // -------------------------
+  // Swipe Navigation
+  // -------------------------
   let touchStartX = 0;
   document.addEventListener('touchstart', e => {
     touchStartX = e.changedTouches[0].screenX;
@@ -120,7 +136,9 @@ document.addEventListener('DOMContentLoaded', () => {
     triggerHaptic();
   }
 
-  // Dynamic module loading (stub)
+  // -------------------------
+  // Dynamic Module Loading (Stub)
+  // -------------------------
   async function loadChannelContent(channelId) {
     try {
       const module = await import(`./channels/${channelId}.js`);
@@ -130,22 +148,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Service worker
+  // -------------------------
+  // Service Worker Registration
+  // -------------------------
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js')
+      navigator.serviceWorker.register('./service-worker.js')
         .then(reg => console.log('Service Worker registered:', reg))
         .catch(err => console.error('Service Worker registration failed:', err));
     });
   }
 
-  // Touch glow on power button
+  // -------------------------
+  // Touch Glow on Power Button
+  // -------------------------
   powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
   powerButton.addEventListener('touchend', () =>
     setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
   );
 
-  // Reveal main content
+  // -------------------------
+  // Reveal Main Content
+  // -------------------------
   const revealMainContent = () => {
     window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
     gsap.to(landing, {
@@ -160,13 +184,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Landing sequence
+  // -------------------------
+  // Landing Sequence
+  // -------------------------
   powerButton.addEventListener('click', () => {
     powerButton.style.pointerEvents = 'none';
     if (clickSound) {
       clickSound.play().catch(error => console.error('Click sound failed:', error));
     }
-    // Unmute the video on user interaction to satisfy browser policies
+    // Unmute the video on user interaction (required for autoplay policies)
     if (videoPlayer && typeof videoPlayer.unMute === 'function') {
       videoPlayer.unMute();
     }
@@ -199,7 +225,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { once: true, passive: true });
 
-  // Parallax on channel 1
+  // -------------------------
+  // Parallax Effect on Channel 1
+  // -------------------------
   window.addEventListener('scroll', () => {
     if (currentChannel === 'section1') {
       const scrolled = window.pageYOffset;
@@ -207,7 +235,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Back to top
+  // -------------------------
+  // Back to Top Button
+  // -------------------------
   window.addEventListener('scroll', () => {
     backToTop.style.display = window.pageYOffset > 300 ? 'block' : 'none';
   });
@@ -215,7 +245,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
-  // Menu toggle
+  // -------------------------
+  // TV Guide Menu Toggle
+  // -------------------------
   menuButton.addEventListener('click', () => {
     if (tvGuide.style.display === 'flex') {
       tvGuide.style.opacity = 0;
@@ -248,7 +280,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // IntersectionObserver for channel transitions
+  // -------------------------
+  // Intersection Observer for Channel Transitions
+  // -------------------------
   const observerOptions = { root: null, threshold: 0.7 };
   const observerCallback = entries => {
     entries.forEach(entry => {
@@ -277,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const observer = new IntersectionObserver(observerCallback, observerOptions);
   document.querySelectorAll('.channel-section').forEach(section => observer.observe(section));
 
-  // Trigger static overlay
+  // Trigger static overlay effect
   const triggerChannelStatic = () => {
     gsap.to(staticOverlay, {
       duration: 0.2,
@@ -286,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Animate channel number
+  // Animate channel number overlay
   const animateChannelNumber = channelId => {
     const channelOverlay = document.querySelector(`#${channelId} .channel-number-overlay`);
     if (channelOverlay) {
@@ -295,7 +329,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  // -------------------------
   // Modal Functionality
+  // -------------------------
   const trapFocus = (modal) => {
     const focusableSelectors = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]';
     const focusableElements = modal.querySelectorAll(focusableSelectors);
@@ -351,7 +387,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  // -------------------------
   // Resume Modal
+  // -------------------------
   const resumeButton = document.getElementById('resumeButton');
   const resumeModal = document.getElementById('resumeModal');
   const closeResume = document.getElementById('closeResume');
@@ -361,7 +399,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   closeResume.addEventListener('click', () => closeModal(resumeModal));
 
+  // -------------------------
   // About Modal
+  // -------------------------
   const aboutButton = document.getElementById('aboutButton');
   const aboutModal = document.getElementById('aboutModal');
   const closeAbout = document.getElementById('closeAbout');
@@ -371,7 +411,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   closeAbout.addEventListener('click', () => closeModal(aboutModal));
 
+  // -------------------------
   // Contact Modal
+  // -------------------------
   const contactButton = document.getElementById('contactButton');
   const contactModal = document.getElementById('contactModal');
   const closeContact = document.getElementById('closeContact');
