@@ -43,8 +43,6 @@
   transition: opacity 0.3s;
 }
 
-/* Mute Button removed */
-
 /* --- Import Merova Font --- */
 @font-face {
   font-family: 'Merova';
@@ -264,7 +262,7 @@ body {
   transform: scale(1.05);
   box-shadow: 0 0 10px var(--primary-color);
 }
-/* Raised channel number overlay: adjust bottom offset */
+/* Raise channel number overlay a bit more */
 .channel-number-overlay {
   position: absolute;
   bottom: 40px;
