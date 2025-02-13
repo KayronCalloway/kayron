@@ -228,163 +228,43 @@ document.addEventListener('DOMContentLoaded', () => {
     tvGuide.setAttribute('aria-hidden', 'true');
     setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
   });
+
+  // TV guide navigation
   guideItems.forEach(item => {
     item.addEventListener('click', () => {
-      const targetSection = document.getElementById(item.getAttribute('data-target'));
-      if (targetSection) {
-        targetSection.scrollIntoView({ behavior: 'smooth' });
-        tvGuide.style.opacity = 0;
-        tvGuide.setAttribute('aria-hidden', 'true');
-        setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
-        announce(`Now viewing ${item.querySelector('.channel-title').textContent}`);
-        triggerHaptic();
-      }
+      currentChannel = item.dataset.channel;
+      playRandomChannelSound();
+      loadChannelContent(currentChannel);
+      announce(`Loading channel ${currentChannel}`);
+      menuButton.click();
     });
   });
 
-  // IntersectionObserver for channel transitions
-  const observerOptions = { root: null, threshold: 0.7 };
-  const observerCallback = entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const newChannel = entry.target.id;
-        if (currentChannel !== newChannel) {
-          currentChannel = newChannel;
-          playRandomChannelSound(); // channel-click sound
-          triggerChannelStatic();
-          animateChannelNumber(newChannel);
-          announce(`Now viewing channel ${newChannel.slice(-1)}`);
-          const moduleName = entry.target.dataset.module;
-          if (moduleName) {
-            loadChannelContent(moduleName);
-          }
-          distortAndWarpContent();
-          if (currentChannel === 'section1') {
-            gsap.to(videoBackground, { duration: 0.5, opacity: 1 });
-          } else {
-            gsap.to(videoBackground, { duration: 0.5, opacity: 0 });
-          }
+  // Accessibility improvements
+  document.body.addEventListener('keydown', (event) => {
+    if (event.code === 'Escape' && tvGuide.style.display === 'flex') {
+      closeGuide.click();
+    }
+  });
+
+  // Page transitions
+  const pageLinks = document.querySelectorAll('a');
+  pageLinks.forEach(link => {
+    link.addEventListener('click', event => {
+      event.preventDefault();
+      const target = event.target.href;
+      gsap.to(landing, {
+        duration: 0.3,
+        opacity: 0,
+        onComplete: () => {
+          window.location.href = target;
         }
-      }
-    });
-  };
-  const observer = new IntersectionObserver(observerCallback, observerOptions);
-  document.querySelectorAll('.channel-section').forEach(section => observer.observe(section));
-
-  // Trigger static overlay
-  const triggerChannelStatic = () => {
-    gsap.to(staticOverlay, {
-      duration: 0.2,
-      opacity: 0.3,
-      onComplete: () => gsap.to(staticOverlay, { duration: 0.2, opacity: 0 })
-    });
-  };
-
-  // Animate channel number
-  const animateChannelNumber = channelId => {
-    const channelOverlay = document.querySelector(`#${channelId} .channel-number-overlay`);
-    if (channelOverlay) {
-      gsap.fromTo(channelOverlay, { scale: 1, filter: "brightness(1)" },
-        { scale: 1.2, filter: "brightness(2)", duration: 0.2, yoyo: true, repeat: 1 });
-    }
-  };
-
-  // Modal Functionality
-  const trapFocus = (modal) => {
-    const focusableSelectors = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]';
-    const focusableElements = modal.querySelectorAll(focusableSelectors);
-    if (focusableElements.length === 0) return;
-    const firstFocusable = focusableElements[0];
-    const lastFocusable = focusableElements[focusableElements.length - 1];
-
-    const handleFocusTrap = (e) => {
-      if (e.key === 'Tab') {
-        if (e.shiftKey) {
-          if (document.activeElement === firstFocusable) {
-            e.preventDefault();
-            lastFocusable.focus();
-          }
-        } else {
-          if (document.activeElement === lastFocusable) {
-            e.preventDefault();
-            firstFocusable.focus();
-          }
-        }
-      }
-    };
-    modal.addEventListener('keydown', handleFocusTrap);
-    modal._handleFocusTrap = handleFocusTrap;
-    firstFocusable.focus();
-  };
-  const releaseFocusTrap = (modal) => {
-    if (modal._handleFocusTrap) {
-      modal.removeEventListener('keydown', modal._handleFocusTrap);
-      delete modal._handleFocusTrap;
-    }
-  };
-  const animateModalIn = (modalOverlay, modalStaticId) => {
-    const modalBox = modalOverlay.querySelector('.modal-box');
-    gsap.fromTo(modalBox, { opacity: 0, y: -50, scale: 0.95, rotationX: 15, transformPerspective: 1000 },
-      { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 0.8, ease: "power2.out" });
-    gsap.fromTo(document.getElementById(modalStaticId), { x: -2, y: -2 },
-      { x: 2, y: 2, duration: 0.4, ease: "power2.inOut", yoyo: true, repeat: 1 });
-    trapFocus(modalOverlay);
-  };
-  const closeModal = (modalOverlay) => {
-    const modalBox = modalOverlay.querySelector('.modal-box');
-    releaseFocusTrap(modalOverlay);
-    gsap.to(modalBox, {
-      opacity: 0,
-      y: -50,
-      scale: 0.95,
-      duration: 0.5,
-      ease: "power2.in",
-      onComplete: () => {
-        modalOverlay.style.display = 'none';
-      }
-    });
-  };
-
-  // Resume Modal
-  const resumeButton = document.getElementById('resumeButton');
-  const resumeModal = document.getElementById('resumeModal');
-  const closeResume = document.getElementById('closeResume');
-  resumeButton.addEventListener('click', () => {
-    resumeModal.style.display = 'flex';
-    animateModalIn(resumeModal, 'resumeStatic');
-  });
-  closeResume.addEventListener('click', () => closeModal(resumeModal));
-
-  // About Modal
-  const aboutButton = document.getElementById('aboutButton');
-  const aboutModal = document.getElementById('aboutModal');
-  const closeAbout = document.getElementById('closeAbout');
-  aboutButton.addEventListener('click', () => {
-    aboutModal.style.display = 'flex';
-    animateModalIn(aboutModal, 'aboutStatic');
-  });
-  closeAbout.addEventListener('click', () => closeModal(aboutModal));
-
-  // Contact Modal
-  const contactButton = document.getElementById('contactButton');
-  const contactModal = document.getElementById('contactModal');
-  const closeContact = document.getElementById('closeContact');
-  contactButton.addEventListener('click', () => {
-    contactModal.style.display = 'flex';
-    animateModalIn(contactModal, 'contactStatic');
-  });
-  closeContact.addEventListener('click', () => closeModal(contactModal));
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === "Escape") {
-      if (resumeModal.style.display === 'flex') closeModal(resumeModal);
-      if (aboutModal.style.display === 'flex') closeModal(aboutModal);
-      if (contactModal.style.display === 'flex') closeModal(contactModal);
-    }
-  });
-  [resumeModal, aboutModal, contactModal].forEach(modal => {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) { closeModal(modal); }
+      });
     });
   });
+
+  // Initialize YouTube API
+  const script = document.createElement('script');
+  script.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(script);
 });
