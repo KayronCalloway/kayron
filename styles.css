@@ -43,21 +43,7 @@
   transition: opacity 0.3s;
 }
 
-/* Mute Button (bottom left) */
-.mute-button {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  background: transparent;
-  border: 2px solid var(--primary-color);
-  color: var(--primary-color);
-  padding: 8px 12px;
-  font-size: 1rem;
-  cursor: pointer;
-  z-index: 450;
-  transition: opacity 0.3s;
-  display: none;
-}
+/* Mute Button removed */
 
 /* --- Import Merova Font --- */
 @font-face {
@@ -431,13 +417,9 @@ body {
   .tv-guide-list nav ul li {
     font-size: 1.5rem;
   }
-  .mute-button {
-    font-size: 0.9rem;
-    padding: 5px 8px;
-  }
   .channel-number-overlay {
     font-size: 3rem;
-    bottom: calc(20px + env(safe-area-inset-bottom));
+    bottom: calc(40px + env(safe-area-inset-bottom));
     right: 20px;
   }
   .close-guide {
