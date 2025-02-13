@@ -44,22 +44,23 @@
   <!-- Skip Link for Accessibility -->
   <a href="#mainContent" class="skip-link">Skip to Content</a>
   
-  <!-- Audio for Power Button (if needed) -->
+  <!-- Audio for Power Button (if you have a click.mp3) -->
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
   
   <!-- Video Background Container -->
   <div id="videoBackground" class="video-background">
     <div id="videoContainer">
-      <!-- The YouTube IFrame API will initialize the player in this iframe -->
+      <!-- YouTube IFrame API initializes the player here -->
       <iframe id="videoIframe" loading="lazy" poster="video-poster.jpg" frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen></iframe>
     </div>
-    <!-- Picture element fallback -->
+    <!-- Picture element fallback (uncomment if you have these) -->
     <picture id="videoFallbackContainer" style="display:none;">
-      <!-- Uncomment these if you have AVIF/WebP versions -->
-      <!-- <source srcset="video-fallback.avif" type="image/avif">
-      <source srcset="video-fallback.webp" type="image/webp"> -->
+      <!--
+      <source srcset="video-fallback.avif" type="image/avif">
+      <source srcset="video-fallback.webp" type="image/webp">
+      -->
       <img id="videoFallback" src="video-fallback.jpg" alt="Video fallback" style="width:100%; height:100%; object-fit:cover;">
     </picture>
   </div>
