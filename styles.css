@@ -81,7 +81,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -1; /* Behind content */
+  z-index: -1;
   overflow: hidden;
   transform: translateZ(0);
   backface-visibility: hidden;
@@ -433,4 +433,10 @@ body {
 /* 4K+ Display Optimization */
 @media (min-width: 3840px) {
   .channel-section {
-    padding
+    padding: 120px 80px;
+  }
+  .channel-button {
+    font-size: 2rem;
+    padding: 20px 32px;
+  }
+}
