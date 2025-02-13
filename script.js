@@ -1,57 +1,5 @@
-// -------------------------
-// YouTube IFrame API Setup
-// -------------------------
-window.onYouTubeIframeAPIReady = function() {
-  console.log("Origin:", window.location.origin);
-  videoPlayer = new YT.Player('videoIframe', {
-    videoId: 'KISNE4qOIBM', // Your video ID
-    playerVars: {
-      autoplay: 1,
-      controls: 0,
-      loop: 1,
-      playlist: 'KISNE4qOIBM', // Required for looping
-      modestbranding: 1,
-      showinfo: 0,
-      rel: 0,
-      playsinline: 1, // Ensure inline playback on mobile
-      origin: window.location.origin // Explicitly set the origin for security and consistency
-    },
-    events: {
-      onReady: onPlayerReady,
-      onError: onPlayerError
-    }
-  });
-};
+// script.js
 
-function onPlayerReady(event) {
-  // Start muted so autoplay policies are satisfied
-  event.target.mute();
-  event.target.playVideo();
-  if (navigator.connection) {
-    const qualityMap = { '4g': 'hd1080', '3g': 'large', '2g': 'small' };
-    event.target.setPlaybackQuality(qualityMap[navigator.connection.effectiveType] || 'default');
-  }
-}
-
-function onPlayerError(event) {
-  console.error("Video Player Error:", event.data);
-  document.getElementById('videoFallbackContainer').style.display = 'block';
-}
-
-// -------------------------
-// Distort/Warp Effect
-// -------------------------
-function distortAndWarpContent() {
-  gsap.fromTo(
-    document.getElementById('mainContent'),
-    { filter: "none", transform: "skewX(0deg)" },
-    { filter: "blur(2px) contrast(1.2)", transform: "skewX(5deg)", duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }
-  );
-}
-
-// -------------------------
-// DOMContentLoaded Handler
-// -------------------------
 document.addEventListener('DOMContentLoaded', () => {
   // DOM elements
   const powerButton = document.getElementById('powerButton');
@@ -67,17 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const staticOverlay = document.getElementById('staticOverlay');
   const clickSound = document.getElementById('clickSound');
   const backToTop = document.getElementById('backToTop');
-  const videoBackground = document.getElementById('videoBackground');
-
   let landingSequenceComplete = false;
   let autoScrollTimeout;
   let currentChannel = null;
 
-  // -------------------------
-  // Channel-Click Sounds
-  // -------------------------
+  // Channel-click sounds
   const channelSounds = Array.from({ length: 11 }, (_, i) => {
-    const audio = new Audio(`channel-click${i + 1}.aif`);
+    const audio = new Audio(`audio/channel-click${i + 1}.aif`);
     audio.preload = 'auto';
     return audio;
   });
@@ -90,9 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(message);
   }
 
-  // -------------------------
   // Web Vitals Reporting
-  // -------------------------
   webVitals.getCLS(metric => sendToAnalytics('CLS', metric));
   webVitals.getFID(metric => sendToAnalytics('FID', metric));
   webVitals.getLCP(metric => sendToAnalytics('LCP', metric));
@@ -102,18 +44,14 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(`Tracked ${metricName}:`, metric.value);
   }
 
-  // -------------------------
   // Haptic Feedback
-  // -------------------------
   function triggerHaptic() {
     if (navigator.vibrate) {
       navigator.vibrate([50, 30, 50]);
     }
   }
 
-  // -------------------------
   // Swipe Navigation
-  // -------------------------
   let touchStartX = 0;
   document.addEventListener('touchstart', e => {
     touchStartX = e.changedTouches[0].screenX;
@@ -136,21 +74,23 @@ document.addEventListener('DOMContentLoaded', () => {
     triggerHaptic();
   }
 
-  // -------------------------
-  // Dynamic Module Loading (Stub)
-  // -------------------------
-  async function loadChannelContent(channelId) {
+  // Dynamic Module Loading
+  async function loadChannelContent(moduleName) {
     try {
-      const module = await import(`./channels/${channelId}.js`);
+      let module;
+      // For Channel 1, load from channels/ch1/home.js
+      if (moduleName === 'home') {
+        module = await import(`./channels/ch1/home.js`);
+      } else {
+        module = await import(`./channels/${moduleName}.js`);
+      }
       module.init();
     } catch (err) {
-      console.warn(`Module for ${channelId} failed to load.`, err);
+      console.warn(`Module for ${moduleName} failed to load.`, err);
     }
   }
 
-  // -------------------------
   // Service Worker Registration
-  // -------------------------
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./service-worker.js')
@@ -159,17 +99,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // -------------------------
   // Touch Glow on Power Button
-  // -------------------------
   powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
   powerButton.addEventListener('touchend', () =>
     setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
   );
 
-  // -------------------------
   // Reveal Main Content
-  // -------------------------
   const revealMainContent = () => {
     window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
     gsap.to(landing, {
@@ -184,17 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // -------------------------
   // Landing Sequence
-  // -------------------------
   powerButton.addEventListener('click', () => {
     powerButton.style.pointerEvents = 'none';
     if (clickSound) {
       clickSound.play().catch(error => console.error('Click sound failed:', error));
-    }
-    // Unmute the video on user interaction (required for autoplay policies)
-    if (videoPlayer && typeof videoPlayer.unMute === 'function') {
-      videoPlayer.unMute();
     }
     gsap.to(powerButton, {
       duration: 0.3,
@@ -225,19 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { once: true, passive: true });
 
-  // -------------------------
-  // Parallax Effect on Channel 1
-  // -------------------------
-  window.addEventListener('scroll', () => {
-    if (currentChannel === 'section1') {
-      const scrolled = window.pageYOffset;
-      videoBackground.style.transform = `translateY(${scrolled * 0.2}px)`;
-    }
-  });
-
-  // -------------------------
   // Back to Top Button
-  // -------------------------
   window.addEventListener('scroll', () => {
     backToTop.style.display = window.pageYOffset > 300 ? 'block' : 'none';
   });
@@ -245,9 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
-  // -------------------------
   // TV Guide Menu Toggle
-  // -------------------------
   menuButton.addEventListener('click', () => {
     if (tvGuide.style.display === 'flex') {
       tvGuide.style.opacity = 0;
@@ -280,9 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // -------------------------
   // Intersection Observer for Channel Transitions
-  // -------------------------
   const observerOptions = { root: null, threshold: 0.7 };
   const observerCallback = entries => {
     entries.forEach(entry => {
@@ -290,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const newChannel = entry.target.id;
         if (currentChannel !== newChannel) {
           currentChannel = newChannel;
-          playRandomChannelSound(); // channel-click sound
+          playRandomChannelSound();
           triggerChannelStatic();
           animateChannelNumber(newChannel);
           announce(`Now viewing channel ${newChannel.slice(-1)}`);
@@ -299,11 +213,6 @@ document.addEventListener('DOMContentLoaded', () => {
             loadChannelContent(moduleName);
           }
           distortAndWarpContent();
-          if (currentChannel === 'section1') {
-            gsap.to(videoBackground, { duration: 0.5, opacity: 1 });
-          } else {
-            gsap.to(videoBackground, { duration: 0.5, opacity: 0 });
-          }
         }
       }
     });
@@ -329,110 +238,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // -------------------------
-  // Modal Functionality
-  // -------------------------
-  const trapFocus = (modal) => {
-    const focusableSelectors = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]';
-    const focusableElements = modal.querySelectorAll(focusableSelectors);
-    if (focusableElements.length === 0) return;
-    const firstFocusable = focusableElements[0];
-    const lastFocusable = focusableElements[focusableElements.length - 1];
-
-    const handleFocusTrap = (e) => {
-      if (e.key === 'Tab') {
-        if (e.shiftKey) {
-          if (document.activeElement === firstFocusable) {
-            e.preventDefault();
-            lastFocusable.focus();
-          }
-        } else {
-          if (document.activeElement === lastFocusable) {
-            e.preventDefault();
-            firstFocusable.focus();
-          }
-        }
-      }
-    };
-    modal.addEventListener('keydown', handleFocusTrap);
-    modal._handleFocusTrap = handleFocusTrap;
-    firstFocusable.focus();
-  };
-  const releaseFocusTrap = (modal) => {
-    if (modal._handleFocusTrap) {
-      modal.removeEventListener('keydown', modal._handleFocusTrap);
-      delete modal._handleFocusTrap;
-    }
-  };
-  const animateModalIn = (modalOverlay, modalStaticId) => {
-    const modalBox = modalOverlay.querySelector('.modal-box');
-    gsap.fromTo(modalBox, { opacity: 0, y: -50, scale: 0.95, rotationX: 15, transformPerspective: 1000 },
-      { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 0.8, ease: "power2.out" });
-    gsap.fromTo(document.getElementById(modalStaticId), { x: -2, y: -2 },
-      { x: 2, y: 2, duration: 0.4, ease: "power2.inOut", yoyo: true, repeat: 1 });
-    trapFocus(modalOverlay);
-  };
-  const closeModal = (modalOverlay) => {
-    const modalBox = modalOverlay.querySelector('.modal-box');
-    releaseFocusTrap(modalOverlay);
-    gsap.to(modalBox, {
-      opacity: 0,
-      y: -50,
-      scale: 0.95,
-      duration: 0.5,
-      ease: "power2.in",
-      onComplete: () => {
-        modalOverlay.style.display = 'none';
-      }
-    });
-  };
-
-  // -------------------------
-  // Resume Modal
-  // -------------------------
-  const resumeButton = document.getElementById('resumeButton');
-  const resumeModal = document.getElementById('resumeModal');
-  const closeResume = document.getElementById('closeResume');
-  resumeButton.addEventListener('click', () => {
-    resumeModal.style.display = 'flex';
-    animateModalIn(resumeModal, 'resumeStatic');
-  });
-  closeResume.addEventListener('click', () => closeModal(resumeModal));
-
-  // -------------------------
-  // About Modal
-  // -------------------------
-  const aboutButton = document.getElementById('aboutButton');
-  const aboutModal = document.getElementById('aboutModal');
-  const closeAbout = document.getElementById('closeAbout');
-  aboutButton.addEventListener('click', () => {
-    aboutModal.style.display = 'flex';
-    animateModalIn(aboutModal, 'aboutStatic');
-  });
-  closeAbout.addEventListener('click', () => closeModal(aboutModal));
-
-  // -------------------------
-  // Contact Modal
-  // -------------------------
-  const contactButton = document.getElementById('contactButton');
-  const contactModal = document.getElementById('contactModal');
-  const closeContact = document.getElementById('closeContact');
-  contactButton.addEventListener('click', () => {
-    contactModal.style.display = 'flex';
-    animateModalIn(contactModal, 'contactStatic');
-  });
-  closeContact.addEventListener('click', () => closeModal(contactModal));
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === "Escape") {
-      if (resumeModal.style.display === 'flex') closeModal(resumeModal);
-      if (aboutModal.style.display === 'flex') closeModal(aboutModal);
-      if (contactModal.style.display === 'flex') closeModal(contactModal);
-    }
-  });
-  [resumeModal, aboutModal, contactModal].forEach(modal => {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) { closeModal(modal); }
-    });
-  });
+  // A call to distort/warp content on channel change
+  function distortAndWarpContent() {
+    gsap.fromTo(
+      document.getElementById('mainContent'),
+      { filter: "none", transform: "skewX(0deg)" },
+      { filter: "blur(2px) contrast(1.2)", transform: "skewX(5deg)", duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }
+    );
+  }
 });
