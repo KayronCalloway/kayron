@@ -1,4 +1,5 @@
 // channels/ch1/home.js
+// channels/ch1/home.js
 
 export function init() {
   // Fetch the modal HTML fragment for Channel 1
@@ -14,12 +15,14 @@ export function init() {
 }
 
 function setupModalEventListeners() {
-  // Animation functions using GSAP
+  // ------------------------------
+  // GSAP Animations (MacBook-style)
+  // ------------------------------
   function animateModalIn(modal) {
     gsap.fromTo(
       modal,
-      { opacity: 0, scale: 0.8, y: -50 },
-      { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: "power2.out" }
+      { opacity: 0, scale: 0.8, y: -100, rotationX: 10 },
+      { opacity: 1, scale: 1, y: 0, rotationX: 0, duration: 0.6, ease: "power2.out", transformOrigin: "top center" }
     );
   }
 
@@ -27,16 +30,20 @@ function setupModalEventListeners() {
     gsap.to(modal, {
       opacity: 0,
       scale: 0.8,
-      y: -50,
-      duration: 0.4,
+      y: -100,
+      rotationX: 10,
+      duration: 0.5,
       ease: "power2.in",
+      transformOrigin: "top center",
       onComplete: () => {
         modal.style.display = 'none';
       }
     });
   }
 
-  // ----- Resume Modal -----
+  // ------------------------------
+  // Resume Modal
+  // ------------------------------
   const resumeButton = document.getElementById('resumeButton');
   const resumeModal = document.getElementById('resumeModal');
   const closeResume = document.getElementById('closeResume');
@@ -51,7 +58,9 @@ function setupModalEventListeners() {
     });
   }
 
-  // ----- About Modal -----
+  // ------------------------------
+  // About Modal
+  // ------------------------------
   const aboutButton = document.getElementById('aboutButton');
   const aboutModal = document.getElementById('aboutModal');
   const closeAbout = document.getElementById('closeAbout');
@@ -66,7 +75,9 @@ function setupModalEventListeners() {
     });
   }
 
-  // ----- Contact Modal -----
+  // ------------------------------
+  // Contact Modal
+  // ------------------------------
   const contactButton = document.getElementById('contactButton');
   const contactModal = document.getElementById('contactModal');
   const closeContact = document.getElementById('closeContact');
@@ -81,7 +92,9 @@ function setupModalEventListeners() {
     });
   }
 
-  // Close any open modal on Escape key press
+  // ------------------------------
+  // Close open modals on Escape key press
+  // ------------------------------
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       [resumeModal, aboutModal, contactModal].forEach(modal => {
