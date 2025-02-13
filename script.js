@@ -1,5 +1,5 @@
 // Global variables for video mute state and YouTube Player
-let soundMuted = true; // Start muted for autoplay
+let soundMuted = true; // Video starts muted for autoplay
 let videoPlayer;
 
 function onYouTubeIframeAPIReady() {
@@ -25,12 +25,13 @@ function onYouTubeIframeAPIReady() {
 }
 
 function onPlayerReady(event) {
+  // Mute only the video initially for autoplay
   if (soundMuted) {
     event.target.mute();
   } else {
     event.target.unMute();
   }
-  // Force video play in case autoplay is blocked
+  // Force playback (may require user interaction in some browsers)
   event.target.playVideo();
   // Adaptive quality based on network conditions
   if (navigator.connection) {
@@ -47,6 +48,15 @@ function onPlayerError(event) {
   console.error("Video Player Error:", event.data);
   // Show fallback image if video fails
   document.getElementById('videoFallbackContainer').style.display = 'block';
+}
+
+function distortAndWarpContent() {
+  // Apply a brief warp effect on the main content
+  gsap.fromTo(
+    document.getElementById('mainContent'),
+    { filter: "none", transform: "skewX(0deg)" },
+    { filter: "blur(2px) contrast(1.2)", transform: "skewX(5deg)", duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }
+  );
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -66,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const muteButton = document.getElementById('muteButton');
   const backToTop = document.getElementById('backToTop');
   const videoBackground = document.getElementById('videoBackground');
-  const a11yChannel = document.getElementById('a11y-channel');
 
   let lastFocusedElement;
   let landingSequenceComplete = false;
@@ -74,23 +83,20 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentChannel = null;
   let sporadicGlitchStarted = false;
 
-  // Preload channel click sounds
-  const channelSounds = Array.from({ length: 3 }, (_, i) => {
-    const audio = new Audio(`click.mp3`); // Use one sound file for simplicity
+  // Preload channel click sounds (always play channel sounds; using a single sound file)
+  const channelSounds = Array.from({ length: 3 }, () => {
+    const audio = new Audio('click.mp3');
     audio.setAttribute('preload', 'auto');
     return audio;
   });
   const playRandomChannelSound = () => {
-    if (soundMuted) return;
     const randomIndex = Math.floor(Math.random() * channelSounds.length);
     channelSounds[randomIndex].play().catch(error => console.error('Audio playback failed:', error));
   };
 
-  // Accessibility: Announce channel changes
+  // Accessibility: Announce channel changes (you may remove visual announcements if undesired)
   function announce(message, priority = 'polite') {
-    a11yChannel.setAttribute('aria-live', priority);
-    a11yChannel.textContent = message;
-    setTimeout(() => a11yChannel.removeAttribute('aria-live'), 100);
+    console.log(message);
   }
 
   // Performance Monitoring: Web Vitals tracking
@@ -154,11 +160,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Power button glow on touch
+  // Power Button: Glow effect on touch
   powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
-  powerButton.addEventListener('touchend', () => setTimeout(() => powerButton.classList.remove('touch-glow'), 200));
+  powerButton.addEventListener('touchend', () =>
+    setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
+  );
 
-  // Reveal Main Content after power button is pressed
+  // Reveal Main Content after power button press
   const revealMainContent = () => {
     window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
     gsap.to(landing, {
@@ -173,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Landing sequence animation
+  // Landing Sequence Animation
   powerButton.addEventListener('click', () => {
     powerButton.style.pointerEvents = 'none';
     if (clickSound) {
@@ -193,10 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
         autoScrollTimeout = setTimeout(() => {
           if (landing.style.display !== "none") revealMainContent();
         }, 3000);
-        if (!sporadicGlitchStarted) {
-          sporadicGlitchStarted = true;
-          // Optionally, schedule periodic warp effects here
-        }
       }
     });
     tl.to(landing, { duration: 0.15, backgroundColor: "#fff", ease: "power2.out" })
@@ -235,12 +239,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Menu Toggle for TV Guide
   menuButton.addEventListener('click', () => {
     if (tvGuide.style.display === 'flex') {
-      // Hide the TV guide if already open
       tvGuide.style.opacity = 0;
       tvGuide.setAttribute('aria-hidden', 'true');
       setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
     } else {
-      // Show the TV guide
       tvGuide.style.display = 'flex';
       setTimeout(() => {
         tvGuide.style.opacity = 1;
@@ -278,15 +280,15 @@ document.addEventListener('DOMContentLoaded', () => {
           playRandomChannelSound();
           triggerChannelStatic();
           animateChannelNumber(newChannel);
-          announce(`Now viewing ${document.querySelector(`[data-target="${newChannel}"] .channel-title`)?.textContent || 'channel'}`);
+          announce(`Now viewing channel ${newChannel.slice(-1)}`);
           // Dynamic module loading (stub)
           const moduleName = entry.target.dataset.module;
           if (moduleName) {
             loadChannelContent(moduleName);
           }
-          // Apply warp effect on transition
+          // Apply warp effect on channel transition
           distortAndWarpContent();
-          // Fade video background in/out based on active channel
+          // Fade video background based on channel (only show on section1)
           if (currentChannel === 'section1') {
             gsap.to(videoBackground, { duration: 0.5, opacity: 1 });
           } else {
@@ -299,7 +301,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const observer = new IntersectionObserver(observerCallback, observerOptions);
   document.querySelectorAll('.channel-section').forEach(section => observer.observe(section));
 
-  // Trigger static overlay effect
   const triggerChannelStatic = () => {
     gsap.to(staticOverlay, {
       duration: 0.2,
@@ -308,16 +309,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Animate channel number overlay
   const animateChannelNumber = channelId => {
     const channelOverlay = document.querySelector(`#${channelId} .channel-number-overlay`);
     if (channelOverlay) {
       gsap.fromTo(channelOverlay, { scale: 1, filter: "brightness(1)" },
-                  { scale: 1.2, filter: "brightness(2)", duration: 0.2, yoyo: true, repeat: 1 });
+        { scale: 1.2, filter: "brightness(2)", duration: 0.2, yoyo: true, repeat: 1 });
     }
   };
 
-  // Mute Button: Toggle sound for video and channel sounds
+  // Mute Button: Toggle video sound only (channel sounds always play)
   muteButton.addEventListener('click', () => {
     soundMuted = !soundMuted;
     muteButton.textContent = soundMuted ? "Unmute" : "Mute";
@@ -380,7 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Animate modal-box entrance with dimensional effect
+  // Animate modal-box entrance with a dimensional effect
   const animateModalIn = (modalOverlay, modalStaticId) => {
     const modalBox = modalOverlay.querySelector('.modal-box');
     gsap.fromTo(modalBox, { opacity: 0, y: -50, scale: 0.95, rotationX: 15, transformPerspective: 1000 },
@@ -450,7 +450,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Close modal when clicking outside modal box
+  // Close modal when clicking outside the modal box
   [resumeModal, aboutModal, contactModal].forEach(modal => {
     modal.addEventListener('click', (e) => {
       if (e.target === modal) {
