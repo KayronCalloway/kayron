@@ -8,23 +8,23 @@
   <!-- Viewport and PWA Settings -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TV Portfolio</title>
-  <!-- Content Security Policy (report-uri is ignored via meta) -->
+  <!-- Content Security Policy (report-uri removed from meta) -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self' https://www.youtube.com;
     script-src 'self' https://cdnjs.cloudflare.com https://www.youtube.com https://unpkg.com;
     style-src 'self' 'unsafe-inline';
     img-src 'self' data:;">
-  <!-- Preload critical assets -->
+  <!-- Preload Critical Assets -->
   <link rel="preload" href="Merova.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="click.mp3" as="audio" crossorigin>
-  <!-- Manifest -->
+  <!-- Web App Manifest -->
   <link rel="manifest" href="manifest.json">
   <!-- Preconnect / DNS Prefetch -->
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="dns-prefetch" href="https://www.youtube.com">
   <!-- Your CSS -->
   <link rel="stylesheet" href="styles.css" />
-  <!-- Load YouTube IFrame API (no extra iframe here) -->
+  <!-- Load YouTube IFrame API -->
   <script src="https://www.youtube.com/iframe_api"></script>
   <!-- Load GSAP (without integrity) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" defer></script>
@@ -44,7 +44,7 @@
   <!-- Skip Link for Accessibility -->
   <a href="#mainContent" class="skip-link">Skip to Content</a>
   
-  <!-- Audio for Click Sound -->
+  <!-- Audio Element for Click Sound -->
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
   
   <!-- Video Background Container -->
@@ -55,18 +55,14 @@
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen></iframe>
     </div>
-    <!-- Picture element fallback (uncomment sources if available) -->
+    <!-- Picture element fallback -->
     <picture id="videoFallbackContainer" style="display:none;">
-      <!--
-      <source srcset="video-fallback.avif" type="image/avif">
-      <source srcset="video-fallback.webp" type="image/webp">
-      -->
+      <!-- Uncomment below if you have these assets -->
+      <!-- <source srcset="video-fallback.avif" type="image/avif">
+      <source srcset="video-fallback.webp" type="image/webp"> -->
       <img id="videoFallback" src="video-fallback.jpg" alt="Video fallback" style="width:100%; height:100%; object-fit:cover;">
     </picture>
   </div>
-  
-  <!-- Accessibility Live Region -->
-  <div id="a11y-channel" aria-live="polite" class="sr-only">Now viewing channel 1</div>
   
   <!-- Landing Overlay -->
   <div id="landing">
@@ -84,15 +80,15 @@
     </div>
   </div>
   
-  <!-- Static Overlay (CSS Gradient + Animation) -->
+  <!-- Static Overlay (CSS Gradient & Animation) -->
   <div id="staticOverlay"></div>
   
-  <!-- Mute Button (initially hidden, will be shown later) -->
+  <!-- Mute Button (fixed bottom left) -->
   <button id="muteButton" class="mute-button" aria-label="Mute Sound">Mute</button>
   
   <!-- Main Content -->
   <div id="mainContent">
-    <!-- Persistent Fixed Header -->
+    <!-- Persistent Fixed Header (on top of everything) -->
     <header id="header">
       <div class="header-name" id="headerName">Kayron Calloway</div>
       <button id="menuButton" class="menu-button" aria-label="Toggle TV Guide">Menu</button>
@@ -133,9 +129,9 @@
     </section>
   </div>
   
-  <!-- TV Guide Overlay Menu -->
+  <!-- TV Guide Overlay Menu (raised above header) -->
   <div id="tvGuide" class="tv-guide" aria-hidden="true" style="display:none;">
-    <div class="tv-guide-header">Kayron Calloway</div>
+    <div class="tv-guide-header">TV Guide</div>
     <div class="tv-guide-list">
       <nav>
         <ul>
@@ -176,52 +172,7 @@
         <h3>PROFESSIONAL SUMMARY</h3>
         <p>Accomplished financial analyst, strategic consultant, and entrepreneurial innovator with extensive expertise.</p>
       </section>
-      <section class="modal-section">
-        <h3>PROFESSIONAL EXPERIENCE</h3>
-        <h4>Financial Analyst (Residuals) – Cast and Crew</h4>
-        <p>Los Angeles, CA | April 2019 - Present</p>
-        <ul>
-          <li>Administer and validate residual payment infrastructures.</li>
-          <li>Employ advanced econometric modeling and data visualization.</li>
-          <li>Conduct contractual analyses and liaise with executive-level stakeholders at HBO, Netflix, Starz, and Amazon.</li>
-          <li>Spearheaded automation initiatives reducing processing time by 30%.</li>
-        </ul>
-        <h4>Freelance Consultant – Business Strategy & Development</h4>
-        <p>March 2016 - Present</p>
-        <ul>
-          <li>Delivered high-caliber consultancy in corporate structuring and operational streamlining.</li>
-          <li>Architected holistic project frameworks integrating advanced financial modeling.</li>
-          <li>Negotiated acquisitions and devised dynamic compensation paradigms.</li>
-        </ul>
-        <h4>Founder & Creative Director – Coloring with Gray</h4>
-        <p>Los Angeles, CA | 2024 - Present</p>
-        <ul>
-          <li>Launched Reflections of You, a bespoke fragrance portfolio.</li>
-          <li>Engineered a brand ecosystem merging consumer psychology with artistic narrative.</li>
-          <li>Oversaw end-to-end product development and sustainability-driven production strategies.</li>
-        </ul>
-      </section>
-      <section class="modal-section">
-        <h3>EDUCATION</h3>
-        <p>Bachelor of Arts (B.A.) in Philosophy, California State University, Fullerton | 2014 (GPA: 3.03/4.0)</p>
-      </section>
-      <section class="modal-section">
-        <h3>CERTIFICATIONS & SKILLS</h3>
-        <ul>
-          <li>AI Policy & Ethics Certification (Expected Q3 2025)</li>
-          <li>Financial Modeling & Valuation (Expected Q3 2025)</li>
-          <li>Advanced Brand Strategy (Expected Q3 2025)</li>
-          <li>Financial & Business Analytics, Brand & Market Development, AI Governance</li>
-        </ul>
-      </section>
-      <section class="modal-section">
-        <h3>VOLUNTEER & ADDITIONAL INFO</h3>
-        <ul>
-          <li>Lead Basketball Camp Instructor</li>
-          <li>Academic Mentor & Research Facilitator</li>
-          <li>Engaged in Urban Sustainability & Philanthropy Initiatives</li>
-        </ul>
-      </section>
+      <!-- Additional sections can be added as needed -->
     </div>
   </div>
   
@@ -234,7 +185,7 @@
       <p class="modal-subtitle">A creative and analytical mind behind innovative projects.</p>
       <section class="modal-section">
         <p>
-          I am a financial analyst, strategic consultant, and entrepreneur with a passion for merging data-driven insights with creative storytelling. My background in finance and business strategy empowers me to lead transformative projects where analytical rigor meets creative expression.
+          I am a financial analyst, strategic consultant, and entrepreneur with a passion for merging data-driven insights with creative storytelling.
         </p>
       </section>
     </div>
