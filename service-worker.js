@@ -1,24 +1,24 @@
+// service-worker.js
+
 const CACHE_VERSION = 'tv-portfolio-cache-v1';
 const CACHE_ASSETS = [
   '/',
   '/index.html',
   '/styles.css',
   '/script.js',
-  '/Merova.woff2',
-  // Original channel-click aif files
-  '/channel-click1.aif',
-  '/channel-click2.aif',
-  '/channel-click3.aif',
-  '/channel-click4.aif',
-  '/channel-click5.aif',
-  '/channel-click6.aif',
-  '/channel-click7.aif',
-  '/channel-click8.aif',
-  '/channel-click9.aif',
-  '/channel-click10.aif',
-  '/channel-click11.aif',
-  '/video-poster.jpg',
-  '/video-fallback.jpg',
+  '/visuals/Merova.woff2',
+  '/visuals/Merova.otf',
+  '/audio/channel-click1.aif',
+  '/audio/channel-click2.aif',
+  '/audio/channel-click3.aif',
+  '/audio/channel-click4.aif',
+  '/audio/channel-click5.aif',
+  '/audio/channel-click6.aif',
+  '/audio/channel-click7.aif',
+  '/audio/channel-click8.aif',
+  '/audio/channel-click9.aif',
+  '/audio/channel-click10.aif',
+  '/audio/channel-click11.aif',
   '/static-resume.pdf'
 ];
 
