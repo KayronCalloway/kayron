@@ -16,7 +16,7 @@
     img-src 'self' data:;">
   <!-- Preload Critical Assets -->
   <link rel="preload" href="Merova.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="channel-clink1.mp3" as="audio" crossorigin>
+  <link rel="preload" href="channel-click1.aif" as="audio" crossorigin>
   <!-- Web App Manifest -->
   <link rel="manifest" href="manifest.json">
   <!-- Preconnect / DNS Prefetch -->
@@ -44,23 +44,22 @@
   <!-- Skip Link for Accessibility -->
   <a href="#mainContent" class="skip-link">Skip to Content</a>
   
-  <!-- Audio Element for Button Click Sound -->
-  <audio id="clickSound" src="channel-clink1.mp3" preload="auto"></audio>
+  <!-- Audio for Power Button Click (if any) -->
+  <audio id="clickSound" src="click.mp3" preload="auto"></audio>
   
   <!-- Video Background Container -->
   <div id="videoBackground" class="video-background">
     <div id="videoContainer">
-      <!-- YouTube IFrame API will initialize the player here -->
+      <!-- The YouTube IFrame API will initialize the player here -->
       <iframe id="videoIframe" loading="lazy" poster="video-poster.jpg" frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen></iframe>
     </div>
-    <!-- Picture element fallback (uncomment sources if available) -->
+    <!-- Picture element fallback (if you have modern formats, otherwise just the image) -->
     <picture id="videoFallbackContainer" style="display:none;">
-      <!--
-      <source srcset="video-fallback.avif" type="image/avif">
-      <source srcset="video-fallback.webp" type="image/webp">
-      -->
+      <!-- Uncomment these lines if you have AVIF/WebP versions -->
+      <!-- <source srcset="video-fallback.avif" type="image/avif">
+      <source srcset="video-fallback.webp" type="image/webp"> -->
       <img id="videoFallback" src="video-fallback.jpg" alt="Video fallback" style="width:100%; height:100%; object-fit:cover;">
     </picture>
   </div>
@@ -86,7 +85,7 @@
   
   <!-- Main Content -->
   <div id="mainContent">
-    <!-- Persistent Fixed Header -->
+    <!-- Persistent Fixed Header (always on top) -->
     <header id="header">
       <div class="header-name" id="headerName">Kayron Calloway</div>
       <button id="menuButton" class="menu-button" aria-label="Toggle TV Guide">Menu</button>
@@ -170,6 +169,7 @@
         <h3>PROFESSIONAL SUMMARY</h3>
         <p>Accomplished financial analyst, strategic consultant, and entrepreneurial innovator with extensive expertise.</p>
       </section>
+      <!-- Add additional resume sections as needed -->
     </div>
   </div>
   
