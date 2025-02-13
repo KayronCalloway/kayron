@@ -31,7 +31,7 @@
     // This function is called by the YouTube IFrame API when it's ready.
     function onYouTubeIframeAPIReady() {
       var player = new YT.Player('youtube-player', {
-        videoId: 'KISNE4qOIBM', // Video ID extracted from your link
+        videoId: 'KISNE4qOIBM', // Your YouTube video ID
         playerVars: {
           autoplay: 1,
           controls: 0,
@@ -45,7 +45,7 @@
         },
         events: {
           onReady: function(event) {
-            event.target.unMute(); // Attempt to play with sound (browsers might still restrict it)
+            event.target.unMute(); // Attempt to play with sound
             event.target.playVideo();
           }
         }
@@ -170,5 +170,6 @@
   
   <!-- Back to Top Button -->
   <button id="backToTop" class="back-to-top" aria-label="Back to Top">↑</button>
+  
 </body>
 </html>
