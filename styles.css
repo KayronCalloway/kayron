@@ -262,7 +262,6 @@ body {
   transform: scale(1.05);
   box-shadow: 0 0 10px var(--primary-color);
 }
-/* Raise channel number overlay a bit more */
 .channel-number-overlay {
   position: absolute;
   bottom: 40px;
