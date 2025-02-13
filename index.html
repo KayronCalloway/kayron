@@ -1,140 +1,249 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <!-- Security Headers -->
-  <meta http-equiv="Strict-Transport-Security" content="max-age=63072000; includeSubDomains">
-  <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <!-- Viewport and PWA Settings -->
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TV Portfolio</title>
-  <!-- Content Security Policy -->
-  <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    script-src 'self' https://cdnjs.cloudflare.com https://unpkg.com;
-    style-src 'self' 'unsafe-inline';
-    img-src 'self' data:;">
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css" />
-  <!-- Load GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" defer></script>
-  <!-- Load Web Vitals -->
-  <script src="https://unpkg.com/web-vitals@2/dist/web-vitals.umd.js" defer></script>
-  <!-- Your Custom JavaScript -->
-  <script src="script.js" defer></script>
-  <!-- Optional favicon -->
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-</head>
-<body>
-  <noscript>
-    <div class="noscript-warning">
-      <h2>Experience Required</h2>
-      <p>This interactive portfolio requires JavaScript. Please enable it or view my <a href="static-resume.pdf">static resume</a>.</p>
-    </div>
-  </noscript>
-  
-  <!-- Skip Link for Accessibility -->
-  <a href="#mainContent" class="skip-link">Skip to Content</a>
-  
-  <!-- Audio for Power Button -->
-  <audio id="clickSound" src="audio/click.mp3" preload="auto"></audio>
-  
-  <!-- Landing Overlay -->
-  <div id="landing">
-    <div class="power-button" id="powerButton" role="button" tabindex="0" aria-label="Turn on">
-      <svg class="power-icon" viewBox="0 0 100 100" aria-hidden="true">
-        <path d="M50,10 A40,40 0 1,1 49.9,10"></path>
-        <line x1="50" y1="0" x2="50" y2="40"></line>
-      </svg>
-    </div>
-    <div class="landing-name" id="landingName">Kayron Calloway</div>
-    <div class="landing-subtitle" id="landingSubtitle">
-      <span class="subtitle-item">Creative Strategist.</span>
-      <span class="subtitle-item">Digital Storyteller.</span>
-      <span class="subtitle-item">Problem Solver.</span>
-    </div>
-  </div>
-  
-  <!-- Static Overlay -->
-  <div id="staticOverlay"></div>
-  
-  <!-- Main Content -->
-  <div id="mainContent">
-    <!-- Persistent Fixed Header -->
-    <header id="header">
-      <div class="header-name" id="headerName">Kayron Calloway</div>
-      <button id="menuButton" class="menu-button" aria-label="Toggle TV Guide">Menu</button>
-    </header>
-    
-    <!-- Channel Sections -->
-    <section id="section1" class="channel-section" data-module="home">
-      <div class="channel-buttons">
-        <!-- These buttons will trigger modals loaded by Channel 1 -->
-        <button id="resumeButton" class="channel-button" aria-label="View Resume">Resume</button>
-        <button id="aboutButton" class="channel-button" aria-label="About Me">About Me</button>
-        <button id="contactButton" class="channel-button" aria-label="Contact Info">Contact</button>
-      </div>
-      <div class="channel-number-overlay">CH 01</div>
-    </section>
-    
-    <section id="section2" class="channel-section" data-module="consultant">
-      <h2>Consultant Work</h2>
-      <p>Featured project content for Consultant Work...</p>
-      <div class="channel-number-overlay">CH 02</div>
-    </section>
-    
-    <section id="section3" class="channel-section" data-module="career">
-      <h2>Career Work</h2>
-      <p>Featured project content for Career Work...</p>
-      <div class="channel-number-overlay">CH 03</div>
-    </section>
-    
-    <section id="section4" class="channel-section" data-module="rolemodels">
-      <h2>Role Models</h2>
-      <p>Featured project content for Role Models...</p>
-      <div class="channel-number-overlay">CH 04</div>
-    </section>
-    
-    <section id="section5" class="channel-section" data-module="interests">
-      <h2>Interests</h2>
-      <p>Featured project content for Interests...</p>
-      <div class="channel-number-overlay">CH 05</div>
-    </section>
-  </div>
-  
-  <!-- TV Guide Overlay Menu -->
-  <div id="tvGuide" class="tv-guide" aria-hidden="true" style="display:none;">
-    <div class="tv-guide-header">TV Guide</div>
-    <div class="tv-guide-list">
-      <nav>
-        <ul>
-          <li data-target="section1">
-            <span class="channel-number">CH 01</span>
-            <span class="channel-title">Home</span>
-          </li>
-          <li data-target="section2">
-            <span class="channel-number">CH 02</span>
-            <span class="channel-title">Consultant Work</span>
-          </li>
-          <li data-target="section3">
-            <span class="channel-number">CH 03</span>
-            <span class="channel-title">Career Work</span>
-          </li>
-          <li data-target="section4">
-            <span class="channel-number">CH 04</span>
-            <span class="channel-title">Role Models</span>
-          </li>
-          <li data-target="section5">
-            <span class="channel-number">CH 05</span>
-            <span class="channel-title">Interests</span>
-          </li>
-        </ul>
-      </nav>
-    </div>
-    <button id="closeGuide" class="close-guide" aria-label="Close TV Guide">Close</button>
-  </div>
-  
-  <!-- Back to Top Button -->
-  <button id="backToTop" class="back-to-top" aria-label="Back to Top">↑</button>
-</body>
-</html>
+// script.js
+
+document.addEventListener('DOMContentLoaded', () => {
+  // DOM elements
+  const powerButton = document.getElementById('powerButton');
+  const landing = document.getElementById('landing');
+  const landingName = document.getElementById('landingName');
+  const landingSubtitle = document.getElementById('landingSubtitle');
+  const mainContent = document.getElementById('mainContent');
+  const header = document.getElementById('header');
+  const menuButton = document.getElementById('menuButton');
+  const tvGuide = document.getElementById('tvGuide');
+  const closeGuide = document.getElementById('closeGuide');
+  const guideItems = document.querySelectorAll('.tv-guide-list nav ul li');
+  const staticOverlay = document.getElementById('staticOverlay');
+  const clickSound = document.getElementById('clickSound');
+  const backToTop = document.getElementById('backToTop');
+  let landingSequenceComplete = false;
+  let autoScrollTimeout;
+  let currentChannel = null;
+
+  // Channel-click sounds
+  const channelSounds = Array.from({ length: 11 }, (_, i) => {
+    const audio = new Audio(`audio/channel-click${i + 1}.aif`);
+    audio.preload = 'auto';
+    return audio;
+  });
+  const playRandomChannelSound = () => {
+    const randomIndex = Math.floor(Math.random() * channelSounds.length);
+    channelSounds[randomIndex].play().catch(error => console.error('Audio playback failed:', error));
+  };
+
+  function announce(message) {
+    console.log(message);
+  }
+
+  // Web Vitals Reporting
+  webVitals.getCLS(metric => sendToAnalytics('CLS', metric));
+  webVitals.getFID(metric => sendToAnalytics('FID', metric));
+  webVitals.getLCP(metric => sendToAnalytics('LCP', metric));
+  function sendToAnalytics(metricName, metric) {
+    const body = { [metricName]: metric.value, path: window.location.pathname };
+    navigator.sendBeacon('/analytics', JSON.stringify(body));
+    console.log(`Tracked ${metricName}:`, metric.value);
+  }
+
+  // Haptic Feedback
+  function triggerHaptic() {
+    if (navigator.vibrate) {
+      navigator.vibrate([50, 30, 50]);
+    }
+  }
+
+  // Swipe Navigation
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+  document.addEventListener('touchend', e => {
+    const touchEndX = e.changedTouches[0].screenX;
+    const diffX = touchStartX - touchEndX;
+    if (Math.abs(diffX) > 50) {
+      const direction = diffX > 0 ? 'next' : 'prev';
+      navigateChannels(direction);
+    }
+  });
+  function navigateChannels(direction) {
+    const sections = Array.from(document.querySelectorAll('.channel-section'));
+    const currentIndex = sections.findIndex(sec => sec.id === currentChannel);
+    let targetIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
+    targetIndex = Math.max(0, Math.min(sections.length - 1, targetIndex));
+    sections[targetIndex].scrollIntoView({ behavior: 'smooth' });
+    announce(`Now viewing channel ${targetIndex + 1}`);
+    triggerHaptic();
+  }
+
+  // Dynamic Module Loading
+  async function loadChannelContent(moduleName) {
+    try {
+      let module;
+      // For Channel 1, load from channels/ch1/home.js
+      if (moduleName === 'home') {
+        module = await import(`./channels/ch1/home.js`);
+      } else {
+        module = await import(`./channels/${moduleName}.js`);
+      }
+      module.init();
+    } catch (err) {
+      console.warn(`Module for ${moduleName} failed to load.`, err);
+    }
+  }
+
+  // Service Worker Registration
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js')
+        .then(reg => console.log('Service Worker registered:', reg))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    });
+  }
+
+  // Touch Glow on Power Button
+  powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
+  powerButton.addEventListener('touchend', () =>
+    setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
+  );
+
+  // Reveal Main Content
+  const revealMainContent = () => {
+    window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
+    gsap.to(landing, {
+      duration: 0.5,
+      opacity: 0,
+      onComplete: () => {
+        landing.style.display = "none";
+        mainContent.style.display = "block";
+        document.body.style.overflow = "auto";
+        gsap.to(header, { duration: 0.5, opacity: 1 });
+      }
+    });
+  };
+
+  // Landing Sequence
+  powerButton.addEventListener('click', () => {
+    powerButton.style.pointerEvents = 'none';
+    if (clickSound) {
+      clickSound.play().catch(error => console.error('Click sound failed:', error));
+    }
+    gsap.to(powerButton, {
+      duration: 0.3,
+      opacity: 0,
+      ease: "power2.out",
+      onComplete: () => powerButton.style.display = "none"
+    });
+    const tl = gsap.timeline({
+      onComplete: () => {
+        landingSequenceComplete = true;
+        autoScrollTimeout = setTimeout(() => {
+          if (landing.style.display !== "none") revealMainContent();
+        }, 3000);
+      }
+    });
+    tl.to(landing, { duration: 0.15, backgroundColor: "#fff", ease: "power2.out" })
+      .to(landing, { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" })
+      .to(staticOverlay, { duration: 0.2, opacity: 0.3 })
+      .to(staticOverlay, { duration: 0.2, opacity: 0 })
+      .to(landingName, { duration: 1.2, width: "100%", opacity: 1, ease: "power2.out" })
+      .to(landingSubtitle, { duration: 0.7, opacity: 1, ease: "power2.out" }, "-=0.3")
+      .to("#landingSubtitle .subtitle-item", { duration: 1, opacity: 1, ease: "power2.out", stagger: 0.5 }, "+=0.3");
+  });
+  window.addEventListener('scroll', () => {
+    if (landingSequenceComplete && landing.style.display !== "none") {
+      clearTimeout(autoScrollTimeout);
+      revealMainContent();
+    }
+  }, { once: true, passive: true });
+
+  // Back to Top Button
+  window.addEventListener('scroll', () => {
+    backToTop.style.display = window.pageYOffset > 300 ? 'block' : 'none';
+  });
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  // TV Guide Menu Toggle
+  menuButton.addEventListener('click', () => {
+    if (tvGuide.style.display === 'flex') {
+      tvGuide.style.opacity = 0;
+      tvGuide.setAttribute('aria-hidden', 'true');
+      setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
+    } else {
+      tvGuide.style.display = 'flex';
+      setTimeout(() => {
+        tvGuide.style.opacity = 1;
+        tvGuide.setAttribute('aria-hidden', 'false');
+      }, 10);
+    }
+  });
+  closeGuide.addEventListener('click', () => {
+    tvGuide.style.opacity = 0;
+    tvGuide.setAttribute('aria-hidden', 'true');
+    setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
+  });
+  guideItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const targetSection = document.getElementById(item.getAttribute('data-target'));
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+        tvGuide.style.opacity = 0;
+        tvGuide.setAttribute('aria-hidden', 'true');
+        setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
+        announce(`Now viewing ${item.querySelector('.channel-title').textContent}`);
+        triggerHaptic();
+      }
+    });
+  });
+
+  // Intersection Observer for Channel Transitions
+  const observerOptions = { root: null, threshold: 0.7 };
+  const observerCallback = entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const newChannel = entry.target.id;
+        if (currentChannel !== newChannel) {
+          currentChannel = newChannel;
+          playRandomChannelSound();
+          triggerChannelStatic();
+          animateChannelNumber(newChannel);
+          announce(`Now viewing channel ${newChannel.slice(-1)}`);
+          const moduleName = entry.target.dataset.module;
+          if (moduleName) {
+            loadChannelContent(moduleName);
+          }
+          distortAndWarpContent();
+        }
+      }
+    });
+  };
+  const observer = new IntersectionObserver(observerCallback, observerOptions);
+  document.querySelectorAll('.channel-section').forEach(section => observer.observe(section));
+
+  // Trigger static overlay effect
+  const triggerChannelStatic = () => {
+    gsap.to(staticOverlay, {
+      duration: 0.2,
+      opacity: 0.3,
+      onComplete: () => gsap.to(staticOverlay, { duration: 0.2, opacity: 0 })
+    });
+  };
+
+  // Animate channel number overlay
+  const animateChannelNumber = channelId => {
+    const channelOverlay = document.querySelector(`#${channelId} .channel-number-overlay`);
+    if (channelOverlay) {
+      gsap.fromTo(channelOverlay, { scale: 1, filter: "brightness(1)" },
+        { scale: 1.2, filter: "brightness(2)", duration: 0.2, yoyo: true, repeat: 1 });
+    }
+  };
+
+  // A call to distort/warp content on channel change
+  function distortAndWarpContent() {
+    gsap.fromTo(
+      document.getElementById('mainContent'),
+      { filter: "none", transform: "skewX(0deg)" },
+      { filter: "blur(2px) contrast(1.2)", transform: "skewX(5deg)", duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }
+    );
+  }
+});
