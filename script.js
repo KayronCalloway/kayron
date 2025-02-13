@@ -1,6 +1,4 @@
-// -------------------------
-// YouTube IFrame API Setup
-// -------------------------
+// We'll define onYouTubeIframeAPIReady on window so the YouTube API can find it
 window.onYouTubeIframeAPIReady = function() {
   console.log("Origin:", window.location.origin);
   videoPlayer = new YT.Player('videoIframe', {
@@ -12,9 +10,8 @@ window.onYouTubeIframeAPIReady = function() {
       playlist: 'KISNE4qOIBM', // Required for looping
       modestbranding: 1,
       showinfo: 0,
-      rel: 0,
-      playsinline: 1, // Ensure inline playback on mobile
-      origin: window.location.origin // Explicitly set the origin for security and consistency
+      rel: 0
+      // Notice: NO "origin" parameter here, so YouTube auto-detects the domain
     },
     events: {
       onReady: onPlayerReady,
@@ -24,9 +21,8 @@ window.onYouTubeIframeAPIReady = function() {
 };
 
 function onPlayerReady(event) {
-  // Start muted so autoplay policies are satisfied
-  event.target.mute();
-  event.target.playVideo();
+  event.target.unMute(); // Always unmute
+  event.target.playVideo(); // Force playback, might need user gesture
   if (navigator.connection) {
     const qualityMap = { '4g': 'hd1080', '3g': 'large', '2g': 'small' };
     event.target.setPlaybackQuality(qualityMap[navigator.connection.effectiveType] || 'default');
@@ -35,13 +31,10 @@ function onPlayerReady(event) {
 
 function onPlayerError(event) {
   console.error("Video Player Error:", event.data);
-  // Show fallback if there's an error
   document.getElementById('videoFallbackContainer').style.display = 'block';
 }
 
-// -------------------------
-// Distort/Warp Effect
-// -------------------------
+// Distort warp effect
 function distortAndWarpContent() {
   gsap.fromTo(
     document.getElementById('mainContent'),
@@ -50,11 +43,7 @@ function distortAndWarpContent() {
   );
 }
 
-// -------------------------
-// DOMContentLoaded Handler
-// -------------------------
 document.addEventListener('DOMContentLoaded', () => {
-  // DOM elements
   const powerButton = document.getElementById('powerButton');
   const landing = document.getElementById('landing');
   const landingName = document.getElementById('landingName');
@@ -74,9 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let autoScrollTimeout;
   let currentChannel = null;
 
-  // -------------------------
-  // Channel-Click Sounds
-  // -------------------------
+  // Original channel-click sounds
   const channelSounds = Array.from({ length: 11 }, (_, i) => {
     const audio = new Audio(`channel-click${i + 1}.aif`);
     audio.preload = 'auto';
@@ -91,9 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(message);
   }
 
-  // -------------------------
-  // Web Vitals Reporting
-  // -------------------------
+  // Web Vitals
   webVitals.getCLS(metric => sendToAnalytics('CLS', metric));
   webVitals.getFID(metric => sendToAnalytics('FID', metric));
   webVitals.getLCP(metric => sendToAnalytics('LCP', metric));
@@ -103,18 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(`Tracked ${metricName}:`, metric.value);
   }
 
-  // -------------------------
-  // Haptic Feedback
-  // -------------------------
+  // Haptic feedback
   function triggerHaptic() {
     if (navigator.vibrate) {
       navigator.vibrate([50, 30, 50]);
     }
   }
 
-  // -------------------------
-  // Swipe Navigation
-  // -------------------------
+  // Swipe navigation
   let touchStartX = 0;
   document.addEventListener('touchstart', e => {
     touchStartX = e.changedTouches[0].screenX;
@@ -137,9 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     triggerHaptic();
   }
 
-  // -------------------------
-  // Dynamic Module Loading (Stub)
-  // -------------------------
+  // Dynamic module loading (stub)
   async function loadChannelContent(channelId) {
     try {
       const module = await import(`./channels/${channelId}.js`);
@@ -149,28 +128,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // -------------------------
-  // Service Worker Registration
-  // -------------------------
+  // Service worker
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./service-worker.js')
+      navigator.serviceWorker.register('/service-worker.js')
         .then(reg => console.log('Service Worker registered:', reg))
         .catch(err => console.error('Service Worker registration failed:', err));
     });
   }
 
-  // -------------------------
-  // Touch Glow on Power Button
-  // -------------------------
+  // Touch glow on power button
   powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
   powerButton.addEventListener('touchend', () =>
     setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
   );
 
-  // -------------------------
-  // Reveal Main Content
-  // -------------------------
+  // Reveal main content
   const revealMainContent = () => {
     window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
     gsap.to(landing, {
@@ -185,17 +158,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // -------------------------
-  // Landing Sequence
-  // -------------------------
+  // Landing sequence
   powerButton.addEventListener('click', () => {
     powerButton.style.pointerEvents = 'none';
     if (clickSound) {
       clickSound.play().catch(error => console.error('Click sound failed:', error));
-    }
-    // Unmute the video on user interaction (required for autoplay policies)
-    if (videoPlayer && typeof videoPlayer.unMute === 'function') {
-      videoPlayer.unMute();
     }
     gsap.to(powerButton, {
       duration: 0.3,
@@ -226,9 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { once: true, passive: true });
 
-  // -------------------------
-  // Parallax Effect on Channel 1
-  // -------------------------
+  // Parallax on channel 1
   window.addEventListener('scroll', () => {
     if (currentChannel === 'section1') {
       const scrolled = window.pageYOffset;
@@ -236,9 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // -------------------------
-  // Back to Top Button
-  // -------------------------
+  // Back to top
   window.addEventListener('scroll', () => {
     backToTop.style.display = window.pageYOffset > 300 ? 'block' : 'none';
   });
@@ -246,9 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
-  // -------------------------
-  // TV Guide Menu Toggle
-  // -------------------------
+  // Menu toggle
   menuButton.addEventListener('click', () => {
     if (tvGuide.style.display === 'flex') {
       tvGuide.style.opacity = 0;
@@ -281,9 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // -------------------------
-  // Intersection Observer for Channel Transitions
-  // -------------------------
+  // IntersectionObserver for channel transitions
   const observerOptions = { root: null, threshold: 0.7 };
   const observerCallback = entries => {
     entries.forEach(entry => {
@@ -312,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const observer = new IntersectionObserver(observerCallback, observerOptions);
   document.querySelectorAll('.channel-section').forEach(section => observer.observe(section));
 
-  // Trigger static overlay effect
+  // Trigger static overlay
   const triggerChannelStatic = () => {
     gsap.to(staticOverlay, {
       duration: 0.2,
@@ -321,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Animate channel number overlay
+  // Animate channel number
   const animateChannelNumber = channelId => {
     const channelOverlay = document.querySelector(`#${channelId} .channel-number-overlay`);
     if (channelOverlay) {
@@ -330,9 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // -------------------------
   // Modal Functionality
-  // -------------------------
   const trapFocus = (modal) => {
     const focusableSelectors = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]';
     const focusableElements = modal.querySelectorAll(focusableSelectors);
@@ -388,9 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // -------------------------
   // Resume Modal
-  // -------------------------
   const resumeButton = document.getElementById('resumeButton');
   const resumeModal = document.getElementById('resumeModal');
   const closeResume = document.getElementById('closeResume');
@@ -400,9 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   closeResume.addEventListener('click', () => closeModal(resumeModal));
 
-  // -------------------------
   // About Modal
-  // -------------------------
   const aboutButton = document.getElementById('aboutButton');
   const aboutModal = document.getElementById('aboutModal');
   const closeAbout = document.getElementById('closeAbout');
@@ -412,9 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   closeAbout.addEventListener('click', () => closeModal(aboutModal));
 
-  // -------------------------
   // Contact Modal
-  // -------------------------
   const contactButton = document.getElementById('contactButton');
   const contactModal = document.getElementById('contactModal');
   const closeContact = document.getElementById('closeContact');
