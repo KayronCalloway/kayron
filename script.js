@@ -1,4 +1,4 @@
-// IMPORTANT: Ensure that the YouTube IFrame API callback is globally accessible
+// We'll define onYouTubeIframeAPIReady on window so the YouTube API can find it
 window.onYouTubeIframeAPIReady = function() {
   console.log("Origin:", window.location.origin);
   videoPlayer = new YT.Player('videoIframe', {
@@ -10,9 +10,8 @@ window.onYouTubeIframeAPIReady = function() {
       playlist: 'KISNE4qOIBM', // Required for looping
       modestbranding: 1,
       showinfo: 0,
-      rel: 0,
-      origin: "https://kayroncalloway.github.io/",
-      host: "https://www.youtube.com"
+      rel: 0
+      // Notice: NO "origin" parameter here, so YouTube auto-detects the domain
     },
     events: {
       onReady: onPlayerReady,
@@ -21,17 +20,11 @@ window.onYouTubeIframeAPIReady = function() {
   });
 };
 
-function onYouTubeIframeAPIReady() { } // This is defined above on window
-
 function onPlayerReady(event) {
-  event.target.unMute(); // Always play unmuted (user controls volume)
-  event.target.playVideo(); // Force playback (may require user interaction)
+  event.target.unMute(); // Always unmute
+  event.target.playVideo(); // Force playback, might need user gesture
   if (navigator.connection) {
-    const qualityMap = {
-      '4g': 'hd1080',
-      '3g': 'large',
-      '2g': 'small'
-    };
+    const qualityMap = { '4g': 'hd1080', '3g': 'large', '2g': 'small' };
     event.target.setPlaybackQuality(qualityMap[navigator.connection.effectiveType] || 'default');
   }
 }
@@ -41,6 +34,7 @@ function onPlayerError(event) {
   document.getElementById('videoFallbackContainer').style.display = 'block';
 }
 
+// Distort warp effect
 function distortAndWarpContent() {
   gsap.fromTo(
     document.getElementById('mainContent'),
@@ -69,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let autoScrollTimeout;
   let currentChannel = null;
 
-  // Use original channel sound structure (channel-click*.aif)
+  // Original channel-click sounds
   const channelSounds = Array.from({ length: 11 }, (_, i) => {
     const audio = new Audio(`channel-click${i + 1}.aif`);
     audio.preload = 'auto';
@@ -84,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(message);
   }
 
+  // Web Vitals
   webVitals.getCLS(metric => sendToAnalytics('CLS', metric));
   webVitals.getFID(metric => sendToAnalytics('FID', metric));
   webVitals.getLCP(metric => sendToAnalytics('LCP', metric));
@@ -93,14 +88,18 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(`Tracked ${metricName}:`, metric.value);
   }
 
+  // Haptic feedback
   function triggerHaptic() {
     if (navigator.vibrate) {
       navigator.vibrate([50, 30, 50]);
     }
   }
 
+  // Swipe navigation
   let touchStartX = 0;
-  document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+  document.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
   document.addEventListener('touchend', e => {
     const touchEndX = e.changedTouches[0].screenX;
     const diffX = touchStartX - touchEndX;
@@ -119,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     triggerHaptic();
   }
 
+  // Dynamic module loading (stub)
   async function loadChannelContent(channelId) {
     try {
       const module = await import(`./channels/${channelId}.js`);
@@ -128,6 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Service worker
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/service-worker.js')
@@ -136,11 +137,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Touch glow on power button
   powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
   powerButton.addEventListener('touchend', () =>
     setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
   );
 
+  // Reveal main content
   const revealMainContent = () => {
     window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
     gsap.to(landing, {
@@ -155,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  // Landing sequence
   powerButton.addEventListener('click', () => {
     powerButton.style.pointerEvents = 'none';
     if (clickSound) {
@@ -169,7 +173,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const tl = gsap.timeline({
       onComplete: () => {
         landingSequenceComplete = true;
-        autoScrollTimeout = setTimeout(() => { if (landing.style.display !== "none") revealMainContent(); }, 3000);
+        autoScrollTimeout = setTimeout(() => {
+          if (landing.style.display !== "none") revealMainContent();
+        }, 3000);
       }
     });
     tl.to(landing, { duration: 0.15, backgroundColor: "#fff", ease: "power2.out" })
@@ -180,7 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
       .to(landingSubtitle, { duration: 0.7, opacity: 1, ease: "power2.out" }, "-=0.3")
       .to("#landingSubtitle .subtitle-item", { duration: 1, opacity: 1, ease: "power2.out", stagger: 0.5 }, "+=0.3");
   });
-
   window.addEventListener('scroll', () => {
     if (landingSequenceComplete && landing.style.display !== "none") {
       clearTimeout(autoScrollTimeout);
@@ -188,18 +193,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { once: true, passive: true });
 
+  // Parallax on channel 1
   window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
     if (currentChannel === 'section1') {
+      const scrolled = window.pageYOffset;
       videoBackground.style.transform = `translateY(${scrolled * 0.2}px)`;
     }
   });
 
+  // Back to top
   window.addEventListener('scroll', () => {
     backToTop.style.display = window.pageYOffset > 300 ? 'block' : 'none';
   });
-  backToTop.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: "smooth" }); });
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 
+  // Menu toggle
   menuButton.addEventListener('click', () => {
     if (tvGuide.style.display === 'flex') {
       tvGuide.style.opacity = 0;
@@ -232,6 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // IntersectionObserver for channel transitions
   const observerOptions = { root: null, threshold: 0.7 };
   const observerCallback = entries => {
     entries.forEach(entry => {
@@ -239,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const newChannel = entry.target.id;
         if (currentChannel !== newChannel) {
           currentChannel = newChannel;
-          playRandomChannelSound();
+          playRandomChannelSound(); // channel-click sound
           triggerChannelStatic();
           animateChannelNumber(newChannel);
           announce(`Now viewing channel ${newChannel.slice(-1)}`);
@@ -260,6 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const observer = new IntersectionObserver(observerCallback, observerOptions);
   document.querySelectorAll('.channel-section').forEach(section => observer.observe(section));
 
+  // Trigger static overlay
   const triggerChannelStatic = () => {
     gsap.to(staticOverlay, {
       duration: 0.2,
@@ -268,6 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  // Animate channel number
   const animateChannelNumber = channelId => {
     const channelOverlay = document.querySelector(`#${channelId} .channel-number-overlay`);
     if (channelOverlay) {
@@ -276,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Modal Functionality with Focus Trap
+  // Modal Functionality
   const trapFocus = (modal) => {
     const focusableSelectors = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]';
     const focusableElements = modal.querySelectorAll(focusableSelectors);
@@ -299,19 +312,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     };
-
     modal.addEventListener('keydown', handleFocusTrap);
     modal._handleFocusTrap = handleFocusTrap;
     firstFocusable.focus();
   };
-
   const releaseFocusTrap = (modal) => {
     if (modal._handleFocusTrap) {
       modal.removeEventListener('keydown', modal._handleFocusTrap);
       delete modal._handleFocusTrap;
     }
   };
-
   const animateModalIn = (modalOverlay, modalStaticId) => {
     const modalBox = modalOverlay.querySelector('.modal-box');
     gsap.fromTo(modalBox, { opacity: 0, y: -50, scale: 0.95, rotationX: 15, transformPerspective: 1000 },
@@ -320,7 +330,6 @@ document.addEventListener('DOMContentLoaded', () => {
       { x: 2, y: 2, duration: 0.4, ease: "power2.inOut", yoyo: true, repeat: 1 });
     trapFocus(modalOverlay);
   };
-
   const closeModal = (modalOverlay) => {
     const modalBox = modalOverlay.querySelector('.modal-box');
     releaseFocusTrap(modalOverlay);
@@ -330,7 +339,9 @@ document.addEventListener('DOMContentLoaded', () => {
       scale: 0.95,
       duration: 0.5,
       ease: "power2.in",
-      onComplete: () => { modalOverlay.style.display = 'none'; }
+      onComplete: () => {
+        modalOverlay.style.display = 'none';
+      }
     });
   };
 
@@ -338,7 +349,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const resumeButton = document.getElementById('resumeButton');
   const resumeModal = document.getElementById('resumeModal');
   const closeResume = document.getElementById('closeResume');
-
   resumeButton.addEventListener('click', () => {
     resumeModal.style.display = 'flex';
     animateModalIn(resumeModal, 'resumeStatic');
@@ -349,7 +359,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const aboutButton = document.getElementById('aboutButton');
   const aboutModal = document.getElementById('aboutModal');
   const closeAbout = document.getElementById('closeAbout');
-
   aboutButton.addEventListener('click', () => {
     aboutModal.style.display = 'flex';
     animateModalIn(aboutModal, 'aboutStatic');
@@ -360,7 +369,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const contactButton = document.getElementById('contactButton');
   const contactModal = document.getElementById('contactModal');
   const closeContact = document.getElementById('closeContact');
-
   contactButton.addEventListener('click', () => {
     contactModal.style.display = 'flex';
     animateModalIn(contactModal, 'contactStatic');
@@ -374,7 +382,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (contactModal.style.display === 'flex') closeModal(contactModal);
     }
   });
-
   [resumeModal, aboutModal, contactModal].forEach(modal => {
     modal.addEventListener('click', (e) => {
       if (e.target === modal) { closeModal(modal); }
