@@ -32,7 +32,7 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch: Stale-while-revalidate strategy with background update
+// Fetch: Stale-while-revalidate strategy
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(cached => {
