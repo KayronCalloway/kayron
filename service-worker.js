@@ -23,15 +23,13 @@ const CACHE_ASSETS = [
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_VERSION)
-      .then(cache => {
-        console.log('Opened cache');
-        return cache.addAll(CACHE_ASSETS);
-      })
+    caches.open(CACHE_VERSION).then(cache => {
+      console.log('Opened cache');
+      return cache.addAll(CACHE_ASSETS);
+    })
   );
 });
 
-// Activate: Cleanup old caches
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
@@ -42,7 +40,6 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch: Stale-while-revalidate strategy
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(cached => {
@@ -56,25 +53,21 @@ self.addEventListener('fetch', event => {
   );
 });
 
-// Background Sync for Analytics (stub)
 self.addEventListener('sync', event => {
   if (event.tag === 'analytics') {
     event.waitUntil(sendAnalyticsData());
   }
 });
-
 async function sendAnalyticsData() {
   console.log("Background Sync: Analytics data sent.");
   return Promise.resolve();
 }
 
-// Periodic Sync for Content Updates (stub)
 self.addEventListener('periodicsync', event => {
   if (event.tag === 'content-update') {
     event.waitUntil(updateCachedContent());
   }
 });
-
 async function updateCachedContent() {
   console.log("Periodic Sync: Content updated.");
   return Promise.resolve();
