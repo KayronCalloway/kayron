@@ -8,30 +8,28 @@
   <!-- Viewport and PWA Settings -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TV Portfolio</title>
-  <!-- Content Security Policy (report-uri removed) -->
+  <!-- Content Security Policy -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self' https://www.youtube.com;
     script-src 'self' https://cdnjs.cloudflare.com https://www.youtube.com https://unpkg.com;
     style-src 'self' 'unsafe-inline';
     img-src 'self' data:;">
-  <!-- Preload Critical Assets -->
-  <link rel="preload" href="Merova.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="channel-click1.aif" as="audio" crossorigin>
-  <!-- Web App Manifest -->
+  <!-- Removed Merova.woff2 preload (no longer needed) -->
+  <!-- <link rel="preload" href="Merova.woff2" as="font" type="font/woff2" crossorigin> -->
   <link rel="manifest" href="manifest.json">
-  <!-- Preconnect / DNS Prefetch -->
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="dns-prefetch" href="https://www.youtube.com">
-  <!-- Your CSS -->
   <link rel="stylesheet" href="styles.css" />
   <!-- Load YouTube IFrame API -->
   <script src="https://www.youtube.com/iframe_api"></script>
-  <!-- Load GSAP (without integrity) -->
+  <!-- Load GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" defer></script>
   <!-- Load Web Vitals -->
   <script src="https://unpkg.com/web-vitals@2/dist/web-vitals.umd.js" defer></script>
   <!-- Your Custom JavaScript -->
   <script src="script.js" defer></script>
+  <!-- Optional favicon (ensure favicon.ico exists or update the link) -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
   <noscript>
@@ -40,11 +38,11 @@
       <p>This interactive portfolio requires JavaScript. Please enable it or view my <a href="static-resume.pdf">static resume</a>.</p>
     </div>
   </noscript>
-
+  
   <!-- Skip Link for Accessibility -->
   <a href="#mainContent" class="skip-link">Skip to Content</a>
   
-  <!-- Audio for Power Button (if you have a click.mp3) -->
+  <!-- Audio for Power Button -->
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
   
   <!-- Video Background Container -->
@@ -55,14 +53,7 @@
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen></iframe>
     </div>
-    <!-- Picture element fallback (uncomment if you have these) -->
-    <picture id="videoFallbackContainer" style="display:none;">
-      <!--
-      <source srcset="video-fallback.avif" type="image/avif">
-      <source srcset="video-fallback.webp" type="image/webp">
-      -->
-      <img id="videoFallback" src="video-fallback.jpg" alt="Video fallback" style="width:100%; height:100%; object-fit:cover;">
-    </picture>
+    <!-- Removed video fallback container since video-fallback.jpg is not available -->
   </div>
   
   <!-- Landing Overlay -->
@@ -81,7 +72,7 @@
     </div>
   </div>
   
-  <!-- Static Overlay (CSS Gradient & Animation) -->
+  <!-- Static Overlay -->
   <div id="staticOverlay"></div>
   
   <!-- Main Content -->
@@ -127,7 +118,7 @@
     </section>
   </div>
   
-  <!-- TV Guide Overlay Menu (raised above header) -->
+  <!-- TV Guide Overlay Menu -->
   <div id="tvGuide" class="tv-guide" aria-hidden="true" style="display:none;">
     <div class="tv-guide-header">TV Guide</div>
     <div class="tv-guide-list">
