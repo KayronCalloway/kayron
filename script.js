@@ -35,7 +35,8 @@ function onPlayerReady(event) {
 
 function onPlayerError(event) {
   console.error("Video Player Error:", event.data);
-  // Removed fallback display since the fallback image has been removed
+  // Show fallback if there's an error
+  document.getElementById('videoFallbackContainer').style.display = 'block';
 }
 
 // -------------------------
