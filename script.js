@@ -1,4 +1,4 @@
-// Global variable for YouTube Player (no mute variable now)
+// Global variable for YouTube Player
 let videoPlayer;
 
 function onYouTubeIframeAPIReady() {
@@ -9,7 +9,7 @@ function onYouTubeIframeAPIReady() {
       autoplay: 1,
       controls: 0,
       loop: 1,
-      playlist: 'KISNE4qOIBM',
+      playlist: 'KISNE4qOIBM', // Required for looping
       modestbranding: 1,
       showinfo: 0,
       rel: 0,
@@ -24,9 +24,9 @@ function onYouTubeIframeAPIReady() {
 }
 
 function onPlayerReady(event) {
-  // Always unmute video (user can later adjust device volume)
+  // Always unmute video (user controls device volume)
   event.target.unMute();
-  // Force video playback to overcome autoplay restrictions
+  // Force video play to overcome autoplay restrictions
   event.target.playVideo();
   // Adaptive quality based on network conditions
   if (navigator.connection) {
@@ -69,15 +69,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const backToTop = document.getElementById('backToTop');
   const videoBackground = document.getElementById('videoBackground');
 
-  let lastFocusedElement;
   let landingSequenceComplete = false;
   let autoScrollTimeout;
   let currentChannel = null;
 
-  // Use an array of channel sound files (channel-clink1.mp3, channel-clink2.mp3, etc.)
-  const channelSounds = Array.from({ length: 3 }, (_, i) => {
-    const audio = new Audio(`channel-clink${i+1}.mp3`);
-    audio.setAttribute('preload', 'auto');
+  // Original channel sound structure: using an array of channel-click*.aif
+  const channelSounds = Array.from({ length: 11 }, (_, i) => {
+    const audio = new Audio(`channel-click${i + 1}.aif`);
+    audio.preload = 'auto';
     return audio;
   });
   const playRandomChannelSound = () => {
@@ -85,12 +84,12 @@ document.addEventListener('DOMContentLoaded', () => {
     channelSounds[randomIndex].play().catch(error => console.error('Audio playback failed:', error));
   };
 
-  // Accessibility: Announce channel changes (logged to console)
-  function announce(message, priority = 'polite') {
+  // Accessibility: Announce channel changes (for debugging, logged to console)
+  function announce(message) {
     console.log(message);
   }
 
-  // Performance Monitoring: Web Vitals
+  // Performance Monitoring: Web Vitals tracking
   webVitals.getCLS(metric => sendToAnalytics('CLS', metric));
   webVitals.getFID(metric => sendToAnalytics('FID', metric));
   webVitals.getLCP(metric => sendToAnalytics('LCP', metric));
@@ -151,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Power Button: Glow on touch
+  // Power Button: Glow effect on touch
   powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
   powerButton.addEventListener('touchend', () =>
     setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
@@ -277,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           // Apply warp effect on transition
           distortAndWarpContent();
-          // Fade video background based on channel (only on section1)
+          // Fade video background based on channel (show video only on section1)
           if (currentChannel === 'section1') {
             gsap.to(videoBackground, { duration: 0.5, opacity: 1 });
           } else {
@@ -306,5 +305,114 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Remove global mute functionality – no mute button handling
+  /* --- Modal Functionality with Focus Trap --- */
+  const trapFocus = (modal) => {
+    const focusableSelectors = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]';
+    const focusableElements = modal.querySelectorAll(focusableSelectors);
+    if (focusableElements.length === 0) return;
+    const firstFocusable = focusableElements[0];
+    const lastFocusable = focusableElements[focusableElements.length - 1];
+
+    const handleFocusTrap = (e) => {
+      if (e.key === 'Tab') {
+        if (e.shiftKey) {
+          if (document.activeElement === firstFocusable) {
+            e.preventDefault();
+            lastFocusable.focus();
+          }
+        } else {
+          if (document.activeElement === lastFocusable) {
+            e.preventDefault();
+            firstFocusable.focus();
+          }
+        }
+      }
+    };
+
+    modal.addEventListener('keydown', handleFocusTrap);
+    modal._handleFocusTrap = handleFocusTrap;
+    firstFocusable.focus();
+  };
+
+  const releaseFocusTrap = (modal) => {
+    if (modal._handleFocusTrap) {
+      modal.removeEventListener('keydown', modal._handleFocusTrap);
+      delete modal._handleFocusTrap;
+    }
+  };
+
+  const animateModalIn = (modalOverlay, modalStaticId) => {
+    const modalBox = modalOverlay.querySelector('.modal-box');
+    gsap.fromTo(modalBox, { opacity: 0, y: -50, scale: 0.95, rotationX: 15, transformPerspective: 1000 },
+      { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 0.8, ease: "power2.out" });
+    gsap.fromTo(document.getElementById(modalStaticId), { x: -2, y: -2 },
+      { x: 2, y: 2, duration: 0.4, ease: "power2.inOut", yoyo: true, repeat: 1 });
+    trapFocus(modalOverlay);
+  };
+
+  const closeModal = (modalOverlay) => {
+    const modalBox = modalOverlay.querySelector('.modal-box');
+    releaseFocusTrap(modalOverlay);
+    gsap.to(modalBox, {
+      opacity: 0,
+      y: -50,
+      scale: 0.95,
+      duration: 0.5,
+      ease: "power2.in",
+      onComplete: () => {
+        modalOverlay.style.display = 'none';
+      }
+    });
+  };
+
+  // Resume Modal
+  const resumeButton = document.getElementById('resumeButton');
+  const resumeModal = document.getElementById('resumeModal');
+  const closeResume = document.getElementById('closeResume');
+
+  resumeButton.addEventListener('click', () => {
+    resumeModal.style.display = 'flex';
+    animateModalIn(resumeModal, 'resumeStatic');
+  });
+  closeResume.addEventListener('click', () => closeModal(resumeModal));
+
+  // About Modal
+  const aboutButton = document.getElementById('aboutButton');
+  const aboutModal = document.getElementById('aboutModal');
+  const closeAbout = document.getElementById('closeAbout');
+
+  aboutButton.addEventListener('click', () => {
+    aboutModal.style.display = 'flex';
+    animateModalIn(aboutModal, 'aboutStatic');
+  });
+  closeAbout.addEventListener('click', () => closeModal(aboutModal));
+
+  // Contact Modal
+  const contactButton = document.getElementById('contactButton');
+  const contactModal = document.getElementById('contactModal');
+  const closeContact = document.getElementById('closeContact');
+
+  contactButton.addEventListener('click', () => {
+    contactModal.style.display = 'flex';
+    animateModalIn(contactModal, 'contactStatic');
+  });
+  closeContact.addEventListener('click', () => closeModal(contactModal));
+
+  // Close modals on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === "Escape") {
+      if (resumeModal.style.display === 'flex') closeModal(resumeModal);
+      if (aboutModal.style.display === 'flex') closeModal(aboutModal);
+      if (contactModal.style.display === 'flex') closeModal(contactModal);
+    }
+  });
+
+  // Close modal when clicking outside modal box
+  [resumeModal, aboutModal, contactModal].forEach(modal => {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal(modal);
+      }
+    });
+  });
 });
