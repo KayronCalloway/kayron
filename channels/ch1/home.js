@@ -1,7 +1,7 @@
 // channels/ch1/home.js
 
 export function init() {
-  // Fetch the modal HTML fragment for Channel 1
+  // Load the modal HTML fragment for Channel 1
   fetch('./channels/ch1/modals.html')
     .then(response => response.text())
     .then(html => {
@@ -15,13 +15,26 @@ export function init() {
 
 function setupModalEventListeners() {
   // ------------------------------
-  // GSAP Animations (Genie Effect)
+  // GSAP Animation: "Coming Out of the Box"
   // ------------------------------
   function animateModalIn(modal) {
     gsap.fromTo(
       modal,
-      { opacity: 0, scale: 0.8, y: -100, rotationX: 15 },
-      { opacity: 1, scale: 1, y: 0, rotationX: 0, duration: 0.6, ease: "power2.out", transformOrigin: "top center" }
+      { 
+        opacity: 0, 
+        scale: 0.8, 
+        y: 20, 
+        rotationX: 5,
+        transformOrigin: "top center" // makes it look like it’s emerging from the top edge
+      },
+      { 
+        opacity: 1, 
+        scale: 1, 
+        y: 0, 
+        rotationX: 0, 
+        duration: 0.6, 
+        ease: "power2.out" 
+      }
     );
   }
 
@@ -29,8 +42,8 @@ function setupModalEventListeners() {
     gsap.to(modal, {
       opacity: 0,
       scale: 0.8,
-      y: -100,
-      rotationX: 15,
+      y: 20,
+      rotationX: 5,
       duration: 0.5,
       ease: "power2.in",
       transformOrigin: "top center",
@@ -92,7 +105,7 @@ function setupModalEventListeners() {
   }
 
   // ------------------------------
-  // Close open modals on Escape key press
+  // Close any open modal on Escape key press
   // ------------------------------
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
