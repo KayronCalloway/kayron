@@ -8,7 +8,7 @@
   <!-- Viewport and PWA Settings -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TV Portfolio</title>
-  <!-- Content Security Policy -->
+  <!-- Content Security Policy (report-uri removed) -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self' https://www.youtube.com;
     script-src 'self' https://cdnjs.cloudflare.com https://www.youtube.com https://unpkg.com;
@@ -26,14 +26,12 @@
   <link rel="stylesheet" href="styles.css" />
   <!-- Load YouTube IFrame API -->
   <script src="https://www.youtube.com/iframe_api"></script>
-  <!-- Load GSAP -->
+  <!-- Load GSAP (without integrity) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" defer></script>
   <!-- Load Web Vitals -->
   <script src="https://unpkg.com/web-vitals@2/dist/web-vitals.umd.js" defer></script>
   <!-- Your Custom JavaScript -->
   <script src="script.js" defer></script>
-  <!-- Favicon -->
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
   <noscript>
@@ -46,7 +44,7 @@
   <!-- Skip Link for Accessibility -->
   <a href="#mainContent" class="skip-link">Skip to Content</a>
   
-  <!-- Audio for Power Button -->
+  <!-- Audio for Power Button (if you have a click.mp3) -->
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
   
   <!-- Video Background Container -->
@@ -57,9 +55,8 @@
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen></iframe>
     </div>
-    <!-- Picture element fallback -->
+    <!-- Picture element fallback (uncomment if you have these) -->
     <picture id="videoFallbackContainer" style="display:none;">
-      <!-- If you have different sources you can uncomment them -->
       <!--
       <source srcset="video-fallback.avif" type="image/avif">
       <source srcset="video-fallback.webp" type="image/webp">
@@ -84,7 +81,7 @@
     </div>
   </div>
   
-  <!-- Static Overlay -->
+  <!-- Static Overlay (CSS Gradient & Animation) --->
   <div id="staticOverlay"></div>
   
   <!-- Main Content -->
@@ -130,7 +127,7 @@
     </section>
   </div>
   
-  <!-- TV Guide Overlay Menu -->
+  <!-- TV Guide Overlay Menu (raised above header) -->
   <div id="tvGuide" class="tv-guide" aria-hidden="true" style="display:none;">
     <div class="tv-guide-header">TV Guide</div>
     <div class="tv-guide-list">
