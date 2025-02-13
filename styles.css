@@ -421,14 +421,14 @@ body {
 text-align: center;
 }
 
-/* --- Modal Styling Enhancements --- */
+/* --- Modal Overlay & Box Styling --- */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.75); /* Slightly darker overlay for better contrast */
+  background: rgba(0, 0, 0, 0.75); /* Darker overlay for contrast */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -444,17 +444,17 @@ text-align: center;
   max-height: 90%;
   overflow-y: auto;
   position: relative;
-  font-family: 'Merova', sans-serif;  /* Match your site's font */
+  font-family: 'Merova', sans-serif; /* Consistent with site font */
   line-height: 1.6;
   border-radius: 8px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
 }
 
+/* --- Modal Content Styling --- */
 .modal-content {
   margin: 20px 0;
 }
 
-/* Headings and paragraphs within the modals */
 .modal-content h1,
 .modal-content h2,
 .modal-content h3 {
@@ -468,18 +468,18 @@ text-align: center;
   font-size: 1rem;
 }
 
-/* Center the About Me content for improved aesthetics */
+/* Center content in About Me modal */
 #aboutModal .modal-content {
   text-align: center;
 }
 
-/* Style the contact info link for better visibility */
+/* Link styling within modals */
 .modal-content a {
   color: var(--primary-color);
   text-decoration: underline;
 }
 
-/* Optional: Adjust the close button appearance */
+/* --- Close Button Styling --- */
 .close-modal {
   position: absolute;
   top: 15px;
