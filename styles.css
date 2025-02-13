@@ -418,3 +418,34 @@ body {
     padding: 20px 32px;
   }
 }
+/* Ensure modals use your site's font and proper spacing */
+.modal-box {
+  background: rgba(0, 0, 0, 0.85);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: var(--primary-color);
+  padding: 30px;            /* Increased padding for extra spacing */
+  max-width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  position: relative;
+  font-family: 'Merova', sans-serif; /* Matches your global font */
+  line-height: 1.6;
+  border-radius: 8px;
+}
+
+/* Spacing for headings and paragraphs within modal content */
+.modal-content h1,
+.modal-content h2,
+.modal-content h3 {
+  margin-bottom: 15px;
+}
+
+.modal-content p,
+.modal-content ul {
+  margin-bottom: 20px;
+}
+
+/* Optional: Improve spacing for modal static overlay if needed */
+.modal-static {
+  opacity: 0.1;
+}
