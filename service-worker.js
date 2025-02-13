@@ -1,0 +1,75 @@
+const CACHE_VERSION = 'tv-portfolio-cache-v1';
+const CACHE_ASSETS = [
+  '/',
+  '/index.html',
+  '/styles.css',
+  '/script.js',
+  '/Merova.woff2',
+  // Original channel-click aif files
+  '/channel-click1.aif',
+  '/channel-click2.aif',
+  '/channel-click3.aif',
+  '/channel-click4.aif',
+  '/channel-click5.aif',
+  '/channel-click6.aif',
+  '/channel-click7.aif',
+  '/channel-click8.aif',
+  '/channel-click9.aif',
+  '/channel-click10.aif',
+  '/channel-click11.aif',
+  '/video-poster.jpg',
+  '/video-fallback.jpg',
+  '/static-resume.pdf'
+];
+
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_VERSION).then(cache => {
+      console.log('Opened cache');
+      return cache.addAll(CACHE_ASSETS);
+    })
+  );
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.map(key => {
+        if (key !== CACHE_VERSION) return caches.delete(key);
+      }))
+    )
+  );
+});
+
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(cached => {
+      const fetchPromise = fetch(event.request).then(networkResponse => {
+        const clone = networkResponse.clone();
+        caches.open(CACHE_VERSION).then(cache => cache.put(event.request, clone));
+        return networkResponse;
+      });
+      return cached || fetchPromise;
+    })
+  );
+});
+
+self.addEventListener('sync', event => {
+  if (event.tag === 'analytics') {
+    event.waitUntil(sendAnalyticsData());
+  }
+});
+async function sendAnalyticsData() {
+  console.log("Background Sync: Analytics data sent.");
+  return Promise.resolve();
+}
+
+self.addEventListener('periodicsync', event => {
+  if (event.tag === 'content-update') {
+    event.waitUntil(updateCachedContent());
+  }
+});
+async function updateCachedContent() {
+  console.log("Periodic Sync: Content updated.");
+  return Promise.resolve();
+}
