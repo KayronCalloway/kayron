@@ -5,6 +5,7 @@ const CACHE_ASSETS = [
   '/styles.css',
   '/script.js',
   '/Merova.woff2',
+  // Original channel-click aif files
   '/channel-click1.aif',
   '/channel-click2.aif',
   '/channel-click3.aif',
