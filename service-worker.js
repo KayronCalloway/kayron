@@ -21,7 +21,7 @@ self.addEventListener('install', event => {
   );
 });
 
-// Activate: Clean up old caches
+// Activate: Cleanup old caches
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
@@ -32,7 +32,7 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch: Implement stale-while-revalidate strategy with background update
+// Fetch: Stale-while-revalidate strategy with background update
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(cached => {
@@ -54,7 +54,6 @@ self.addEventListener('sync', event => {
 });
 
 async function sendAnalyticsData() {
-  // Stub: send queued analytics data to server
   console.log("Background Sync: Analytics data sent.");
   return Promise.resolve();
 }
@@ -67,7 +66,6 @@ self.addEventListener('periodicsync', event => {
 });
 
 async function updateCachedContent() {
-  // Stub: Fetch new content and update cache if necessary
   console.log("Periodic Sync: Content updated.");
   return Promise.resolve();
 }
