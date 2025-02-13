@@ -1,6 +1,12 @@
-/* --- Removed custom font @font-face (Merova.woff2) --- */
+/* --- Import Merova Font --- */
+@font-face {
+  font-family: 'Merova';
+  src: url('Merova.woff2') format('woff2'),
+       url('Merova.otf') format('opentype');
+  font-display: swap;
+}
 
-/* CSS Variables */
+/* --- CSS Variables --- */
 :root {
   --bg-color: #000;
   --primary-color: #fff;
@@ -325,7 +331,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('static.png'); /* Updated to use static.png */
+  background: url('static.gif');
   opacity: 0.1;
   mix-blend-mode: overlay;
   z-index: -1;
