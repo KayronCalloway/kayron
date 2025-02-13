@@ -30,7 +30,9 @@ function onPlayerReady(event) {
   } else {
     event.target.unMute();
   }
-  // Adaptive video quality based on network conditions
+  // Force video play in case autoplay is blocked
+  event.target.playVideo();
+  // Adaptive quality based on network conditions
   if (navigator.connection) {
     const qualityMap = {
       '4g': 'hd1080',
@@ -74,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Preload channel click sounds
   const channelSounds = Array.from({ length: 3 }, (_, i) => {
-    const audio = new Audio(`click-${i}.mp3`);
+    const audio = new Audio(`click.mp3`); // Use one sound file for simplicity
     audio.setAttribute('preload', 'auto');
     return audio;
   });
@@ -97,15 +99,12 @@ document.addEventListener('DOMContentLoaded', () => {
   webVitals.getLCP(metric => sendToAnalytics('LCP', metric));
 
   function sendToAnalytics(metricName, metric) {
-    const body = {
-      [metricName]: metric.value,
-      path: window.location.pathname
-    };
+    const body = { [metricName]: metric.value, path: window.location.pathname };
     navigator.sendBeacon('/analytics', JSON.stringify(body));
     console.log(`Tracked ${metricName}:`, metric.value);
   }
 
-  // Haptic Feedback for Mobile
+  // Haptic Feedback
   function triggerHaptic() {
     if (navigator.vibrate) {
       navigator.vibrate([50, 30, 50]);
@@ -127,18 +126,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function navigateChannels(direction) {
-    // A simple implementation: find current channel and navigate to next/prev section
     const sections = Array.from(document.querySelectorAll('.channel-section'));
     const currentIndex = sections.findIndex(sec => sec.id === currentChannel);
     let targetIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
-    if (targetIndex < 0) targetIndex = 0;
-    if (targetIndex >= sections.length) targetIndex = sections.length - 1;
+    targetIndex = Math.max(0, Math.min(sections.length - 1, targetIndex));
     sections[targetIndex].scrollIntoView({ behavior: 'smooth' });
     announce(`Now viewing channel ${targetIndex + 1}`);
     triggerHaptic();
   }
 
-  // Code Splitting: Dynamic module loading for channel content (stub)
+  // Code Splitting: Dynamic module loading (stub)
   async function loadChannelContent(channelId) {
     try {
       const module = await import(`./channels/${channelId}.js`);
@@ -148,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Service Worker Registration (for offline support)
+  // Service Worker Registration
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/service-worker.js')
@@ -157,13 +154,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Touch events for power button glow
+  // Power button glow on touch
   powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
-  powerButton.addEventListener('touchend', () =>
-    setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
-  );
+  powerButton.addEventListener('touchend', () => setTimeout(() => powerButton.classList.remove('touch-glow'), 200));
 
-  // Reveal Main Content after power button press
+  // Reveal Main Content after power button is pressed
   const revealMainContent = () => {
     window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
     gsap.to(landing, {
@@ -200,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
         if (!sporadicGlitchStarted) {
           sporadicGlitchStarted = true;
-          scheduleSporadicGlitch();
+          // Optionally, schedule periodic warp effects here
         }
       }
     });
@@ -221,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { once: true, passive: true });
 
-  // Parallax effect for video background (only for Channel 1)
+  // Parallax effect for video background (only on Channel 1)
   window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     if (currentChannel === 'section1') {
@@ -237,18 +232,26 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
-  // TV Guide interactions
+  // Menu Toggle for TV Guide
   menuButton.addEventListener('click', () => {
-    tvGuide.style.display = 'flex';
-    setTimeout(() => {
-      tvGuide.style.opacity = 1;
-      tvGuide.setAttribute('aria-hidden', 'false');
-    }, 10);
+    if (tvGuide.style.display === 'flex') {
+      // Hide the TV guide if already open
+      tvGuide.style.opacity = 0;
+      tvGuide.setAttribute('aria-hidden', 'true');
+      setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
+    } else {
+      // Show the TV guide
+      tvGuide.style.display = 'flex';
+      setTimeout(() => {
+        tvGuide.style.opacity = 1;
+        tvGuide.setAttribute('aria-hidden', 'false');
+      }, 10);
+    }
   });
   closeGuide.addEventListener('click', () => {
     tvGuide.style.opacity = 0;
     tvGuide.setAttribute('aria-hidden', 'true');
-    setTimeout(() => tvGuide.style.display = 'none', 500);
+    setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
   });
   guideItems.forEach(item => {
     item.addEventListener('click', () => {
@@ -257,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
         targetSection.scrollIntoView({ behavior: 'smooth' });
         tvGuide.style.opacity = 0;
         tvGuide.setAttribute('aria-hidden', 'true');
-        setTimeout(() => tvGuide.style.display = 'none', 500);
+        setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
         announce(`Now viewing ${item.querySelector('.channel-title').textContent}`);
         triggerHaptic();
       }
@@ -276,12 +279,14 @@ document.addEventListener('DOMContentLoaded', () => {
           triggerChannelStatic();
           animateChannelNumber(newChannel);
           announce(`Now viewing ${document.querySelector(`[data-target="${newChannel}"] .channel-title`)?.textContent || 'channel'}`);
-          // Lazy-load additional channel content (if defined)
+          // Dynamic module loading (stub)
           const moduleName = entry.target.dataset.module;
           if (moduleName) {
             loadChannelContent(moduleName);
           }
-          // Fade video background in/out depending on channel
+          // Apply warp effect on transition
+          distortAndWarpContent();
+          // Fade video background in/out based on active channel
           if (currentChannel === 'section1') {
             gsap.to(videoBackground, { duration: 0.5, opacity: 1 });
           } else {
@@ -294,6 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const observer = new IntersectionObserver(observerCallback, observerOptions);
   document.querySelectorAll('.channel-section').forEach(section => observer.observe(section));
 
+  // Trigger static overlay effect
   const triggerChannelStatic = () => {
     gsap.to(staticOverlay, {
       duration: 0.2,
@@ -302,15 +308,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  // Animate channel number overlay
   const animateChannelNumber = channelId => {
     const channelOverlay = document.querySelector(`#${channelId} .channel-number-overlay`);
     if (channelOverlay) {
       gsap.fromTo(channelOverlay, { scale: 1, filter: "brightness(1)" },
-        { scale: 1.2, filter: "brightness(2)", duration: 0.2, yoyo: true, repeat: 1 });
+                  { scale: 1.2, filter: "brightness(2)", duration: 0.2, yoyo: true, repeat: 1 });
     }
   };
 
-  // Mute Button: Toggle sound
+  // Mute Button: Toggle sound for video and channel sounds
   muteButton.addEventListener('click', () => {
     soundMuted = !soundMuted;
     muteButton.textContent = soundMuted ? "Unmute" : "Mute";
@@ -373,7 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Animate modal-box entrance with a dimensional effect
+  // Animate modal-box entrance with dimensional effect
   const animateModalIn = (modalOverlay, modalStaticId) => {
     const modalBox = modalOverlay.querySelector('.modal-box');
     gsap.fromTo(modalBox, { opacity: 0, y: -50, scale: 0.95, rotationX: 15, transformPerspective: 1000 },
@@ -443,7 +450,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Close modal when clicking outside the modal box
+  // Close modal when clicking outside modal box
   [resumeModal, aboutModal, contactModal].forEach(modal => {
     modal.addEventListener('click', (e) => {
       if (e.target === modal) {
@@ -451,51 +458,4 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
-
-  // Advanced: WebGL Scanline Effect (stub)
-  function addScanlines() {
-    if (typeof THREE !== 'undefined') {
-      const geometry = new THREE.PlaneGeometry(2, 2);
-      const scanlineShader = new THREE.ShaderMaterial({
-        uniforms: {
-          time: { value: 0 }
-        },
-        vertexShader: `
-          varying vec2 vUv;
-          void main() {
-            vUv = uv;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-          }
-        `,
-        fragmentShader: `
-          uniform float time;
-          varying vec2 vUv;
-          void main() {
-            float scanline = sin(vUv.y * 800.0 + time * 10.0) * 0.1;
-            gl_FragColor = vec4(vec3(scanline), 0.2);
-          }
-        `,
-        transparent: true
-      });
-      // Stub: In a real implementation, you would set up a Three.js scene and add the mesh.
-      console.log("WebGL scanlines effect initialized.");
-    }
-  }
-  // Optionally, call addScanlines() if Three.js is loaded
-
-  // Advanced: AI-Powered Content Recommendations (stub)
-  async function analyzeInteractionPatterns() {
-    if (typeof tf !== 'undefined') {
-      try {
-        const model = await tf.loadGraphModel('rec-model.json');
-        const interactions = Array.from(document.querySelectorAll('.channel-section')).map(sec => sec.intersectionRatio || 0);
-        const prediction = model.predict(tf.tensor([interactions]));
-        console.log("AI Recommendation Prediction:", prediction.dataSync());
-        // Stub: update the UI based on prediction
-      } catch (err) {
-        console.error("Failed to load AI model:", err);
-      }
-    }
-  }
-  // Optionally, call analyzeInteractionPatterns() on a timer or specific event
 });
