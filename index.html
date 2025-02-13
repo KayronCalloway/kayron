@@ -8,27 +8,27 @@
   <!-- Viewport and PWA Settings -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TV Portfolio</title>
-  <!-- Content Security Policy (Note: report-uri is not effective via meta) -->
+  <!-- Content Security Policy (report-uri is ignored via meta) -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self' https://www.youtube.com;
     script-src 'self' https://cdnjs.cloudflare.com https://www.youtube.com https://unpkg.com;
     style-src 'self' 'unsafe-inline';
     img-src 'self' data:;">
-  <!-- Preload Critical Assets -->
+  <!-- Preload critical assets -->
   <link rel="preload" href="Merova.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="click.mp3" as="audio" crossorigin>
-  <!-- Web App Manifest -->
+  <!-- Manifest -->
   <link rel="manifest" href="manifest.json">
   <!-- Preconnect / DNS Prefetch -->
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="dns-prefetch" href="https://www.youtube.com">
   <!-- Your CSS -->
   <link rel="stylesheet" href="styles.css" />
-  <!-- Load YouTube IFrame API (no extra iframe in head) -->
+  <!-- Load YouTube IFrame API (no extra iframe here) -->
   <script src="https://www.youtube.com/iframe_api"></script>
-  <!-- Load GSAP without integrity attribute -->
+  <!-- Load GSAP (without integrity) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" defer></script>
-  <!-- Load Web Vitals for performance monitoring -->
+  <!-- Load Web Vitals -->
   <script src="https://unpkg.com/web-vitals@2/dist/web-vitals.umd.js" defer></script>
   <!-- Your Custom JavaScript -->
   <script src="script.js" defer></script>
@@ -44,20 +44,19 @@
   <!-- Skip Link for Accessibility -->
   <a href="#mainContent" class="skip-link">Skip to Content</a>
   
-  <!-- Audio Element for Click Sound -->
+  <!-- Audio for Click Sound -->
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
   
   <!-- Video Background Container -->
   <div id="videoBackground" class="video-background">
     <div id="videoContainer">
-      <!-- YouTube IFrame API creates the player here -->
+      <!-- The YouTube IFrame API will initialize the player here -->
       <iframe id="videoIframe" loading="lazy" poster="video-poster.jpg" frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen></iframe>
     </div>
-    <!-- Use a picture element for fallback (if you have modern formats) -->
+    <!-- Picture element fallback (uncomment sources if available) -->
     <picture id="videoFallbackContainer" style="display:none;">
-      <!-- Uncomment below if you have these assets; otherwise, rely on the <img> fallback -->
       <!--
       <source srcset="video-fallback.avif" type="image/avif">
       <source srcset="video-fallback.webp" type="image/webp">
@@ -85,10 +84,10 @@
     </div>
   </div>
   
-  <!-- Static Overlay (CSS Gradient & Animation) -->
+  <!-- Static Overlay (CSS Gradient + Animation) -->
   <div id="staticOverlay"></div>
   
-  <!-- Mute Button -->
+  <!-- Mute Button (initially hidden, will be shown later) -->
   <button id="muteButton" class="mute-button" aria-label="Mute Sound">Mute</button>
   
   <!-- Main Content -->
@@ -96,10 +95,10 @@
     <!-- Persistent Fixed Header -->
     <header id="header">
       <div class="header-name" id="headerName">Kayron Calloway</div>
-      <button id="menuButton" class="menu-button" aria-label="Open TV Guide">Menu</button>
+      <button id="menuButton" class="menu-button" aria-label="Toggle TV Guide">Menu</button>
     </header>
     
-    <!-- Channel Sections (each can have a data-module attribute for dynamic loading) -->
+    <!-- Channel Sections -->
     <section id="section1" class="channel-section" data-module="home">
       <div class="channel-buttons">
         <button id="resumeButton" class="channel-button" aria-label="View Resume">Resume</button>
