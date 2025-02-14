@@ -22,37 +22,12 @@
   <script src="https://unpkg.com/web-vitals@2/dist/web-vitals.umd.js" defer></script>
   <!-- YouTube IFrame API -->
   <script src="https://www.youtube.com/iframe_api"></script>
+  <!-- External YouTube Setup Script -->
+  <script src="youtube-setup.js" defer></script>
   <!-- Your Custom JavaScript -->
   <script src="script.js" defer></script>
   <!-- Optional favicon -->
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-  
-  <script>
-    // This function is called by the YouTube IFrame API when it's ready.
-    function onYouTubeIframeAPIReady() {
-      var player = new YT.Player('youtube-player', {
-        videoId: 'KISNE4qOIBM', // Your YouTube video ID
-        playerVars: {
-          autoplay: 1,
-          controls: 0,
-          loop: 1,
-          playlist: 'KISNE4qOIBM', // Required for looping the same video
-          modestbranding: 1,
-          rel: 0,
-          playsinline: 1,
-          fs: 0,
-          showinfo: 0
-        },
-        events: {
-          onReady: function(event) {
-            event.target.unMute(); // Attempt to play with sound
-            event.target.playVideo();
-          }
-        }
-      });
-    }
-  </script>
-  
 </head>
 <body>
   <noscript>
