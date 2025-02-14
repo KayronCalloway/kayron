@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   
-  // Intersection Observer for general channel transitions (non-YouTube effects)
+  // Intersection Observer for general channel transitions
   const observerOptions = { root: null, threshold: 0.7 };
   const channelObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
