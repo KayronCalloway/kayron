@@ -10,7 +10,7 @@ function onYouTubeIframeAPIReady() {
       autoplay: 1,
       controls: 0,
       loop: 1,
-      playlist: 'KISNE4qOIBM', // Required for looping
+      playlist: 'KISNE4qOIBM', // Required for looping the same video
       modestbranding: 1,
       rel: 0,
       playsinline: 1,
@@ -19,9 +19,10 @@ function onYouTubeIframeAPIReady() {
     },
     events: {
       onReady: function(event) {
-        event.target.mute(); // Mute initially (to comply with autoplay policies)
+        // Mute the video initially to allow autoplay.
+        event.target.mute();
         event.target.playVideo();
-        // Ensure the iframe fills its container
+        // Adjust the iframe size after a short delay.
         setTimeout(function() {
           var iframe = document.querySelector('#youtube-player iframe');
           if (iframe) {
@@ -34,7 +35,7 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
-// Unmute the video on user interaction (e.g., clicking the power button)
+// Unmute video on user interaction (e.g., clicking the power button)
 document.addEventListener("DOMContentLoaded", function() {
   var powerButton = document.getElementById("powerButton");
   if (powerButton) {
