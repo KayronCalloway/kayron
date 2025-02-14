@@ -92,7 +92,7 @@ body {
   100% { background-position: 0 3px; }
 }
 
-/* --- Fixed Header --- */
+/* --- Fixed Header (Hidden Initially) --- */
 #header {
   position: fixed;
   top: 0;
@@ -104,6 +104,8 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.5s;
 }
 .header-name {
   font-size: 1.5rem;
@@ -200,7 +202,7 @@ body {
   overflow-y: auto;
   scroll-snap-type: y mandatory;
   height: 100vh;
-  padding-top: 60px; /* Prevents content from hiding behind fixed header */
+  padding-top: 60px; /* Prevents content from hiding behind the fixed header */
 }
 
 /* --- Channel Sections --- */
