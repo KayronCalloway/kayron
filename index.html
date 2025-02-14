@@ -45,6 +45,12 @@
   <!-- Audio for Power Button -->
   <audio id="clickSound" src="audio/click.mp3" preload="auto"></audio>
   
+  <!-- Fixed Header (outside the scrollable main content) -->
+  <header id="header">
+    <div class="header-name" id="headerName">Kayron Calloway</div>
+    <button id="menuButton" class="menu-button" aria-label="Toggle TV Guide">Menu</button>
+  </header>
+  
   <!-- Landing Overlay -->
   <div id="landing">
     <div class="power-button" id="powerButton" role="button" tabindex="0" aria-label="Turn on">
@@ -64,14 +70,8 @@
   <!-- Static Overlay -->
   <div id="staticOverlay"></div>
   
-  <!-- Main Content -->
+  <!-- Main Content (scrollable) -->
   <main id="mainContent">
-    <!-- Persistent Fixed Header (Menu) -->
-    <header id="header">
-      <div class="header-name" id="headerName">Kayron Calloway</div>
-      <button id="menuButton" class="menu-button" aria-label="Toggle TV Guide">Menu</button>
-    </header>
-    
     <!-- Channel Sections -->
     <section id="section1" class="channel-section relative" data-module="home">
       <!-- YouTube Video Background for Channel 1 -->
