@@ -24,19 +24,17 @@ document.addEventListener('DOMContentLoaded', () => {
     audio.preload = 'auto';
     return audio;
   });
-
   const playRandomChannelSound = () => {
     const randomIndex = Math.floor(Math.random() * channelSounds.length);
     channelSounds[randomIndex].play().catch(error => console.error('Audio playback failed:', error));
   };
 
-  // --- Analytics Reporting ---
+  // --- Analytics Reporting using Web Vitals ---
   const sendToAnalytics = (metricName, metric) => {
     const body = { [metricName]: metric.value, path: window.location.pathname };
     navigator.sendBeacon('/analytics', JSON.stringify(body));
     console.log(`Tracked ${metricName}:`, metric.value);
   };
-
   webVitals.getCLS(metric => sendToAnalytics('CLS', metric));
   webVitals.getFID(metric => sendToAnalytics('FID', metric));
   webVitals.getLCP(metric => sendToAnalytics('LCP', metric));
@@ -61,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
       navigateChannels(direction);
     }
   });
-
   const navigateChannels = direction => {
     const sections = Array.from(document.querySelectorAll('.channel-section'));
     const currentIndex = sections.findIndex(sec => sec.id === currentChannel);
@@ -102,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
   );
 
-  // --- Reveal Main Content ---
+  // --- Reveal Main Content & Reveal Header ---
   const revealMainContent = () => {
     window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
     gsap.to(landing, {
@@ -112,23 +109,23 @@ document.addEventListener('DOMContentLoaded', () => {
         landing.style.display = "none";
         mainContent.style.display = "block";
         document.body.style.overflow = "auto";
+        // Reveal the header (with your name and menu) after landing completes
         gsap.to(header, { duration: 0.5, opacity: 1 });
       }
     });
   };
 
-  // --- Landing Sequence ---
   powerButton.addEventListener('click', () => {
     powerButton.style.pointerEvents = 'none';
-    clickSound?.play().catch(error => console.error('Click sound failed:', error));
-    
+    if (clickSound) {
+      clickSound.play().catch(error => console.error('Click sound failed:', error));
+    }
     gsap.to(powerButton, {
       duration: 0.3,
       opacity: 0,
       ease: "power2.out",
       onComplete: () => powerButton.style.display = "none"
     });
-    
     const tl = gsap.timeline({
       onComplete: () => {
         landingSequenceComplete = true;
@@ -137,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
       }
     });
-    
     tl.to(landing, { duration: 0.15, backgroundColor: "#fff", ease: "power2.out" })
       .to(landing, { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" })
       .to(staticOverlay, { duration: 0.2, opacity: 0.3 })
@@ -158,9 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleBackToTop = () => {
     backToTop.style.display = window.pageYOffset > 300 ? 'block' : 'none';
   };
-
   window.addEventListener('scroll', throttle(toggleBackToTop, 100));
-  
   backToTop.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
@@ -179,10 +173,8 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
     }
   };
-
   menuButton.addEventListener('click', () => toggleTVGuide(tvGuide.style.display !== 'flex'));
   closeGuide.addEventListener('click', () => toggleTVGuide(false));
-
   guideItems.forEach(item => {
     item.addEventListener('click', () => {
       const targetSection = document.getElementById(item.getAttribute('data-target'));
@@ -197,7 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Intersection Observer for Channel Transitions ---
   const observerOptions = { root: null, threshold: 0.7 };
-
   const observerCallback = entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -217,7 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   };
-
   const observer = new IntersectionObserver(observerCallback, observerOptions);
   document.querySelectorAll('.channel-section').forEach(section => observer.observe(section));
 
@@ -248,7 +238,35 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   };
 
-  // --- Throttle Function ---
+  // --- Intersection Observer for YouTube Video Audio Control ---
+  // This observer mutes/unmutes the YouTube video based on Channel 1 visibility.
+  const channel1 = document.getElementById("section1");
+  const ytObserverOptions = {
+    root: null,
+    threshold: 0.7
+  };
+  const ytObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.target.id === "section1") {
+        if (entry.intersectionRatio >= 0.7) {
+          if (youtubePlayer && typeof youtubePlayer.unMute === "function") {
+            youtubePlayer.unMute();
+            console.log("Channel 1 active: Unmuting video.");
+          }
+        } else {
+          if (youtubePlayer && typeof youtubePlayer.mute === "function") {
+            youtubePlayer.mute();
+            console.log("Channel 1 inactive: Muting video.");
+          }
+        }
+      }
+    });
+  }, ytObserverOptions);
+  if (channel1) {
+    ytObserver.observe(channel1);
+  }
+
+  // --- Throttle Utility Function ---
   function throttle(fn, wait) {
     let lastTime = 0;
     return function(...args) {
@@ -260,7 +278,3 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 });
-
-// --- End of DOMContentLoaded ---
-
-// Note: The YouTube setup (in youtube-setup.js) remains separate.
