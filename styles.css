@@ -492,6 +492,13 @@ text-align: center;
 }
 
 }
+/* --- Ensure Channel 1 Section Fills the Viewport --- */
+.channel-section {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Full viewport height */
+}
+
 /* --- Channel 1 Video Background Styling --- */
 .video-background {
   position: absolute;
@@ -503,11 +510,10 @@ text-align: center;
   z-index: -1; /* Place the video behind channel content */
 }
 
-/* Sometimes the YouTube API injects an <iframe> directly; force it to cover the container */
 .video-background iframe {
   width: 100% !important;
   height: 100% !important;
   pointer-events: none;
   border: 0;
-  object-fit: cover;
+  object-fit: cover; /* Ensures the video covers the entire area */
 }
