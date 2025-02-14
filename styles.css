@@ -21,7 +21,7 @@ body {
   color: var(--primary-color);
   font-family: 'Merova', sans-serif;
   overflow: hidden;
-  /* Uncomment if you want global centered text
+  /* Uncomment if you want global centered text:
   text-align: center;
   */
 }
@@ -95,19 +95,18 @@ body {
   100% { background-position: 0 3px; }
 }
 
-/* --- Header --- */
+/* --- Header (Fixed at Top) --- */
 #header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  background: var(--header-bg);
+  z-index: 1000; /* Header stays below pop-ups */
+  background-color: var(--header-bg);
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  z-index: 1100;
-  opacity: 1;
 }
 .header-name {
   font-size: 1.5rem;
@@ -204,6 +203,7 @@ body {
   overflow-y: auto;
   scroll-snap-type: y mandatory;
   height: 100vh;
+  padding-top: 60px; /* Ensure content isn't hidden behind the fixed header */
 }
 
 /* --- Channel Sections --- */
@@ -258,14 +258,14 @@ body {
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.95);
-  z-index: 1200;
-  display: none;
+  display: none; /* Hidden by default; toggle via JS */
   opacity: 0;
   transition: opacity 0.5s;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   padding-top: 40px;
+  z-index: 2100; /* Above header */
 }
 .tv-guide-header {
   font-size: 2rem;
@@ -306,18 +306,18 @@ body {
   cursor: pointer;
 }
 
-/* --- Modal Overlays and Boxes --- */
+/* --- Modal Overlays & Boxes --- */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.75);
-  display: none;
+  background: rgba(0, 0, 0, 0.75); /* Darker overlay for contrast */
+  display: none; /* Hidden by default */
   align-items: center;
   justify-content: center;
-  z-index: 500;
+  z-index: 2200; /* Highest z-index so modals appear above header & TV guide */
   padding: 20px;
   backdrop-filter: blur(4px);
   transition: opacity 0.5s;
@@ -363,6 +363,11 @@ body {
   color: var(--primary-color);
   font-size: 2rem;
   cursor: pointer;
+}
+
+/* --- Utility Classes --- */
+.hidden {
+  display: none;
 }
 
 /* --- Responsive Mobile Enhancements --- */
@@ -415,7 +420,7 @@ body {
   width: 100% !important;
   height: 100% !important;
   overflow: hidden;
-  z-index: -1;
+  z-index: -1; /* Place behind channel content */
 }
 .video-background iframe {
   width: 100% !important;
@@ -423,14 +428,4 @@ body {
   pointer-events: none;
   border: 0;
   object-fit: cover;
-}
-
-/* --- Fix Header Across Channels --- */
-#header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  background-color: var(--header-bg);
 }
