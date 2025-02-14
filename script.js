@@ -247,3 +247,41 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   }
 });
+// Additional code to control the YouTube video's audio based on Channel 1 visibility
+
+document.addEventListener("DOMContentLoaded", function() {
+  // Ensure channel 1 element exists
+  const channel1 = document.getElementById("section1");
+
+  // Set up the Intersection Observer options:
+  const observerOptions = {
+    root: null,          // relative to the viewport
+    threshold: 0.7       // trigger when 70% of channel 1 is visible
+  };
+
+  // Create an observer to watch Channel 1's visibility.
+  const channelObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.target.id === "section1") {
+        if (entry.isIntersecting) {
+          // Channel 1 is in view: unmute the video.
+          if (youtubePlayer && typeof youtubePlayer.unMute === "function") {
+            youtubePlayer.unMute();
+            console.log("Channel 1 active: Unmuting video.");
+          }
+        } else {
+          // Channel 1 is not in view: mute the video.
+          if (youtubePlayer && typeof youtubePlayer.mute === "function") {
+            youtubePlayer.mute();
+            console.log("Channel 1 inactive: Muting video.");
+          }
+        }
+      }
+    });
+  }, observerOptions);
+
+  // Start observing Channel 1
+  if (channel1) {
+    channelObserver.observe(channel1);
+  }
+});
