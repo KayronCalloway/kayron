@@ -1,12 +1,13 @@
+// service-worker.js
+
 const CACHE_VERSION = 'tv-portfolio-cache-v1';
 const CACHE_ASSETS = [
   '/',
   '/index.html',
   '/styles.css',
   '/script.js',
-  '/youtube-setup.js',
   '/visuals/Merova.woff2',
-  // Removed Merova.otf if not available
+  '/visuals/Merova.otf',
   '/audio/channel-click1.aif',
   '/audio/channel-click2.aif',
   '/audio/channel-click3.aif',
@@ -52,3 +53,23 @@ self.addEventListener('fetch', event => {
     })
   );
 });
+
+self.addEventListener('sync', event => {
+  if (event.tag === 'analytics') {
+    event.waitUntil(sendAnalyticsData());
+  }
+});
+async function sendAnalyticsData() {
+  console.log("Background Sync: Analytics data sent.");
+  return Promise.resolve();
+}
+
+self.addEventListener('periodicsync', event => {
+  if (event.tag === 'content-update') {
+    event.waitUntil(updateCachedContent());
+  }
+});
+async function updateCachedContent() {
+  console.log("Periodic Sync: Content updated.");
+  return Promise.resolve();
+}
