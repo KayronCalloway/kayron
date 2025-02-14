@@ -1,7 +1,5 @@
-// script.js
-
 document.addEventListener('DOMContentLoaded', () => {
-  // DOM elements
+  // --- DOM Elements ---
   const powerButton = document.getElementById('powerButton');
   const landing = document.getElementById('landing');
   const landingName = document.getElementById('landingName');
@@ -15,43 +13,42 @@ document.addEventListener('DOMContentLoaded', () => {
   const staticOverlay = document.getElementById('staticOverlay');
   const clickSound = document.getElementById('clickSound');
   const backToTop = document.getElementById('backToTop');
+
   let landingSequenceComplete = false;
   let autoScrollTimeout;
   let currentChannel = null;
 
-  // Channel-click sounds
+  // --- Channel-Click Sounds ---
   const channelSounds = Array.from({ length: 11 }, (_, i) => {
     const audio = new Audio(`audio/channel-click${i + 1}.aif`);
     audio.preload = 'auto';
     return audio;
   });
+
   const playRandomChannelSound = () => {
     const randomIndex = Math.floor(Math.random() * channelSounds.length);
     channelSounds[randomIndex].play().catch(error => console.error('Audio playback failed:', error));
   };
 
-  function announce(message) {
-    console.log(message);
-  }
-
-  // Web Vitals Reporting
-  webVitals.getCLS(metric => sendToAnalytics('CLS', metric));
-  webVitals.getFID(metric => sendToAnalytics('FID', metric));
-  webVitals.getLCP(metric => sendToAnalytics('LCP', metric));
-  function sendToAnalytics(metricName, metric) {
+  // --- Analytics Reporting ---
+  const sendToAnalytics = (metricName, metric) => {
     const body = { [metricName]: metric.value, path: window.location.pathname };
     navigator.sendBeacon('/analytics', JSON.stringify(body));
     console.log(`Tracked ${metricName}:`, metric.value);
-  }
+  };
 
-  // Haptic Feedback
-  function triggerHaptic() {
+  webVitals.getCLS(metric => sendToAnalytics('CLS', metric));
+  webVitals.getFID(metric => sendToAnalytics('FID', metric));
+  webVitals.getLCP(metric => sendToAnalytics('LCP', metric));
+
+  // --- Haptic Feedback ---
+  const triggerHaptic = () => {
     if (navigator.vibrate) {
       navigator.vibrate([50, 30, 50]);
     }
-  }
+  };
 
-  // Swipe Navigation
+  // --- Swipe Navigation ---
   let touchStartX = 0;
   document.addEventListener('touchstart', e => {
     touchStartX = e.changedTouches[0].screenX;
@@ -64,21 +61,21 @@ document.addEventListener('DOMContentLoaded', () => {
       navigateChannels(direction);
     }
   });
-  function navigateChannels(direction) {
+
+  const navigateChannels = direction => {
     const sections = Array.from(document.querySelectorAll('.channel-section'));
     const currentIndex = sections.findIndex(sec => sec.id === currentChannel);
     let targetIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
     targetIndex = Math.max(0, Math.min(sections.length - 1, targetIndex));
     sections[targetIndex].scrollIntoView({ behavior: 'smooth' });
-    announce(`Now viewing channel ${targetIndex + 1}`);
+    console.log(`Now viewing channel ${targetIndex + 1}`);
     triggerHaptic();
-  }
+  };
 
-  // Dynamic Module Loading
-  async function loadChannelContent(moduleName) {
+  // --- Dynamic Module Loading ---
+  const loadChannelContent = async moduleName => {
     try {
       let module;
-      // For Channel 1, load from channels/ch1/home.js
       if (moduleName === 'home') {
         module = await import(`./channels/ch1/home.js`);
       } else {
@@ -88,9 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (err) {
       console.warn(`Module for ${moduleName} failed to load.`, err);
     }
-  }
+  };
 
-  // Service Worker Registration
+  // --- Service Worker Registration ---
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./service-worker.js')
@@ -99,13 +96,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Touch Glow on Power Button
+  // --- Power Button Touch Glow ---
   powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
   powerButton.addEventListener('touchend', () =>
     setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
   );
 
-  // Reveal Main Content
+  // --- Reveal Main Content ---
   const revealMainContent = () => {
     window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
     gsap.to(landing, {
@@ -120,18 +117,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Landing Sequence
+  // --- Landing Sequence ---
   powerButton.addEventListener('click', () => {
     powerButton.style.pointerEvents = 'none';
-    if (clickSound) {
-      clickSound.play().catch(error => console.error('Click sound failed:', error));
-    }
+    clickSound?.play().catch(error => console.error('Click sound failed:', error));
+    
     gsap.to(powerButton, {
       duration: 0.3,
       opacity: 0,
       ease: "power2.out",
       onComplete: () => powerButton.style.display = "none"
     });
+    
     const tl = gsap.timeline({
       onComplete: () => {
         landingSequenceComplete = true;
@@ -140,6 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
       }
     });
+    
     tl.to(landing, { duration: 0.15, backgroundColor: "#fff", ease: "power2.out" })
       .to(landing, { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" })
       .to(staticOverlay, { duration: 0.2, opacity: 0.3 })
@@ -148,6 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .to(landingSubtitle, { duration: 0.7, opacity: 1, ease: "power2.out" }, "-=0.3")
       .to("#landingSubtitle .subtitle-item", { duration: 1, opacity: 1, ease: "power2.out", stagger: 0.5 }, "+=0.3");
   });
+
   window.addEventListener('scroll', () => {
     if (landingSequenceComplete && landing.style.display !== "none") {
       clearTimeout(autoScrollTimeout);
@@ -155,49 +154,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { once: true, passive: true });
 
-  // Back to Top Button
-  window.addEventListener('scroll', () => {
+  // --- Back to Top Button ---
+  const toggleBackToTop = () => {
     backToTop.style.display = window.pageYOffset > 300 ? 'block' : 'none';
-  });
+  };
+
+  window.addEventListener('scroll', throttle(toggleBackToTop, 100));
+  
   backToTop.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
-  // TV Guide Menu Toggle
-  menuButton.addEventListener('click', () => {
-    if (tvGuide.style.display === 'flex') {
-      tvGuide.style.opacity = 0;
-      tvGuide.setAttribute('aria-hidden', 'true');
-      setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
-    } else {
+  // --- TV Guide Menu Toggle ---
+  const toggleTVGuide = show => {
+    if (show) {
       tvGuide.style.display = 'flex';
       setTimeout(() => {
         tvGuide.style.opacity = 1;
         tvGuide.setAttribute('aria-hidden', 'false');
       }, 10);
+    } else {
+      tvGuide.style.opacity = 0;
+      tvGuide.setAttribute('aria-hidden', 'true');
+      setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
     }
-  });
-  closeGuide.addEventListener('click', () => {
-    tvGuide.style.opacity = 0;
-    tvGuide.setAttribute('aria-hidden', 'true');
-    setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
-  });
+  };
+
+  menuButton.addEventListener('click', () => toggleTVGuide(tvGuide.style.display !== 'flex'));
+  closeGuide.addEventListener('click', () => toggleTVGuide(false));
+
   guideItems.forEach(item => {
     item.addEventListener('click', () => {
       const targetSection = document.getElementById(item.getAttribute('data-target'));
       if (targetSection) {
         targetSection.scrollIntoView({ behavior: 'smooth' });
-        tvGuide.style.opacity = 0;
-        tvGuide.setAttribute('aria-hidden', 'true');
-        setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
-        announce(`Now viewing ${item.querySelector('.channel-title').textContent}`);
+        toggleTVGuide(false);
+        console.log(`Now viewing ${item.querySelector('.channel-title').textContent}`);
         triggerHaptic();
       }
     });
   });
 
-  // Intersection Observer for Channel Transitions
+  // --- Intersection Observer for Channel Transitions ---
   const observerOptions = { root: null, threshold: 0.7 };
+
   const observerCallback = entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
           playRandomChannelSound();
           triggerChannelStatic();
           animateChannelNumber(newChannel);
-          announce(`Now viewing channel ${newChannel.slice(-1)}`);
+          console.log(`Now viewing channel ${newChannel.slice(-1)}`);
           const moduleName = entry.target.dataset.module;
           if (moduleName) {
             loadChannelContent(moduleName);
@@ -217,10 +217,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   };
+
   const observer = new IntersectionObserver(observerCallback, observerOptions);
   document.querySelectorAll('.channel-section').forEach(section => observer.observe(section));
 
-  // Trigger static overlay effect
+  // --- Trigger Static Overlay Effect ---
   const triggerChannelStatic = () => {
     gsap.to(staticOverlay, {
       duration: 0.2,
@@ -229,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Animate channel number overlay
+  // --- Animate Channel Number Overlay ---
   const animateChannelNumber = channelId => {
     const channelOverlay = document.querySelector(`#${channelId} .channel-number-overlay`);
     if (channelOverlay) {
@@ -238,50 +239,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // A call to distort/warp content on channel change
-  function distortAndWarpContent() {
+  // --- Distort/Warp Content on Channel Change ---
+  const distortAndWarpContent = () => {
     gsap.fromTo(
-      document.getElementById('mainContent'),
+      mainContent,
       { filter: "none", transform: "skewX(0deg)" },
       { filter: "blur(2px) contrast(1.2)", transform: "skewX(5deg)", duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }
     );
-  }
-});
-// Additional code to control the YouTube video's audio based on Channel 1 visibility
-
-document.addEventListener("DOMContentLoaded", function() {
-  // Ensure channel 1 element exists
-  const channel1 = document.getElementById("section1");
-
-  // Set up the Intersection Observer options:
-  const observerOptions = {
-    root: null,          // relative to the viewport
-    threshold: 0.7       // trigger when 70% of channel 1 is visible
   };
 
-  // Create an observer to watch Channel 1's visibility.
-  const channelObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.target.id === "section1") {
-        if (entry.isIntersecting) {
-          // Channel 1 is in view: unmute the video.
-          if (youtubePlayer && typeof youtubePlayer.unMute === "function") {
-            youtubePlayer.unMute();
-            console.log("Channel 1 active: Unmuting video.");
-          }
-        } else {
-          // Channel 1 is not in view: mute the video.
-          if (youtubePlayer && typeof youtubePlayer.mute === "function") {
-            youtubePlayer.mute();
-            console.log("Channel 1 inactive: Muting video.");
-          }
-        }
+  // --- Throttle Function ---
+  function throttle(fn, wait) {
+    let lastTime = 0;
+    return function(...args) {
+      const now = Date.now();
+      if (now - lastTime >= wait) {
+        lastTime = now;
+        fn.apply(this, args);
       }
-    });
-  }, observerOptions);
-
-  // Start observing Channel 1
-  if (channel1) {
-    channelObserver.observe(channel1);
+    };
   }
 });
+
+// --- End of DOMContentLoaded ---
+
+// Note: The YouTube setup (in youtube-setup.js) remains separate.
