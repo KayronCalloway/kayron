@@ -1,3 +1,5 @@
+// service-worker.js
+
 const CACHE_VERSION = 'tv-portfolio-cache-v1';
 const CACHE_ASSETS = [
   '/',
@@ -51,3 +53,23 @@ self.addEventListener('fetch', event => {
     })
   );
 });
+
+self.addEventListener('sync', event => {
+  if (event.tag === 'analytics') {
+    event.waitUntil(sendAnalyticsData());
+  }
+});
+async function sendAnalyticsData() {
+  console.log("Background Sync: Analytics data sent.");
+  return Promise.resolve();
+}
+
+self.addEventListener('periodicsync', event => {
+  if (event.tag === 'content-update') {
+    event.waitUntil(updateCachedContent());
+  }
+});
+async function updateCachedContent() {
+  console.log("Periodic Sync: Content updated.");
+  return Promise.resolve();
+}
