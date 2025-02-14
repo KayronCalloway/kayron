@@ -19,10 +19,10 @@ function onYouTubeIframeAPIReady() {
     },
     events: {
       onReady: function(event) {
-        // Mute the video first to satisfy autoplay policies.
+        // Mute the video initially to allow autoplay.
         event.target.mute();
         event.target.playVideo();
-        // After a short delay, try to set the iframe's size.
+        // Adjust the iframe size after a short delay.
         setTimeout(function() {
           var iframe = document.querySelector('#youtube-player iframe');
           if (iframe) {
@@ -35,7 +35,7 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
-// When the DOM is loaded, add a listener to unmute the video on user interaction.
+// Unmute video on user interaction (e.g., clicking the power button)
 document.addEventListener("DOMContentLoaded", function() {
   var powerButton = document.getElementById("powerButton");
   if (powerButton) {
