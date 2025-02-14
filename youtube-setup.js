@@ -2,7 +2,7 @@
 
 var youtubePlayer;
 
-// Called by the YouTube IFrame API when it's ready.
+// This function is called by the YouTube IFrame API when it's ready.
 function onYouTubeIframeAPIReady() {
   youtubePlayer = new YT.Player('youtube-player', {
     videoId: 'KISNE4qOIBM', // Your YouTube video ID
@@ -21,7 +21,7 @@ function onYouTubeIframeAPIReady() {
       onReady: function(event) {
         event.target.mute(); // Mute initially (required for autoplay)
         event.target.playVideo();
-        // Force the iframe to fill its container after a short delay.
+        // Ensure the iframe fills its container
         setTimeout(function() {
           var iframe = document.querySelector('#youtube-player iframe');
           if (iframe) {
