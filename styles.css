@@ -503,9 +503,11 @@ text-align: center;
   z-index: -1; /* Place the video behind channel content */
 }
 
+/* Sometimes the YouTube API injects an <iframe> directly; force it to cover the container */
 .video-background iframe {
   width: 100% !important;
   height: 100% !important;
   pointer-events: none;
-  object-fit: cover; /* Ensures the video covers the entire area */
+  border: 0;
+  object-fit: cover;
 }
