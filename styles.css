@@ -1,4 +1,4 @@
-/* --- CSS Variables --- */
+//* --- CSS Variables --- */
 :root {
   --bg-color: #000;
   --primary-color: #fff;
@@ -101,7 +101,6 @@ body {
   z-index: 100;
 }
 .power-button {
-  /* Original power button design */
   width: 100px;
   height: 100px;
   cursor: pointer;
