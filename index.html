@@ -8,7 +8,7 @@
   <!-- Viewport and PWA Settings -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TV Portfolio</title>
-  <!-- Content Security Policy (Updated to allow YouTube frames) -->
+  <!-- Content Security Policy (allowing YouTube frames) -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
     script-src 'self' https://cdnjs.cloudflare.com https://unpkg.com https://www.youtube.com;
@@ -19,7 +19,7 @@
   <link rel="preload" href="/visuals/Merova.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css" />
   
-  <!-- Load GSAP (without integrity for now) -->
+  <!-- Load GSAP (without integrity) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" defer></script>
   <script src="https://unpkg.com/web-vitals@2/dist/web-vitals.umd.js" defer></script>
   <!-- YouTube IFrame API -->
@@ -28,7 +28,7 @@
   <script src="youtube-setup.js" defer></script>
   <!-- Main Script -->
   <script src="script.js" defer></script>
-  <!-- Optional favicon (remove if not used) -->
+  <!-- Optional favicon (comment out if not available) -->
   <!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
 </head>
 <body>
@@ -47,10 +47,8 @@
   
   <!-- Landing Overlay -->
   <div id="landing">
-    <!-- Power Button (original design) -->
     <div class="power-button" id="powerButton" role="button" tabindex="0" aria-label="Turn on">
       <svg class="power-icon" viewBox="0 0 100 100" aria-hidden="true">
-        <!-- Original SVG design -->
         <path d="M50,10 A40,40 0 1,1 49.9,10"></path>
         <line x1="50" y1="0" x2="50" y2="40"></line>
       </svg>
@@ -68,13 +66,13 @@
   
   <!-- Main Content -->
   <div id="mainContent">
-    <!-- Fixed Header (menu stays visible) -->
+    <!-- Fixed Header (menu stays visible across channels) -->
     <header id="header">
       <div class="header-name" id="headerName">Kayron Calloway</div>
       <button id="menuButton" class="menu-button" aria-label="Toggle TV Guide">Menu</button>
     </header>
     
-    <!-- Channel 1 (YouTube video background with full viewport) -->
+    <!-- Channel 1: YouTube Video Background with original design -->
     <section id="section1" class="channel-section" data-module="home">
       <!-- YouTube Video Background for Channel 1 -->
       <div class="video-background">
