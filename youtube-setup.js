@@ -1,6 +1,5 @@
 // youtube-setup.js
 
-// Global variable to store the player
 var youtubePlayer;
 
 // This function is called by the YouTube IFrame API when it's ready.
@@ -20,15 +19,23 @@ function onYouTubeIframeAPIReady() {
     },
     events: {
       onReady: function(event) {
-        // Do not unmute immediately so that autoplay is allowed.
-        // The video will play muted initially.
+        // Mute the video first to satisfy autoplay policies.
+        event.target.mute();
         event.target.playVideo();
+        // After a short delay, try to set the iframe's size.
+        setTimeout(function() {
+          var iframe = document.querySelector('#youtube-player iframe');
+          if (iframe) {
+            iframe.style.width = "100%";
+            iframe.style.height = "100%";
+          }
+        }, 500);
       }
     }
   });
 }
 
-// When the DOM is fully loaded, add a listener to unmute the video upon user interaction.
+// When the DOM is loaded, add a listener to unmute the video on user interaction.
 document.addEventListener("DOMContentLoaded", function() {
   var powerButton = document.getElementById("powerButton");
   if (powerButton) {
