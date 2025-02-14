@@ -21,9 +21,6 @@ body {
   color: var(--primary-color);
   font-family: 'Merova', sans-serif;
   overflow: hidden;
-  /* Uncomment if you want global centered text:
-  text-align: center;
-  */
 }
 
 /* --- Skip Link --- */
@@ -95,7 +92,7 @@ body {
   100% { background-position: 0 3px; }
 }
 
-/* --- Header (Fixed at Top) --- */
+/* --- Fixed Header --- */
 #header {
   position: fixed;
   top: 0;
@@ -197,13 +194,13 @@ body {
   margin-right: 10px;
 }
 
-/* --- Main Content --- */
+/* --- Main Content (Scrollable) --- */
 #mainContent {
   display: none;
   overflow-y: auto;
   scroll-snap-type: y mandatory;
   height: 100vh;
-  padding-top: 60px; /* Ensure content isn't hidden behind the fixed header */
+  padding-top: 60px; /* Prevents content from hiding behind fixed header */
 }
 
 /* --- Channel Sections --- */
@@ -258,14 +255,14 @@ body {
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.95);
-  display: none; /* Hidden by default; toggle via JS */
+  display: none;
   opacity: 0;
   transition: opacity 0.5s;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   padding-top: 40px;
-  z-index: 2100; /* Above header */
+  z-index: 2100;
 }
 .tv-guide-header {
   font-size: 2rem;
@@ -313,11 +310,11 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.75); /* Darker overlay for contrast */
-  display: none; /* Hidden by default */
+  background: rgba(0, 0, 0, 0.75);
+  display: none;
   align-items: center;
   justify-content: center;
-  z-index: 2200; /* Highest z-index so modals appear above header & TV guide */
+  z-index: 2200;
   padding: 20px;
   backdrop-filter: blur(4px);
   transition: opacity 0.5s;
@@ -420,7 +417,7 @@ body {
   width: 100% !important;
   height: 100% !important;
   overflow: hidden;
-  z-index: -1; /* Place behind channel content */
+  z-index: -1;
 }
 .video-background iframe {
   width: 100% !important;
