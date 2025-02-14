@@ -285,3 +285,36 @@ document.addEventListener("DOMContentLoaded", function() {
     channelObserver.observe(channel1);
   }
 });
+// script.js
+
+// Use IntersectionObserver to mute/unmute the YouTube video based on Channel 1 visibility
+document.addEventListener("DOMContentLoaded", function() {
+  const channel1 = document.getElementById("section1");
+
+  const observerOptions = {
+    root: null,
+    threshold: 0.7
+  };
+
+  const channelObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.target.id === "section1") {
+        if (entry.isIntersecting) {
+          if (youtubePlayer && typeof youtubePlayer.unMute === "function") {
+            youtubePlayer.unMute();
+            console.log("Channel 1 in view: Unmuting video.");
+          }
+        } else {
+          if (youtubePlayer && typeof youtubePlayer.mute === "function") {
+            youtubePlayer.mute();
+            console.log("Channel 1 not in view: Muting video.");
+          }
+        }
+      }
+    });
+  }, observerOptions);
+
+  if (channel1) {
+    channelObserver.observe(channel1);
+  }
+});
