@@ -1,3 +1,5 @@
+// script.js
+
 document.addEventListener('DOMContentLoaded', () => {
   // DOM elements
   const powerButton = document.getElementById('powerButton');
@@ -13,11 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const staticOverlay = document.getElementById('staticOverlay');
   const clickSound = document.getElementById('clickSound');
   const backToTop = document.getElementById('backToTop');
-  
   let landingSequenceComplete = false;
   let autoScrollTimeout;
   let currentChannel = null;
-  
+
   // Channel-click sounds
   const channelSounds = Array.from({ length: 11 }, (_, i) => {
     const audio = new Audio(`audio/channel-click${i + 1}.aif`);
@@ -28,36 +29,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const randomIndex = Math.floor(Math.random() * channelSounds.length);
     channelSounds[randomIndex].play().catch(error => console.error('Audio playback failed:', error));
   };
-  
-  // Simple announce function (for debugging)
+
   function announce(message) {
     console.log(message);
   }
-  
-  // (Optional) Web Vitals reporting – remove if not needed
-  // webVitals.getCLS(metric => sendToAnalytics('CLS', metric));
-  // webVitals.getFID(metric => sendToAnalytics('FID', metric));
-  // webVitals.getLCP(metric => sendToAnalytics('LCP', metric));
-  // function sendToAnalytics(metricName, metric) {
-  //   const body = { [metricName]: metric.value, path: window.location.pathname };
-  //   navigator.sendBeacon('/analytics', JSON.stringify(body));
-  //   console.log(`Tracked ${metricName}:`, metric.value);
-  // }
-  
+
+  // Web Vitals Reporting
+  webVitals.getCLS(metric => sendToAnalytics('CLS', metric));
+  webVitals.getFID(metric => sendToAnalytics('FID', metric));
+  webVitals.getLCP(metric => sendToAnalytics('LCP', metric));
+  function sendToAnalytics(metricName, metric) {
+    const body = { [metricName]: metric.value, path: window.location.pathname };
+    navigator.sendBeacon('/analytics', JSON.stringify(body));
+    console.log(`Tracked ${metricName}:`, metric.value);
+  }
+
   // Haptic Feedback
   function triggerHaptic() {
     if (navigator.vibrate) {
       navigator.vibrate([50, 30, 50]);
     }
   }
-  
+
   // Swipe Navigation
   let touchStartX = 0;
   document.addEventListener('touchstart', e => {
     touchStartX = e.changedTouches[0].screenX;
   });
   document.addEventListener('touchend', e => {
-    const diffX = touchStartX - e.changedTouches[0].screenX;
+    const touchEndX = e.changedTouches[0].screenX;
+    const diffX = touchStartX - touchEndX;
     if (Math.abs(diffX) > 50) {
       const direction = diffX > 0 ? 'next' : 'prev';
       navigateChannels(direction);
@@ -71,13 +72,13 @@ document.addEventListener('DOMContentLoaded', () => {
     sections[targetIndex].scrollIntoView({ behavior: 'smooth' });
     announce(`Now viewing channel ${targetIndex + 1}`);
     triggerHaptic();
-    playRandomChannelSound();
   }
-  
+
   // Dynamic Module Loading
   async function loadChannelContent(moduleName) {
     try {
       let module;
+      // For Channel 1, load from channels/ch1/home.js
       if (moduleName === 'home') {
         module = await import(`./channels/ch1/home.js`);
       } else {
@@ -88,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.warn(`Module for ${moduleName} failed to load.`, err);
     }
   }
-  
+
   // Service Worker Registration
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -97,14 +98,14 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(err => console.error('Service Worker registration failed:', err));
     });
   }
-  
+
   // Touch Glow on Power Button
   powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
   powerButton.addEventListener('touchend', () =>
     setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
   );
-  
-  // Reveal Main Content (Landing Animation)
+
+  // Reveal Main Content
   const revealMainContent = () => {
     window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
     gsap.to(landing, {
@@ -118,8 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   };
-  
-  // Landing Sequence on Power Button click
+
+  // Landing Sequence
   powerButton.addEventListener('click', () => {
     powerButton.style.pointerEvents = 'none';
     if (clickSound) {
@@ -146,15 +147,14 @@ document.addEventListener('DOMContentLoaded', () => {
       .to(landingName, { duration: 1.2, width: "100%", opacity: 1, ease: "power2.out" })
       .to(landingSubtitle, { duration: 0.7, opacity: 1, ease: "power2.out" }, "-=0.3")
       .to("#landingSubtitle .subtitle-item", { duration: 1, opacity: 1, ease: "power2.out", stagger: 0.5 }, "+=0.3");
-  
-    window.addEventListener('scroll', () => {
-      if (landingSequenceComplete && landing.style.display !== "none") {
-        clearTimeout(autoScrollTimeout);
-        revealMainContent();
-      }
-    }, { once: true, passive: true });
   });
-  
+  window.addEventListener('scroll', () => {
+    if (landingSequenceComplete && landing.style.display !== "none") {
+      clearTimeout(autoScrollTimeout);
+      revealMainContent();
+    }
+  }, { once: true, passive: true });
+
   // Back to Top Button
   window.addEventListener('scroll', () => {
     backToTop.style.display = window.pageYOffset > 300 ? 'block' : 'none';
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
   backToTop.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
-  
+
   // TV Guide Menu Toggle
   menuButton.addEventListener('click', () => {
     if (tvGuide.style.display === 'flex') {
@@ -195,66 +195,93 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
-  
-  // Combined Intersection Observer for channel transitions and YouTube audio control
+
+  // Intersection Observer for Channel Transitions
   const observerOptions = { root: null, threshold: 0.7 };
-  const channelObserver = new IntersectionObserver((entries) => {
+  const observerCallback = entries => {
     entries.forEach(entry => {
-      const channelId = entry.target.id;
       if (entry.isIntersecting) {
-        // General channel transition effects (if channel changes)
-        if (currentChannel !== channelId) {
-          currentChannel = channelId;
+        const newChannel = entry.target.id;
+        if (currentChannel !== newChannel) {
+          currentChannel = newChannel;
           playRandomChannelSound();
           triggerChannelStatic();
-          animateChannelNumber(channelId);
-          announce(`Now viewing channel ${channelId.slice(-1)}`);
+          animateChannelNumber(newChannel);
+          announce(`Now viewing channel ${newChannel.slice(-1)}`);
           const moduleName = entry.target.dataset.module;
           if (moduleName) {
             loadChannelContent(moduleName);
           }
           distortAndWarpContent();
         }
-        // YouTube audio control: Unmute if Channel 1 is visible.
-        if (channelId === "section1" && youtubePlayer && typeof youtubePlayer.unMute === "function") {
-          youtubePlayer.unMute();
-          console.log("Channel 1 in view: Unmuting video.");
-        }
-      } else {
-        // If Channel 1 is not visible, mute the video.
-        if (channelId === "section1" && youtubePlayer && typeof youtubePlayer.mute === "function") {
-          youtubePlayer.mute();
-          console.log("Channel 1 not in view: Muting video.");
-        }
       }
     });
-  }, observerOptions);
-  
-  // Start observing all channel sections
-  document.querySelectorAll('.channel-section').forEach(section => channelObserver.observe(section));
-  
-  // Additional Effects Functions
-  function triggerChannelStatic() {
+  };
+  const observer = new IntersectionObserver(observerCallback, observerOptions);
+  document.querySelectorAll('.channel-section').forEach(section => observer.observe(section));
+
+  // Trigger static overlay effect
+  const triggerChannelStatic = () => {
     gsap.to(staticOverlay, {
       duration: 0.2,
       opacity: 0.3,
       onComplete: () => gsap.to(staticOverlay, { duration: 0.2, opacity: 0 })
     });
-  }
-  
-  function animateChannelNumber(channelId) {
+  };
+
+  // Animate channel number overlay
+  const animateChannelNumber = channelId => {
     const channelOverlay = document.querySelector(`#${channelId} .channel-number-overlay`);
     if (channelOverlay) {
       gsap.fromTo(channelOverlay, { scale: 1, filter: "brightness(1)" },
         { scale: 1.2, filter: "brightness(2)", duration: 0.2, yoyo: true, repeat: 1 });
     }
-  }
-  
+  };
+
+  // A call to distort/warp content on channel change
   function distortAndWarpContent() {
     gsap.fromTo(
-      mainContent,
+      document.getElementById('mainContent'),
       { filter: "none", transform: "skewX(0deg)" },
       { filter: "blur(2px) contrast(1.2)", transform: "skewX(5deg)", duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }
     );
+  }
+});
+// Additional code to control the YouTube video's audio based on Channel 1 visibility
+
+document.addEventListener("DOMContentLoaded", function() {
+  // Ensure channel 1 element exists
+  const channel1 = document.getElementById("section1");
+
+  // Set up the Intersection Observer options:
+  const observerOptions = {
+    root: null,          // relative to the viewport
+    threshold: 0.7       // trigger when 70% of channel 1 is visible
+  };
+
+  // Create an observer to watch Channel 1's visibility.
+  const channelObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.target.id === "section1") {
+        if (entry.isIntersecting) {
+          // Channel 1 is in view: unmute the video.
+          if (youtubePlayer && typeof youtubePlayer.unMute === "function") {
+            youtubePlayer.unMute();
+            console.log("Channel 1 active: Unmuting video.");
+          }
+        } else {
+          // Channel 1 is not in view: mute the video.
+          if (youtubePlayer && typeof youtubePlayer.mute === "function") {
+            youtubePlayer.mute();
+            console.log("Channel 1 inactive: Muting video.");
+          }
+        }
+      }
+    });
+  }, observerOptions);
+
+  // Start observing Channel 1
+  if (channel1) {
+    channelObserver.observe(channel1);
   }
 });
