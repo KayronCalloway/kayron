@@ -1,48 +1,93 @@
-// youtube-setup.js
+// channels/ch1/home.js
 
-let youtubePlayer;
+export async function init() {
+  try {
+    // Load the modal HTML fragment for Channel 1 using async/await.
+    const response = await fetch('./channels/ch1/modals.html');
+    const html = await response.text();
+    const container = document.createElement('div');
+    container.innerHTML = html;
+    document.body.appendChild(container);
+    setupModalEventListeners();
+  } catch (err) {
+    console.error('Failed to load modals:', err);
+  }
+}
 
-// Called by the YouTube IFrame API when it's ready.
-function onYouTubeIframeAPIReady() {
-  youtubePlayer = new YT.Player('youtube-player', {
-    videoId: 'KISNE4qOIBM', // Your YouTube video ID
-    playerVars: {
-      autoplay: 1,
-      controls: 0,
-      loop: 1,
-      playlist: 'KISNE4qOIBM', // Required for looping the same video
-      modestbranding: 1,
-      rel: 0,
-      playsinline: 1,
-      fs: 0,
-      showinfo: 0
-    },
-    events: {
-      onReady: event => {
-        // Mute the video initially to allow autoplay.
-        event.target.mute();
-        event.target.playVideo();
-        // Adjust the iframe size after a short delay.
-        setTimeout(() => {
-          const iframe = document.querySelector('#youtube-player iframe');
-          if (iframe) {
-            iframe.style.width = '100%';
-            iframe.style.height = '100%';
-          }
-        }, 500);
+function setupModalEventListeners() {
+  // ------------------------------
+  // GSAP Animation: "Coming Out of the Box"
+  // ------------------------------
+  const animateModalIn = modal => {
+    gsap.fromTo(
+      modal,
+      { 
+        opacity: 0, 
+        scale: 0.8, 
+        y: 20, 
+        rotationX: 5,
+        transformOrigin: "top center" // makes it look like it’s emerging from the top edge
+      },
+      { 
+        opacity: 1, 
+        scale: 1, 
+        y: 0, 
+        rotationX: 0, 
+        duration: 0.6, 
+        ease: "power2.out" 
       }
+    );
+  };
+
+  const animateModalOut = modal => {
+    gsap.to(modal, {
+      opacity: 0,
+      scale: 0.8,
+      y: 20,
+      rotationX: 5,
+      duration: 0.5,
+      ease: "power2.in",
+      transformOrigin: "top center",
+      onComplete: () => {
+        modal.style.display = 'none';
+      }
+    });
+  };
+
+  // Helper function to set up modal trigger and close events.
+  const setupModal = (buttonId, modalId, closeButtonId) => {
+    const triggerButton = document.getElementById(buttonId);
+    const modal = document.getElementById(modalId);
+    const closeButton = document.getElementById(closeButtonId);
+    if (triggerButton && modal && closeButton) {
+      triggerButton.addEventListener('click', () => {
+        modal.style.display = 'flex';
+        animateModalIn(modal);
+      });
+      closeButton.addEventListener('click', () => {
+        animateModalOut(modal);
+      });
+    }
+  };
+
+  // ------------------------------
+  // Setup individual modals using the helper.
+  // ------------------------------
+  setupModal('resumeButton', 'resumeModal', 'closeResume');
+  setupModal('aboutButton', 'aboutModal', 'closeAbout');
+  setupModal('contactButton', 'contactModal', 'closeContact');
+
+  // ------------------------------
+  // Close any open modal on Escape key press.
+  // ------------------------------
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      ['resumeModal', 'aboutModal', 'contactModal'].forEach(modalId => {
+        const modal = document.getElementById(modalId);
+        if (modal && modal.style.display === 'flex') {
+          animateModalOut(modal);
+        }
+      });
     }
   });
 }
-
-// Unmute the video on user interaction (e.g., clicking the power button)
-document.addEventListener('DOMContentLoaded', () => {
-  const powerButton = document.getElementById('powerButton');
-  if (powerButton) {
-    powerButton.addEventListener('click', () => {
-      if (youtubePlayer && typeof youtubePlayer.unMute === 'function') {
-        youtubePlayer.unMute();
-      }
-    });
-  }
-});
