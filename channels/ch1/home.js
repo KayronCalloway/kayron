@@ -1,23 +1,24 @@
 // channels/ch1/home.js
 
-export function init() {
-  // Load the modal HTML fragment for Channel 1
-  fetch('./channels/ch1/modals.html')
-    .then(response => response.text())
-    .then(html => {
-      const container = document.createElement('div');
-      container.innerHTML = html;
-      document.body.appendChild(container);
-      setupModalEventListeners();
-    })
-    .catch(err => console.error('Failed to load modals:', err));
+export async function init() {
+  try {
+    // Load the modal HTML fragment for Channel 1 using async/await.
+    const response = await fetch('./channels/ch1/modals.html');
+    const html = await response.text();
+    const container = document.createElement('div');
+    container.innerHTML = html;
+    document.body.appendChild(container);
+    setupModalEventListeners();
+  } catch (err) {
+    console.error('Failed to load modals:', err);
+  }
 }
 
 function setupModalEventListeners() {
   // ------------------------------
   // GSAP Animation: "Coming Out of the Box"
   // ------------------------------
-  function animateModalIn(modal) {
+  const animateModalIn = modal => {
     gsap.fromTo(
       modal,
       { 
@@ -36,9 +37,9 @@ function setupModalEventListeners() {
         ease: "power2.out" 
       }
     );
-  }
+  };
 
-  function animateModalOut(modal) {
+  const animateModalOut = modal => {
     gsap.to(modal, {
       opacity: 0,
       scale: 0.8,
@@ -51,65 +52,38 @@ function setupModalEventListeners() {
         modal.style.display = 'none';
       }
     });
-  }
+  };
+
+  // Helper function to set up modal trigger and close events.
+  const setupModal = (buttonId, modalId, closeButtonId) => {
+    const triggerButton = document.getElementById(buttonId);
+    const modal = document.getElementById(modalId);
+    const closeButton = document.getElementById(closeButtonId);
+    if (triggerButton && modal && closeButton) {
+      triggerButton.addEventListener('click', () => {
+        modal.style.display = 'flex';
+        animateModalIn(modal);
+      });
+      closeButton.addEventListener('click', () => {
+        animateModalOut(modal);
+      });
+    }
+  };
 
   // ------------------------------
-  // Resume Modal
+  // Setup individual modals using the helper.
   // ------------------------------
-  const resumeButton = document.getElementById('resumeButton');
-  const resumeModal = document.getElementById('resumeModal');
-  const closeResume = document.getElementById('closeResume');
-
-  if (resumeButton && resumeModal && closeResume) {
-    resumeButton.addEventListener('click', () => {
-      resumeModal.style.display = 'flex';
-      animateModalIn(resumeModal);
-    });
-    closeResume.addEventListener('click', () => {
-      animateModalOut(resumeModal);
-    });
-  }
+  setupModal('resumeButton', 'resumeModal', 'closeResume');
+  setupModal('aboutButton', 'aboutModal', 'closeAbout');
+  setupModal('contactButton', 'contactModal', 'closeContact');
 
   // ------------------------------
-  // About Modal
+  // Close any open modal on Escape key press.
   // ------------------------------
-  const aboutButton = document.getElementById('aboutButton');
-  const aboutModal = document.getElementById('aboutModal');
-  const closeAbout = document.getElementById('closeAbout');
-
-  if (aboutButton && aboutModal && closeAbout) {
-    aboutButton.addEventListener('click', () => {
-      aboutModal.style.display = 'flex';
-      animateModalIn(aboutModal);
-    });
-    closeAbout.addEventListener('click', () => {
-      animateModalOut(aboutModal);
-    });
-  }
-
-  // ------------------------------
-  // Contact Modal
-  // ------------------------------
-  const contactButton = document.getElementById('contactButton');
-  const contactModal = document.getElementById('contactModal');
-  const closeContact = document.getElementById('closeContact');
-
-  if (contactButton && contactModal && closeContact) {
-    contactButton.addEventListener('click', () => {
-      contactModal.style.display = 'flex';
-      animateModalIn(contactModal);
-    });
-    closeContact.addEventListener('click', () => {
-      animateModalOut(contactModal);
-    });
-  }
-
-  // ------------------------------
-  // Close any open modal on Escape key press
-  // ------------------------------
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
-      [resumeModal, aboutModal, contactModal].forEach(modal => {
+      ['resumeModal', 'aboutModal', 'contactModal'].forEach(modalId => {
+        const modal = document.getElementById(modalId);
         if (modal && modal.style.display === 'flex') {
           animateModalOut(modal);
         }
