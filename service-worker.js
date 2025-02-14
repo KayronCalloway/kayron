@@ -6,7 +6,7 @@ const CACHE_ASSETS = [
   '/script.js',
   '/youtube-setup.js',
   '/visuals/Merova.woff2',
-  '/visuals/Merova.otf',
+  // Removed Merova.otf since it's not available
   '/audio/channel-click1.aif',
   '/audio/channel-click2.aif',
   '/audio/channel-click3.aif',
