@@ -14,8 +14,7 @@
 /* Preload font with optimized rendering */
 @font-face {
   font-family: 'Merova';
-  src: url('/visuals/Merova.woff2') format('woff2'),
-       url('/visuals/Merova.otf') format('opentype');
+  src: url('/visuals/Merova.woff2') format('woff2');
   font-display: swap;
 }
 
