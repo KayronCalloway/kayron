@@ -2,7 +2,7 @@
 
 var youtubePlayer;
 
-// This function is called by the YouTube IFrame API when it's ready.
+// Called by the YouTube IFrame API when it's ready.
 function onYouTubeIframeAPIReady() {
   youtubePlayer = new YT.Player('youtube-player', {
     videoId: 'KISNE4qOIBM', // Your YouTube video ID
@@ -10,7 +10,7 @@ function onYouTubeIframeAPIReady() {
       autoplay: 1,
       controls: 0,
       loop: 1,
-      playlist: 'KISNE4qOIBM', // Required for looping the same video
+      playlist: 'KISNE4qOIBM', // Needed for looping
       modestbranding: 1,
       rel: 0,
       playsinline: 1,
@@ -19,10 +19,9 @@ function onYouTubeIframeAPIReady() {
     },
     events: {
       onReady: function(event) {
-        // Start muted to comply with autoplay policies
-        event.target.mute();
+        event.target.mute(); // Mute initially (required for autoplay)
         event.target.playVideo();
-        // Ensure the iframe fills its container
+        // Force the iframe to fill its container after a short delay.
         setTimeout(function() {
           var iframe = document.querySelector('#youtube-player iframe');
           if (iframe) {
