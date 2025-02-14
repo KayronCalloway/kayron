@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentChannel !== newChannel) {
           currentChannel = newChannel;
           playRandomChannelSound();
-          // Additional channel-change effects can go here.
+          // Additional channel-change effects can be added here.
         }
       }
     });
@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ytObserver.observe(channel1);
   }
   
-  // Example functions for additional effects
+  // Additional Effects Functions
   function triggerChannelStatic() {
     gsap.to(staticOverlay, {
       duration: 0.2,
