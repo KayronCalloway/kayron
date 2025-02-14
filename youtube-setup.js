@@ -2,7 +2,7 @@
 
 var youtubePlayer;
 
-// Called by the YouTube IFrame API when it's ready.
+// This function is called by the YouTube IFrame API when it's ready.
 function onYouTubeIframeAPIReady() {
   youtubePlayer = new YT.Player('youtube-player', {
     videoId: 'KISNE4qOIBM', // Your YouTube video ID
@@ -10,7 +10,7 @@ function onYouTubeIframeAPIReady() {
       autoplay: 1,
       controls: 0,
       loop: 1,
-      playlist: 'KISNE4qOIBM', // Needed for looping
+      playlist: 'KISNE4qOIBM', // Required for looping
       modestbranding: 1,
       rel: 0,
       playsinline: 1,
@@ -19,7 +19,7 @@ function onYouTubeIframeAPIReady() {
     },
     events: {
       onReady: function(event) {
-        event.target.mute(); // Mute initially to satisfy autoplay policies
+        event.target.mute(); // Mute initially (to comply with autoplay policies)
         event.target.playVideo();
         // Ensure the iframe fills its container
         setTimeout(function() {
