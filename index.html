@@ -8,12 +8,13 @@
   <!-- Viewport and PWA Settings -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TV Portfolio</title>
-  <!-- Content Security Policy -->
+  <!-- Content Security Policy (Updated to allow YouTube frames) -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
     script-src 'self' https://cdnjs.cloudflare.com https://unpkg.com https://www.youtube.com;
     style-src 'self' 'unsafe-inline';
-    img-src 'self' data:;">
+    img-src 'self' data:;
+    frame-src https://www.youtube.com;">
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="styles.css" />
   <!-- Load GSAP -->
@@ -26,8 +27,8 @@
   <script src="youtube-setup.js" defer></script>
   <!-- Your Custom JavaScript -->
   <script src="script.js" defer></script>
-  <!-- Optional favicon -->
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <!-- Optional favicon (remove if you don't have one) -->
+  <!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
 </head>
 <body>
   <noscript>
