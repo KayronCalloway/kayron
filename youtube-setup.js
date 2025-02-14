@@ -1,8 +1,11 @@
 // youtube-setup.js
 
+// Global variable to store the player
+var youtubePlayer;
+
 // This function is called by the YouTube IFrame API when it's ready.
 function onYouTubeIframeAPIReady() {
-  var player = new YT.Player('youtube-player', {
+  youtubePlayer = new YT.Player('youtube-player', {
     videoId: 'KISNE4qOIBM', // Your YouTube video ID
     playerVars: {
       autoplay: 1,
@@ -17,9 +20,22 @@ function onYouTubeIframeAPIReady() {
     },
     events: {
       onReady: function(event) {
-        event.target.unMute(); // Attempt to play with sound
+        // Do not unmute immediately so that autoplay is allowed.
+        // The video will play muted initially.
         event.target.playVideo();
       }
     }
   });
 }
+
+// When the DOM is fully loaded, add a listener to unmute the video upon user interaction.
+document.addEventListener("DOMContentLoaded", function() {
+  var powerButton = document.getElementById("powerButton");
+  if (powerButton) {
+    powerButton.addEventListener("click", function() {
+      if (youtubePlayer && typeof youtubePlayer.unMute === "function") {
+        youtubePlayer.unMute();
+      }
+    });
+  }
+});
