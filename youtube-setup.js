@@ -1,8 +1,8 @@
 // youtube-setup.js
 
-var youtubePlayer;
+let youtubePlayer;
 
-// This function is called by the YouTube IFrame API when it's ready.
+// Called by the YouTube IFrame API when it's ready.
 function onYouTubeIframeAPIReady() {
   youtubePlayer = new YT.Player('youtube-player', {
     videoId: 'KISNE4qOIBM', // Your YouTube video ID
@@ -18,16 +18,16 @@ function onYouTubeIframeAPIReady() {
       showinfo: 0
     },
     events: {
-      onReady: function(event) {
+      onReady: event => {
         // Mute the video initially to allow autoplay.
         event.target.mute();
         event.target.playVideo();
         // Adjust the iframe size after a short delay.
-        setTimeout(function() {
-          var iframe = document.querySelector('#youtube-player iframe');
+        setTimeout(() => {
+          const iframe = document.querySelector('#youtube-player iframe');
           if (iframe) {
-            iframe.style.width = "100%";
-            iframe.style.height = "100%";
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
           }
         }, 500);
       }
@@ -35,12 +35,12 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
-// Unmute video on user interaction (e.g., clicking the power button)
-document.addEventListener("DOMContentLoaded", function() {
-  var powerButton = document.getElementById("powerButton");
+// Unmute the video on user interaction (e.g., clicking the power button)
+document.addEventListener('DOMContentLoaded', () => {
+  const powerButton = document.getElementById('powerButton');
   if (powerButton) {
-    powerButton.addEventListener("click", function() {
-      if (youtubePlayer && typeof youtubePlayer.unMute === "function") {
+    powerButton.addEventListener('click', () => {
+      if (youtubePlayer && typeof youtubePlayer.unMute === 'function') {
         youtubePlayer.unMute();
       }
     });
