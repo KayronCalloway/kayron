@@ -1,3 +1,5 @@
+/* styles.css */
+
 /* --- CSS Variables --- */
 :root {
   --bg-color: #000;
@@ -9,14 +11,6 @@
 /* Responsive Typography */
 :root {
   font-size: clamp(16px, 1.5vw, 20px);
-}
-
-/* Preload font with optimized rendering */
-@font-face {
-  font-family: 'Merova';
-  src: url('/visuals/Merova.woff2') format('woff2'),
-       url('/visuals/Merova.otf') format('opentype');
-  font-display: swap;
 }
 
 /* Skip Link */
@@ -51,20 +45,15 @@
   transition: opacity 0.3s;
 }
 
-/* Fixed Header */
-#header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  background-color: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  padding: 10px 20px;
+/* --- Import Merova Font from visuals/ folder --- */
+@font-face {
+  font-family: 'Merova';
+  src: url('visuals/Merova.woff2') format('woff2'),
+       url('visuals/Merova.otf') format('opentype');
+  font-display: swap;
 }
 
-/* Base Styles & Reset */
+/* --- Base Styles & Reset --- */
 *,
 *::before,
 *::after {
@@ -87,7 +76,55 @@ body {
   will-change: transform, opacity;
 }
 
-/* Landing Overlay */
+/* --- Static Overlay (CSS Gradient & Animation) --- */
+#staticOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15) 0px,
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 2px,
+    transparent 3px
+  );
+  animation: static 0.2s infinite;
+  z-index: 150;
+  pointer-events: none;
+}
+@keyframes static {
+  100% { background-position: 0 3px; }
+}
+
+/* --- Header (Persistent, Fixed at Top) --- */
+#header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--header-bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  z-index: 1100;
+  opacity: 1;
+}
+.header-name {
+  font-size: 1.5rem;
+  text-align: left;
+}
+.menu-button {
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+/* --- Landing Overlay --- */
 #landing {
   position: fixed;
   top: 0;
@@ -134,6 +171,11 @@ body {
   height: 100%;
   display: block;
 }
+.power-icon path,
+.power-icon line {
+  stroke: red;
+  stroke-width: 8;
+}
 .landing-name {
   font-size: 4rem;
   color: var(--primary-color);
@@ -159,7 +201,7 @@ body {
   margin-right: 10px;
 }
 
-/* Main Content */
+/* --- Main Content --- */
 #mainContent {
   display: none;
   overflow-y: auto;
@@ -167,10 +209,8 @@ body {
   height: 100vh;
 }
 
-/* Channel Sections */
+/* --- Channel Sections --- */
 .channel-section {
-  position: relative;
-  width: 100%;
   height: 100vh;
   padding: 80px 50px;
   display: flex;
@@ -178,6 +218,7 @@ body {
   justify-content: center;
   align-items: center;
   scroll-snap-align: start;
+  position: relative;
   background: transparent;
   text-align: center;
 }
@@ -212,7 +253,7 @@ body {
   opacity: 0.8;
 }
 
-/* TV Guide Overlay Menu */
+/* --- TV Guide Overlay Menu --- */
 .tv-guide {
   position: fixed;
   top: 0;
@@ -268,7 +309,7 @@ body {
   cursor: pointer;
 }
 
-/* Modal Overlays & Boxes */
+/* --- Modal Overlays --- */
 .modal-overlay {
   display: none;
   position: fixed;
@@ -336,25 +377,7 @@ body {
   cursor: pointer;
 }
 
-/* Channel 1 Video Background */
-.video-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100% !important;
-  height: 100% !important;
-  overflow: hidden;
-  z-index: -1;
-}
-.video-background iframe {
-  width: 100% !important;
-  height: 100% !important;
-  pointer-events: none;
-  border: 0;
-  object-fit: cover;
-}
-
-/* Responsive Mobile Enhancements */
+/* --- Responsive Mobile Enhancements --- */
 @media (max-width: 600px) {
   .landing-name {
     font-size: 2.2rem;
@@ -394,4 +417,113 @@ body {
     font-size: 2rem;
     padding: 20px 32px;
   }
+}
+text-align: center;
+}
+
+/* --- Modal Overlay & Box Styling --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75); /* Darker overlay for contrast */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+}
+
+.modal-box {
+  background: rgba(0, 0, 0, 0.85);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: var(--primary-color);
+  padding: 30px;
+  max-width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  position: relative;
+  font-family: 'Merova', sans-serif; /* Consistent with site font */
+  line-height: 1.6;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* --- Modal Content Styling --- */
+.modal-content {
+  margin: 20px 0;
+}
+
+.modal-content h1,
+.modal-content h2,
+.modal-content h3 {
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.modal-content p,
+.modal-content ul {
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+/* Center content in About Me modal */
+#aboutModal .modal-content {
+  text-align: center;
+}
+
+/* Link styling within modals */
+.modal-content a {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+/* --- Close Button Styling --- */
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  color: var(--primary-color);
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+}
+/* Fix the header so it stays at the top across all channels */
+#header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.85); /* Adjust as needed */
+}
+
+/* Ensure channel sections fill the viewport */
+.channel-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+/* --- Channel 1 Video Background Styling --- */
+.video-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden;
+  z-index: -1; /* Place the video behind channel content */
+}
+
+.video-background iframe {
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none;
+  border: 0;
+  object-fit: cover;
 }
