@@ -7,14 +7,14 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <!-- Viewport and PWA Settings -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Kayron Calloway's interactive TV Portfolio showcasing creative strategy, digital storytelling, and problem-solving skills." />
   <title>TV Portfolio</title>
   <!-- Content Security Policy (Updated to allow YouTube frames) -->
-  <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    script-src 'self' https://cdnjs.cloudflare.com https://unpkg.com https://www.youtube.com;
-    style-src 'self' 'unsafe-inline';
-    img-src 'self' data:;
-    frame-src https://www.youtube.com;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://unpkg.com https://www.youtube.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src https://www.youtube.com;">
+  
+  <!-- Optional Base Tag for GitHub Pages (if needed) -->
+  <!-- <base href="/your-repo-name/"> -->
+  
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="styles.css" />
   
@@ -28,9 +28,8 @@
   <script src="youtube-setup.js" defer></script>
   <!-- Your Custom JavaScript -->
   <script src="script.js" defer></script>
-  <!-- Optional favicon (remove if you don't have one) -->
+  <!-- Optional favicon -->
   <!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
-  
 </head>
 <body>
   <noscript>
@@ -66,7 +65,7 @@
   <div id="staticOverlay"></div>
   
   <!-- Main Content -->
-  <div id="mainContent">
+  <main id="mainContent">
     <!-- Persistent Fixed Header (Menu) -->
     <header id="header">
       <div class="header-name" id="headerName">Kayron Calloway</div>
@@ -74,7 +73,7 @@
     </header>
     
     <!-- Channel Sections -->
-    <section id="section1" class="channel-section" data-module="home" style="position: relative;">
+    <section id="section1" class="channel-section relative" data-module="home">
       <!-- YouTube Video Background for Channel 1 -->
       <div class="video-background">
         <div id="youtube-player"></div>
@@ -112,10 +111,10 @@
       <p>Featured project content for Interests...</p>
       <div class="channel-number-overlay">CH 05</div>
     </section>
-  </div>
+  </main>
   
   <!-- TV Guide Overlay Menu -->
-  <div id="tvGuide" class="tv-guide" aria-hidden="true" style="display:none;">
+  <div id="tvGuide" class="tv-guide hidden" aria-hidden="true">
     <div class="tv-guide-header">TV Guide</div>
     <div class="tv-guide-list">
       <nav>
