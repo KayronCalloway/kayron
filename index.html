@@ -8,28 +8,29 @@
   <!-- Viewport and PWA Settings -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TV Portfolio</title>
-  <!-- Content Security Policy (allowing YouTube frames) -->
+  <!-- Content Security Policy (Updated to allow YouTube frames) -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
     script-src 'self' https://cdnjs.cloudflare.com https://unpkg.com https://www.youtube.com;
     style-src 'self' 'unsafe-inline';
     img-src 'self' data:;
     frame-src https://www.youtube.com;">
-  <!-- Preload Critical Font -->
-  <link rel="preload" href="/visuals/Merova.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="styles.css" />
   
-  <!-- Load GSAP (without integrity) -->
+  <!-- Load GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" defer></script>
+  <!-- Load Web Vitals -->
   <script src="https://unpkg.com/web-vitals@2/dist/web-vitals.umd.js" defer></script>
   <!-- YouTube IFrame API -->
   <script src="https://www.youtube.com/iframe_api"></script>
   <!-- External YouTube Setup Script -->
   <script src="youtube-setup.js" defer></script>
-  <!-- Main Script -->
+  <!-- Your Custom JavaScript -->
   <script src="script.js" defer></script>
-  <!-- Optional favicon (if you have one, otherwise remove) -->
+  <!-- Optional favicon (remove if you don't have one) -->
   <!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
+  
 </head>
 <body>
   <noscript>
@@ -66,18 +67,21 @@
   
   <!-- Main Content -->
   <div id="mainContent">
-    <!-- Fixed Header -->
+    <!-- Persistent Fixed Header (Menu) -->
     <header id="header">
       <div class="header-name" id="headerName">Kayron Calloway</div>
       <button id="menuButton" class="menu-button" aria-label="Toggle TV Guide">Menu</button>
     </header>
     
-    <!-- Channel 1 (with YouTube video background) -->
-    <section id="section1" class="channel-section" data-module="home">
+    <!-- Channel Sections -->
+    <section id="section1" class="channel-section" data-module="home" style="position: relative;">
+      <!-- YouTube Video Background for Channel 1 -->
       <div class="video-background">
         <div id="youtube-player"></div>
       </div>
+      
       <div class="channel-buttons">
+        <!-- These buttons will trigger modals loaded by Channel 1 -->
         <button id="resumeButton" class="channel-button" aria-label="View Resume">Resume</button>
         <button id="aboutButton" class="channel-button" aria-label="About Me">About Me</button>
         <button id="contactButton" class="channel-button" aria-label="Contact Info">Contact</button>
@@ -85,28 +89,24 @@
       <div class="channel-number-overlay">CH 01</div>
     </section>
     
-    <!-- Channel 2 -->
     <section id="section2" class="channel-section" data-module="consultant">
       <h2>Consultant Work</h2>
       <p>Featured project content for Consultant Work...</p>
       <div class="channel-number-overlay">CH 02</div>
     </section>
     
-    <!-- Channel 3 -->
     <section id="section3" class="channel-section" data-module="career">
       <h2>Career Work</h2>
       <p>Featured project content for Career Work...</p>
       <div class="channel-number-overlay">CH 03</div>
     </section>
     
-    <!-- Channel 4 -->
     <section id="section4" class="channel-section" data-module="rolemodels">
       <h2>Role Models</h2>
       <p>Featured project content for Role Models...</p>
       <div class="channel-number-overlay">CH 04</div>
     </section>
     
-    <!-- Channel 5 -->
     <section id="section5" class="channel-section" data-module="interests">
       <h2>Interests</h2>
       <p>Featured project content for Interests...</p>
