@@ -1,10 +1,13 @@
 {
   "name": "TV Portfolio",
   "short_name": "TVPortfolio",
+  "description": "A creative portfolio showcasing Kayron Calloway’s work in digital storytelling, creative strategy, and financial analysis.",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "visuals/icon-192.png",
