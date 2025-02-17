@@ -75,6 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
       let module;
       if (moduleName === 'home') {
         module = await import(`./channels/ch1/home.js`);
+      } else if (moduleName === 'ch2') {
+        module = await import(`./channels/ch2/ch2.js`);
       } else {
         module = await import(`./channels/${moduleName}.js`);
       }
@@ -239,7 +241,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // --- Intersection Observer for YouTube Video Audio Control ---
-  // This observer mutes/unmutes the YouTube video based on Channel 1 visibility.
   const channel1 = document.getElementById("section1");
   const ytObserverOptions = {
     root: null,
