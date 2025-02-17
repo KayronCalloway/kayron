@@ -1,7 +1,10 @@
 // channels/ch2/script.js
 
-document.addEventListener('DOMContentLoaded', () => {
-  const lookbookContainer = document.getElementById('lookbook-container');
+// Immediately run this code, since the markup is already injected.
+const lookbookContainer = document.getElementById('lookbook-container');
+if (!lookbookContainer) {
+  console.error("Lookbook container not found!");
+} else {
   const pages = lookbookContainer.querySelectorAll('.page');
   const prevBtn = lookbookContainer.querySelector('#prevBtn');
   const nextBtn = lookbookContainer.querySelector('#nextBtn');
@@ -20,4 +23,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
   prevBtn.addEventListener('click', () => showPage(currentPage - 1));
   nextBtn.addEventListener('click', () => showPage(currentPage + 1));
-});
+}
