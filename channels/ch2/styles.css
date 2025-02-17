@@ -35,13 +35,14 @@
   position: relative;
 }
 
-/* Image Styling with object-fit for uniform cropping */
+/* Image Styling with object-fit: contain for full visibility */
 .image-container img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;  /* Changed from 'cover' to 'contain' */
   display: block;
   transition: transform 0.3s ease;
+  background: #000; /* Optional: ensures letterbox areas match the container */
 }
 
 .image-container:hover img {
