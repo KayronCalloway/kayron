@@ -1,26 +1,23 @@
-const pages = document.querySelectorAll('.page');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const pageIndicator = document.getElementById('pageIndicator');
-let currentPage = 0;
+// channels/ch2/script.js
 
-function showPage(index) {
-  // Clamp the index
-  if (index < 0) index = 0;
-  if (index >= pages.length) index = pages.length - 1;
-  
-  pages.forEach((page, i) => {
-    page.classList.toggle('active', i === index);
-  });
-  
-  currentPage = index;
-  pageIndicator.textContent = `Page ${currentPage + 1} of ${pages.length}`;
-}
+document.addEventListener('DOMContentLoaded', () => {
+  const lookbookContainer = document.getElementById('lookbook-container');
+  const pages = lookbookContainer.querySelectorAll('.page');
+  const prevBtn = lookbookContainer.querySelector('#prevBtn');
+  const nextBtn = lookbookContainer.querySelector('#nextBtn');
+  const pageIndicator = lookbookContainer.querySelector('#pageIndicator');
+  let currentPage = 0;
 
-prevBtn.addEventListener('click', () => {
-  showPage(currentPage - 1);
-});
+  function showPage(index) {
+    if (index < 0) index = 0;
+    if (index >= pages.length) index = pages.length - 1;
+    pages.forEach((page, i) => {
+      page.classList.toggle('active', i === index);
+    });
+    currentPage = index;
+    pageIndicator.textContent = `Page ${currentPage + 1} of ${pages.length}`;
+  }
 
-nextBtn.addEventListener('click', () => {
-  showPage(currentPage + 1);
+  prevBtn.addEventListener('click', () => showPage(currentPage - 1));
+  nextBtn.addEventListener('click', () => showPage(currentPage + 1));
 });
