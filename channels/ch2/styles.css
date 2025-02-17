@@ -7,7 +7,7 @@
   width: 100%;
   min-height: 100vh;
   padding: 20px;
-  padding-top: 100px; /* Added extra top padding to offset the header */
+  padding-top: 100px; /* To ensure content starts below the header */
   box-sizing: border-box;
   position: relative;
 }
@@ -25,11 +25,11 @@
   display: block;
 }
 
-/* Image Container: fixed dimensions to ensure consistent cropping */
+/* Image Container: increased size for a larger picture square */
 .image-container {
   width: 100%;
-  max-width: 600px;   /* Adjust as needed */
-  height: 400px;      /* Adjust as needed */
+  max-width: 800px;  /* Increased from 600px */
+  height: 600px;     /* Increased from 400px */
   margin: 0 auto;
   overflow: hidden;
   position: relative;
@@ -48,18 +48,18 @@
   transform: scale(1.05);
 }
 
-/* Description Styles */
+/* Description Styles: pushed further down */
 .description {
-  margin-top: 20px;
+  margin-top: 30px; /* Increased margin to drop the text down */
+  font-size: 1.2rem;
 }
 
-/* Navigation Controls: position them below the content */
+/* Navigation Controls: optional, moved further down if still in use */
 .navigation {
-  margin-top: 20px;
+  margin-top: 30px;
   text-align: center;
 }
 
-/* Navigation Buttons */
 .nav-button {
   background: transparent;
   border: 2px solid #fff;
@@ -74,7 +74,6 @@
   transform: scale(1.05);
 }
 
-/* Page Indicator Styling */
 #pageIndicator {
   color: #fff;
   font-size: 1.2rem;
