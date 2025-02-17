@@ -3,101 +3,30 @@
 export async function init() {
   console.log("Channel 2 (Workbook) module loaded.");
 
-  // Get the Channel 2 section (the container where the lookbook should load)
+  // Get the Channel 2 container from the main page (Section with id="section2")
   const container = document.getElementById('section2');
 
-  // Replace existing content with your lookbook markup
-  container.innerHTML = `
-    <div id="lookbook-container">
-      <!-- Page 1: Vol 1 -->
-      <div class="page active" id="page-1">
-        <div class="image-container">
-          <img src="visuals/VOL 1. FIRST c.001.jpeg" alt="Vol 1">
-        </div>
-        <div class="description">
-          <h2>Vol 1</h2>
-          <p>First volume of early works.</p>
-        </div>
-      </div>
-
-      <!-- Page 2: Bulletproof -->
-      <div class="page" id="page-2">
-        <div class="image-container">
-          <img src="visuals/bulletproof.jpg" alt="Bulletproof">
-        </div>
-        <div class="description">
-          <h2>Bulletproof</h2>
-          <p>A project that stands the test of time.</p>
-        </div>
-      </div>
-
-      <!-- Page 3: C'est Bon -->
-      <div class="page" id="page-3">
-        <div class="image-container">
-          <img src="visuals/dou.jpg" alt="C'est Bon">
-        </div>
-        <div class="description">
-          <h2>C'est Bon</h2>
-          <p>A creative collaboration with distinct flair.</p>
-        </div>
-      </div>
-
-      <!-- Page 4: MTR -->
-      <div class="page" id="page-4">
-        <div class="image-container">
-          <img src="visuals/mtr.jpg" alt="MTR">
-        </div>
-        <div class="description">
-          <h2>MTR</h2>
-          <p>A look back at a signature project.</p>
-        </div>
-      </div>
-
-      <!-- Page 5: Trophies x Sobe -->
-      <div class="page" id="page-5">
-        <div class="image-container">
-          <img src="visuals/sobe.jpeg" alt="Trophies x Sobe">
-        </div>
-        <div class="description">
-          <h2>Trophies x Sobe</h2>
-          <p>A collaboration marked by achievement and style.</p>
-        </div>
-      </div>
-
-      <!-- Navigation Controls -->
-      <div class="navigation">
-        <button class="nav-button" id="prevBtn">Previous</button>
-        <span id="pageIndicator">Page 1 of 5</span>
-        <button class="nav-button" id="nextBtn">Next</button>
-      </div>
-    </div>
-  `;
-
-  // Add JavaScript for lookbook navigation
-  const lookbookContainer = document.getElementById('lookbook-container');
-  const pages = lookbookContainer.querySelectorAll('.page');
-  const prevBtn = lookbookContainer.querySelector('#prevBtn');
-  const nextBtn = lookbookContainer.querySelector('#nextBtn');
-  const pageIndicator = lookbookContainer.querySelector('#pageIndicator');
-  let currentPage = 0;
-
-  function showPage(index) {
-    // Clamp index within valid range
-    if (index < 0) index = 0;
-    if (index >= pages.length) index = pages.length - 1;
-
-    pages.forEach((page, i) => {
-      page.classList.toggle('active', i === index);
-    });
-    currentPage = index;
-    pageIndicator.textContent = `Page ${currentPage + 1} of ${pages.length}`;
+  // Load the external markup from index.html within the ch2 folder
+  try {
+    const response = await fetch('./channels/ch2/index.html');
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const html = await response.text();
+    container.innerHTML = html;
+  } catch (error) {
+    console.error("Failed to load channels/ch2/index.html", error);
   }
 
-  prevBtn.addEventListener('click', () => {
-    showPage(currentPage - 1);
-  });
+  // Dynamically load Channel 2-specific CSS
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = './channels/ch2/styles.css';
+  document.head.appendChild(link);
 
-  nextBtn.addEventListener('click', () => {
-    showPage(currentPage + 1);
-  });
+  // Dynamically load Channel 2-specific JavaScript for lookbook interactions
+  const script = document.createElement('script');
+  script.src = './channels/ch2/script.js';
+  script.defer = true;
+  document.body.appendChild(script);
 }
