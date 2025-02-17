@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Vintage Lookbook</title>
-  <link rel="stylesheet" href="lookbook.css" />
-  <!-- Include jQuery if needed -->
+  <link rel="stylesheet" href="lookbook.css">
+  <!-- Include jQuery (if needed by Turn.js) -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <!-- Include Turn.js (either locally or via CDN) -->
-  <script src="turn.min.js"></script>
+  <!-- Include Turn.js (using a CDN version here; you can also host it locally) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4/turn.min.js"></script>
 </head>
 <body>
+  <!-- Flipbook Container -->
   <div id="flipbook">
     <div class="page">
       <img src="images/page1.jpg" alt="Page 1">
@@ -17,14 +18,20 @@
     <div class="page">
       <img src="images/page2.jpg" alt="Page 2">
     </div>
-    <!-- More pages as needed -->
+    <div class="page">
+      <img src="images/page3.jpg" alt="Page 3">
+    </div>
+    <!-- Add more pages as needed -->
   </div>
 
   <script>
-    $("#flipbook").turn({
-      width: 800,
-      height: 600,
-      autoCenter: true
+    // Initialize Turn.js when the document is ready
+    $(document).ready(function(){
+      $("#flipbook").turn({
+        width: 800,      // Adjust as needed
+        height: 600,     // Adjust as needed
+        autoCenter: true
+      });
     });
   </script>
 </body>
