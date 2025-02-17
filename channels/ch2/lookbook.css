@@ -1,0 +1,33 @@
+/* Basic styles for the vintage lookbook */
+
+body {
+  background: #f8f8f8;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: sans-serif;
+}
+
+#flipbook {
+  width: 800px;
+  height: 600px;
+  /* Optional: add a shadow or border for a vintage feel */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  background: #fff;
+}
+
+.page {
+  background: #fff;
+  border: 1px solid #ccc;
+  /* Optional: add some padding/margin to simulate a page look */
+  padding: 10px;
+}
+
+.page img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
