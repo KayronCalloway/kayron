@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interactive Lookbook Prototype</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="lookbook-container">
+    <!-- Page 1: Cover Workbook -->
+    <div class="page active" id="page-1">
+      <div class="image-container">
+        <!-- Replace with your actual cover asset -->
+        <img src="visuals/cover-workbook.jpg" alt="Cover Workbook">
+      </div>
+      <div class="description">
+        <h1>Cover Workbook</h1>
+      </div>
+    </div>
+    
+    <!-- Page 2: "Current" Divider -->
+    <div class="page" id="page-2">
+      <div class="divider">CURRENT</div>
+    </div>
+    
+    <!-- Page 3: Spreadsheet -->
+    <div class="page" id="page-3">
+      <div class="image-container">
+        <!-- Replace with your spreadsheet screenshot asset if available -->
+        <img src="visuals/spreadsheet-placeholder.jpg" alt="Spreadsheet">
+        <a href="https://docs.google.com/spreadsheets/d/12Ms2Vty47329cgIHYEypTDJz0zIZ2RiVPOiIIXI-u2Y/edit?usp=sharing" target="_blank" class="overlay-link">View Spreadsheet</a>
+      </div>
+      <div class="description">
+        <h2>Spreadsheet Project</h2>
+        <p>Data-driven work defining current projects.</p>
+      </div>
+    </div>
+    
+    <!-- Page 4: Vol 1 -->
+    <div class="page" id="page-4">
+      <div class="image-container">
+        <img src="visuals/VOL 1. FIRST c.001.jpeg" alt="Vol 1">
+      </div>
+      <div class="description">
+        <h2>Vol 1</h2>
+        <p>First volume of early works.</p>
+      </div>
+    </div>
+    
+    <!-- Page 5: Coloring w Gray -->
+    <div class="page" id="page-5">
+      <div class="image-container">
+        <!-- Replace with your actual Coloring w Gray asset -->
+        <img src="visuals/coloring-gray-placeholder.jpg" alt="Coloring w Gray">
+        <a href="https://coloringwithgray.github.io/coloring-page/" target="_blank" class="overlay-link">View Coloring w Gray</a>
+      </div>
+      <div class="description">
+        <h2>Coloring w Gray</h2>
+        <p>A standout project in design.</p>
+      </div>
+    </div>
+    
+    <!-- Page 6: "History" Divider -->
+    <div class="page" id="page-6">
+      <div class="divider">HISTORY</div>
+    </div>
+    
+    <!-- Page 7: MTR -->
+    <div class="page" id="page-7">
+      <div class="image-container">
+        <img src="visuals/mtr.jpg" alt="MTR">
+      </div>
+      <div class="description">
+        <h2>MTR</h2>
+        <p>A look back at a signature project.</p>
+      </div>
+    </div>
+    
+    <!-- Page 8: C'est Bon -->
+    <div class="page" id="page-8">
+      <div class="image-container">
+        <img src="visuals/dou.jpg" alt="C'est Bon">
+      </div>
+      <div class="description">
+        <h2>C'est Bon</h2>
+        <p>A creative collaboration with distinct flair.</p>
+      </div>
+    </div>
+    
+    <!-- Page 9: Trophies x Sobe -->
+    <div class="page" id="page-9">
+      <div class="image-container">
+        <img src="visuals/sobe.jpeg" alt="Trophies x Sobe">
+      </div>
+      <div class="description">
+        <h2>Trophies x Sobe</h2>
+        <p>A collaboration marked by achievement and style.</p>
+      </div>
+    </div>
+    
+    <!-- Page 10: Bulletproof -->
+    <div class="page" id="page-10">
+      <div class="image-container">
+        <img src="visuals/bulletproof.jpg" alt="Bulletproof">
+      </div>
+      <div class="description">
+        <h2>Bulletproof</h2>
+        <p>A project that stands the test of time.</p>
+      </div>
+    </div>
+    
+    <!-- Navigation Controls -->
+    <div class="navigation">
+      <button class="nav-button" id="prevBtn">Previous</button>
+      <span id="pageIndicator">Page 1 of 10</span>
+      <button class="nav-button" id="nextBtn">Next</button>
+    </div>
+  </div>
+  
+  <script src="script.js"></script>
+</body>
+</html>
