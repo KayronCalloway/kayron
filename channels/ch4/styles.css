@@ -1,0 +1,6 @@
+/* channels/ch4/styles.css */
+.video-embed {
+  background: var(--bg-color);
+  margin: 0 auto;
+  /* Additional styling (e.g. borders or shadows) can be added here if desired */
+}
