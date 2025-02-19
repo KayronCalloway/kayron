@@ -3,9 +3,10 @@
 export async function init() {
   console.log("Channel 2 Infomercial module loaded.");
 
+  // Get the container where Channel 2 is rendered
   const container = document.getElementById('section2');
   if (!container) {
-    console.error("Channel 2 container not found");
+    console.error("Channel 2 container not found.");
     return;
   }
 
@@ -15,23 +16,21 @@ export async function init() {
     return;
   }
 
-  // Use an AbortController for fetch (and support cleanup if needed)
+  // Use an AbortController for safe fetch operations
   const controller = new AbortController();
   const { signal } = controller;
   try {
     const response = await fetch('./channels/ch2/index.html', { signal });
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
     const html = await response.text();
     container.innerHTML = html;
   } catch (error) {
-    console.error("Failed to load channels/ch2/index.html", error);
-    container.innerHTML = `<div class="error">Failed to load infomercial content. Please try again later.</div>`;
+    console.error("Failed to load channels/ch2/index.html:", error);
+    container.innerHTML = `<div class="error">Failed to load content. Please try again later.</div>`;
     return;
   }
 
-  // Dynamically load CSS (avoid duplicates)
+  // Dynamically load Channel 2 CSS (avoid duplicates)
   if (!document.querySelector('link[href="./channels/ch2/styles.css"]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -39,7 +38,7 @@ export async function init() {
     document.head.appendChild(link);
   }
 
-  // Dynamically load the infomercial script
+  // Dynamically load Channel 2 JavaScript (avoid duplicates)
   if (!document.querySelector('script[src="./channels/ch2/script.js"]')) {
     const script = document.createElement('script');
     script.src = './channels/ch2/script.js';
