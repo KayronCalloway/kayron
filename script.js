@@ -270,6 +270,11 @@ document.addEventListener('DOMContentLoaded', () => {
     ytObserver.observe(channel1);
   }
 
+// Preload Channel 4 ("under the influence") so its video is already playing when scrolled into view.
+setTimeout(() => {
+  loadChannelContent('under the influence');
+}, 2000);
+  
   // --- Throttle Utility Function ---
   function throttle(fn, wait) {
     let lastTime = 0;
