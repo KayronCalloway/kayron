@@ -30,27 +30,30 @@ export async function init() {
     document.head.appendChild(link);
   }
   
-  // Use the YouTube IFrame API to create a player in Channel 4
+  // Use the YouTube IFrame API to create a player in Channel 4.
+  // We wait a short delay to ensure the HTML is in place.
   setTimeout(() => {
     if (typeof YT !== 'undefined' && YT.Player) {
       new YT.Player('youtube-player-4', {
-        videoId: 'OFlnSoPm7x4', // New video ID
+        videoId: 'OFlnSoPm7x4', // New video ID from your link
         playerVars: {
           autoplay: 1,
           controls: 0,
           loop: 1,
-          playlist: 'OFlnSoPm7x4', // required for looping the same video
+          playlist: 'OFlnSoPm7x4', // Required for looping the same video
           modestbranding: 1,
           rel: 0,
           playsinline: 1,
           fs: 0,
-          showinfo: 0,
-          mute: 1 // start muted to allow autoplay
+          showinfo: 0
+          // Removed mute: 1 to allow unmuted playback
         },
         events: {
           onReady: event => {
+            // Unmute the player now that it is ready.
+            event.target.unMute();
             event.target.playVideo();
-            console.log("Channel 4 YouTube Player ready and playing.");
+            console.log("Channel 4 YouTube Player ready and playing unmuted.");
           }
         }
       });
@@ -59,3 +62,4 @@ export async function init() {
     }
   }, 500);
 }
+
