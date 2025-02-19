@@ -2,72 +2,124 @@
 
 /* Infomercial Container */
 #infomercial-container {
-  position: relative;
+  background: #000;
+  color: #fff;
   width: 100%;
   min-height: 100vh;
-  background: url('visuals/infomercial-bg.jpg') center center/cover no-repeat;
-  /* Alternatively, use a gradient:
-     background: linear-gradient(135deg, #000, #333);
-  */
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
   padding: 20px;
+  padding-top: 100px; /* To avoid header overlap */
   box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Infomercial Content */
-.infomercial-content h1 {
-  font-size: 3rem;
-  margin-bottom: 20px;
+/* Slideshow Styles */
+.slideshow {
+  position: relative;
+  width: 90vw;
+  max-width: 800px;
+  height: 60vw;
+  max-height: 600px;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
-.infomercial-content p {
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.slide.active {
+  opacity: 1;
+  transform: translateY(0);
+  position: relative;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+/* Slide Caption */
+.slide-caption {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.7);
+  padding: 10px 20px;
   font-size: 1.5rem;
-  margin-bottom: 30px;
+  z-index: 2;
+}
+
+/* CTA Button Container */
+.cta-button-container {
+  text-align: center;
+  margin-top: 20px;
 }
 
 .cta-button {
+  font-size: 1.5rem;
   padding: 15px 30px;
-  font-size: 1.2rem;
-  text-decoration: none;
+  border: 2px solid #fff;
+  background: #000;
   color: #fff;
-  background: #ff5722;
-  border: none;
-  border-radius: 5px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  position: relative;
+  z-index: 2;
+  animation: pulse 2s infinite;
 }
 
-.cta-button:hover {
-  background: #e64a19;
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
-/* Infomercial Banner */
-.infomercial-banner {
+/* Ticker Styles */
+.ticker {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  background: #000;
-  color: #ffeb3b;
-  font-size: 1.5rem;
-  text-align: center;
-  padding: 10px 0;
+  background: #111;
+  color: #fff;
   overflow: hidden;
-  z-index: 9999;
+  white-space: nowrap;
+  padding: 10px 0;
+  z-index: 100;
 }
 
-.infomercial-banner span {
+.ticker-text {
   display: inline-block;
   padding-left: 100%;
-  animation: marquee 10s linear infinite;
+  animation: ticker 15s linear infinite;
+  font-size: 1.2rem;
 }
 
-@keyframes marquee {
-  0%   { transform: translateX(0); }
+@keyframes ticker {
+  0% { transform: translateX(0%); }
   100% { transform: translateX(-100%); }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  .slide-caption {
+    font-size: 1.2rem;
+  }
+  .cta-button {
+    font-size: 1.2rem;
+    padding: 10px 20px;
+  }
+  .ticker-text {
+    font-size: 1rem;
+  }
 }
