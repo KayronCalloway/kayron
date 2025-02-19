@@ -1,6 +1,6 @@
 /* channels/ch2/styles.css */
 
-/* CSS Variables for Consistent Theming */
+/* CSS Variables for Theming */
 :root {
   --primary-color: #fff;
   --background-color: #000;
@@ -20,11 +20,28 @@
   overflow: hidden;
 }
 
+/* LIVE Badge */
+.live-badge {
+  position: fixed;
+  top: 5px;
+  left: 5px;
+  background: var(--accent-color);
+  color: var(--primary-color);
+  padding: 5px 10px;
+  font-weight: bold;
+  z-index: 1000;
+  animation: blink 1s infinite alternate;
+}
+@keyframes blink {
+  0% { opacity: 0.8; }
+  100% { opacity: 1; }
+}
+
 /* Slideshow Styles */
 .slideshow {
   width: 80%;
   max-width: 800px;
-  margin: 0 auto;
+  margin: 20px auto;
   position: relative;
   overflow: hidden;
 }
@@ -32,6 +49,7 @@
   display: none;
   width: 100%;
   text-align: center;
+  transition: opacity 0.5s ease;
 }
 .slide.active {
   display: block;
@@ -39,37 +57,13 @@
 .slide img {
   width: 100%;
   height: auto;
-  object-fit: contain; /* Ensures the full picture is visible */
+  object-fit: contain; /* Shows full picture */
   display: block;
 }
 .caption {
   margin-top: 10px;
   font-size: var(--font-base);
   text-align: center;
-}
-
-/* Ticker (Bottom of Channel 2 Only) */
-.ticker {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: #111;
-  color: var(--primary-color);
-  font-size: 1rem;
-  white-space: nowrap;
-  overflow: hidden;
-  padding: 10px 0;
-  z-index: 100;
-}
-.ticker-text {
-  display: inline-block;
-  padding-left: 100%;
-  animation: ticker 15s linear infinite;
-  transition: filter 0.2s;
-}
-@keyframes ticker {
-  from { transform: translateX(100%); }
-  to { transform: translateX(-100%); }
 }
 
 /* Countdown Timer */
@@ -98,8 +92,23 @@
   z-index: 200;
 }
 
+/* TV Guide Popup */
+#tv-guide-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: var(--primary-color);
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 5000;
+  display: none;
+}
+.hidden { display: none; }
+
 /* Responsive Adjustments */
 @media (max-width: 600px) {
-  .ticker { font-size: 0.9rem; }
   .caption { font-size: 1rem; }
+  .countdown, .spots { font-size: 1.2rem; }
 }
