@@ -1,56 +1,40 @@
 <!-- channels/ch2/index.html -->
-<div id="infomercial-container">
-  <!-- Optional TV Grain Overlay -->
-  <div class="tv-grain"></div>
-  <!-- TV Glitch Overlay (hidden by default) -->
-  <div class="tv-glitch"></div>
-  
+<div id="infomercial-container" role="main" aria-label="Infomercial Channel 2">
+  <!-- LIVE Badge with Real-Time Clock -->
+  <div class="live-badge">
+    LIVE • <span id="live-time"></span>
+  </div>
+
   <!-- Slideshow -->
-  <div class="slideshow">
-    <!-- Slide 1 -->
+  <div class="slideshow" role="region" aria-label="Slideshow">
     <div class="slide active">
-      <img src="visuals/cover-workbook.jpg" alt="Cover Workbook" loading="lazy">
-      <div class="slide-caption">Introducing Kayron's Infomercial!</div>
-    </div>
-    <!-- Slide 2 -->
-    <div class="slide">
       <img src="visuals/VOL 1. FIRST c.001.jpeg" alt="Vol 1" loading="lazy">
-      <div class="slide-caption">Amazing Work – Vol 1</div>
+      <div class="slide-caption">"Experience the Vision"</div>
     </div>
-    <!-- Slide 3 -->
     <div class="slide">
       <img src="visuals/bulletproof.jpg" alt="Bulletproof" loading="lazy">
-      <div class="slide-caption">Bulletproof Results!</div>
+      <div class="slide-caption">"Strength in Strategy"</div>
     </div>
-    <!-- Slide 4 -->
     <div class="slide">
       <img src="visuals/dou.jpg" alt="C'est Bon" loading="lazy">
-      <div class="slide-caption">Creativity at its Best!</div>
+      <div class="slide-caption">"Luxury in Every Detail"</div>
     </div>
-    <!-- Slide 5 -->
     <div class="slide">
       <img src="visuals/mtr.jpg" alt="MTR" loading="lazy">
-      <div class="slide-caption">Experience Excellence!</div>
+      <div class="slide-caption">"Revolutionizing the Game"</div>
     </div>
   </div>
 
   <!-- Call-to-Action Button -->
   <div class="cta-button-container">
-    <button class="cta-button">Hire Kayron Now!</button>
+    <button class="cta-button" aria-label="Call to hire Kayron">Hire Kayron Now!</button>
   </div>
 
-  <!-- Scrolling Ticker -->
-  <div class="ticker">
+  <!-- CNBC/ESPN Style Ticker -->
+  <div class="ticker" role="marquee" aria-label="Ticker">
     <div class="ticker-text">
-      Don't wait!! Hire Kayron Now! Call 310-498-8059 or visit KayronCalloway.com!
+      🚀 "Don't wait!! Hire Kayron Now!" | 📈 "Innovative strategies that deliver results!" | 💡 "Transforming brands into movements!" | 🔥 "Your next big idea starts here!"
     </div>
-  </div>
-
-  <!-- Testimonial Ticker -->
-  <div class="testimonial-ticker">
-    <p id="testimonial-text">
-      "Kayron’s strategies changed my business overnight!" - CEO of Amazing Corp
-    </p>
   </div>
 
   <!-- Countdown Timer -->
@@ -62,7 +46,7 @@
   <p id="limited-spots">Spots Left: <span id="spots-counter">10</span></p>
 
   <!-- TV Guide Popup -->
-  <div id="tv-guide-popup" class="hidden">
+  <div id="tv-guide-popup" class="hidden" role="dialog" aria-label="TV Guide">
     <h2>TV Guide</h2>
     <ul>
       <li><strong>CH 1:</strong> Essentials</li>
