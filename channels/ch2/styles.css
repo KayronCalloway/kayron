@@ -1,81 +1,73 @@
 /* channels/ch2/styles.css */
 
-/* Lookbook Container Styles */
-#lookbook-container {
-  background: #000;
-  color: #fff;
+/* Infomercial Container */
+#infomercial-container {
+  position: relative;
   width: 100%;
   min-height: 100vh;
+  background: url('visuals/infomercial-bg.jpg') center center/cover no-repeat;
+  /* Alternatively, use a gradient:
+     background: linear-gradient(135deg, #000, #333);
+  */
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   padding: 20px;
-  padding-top: 100px; /* To ensure content starts below the header */
   box-sizing: border-box;
-  position: relative;
 }
 
-/* Page Styles */
-.page {
-  display: none;
-  text-align: center;
-  margin: 0 auto;
-  padding: 20px;
-  position: relative;
+/* Infomercial Content */
+.infomercial-content h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
 }
 
-.page.active {
-  display: block;
+.infomercial-content p {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
 }
 
-/* Image Container: increased size for a larger picture square */
-.image-container {
-  width: 100%;
-  max-width: 800px;  /* Increased from 600px */
-  height: 600px;     /* Increased from 400px */
-  margin: 0 auto;
-  overflow: hidden;
-  position: relative;
-}
-
-/* Image Styling with object-fit: contain for full visibility */
-.image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;  /* Changed from 'cover' to 'contain' */
-  display: block;
-  transition: transform 0.3s ease;
-  background: #000; /* Optional: ensures letterbox areas match the container */
-}
-
-.image-container:hover img {
-  transform: scale(1.05);
-}
-
-/* Description Styles: pushed further down */
-.description {
-  margin-top: 30px; /* Increased margin to drop the text down */
+.cta-button {
+  padding: 15px 30px;
   font-size: 1.2rem;
-}
-
-/* Navigation Controls: optional, moved further down if still in use */
-.navigation {
-  margin-top: 30px;
-  text-align: center;
-}
-
-.nav-button {
-  background: transparent;
-  border: 2px solid #fff;
+  text-decoration: none;
   color: #fff;
-  padding: 10px 20px;
+  background: #ff5722;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  transition: transform 0.3s ease;
-  margin: 0 10px;
+  transition: background 0.3s ease;
 }
 
-.nav-button:hover {
-  transform: scale(1.05);
+.cta-button:hover {
+  background: #e64a19;
 }
 
-#pageIndicator {
-  color: #fff;
-  font-size: 1.2rem;
+/* Infomercial Banner */
+.infomercial-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #000;
+  color: #ffeb3b;
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 10px 0;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.infomercial-banner span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 10s linear infinite;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
 }
