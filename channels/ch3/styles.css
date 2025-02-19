@@ -1,0 +1,60 @@
+/* Basic Styles */
+body {
+  margin: 0;
+  background: #000;
+  color: #0f0;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+}
+
+.screen {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  border: 5px solid #0f0;
+  box-shadow: 0 0 20px #0f0;
+  background-color: #000;
+  position: relative;
+}
+
+/* Hide sections by default */
+.hidden {
+  display: none;
+}
+
+/* Buttons */
+button, .btn {
+  background: #0f0;
+  color: #000;
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+button:hover, .btn:hover {
+  background: #afa;
+}
+
+/* CRT Effect */
+.crt {
+  position: relative;
+  overflow: hidden;
+}
+.crt::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(0,255,0,0.15) 0%, transparent 70%);
+}
+
+/* Progress Bar */
+#progressContainer {
+  margin: 20px auto;
+  width: 50%;
+}
+progress {
+  width: 100%;
+}
