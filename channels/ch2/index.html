@@ -1,5 +1,11 @@
 <!-- channels/ch2/index.html -->
 <div id="infomercial-container">
+  <!-- Optional TV Grain Overlay -->
+  <div class="tv-grain"></div>
+  <!-- TV Glitch Overlay (hidden by default) -->
+  <div class="tv-glitch"></div>
+  
+  <!-- Slideshow -->
   <div class="slideshow">
     <!-- Slide 1 -->
     <div class="slide active">
@@ -28,13 +34,42 @@
     </div>
   </div>
 
+  <!-- Call-to-Action Button -->
   <div class="cta-button-container">
     <button class="cta-button">Hire Kayron Now!</button>
   </div>
 
+  <!-- Scrolling Ticker -->
   <div class="ticker">
     <div class="ticker-text">
       Don't wait!! Hire Kayron Now! Call 310-498-8059 or visit KayronCalloway.com!
     </div>
+  </div>
+
+  <!-- Testimonial Ticker -->
+  <div class="testimonial-ticker">
+    <p id="testimonial-text">
+      "Kayron’s strategies changed my business overnight!" - CEO of Amazing Corp
+    </p>
+  </div>
+
+  <!-- Countdown Timer -->
+  <div class="countdown-timer">
+    Limited Time Offer: <span id="timer">30</span> seconds left!
+  </div>
+
+  <!-- Limited Spots Counter -->
+  <p id="limited-spots">Spots Left: <span id="spots-counter">10</span></p>
+
+  <!-- TV Guide Popup -->
+  <div id="tv-guide-popup" class="hidden">
+    <h2>TV Guide</h2>
+    <ul>
+      <li><strong>CH 1:</strong> Essentials</li>
+      <li><strong>CH 2:</strong> Infomercial - "Don't Wait, Call Now!"</li>
+      <li><strong>CH 3:</strong> Skills Showcase</li>
+      <li><strong>CH 4:</strong> Influences & Projects</li>
+    </ul>
+    <button id="close-tv-guide">Close</button>
   </div>
 </div>
