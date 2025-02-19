@@ -1,3 +1,4 @@
+// channels/ch4/ch4.js
 export async function init() {
   const container = document.getElementById('section4');
   if (!container) {
@@ -29,5 +30,13 @@ export async function init() {
     document.head.appendChild(link);
   }
   
-  // Add additional JS here if needed.
+  // Force refresh of the iframe to trigger autoplay
+  setTimeout(() => {
+    const iframe = container.querySelector('iframe');
+    if (iframe) {
+      const src = iframe.src;
+      iframe.src = src;
+      console.log("Channel 4 iframe refreshed to trigger autoplay.");
+    }
+  }, 100);
 }
