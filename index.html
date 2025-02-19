@@ -2,15 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- Responsive and PWA Settings -->
+  <!-- Security Headers -->
+  <meta http-equiv="Strict-Transport-Security" content="max-age=63072000; includeSubDomains">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <!-- Viewport and PWA Settings -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Kayron Calloway's interactive TV Portfolio." />
+  <meta name="description" content="Kayron Calloway's interactive TV Portfolio showcasing creative strategy, digital storytelling, and problem-solving skills." />
   <title>TV Portfolio</title>
+  <!-- Content Security Policy (Updated to allow YouTube frames) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://unpkg.com https://www.youtube.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src https://www.youtube.com;">
+  
+  <!-- Optional Base Tag for GitHub Pages (if needed) -->
+  <!-- <base href="/your-repo-name/"> -->
+  
   <link rel="manifest" href="manifest.json">
-  <!-- Global CSS (if any) -->
   <link rel="stylesheet" href="styles.css" />
-  <!-- Global JavaScript -->
+  
+  <!-- Load GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" defer></script>
+  <!-- Load Web Vitals -->
+  <script src="https://unpkg.com/web-vitals@2/dist/web-vitals.umd.js" defer></script>
+  <!-- YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <!-- External YouTube Setup Script -->
+  <script src="youtube-setup.js" defer></script>
+  <!-- Your Custom JavaScript -->
   <script src="script.js" defer></script>
+  <!-- Optional favicon -->
+  <!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
 </head>
 <body>
   <noscript>
@@ -19,6 +38,18 @@
       <p>This interactive portfolio requires JavaScript. Please enable it or view my <a href="static-resume.pdf">static resume</a>.</p>
     </div>
   </noscript>
+  
+  <!-- Skip Link for Accessibility -->
+  <a href="#mainContent" class="skip-link">Skip to Content</a>
+  
+  <!-- Audio for Power Button -->
+  <audio id="clickSound" src="audio/click.mp3" preload="auto"></audio>
+  
+  <!-- Fixed Header (initially hidden) -->
+  <header id="header">
+    <div class="header-name" id="headerName">Kayron Calloway</div>
+    <button id="menuButton" class="menu-button" aria-label="Toggle TV Guide">Menu</button>
+  </header>
   
   <!-- Landing Overlay -->
   <div id="landing">
@@ -36,44 +67,46 @@
     </div>
   </div>
   
-  <!-- Main Content -->
+  <!-- Static Overlay -->
+  <div id="staticOverlay"></div>
+  
+  <!-- Main Content (scrollable) -->
   <main id="mainContent">
-    <!-- Channel 1: Home (Placeholder) -->
-    <section id="section1" class="channel-section" data-module="home">
-      <h2>Home</h2>
-      <p>Welcome to the TV Portfolio.</p>
+    <!-- Channel Sections -->
+    <section id="section1" class="channel-section relative" data-module="home">
+      <!-- YouTube Video Background for Channel 1 -->
+      <div class="video-background">
+        <div id="youtube-player"></div>
+      </div>
+      
+      <div class="channel-buttons">
+        <!-- These buttons will trigger modals loaded by Channel 1 -->
+        <button id="resumeButton" class="channel-button" aria-label="View Resume">Resume</button>
+        <button id="aboutButton" class="channel-button" aria-label="About Me">About Me</button>
+        <button id="contactButton" class="channel-button" aria-label="Contact Info">Contact</button>
+      </div>
       <div class="channel-number-overlay">CH 01</div>
     </section>
     
-    <!-- Channel 2: Infomercial (Slideshow Only) -->
+    <!-- Updated Channel 2: Lookbook Module -->
     <section id="section2" class="channel-section" data-module="ch2">
-      <h2>Infomercial</h2>
-      <p>The slideshow will load here.</p>
+      <h2>Workbook</h2>
+      <p>Your interactive lookbook will load here.</p>
       <div class="channel-number-overlay">CH 02</div>
     </section>
     
-    <!-- Channel 3: Skill Show -->
-    <section id="section3" class="channel-section" data-module="skillshow">
-      <h2>Skill Show</h2>
-      <p>Featured project content for the Skill Show...</p>
+    <section id="section3" class="channel-section" data-module="career">
+      <h2>Career Work</h2>
+      <p>Featured project content for Career Work...</p>
       <div class="channel-number-overlay">CH 03</div>
     </section>
     
-    <!-- Channel 4: Under the Influence -->
-    <section id="section4" class="channel-section" data-module="underinfluence">
-      <h2>Under the Influence</h2>
-      <p>Featured project content for Under the Influence...</p>
+    <section id="section4" class="channel-section" data-module="rolemodels">
+      <h2>Role Models</h2>
+      <p>Featured project content for Role Models...</p>
       <div class="channel-number-overlay">CH 04</div>
     </section>
     
-    <!-- Channel 5: Interests (Placeholder) -->
-    <section id="section5" class="channel-section" data-module="interests">
-      <h2>Interests</h2>
-      <p>Featured project content for Interests...</p>
-      <div class="channel-number-overlay">CH 05</div>
-    </section>
-  </main>
-  
   <!-- TV Guide Overlay Menu -->
   <div id="tvGuide" class="tv-guide hidden" aria-hidden="true">
     <div class="tv-guide-header">TV Guide</div>
@@ -86,26 +119,23 @@
           </li>
           <li data-target="section2">
             <span class="channel-number">CH 02</span>
-            <span class="channel-title">Infomercial</span>
+            <span class="channel-title">Workbook</span>
           </li>
           <li data-target="section3">
             <span class="channel-number">CH 03</span>
-            <span class="channel-title">Skill Show</span>
+            <span class="channel-title">Career Work</span>
           </li>
           <li data-target="section4">
             <span class="channel-number">CH 04</span>
-            <span class="channel-title">Under the Influence</span>
+            <span class="channel-title">Role Models</span>
           </li>
-          <li data-target="section5">
-            <span class="channel-number">CH 05</span>
-            <span class="channel-title">Interests</span>
           </li>
         </ul>
       </nav>
     </div>
     <button id="closeGuide" class="close-guide" aria-label="Close TV Guide">Close</button>
   </div>
-  
+
   <!-- Back to Top Button -->
   <button id="backToTop" class="back-to-top" aria-label="Back to Top">↑</button>
   
