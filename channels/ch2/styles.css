@@ -1,126 +1,78 @@
 /* channels/ch2/styles.css */
 
+/* CSS Custom Properties (for easy theme adjustments) */
+:root {
+  --primary-color: #fff;
+  --background-color: #000;
+  --accent-color: red;
+  --font-size-base: 1.2rem;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
 /* Infomercial Container */
 #infomercial-container {
-  background: #000;
-  color: #fff;
+  background: var(--background-color);
+  color: var(--primary-color);
   width: 100%;
   min-height: 100vh;
-  padding: 20px;
-  padding-top: 100px; /* To avoid header overlap */
+  padding-top: 100px;
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
 }
 
-/* TV Grain Overlay (for a retro look) */
-.tv-grain {
+/* LIVE Badge */
+.live-badge {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: url('visuals/tv-grain.png') repeat;
-  opacity: 0.2;
-  z-index: -1;
+  top: 5px;
+  left: 5px;
+  background: var(--accent-color);
+  color: var(--primary-color);
+  padding: 5px 10px;
+  font-weight: bold;
+  z-index: 1000;
+  animation: blink 1s infinite alternate;
+}
+@keyframes blink {
+  0% { opacity: 0.8; }
+  100% { opacity: 1; }
 }
 
-/* TV Glitch Overlay */
-.tv-glitch {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: url('visuals/static.gif') repeat;
-  opacity: 0;
-  z-index: 9999;
-  pointer-events: none;
-  display: none;
-}
-
-/* Slideshow Styles */
+/* Slideshow */
 .slideshow {
-  position: relative;
-  width: 90vw;
-  max-width: 800px;
-  height: 60vw;
-  max-height: 600px;
-  margin: 0 auto;
+  width: 80vw;
+  max-width: 700px;
+  height: 50vw;
+  max-height: 500px;
+  margin: auto;
   overflow: hidden;
+  position: relative;
 }
-
 .slide {
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.5s, transform 0.5s;
 }
-
 .slide.active {
   opacity: 1;
   transform: translateY(0);
   position: relative;
 }
-
-/* Random Transition Effects */
-.fade {
-  animation: fadeIn 0.8s ease-in-out forwards;
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.zoom {
-  transform: scale(0.8);
-  animation: zoomIn 0.8s ease-in-out forwards;
-}
-@keyframes zoomIn {
-  from { transform: scale(0.8); }
-  to { transform: scale(1); }
-}
-
-.slide-left {
-  transform: translateX(100%);
-  animation: slideInLeft 0.8s ease-in-out forwards;
-}
-@keyframes slideInLeft {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
-}
-
-.slide-right {
-  transform: translateX(-100%);
-  animation: slideInRight 0.8s ease-in-out forwards;
-}
-@keyframes slideInRight {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(0); }
-}
-
-.static-glitch {
-  animation: glitchEffect 0.3s ease-in-out forwards;
-}
-@keyframes glitchEffect {
-  from { opacity: 0.5; }
-  to { opacity: 0; }
-}
-
-/* Slide Image and Caption */
 .slide img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  background: #000;
-  transition: transform 0.3s ease;
-}
-.slide:hover img {
-  transform: scale(1.05);
+  object-fit: cover;
 }
 .slide-caption {
   position: absolute;
@@ -128,43 +80,56 @@
   left: 50%;
   transform: translateX(-50%);
   background: rgba(0,0,0,0.7);
-  padding: 10px 20px;
-  font-size: 1.5rem;
-  z-index: 2;
+  padding: 10px;
+  font-size: var(--font-size-base);
+  text-align: center;
 }
+
+/* Random Transition Effects */
+.fade { animation: fadeIn 0.8s ease-in-out forwards; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.zoom { transform: scale(0.8); animation: zoomIn 0.8s ease-in-out forwards; }
+@keyframes zoomIn { from { transform: scale(0.8); } to { transform: scale(1); } }
+
+.slide-left { transform: translateX(100%); animation: slideInLeft 0.8s ease-in-out forwards; }
+@keyframes slideInLeft { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+.slide-right { transform: translateX(-100%); animation: slideInRight 0.8s ease-in-out forwards; }
+@keyframes slideInRight { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+
+.static-glitch { animation: glitchEffect 0.3s ease-in-out forwards; }
+@keyframes glitchEffect { from { opacity: 0.5; } to { opacity: 0; } }
 
 /* CTA Button */
 .cta-button-container {
   text-align: center;
-  margin-top: 20px;
+  margin: 20px auto;
 }
 .cta-button {
   font-size: 1.5rem;
-  padding: 15px 30px;
-  border: 2px solid #fff;
-  background: #000;
-  color: #fff;
+  padding: 15px 25px;
+  border: 2px solid var(--primary-color);
+  background: var(--accent-color);
+  color: var(--primary-color);
   cursor: pointer;
-  position: relative;
-  z-index: 2;
-  animation: pulse 2s infinite;
+  transition: 0.3s;
 }
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+.cta-button:hover {
+  background: var(--primary-color);
+  color: var(--accent-color);
 }
 
-/* Ticker Styles */
+/* Ticker */
 .ticker {
   position: fixed;
   bottom: 0;
-  left: 0;
   width: 100%;
-  background: #111;
-  color: #fff;
-  overflow: hidden;
+  background: var(--background-color);
+  color: var(--primary-color);
+  font-size: 1.2rem;
   white-space: nowrap;
+  overflow: hidden;
   padding: 10px 0;
   z-index: 100;
 }
@@ -172,36 +137,12 @@
   display: inline-block;
   padding-left: 100%;
   animation: ticker 15s linear infinite;
-  font-size: 1.2rem;
   transition: filter 0.2s;
 }
-.ticker-text.fast {
-  filter: blur(2px);
-}
+.ticker-text.fast { filter: blur(2px); }
 @keyframes ticker {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-100%); }
-}
-
-/* Testimonial Ticker */
-.testimonial-ticker {
-  position: fixed;
-  bottom: 50px;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  text-align: center;
-  font-size: 1.2rem;
-  padding: 10px 0;
-  font-style: italic;
-  white-space: nowrap;
-  overflow: hidden;
-  animation: scrollText 15s linear infinite;
-  z-index: 150;
-}
-@keyframes scrollText {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+  from { transform: translateX(100%); }
+  to { transform: translateX(-100%); }
 }
 
 /* Countdown Timer */
@@ -210,9 +151,9 @@
   top: 15px;
   right: 20px;
   font-size: 1.5rem;
-  background: red;
+  background: var(--accent-color);
   padding: 5px 10px;
-  color: #fff;
+  color: var(--primary-color);
   font-weight: bold;
   border-radius: 5px;
   animation: flash 1s infinite;
@@ -229,8 +170,8 @@
   position: fixed;
   top: 10px;
   left: 20px;
-  background: red;
-  color: #fff;
+  background: var(--accent-color);
+  color: var(--primary-color);
   padding: 5px 10px;
   font-size: 1.5rem;
   font-weight: bold;
@@ -245,11 +186,18 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.9);
-  color: white;
+  background: rgba(0,0,0,0.9);
+  color: var(--primary-color);
   padding: 20px;
   border-radius: 10px;
   z-index: 5000;
   display: none;
 }
 .hidden { display: none; }
+
+/* Responsive Adjustments (Mobile-First) */
+@media (max-width: 600px) {
+  .cta-button { font-size: 1.2rem; padding: 10px 20px; }
+  .ticker { font-size: 0.9rem; }
+  .slide-caption { font-size: 1rem; }
+}
