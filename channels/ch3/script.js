@@ -1,3 +1,4 @@
+// channels/ch3/script.js
 document.addEventListener("DOMContentLoaded", () => {
   const startBtn = document.getElementById("startBtn");
   const questionContainer = document.getElementById("questionContainer");
@@ -19,11 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
       question: "You’ve been hired to reposition a struggling brand. What’s your first move?",
       choices: [
         "Storytelling & Brand Identity",
-        "Flood Instagram with ads",
+        "Flood social media with ads",
         "Change the logo and hope for the best"
       ],
       correct: 0,
-      skill: "✔️ Brand Strategy & Creative Direction"
+      skill: "Brand Strategy & Creative Direction"
     },
     {
       question: "A startup asks for AI-driven growth recommendations. What do you prioritize?",
@@ -33,35 +34,30 @@ document.addEventListener("DOMContentLoaded", () => {
         "Automate everything"
       ],
       correct: 0,
-      skill: "✔️ AI Ethics & Business Strategy"
+      skill: "AI Ethics & Business Strategy"
     }
   ];
 
-  // Start game by hiding start button and showing first question
   startBtn.addEventListener("click", () => {
     startBtn.classList.add("hidden");
     nextQuestion();
   });
 
   function nextQuestion() {
-    // If no more questions, go to final round (smash challenge)
     if (currentQuestionIndex >= questions.length) {
       questionContainer.classList.add("hidden");
       finalRound.classList.remove("hidden");
       return;
     }
-
     const { question, choices } = questions[currentQuestionIndex];
     questionText.textContent = question;
     choicesContainer.innerHTML = "";
-    
     choices.forEach((choice, index) => {
       const btn = document.createElement("button");
       btn.textContent = choice;
       btn.addEventListener("click", () => checkAnswer(index));
       choicesContainer.appendChild(btn);
     });
-
     questionContainer.classList.remove("hidden");
   }
 
@@ -74,12 +70,9 @@ document.addEventListener("DOMContentLoaded", () => {
     nextQuestion();
   }
 
-  // Final round: Smash challenge
   smashBtn.addEventListener("click", () => {
     smashCount++;
     smashCountDisplay.textContent = `Clicks: ${smashCount}`;
-
-    // Threshold for a successful smash challenge
     if (smashCount >= 15) {
       finalRound.classList.add("hidden");
       showResult();
@@ -91,7 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
     unlockedSkills.innerHTML = skillsUnlocked.join("<br>");
   }
 
-  // Restart the game
   restartBtn.addEventListener("click", () => {
     location.reload();
   });
