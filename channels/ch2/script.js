@@ -1,12 +1,11 @@
 // channels/ch2/script.js
 
 (() => {
-  // --- Configuration Constants ---
-  const SLIDE_INTERVAL = 4500; // milliseconds
+  // Configuration Constants
+  const SLIDE_INTERVAL = 4500; // ms
   const BUTTON_TEXT_INTERVAL = 4000;
   const COUNTDOWN_INTERVAL = 1000;
   const SPOTS_INTERVAL = 9000;
-
   const buttonMessages = [
     "Hire Kayron Now!",
     "LIMITED TIME OFFER!",
@@ -14,20 +13,20 @@
     "BOOK A CALL NOW – SPOTS ARE LIMITED!",
     "LET’S BUILD SOMETHING GREAT TOGETHER!"
   ];
+  const transitionEffects = ["fade", "zoom", "slide-left", "slide-right", "static-glitch"];
 
-  // --- SLIDESHOW WITH RANDOM TRANSITION EFFECTS ---
+  // --- SLIDESHOW ---
   const slides = document.querySelectorAll('.slide');
   let currentSlide = 0;
   const totalSlides = slides.length;
-  const transitionEffects = ["fade", "zoom", "slide-left", "slide-right", "static-glitch"];
-
+  
   const applyTransitionEffect = (slide) => {
     const effect = transitionEffects[Math.floor(Math.random() * transitionEffects.length)];
-    const handleAnimationEnd = () => {
+    const onAnimationEnd = () => {
       slide.classList.remove(effect);
-      slide.removeEventListener('animationend', handleAnimationEnd);
+      slide.removeEventListener('animationend', onAnimationEnd);
     };
-    slide.addEventListener('animationend', handleAnimationEnd);
+    slide.addEventListener('animationend', onAnimationEnd);
     slide.classList.add(effect);
   };
 
@@ -49,7 +48,7 @@
     showSlide(currentSlide);
   }, SLIDE_INTERVAL);
 
-  // --- KEYBOARD NAVIGATION FOR SLIDESHOW ---
+  // --- Keyboard Navigation ---
   window.addEventListener('keyup', (e) => {
     if (e.key === "ArrowRight") {
       currentSlide = (currentSlide + 1) % totalSlides;
@@ -60,7 +59,7 @@
     }
   });
 
-  // --- DYNAMIC CTA BUTTON TEXT ---
+  // --- Dynamic CTA Button Text ---
   const updateButtonText = () => {
     const button = document.querySelector('.cta-button');
     if (button) {
@@ -69,7 +68,7 @@
   };
   setInterval(updateButtonText, BUTTON_TEXT_INTERVAL);
 
-  // --- COUNTDOWN TIMER ---
+  // --- Countdown Timer ---
   let time = 30;
   setInterval(() => {
     time = (time - 1 < 0) ? 30 : time - 1;
@@ -77,7 +76,7 @@
     if (timerEl) timerEl.innerText = time;
   }, COUNTDOWN_INTERVAL);
 
-  // --- LIMITED SPOTS COUNTER ---
+  // --- Limited Spots Counter ---
   let spotsLeft = 10;
   setInterval(() => {
     if (spotsLeft > 0) {
@@ -87,7 +86,7 @@
     }
   }, SPOTS_INTERVAL);
 
-  // --- TICKER SPEED ADJUSTMENT (Debounced Resize) ---
+  // --- Ticker Speed Adjustment (Debounced) ---
   const tickerText = document.querySelector('.ticker-text');
   const updateTickerSpeed = () => {
     const textLength = tickerText.offsetWidth;
@@ -96,12 +95,12 @@
     tickerText.style.animationDuration = `${duration}s`;
   };
 
-  // Debounce function
-  const debounce = (func, delay) => {
+  // Simple debounce implementation
+  const debounce = (fn, delay) => {
     let timeout;
     return () => {
       clearTimeout(timeout);
-      timeout = setTimeout(func, delay);
+      timeout = setTimeout(fn, delay);
     };
   };
 
