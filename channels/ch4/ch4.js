@@ -38,5 +38,5 @@ export async function init() {
       iframe.src = src;
       console.log("Channel 4 iframe refreshed to trigger autoplay.");
     }
-  }, 100);
+  }, 500);
 }
