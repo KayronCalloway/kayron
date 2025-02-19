@@ -23,7 +23,7 @@ export async function init() {
     return;
   }
   
-  // Dynamically load the CSS if not already loaded
+  // Dynamically load CSS (avoid duplicates)
   if (!document.querySelector('link[href="./channels/ch2/styles.css"]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -31,7 +31,7 @@ export async function init() {
     document.head.appendChild(link);
   }
   
-  // Dynamically load the JS if not already loaded
+  // Dynamically load the JS (avoid duplicates)
   if (!document.querySelector('script[src="./channels/ch2/script.js"]')) {
     const script = document.createElement('script');
     script.src = './channels/ch2/script.js';
