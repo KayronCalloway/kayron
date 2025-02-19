@@ -7,8 +7,8 @@ export async function init() {
   }
   
   // Prevent duplicate initialization
-  if (container.querySelector('#infomercial-container')) {
-    console.log("Infomercial already loaded; skipping initialization.");
+  if (container.querySelector('#slideshow-container')) {
+    console.log("Slideshow already loaded; skipping initialization.");
     return;
   }
   
@@ -19,11 +19,11 @@ export async function init() {
     container.innerHTML = html;
   } catch (error) {
     console.error("Failed to load Channel 2 markup:", error);
-    container.innerHTML = `<div class="error">Error loading infomercial content. Please try again later.</div>`;
+    container.innerHTML = `<div class="error">Error loading slideshow content.</div>`;
     return;
   }
   
-  // Dynamically load CSS (avoid duplicates)
+  // Dynamically load CSS if not already loaded
   if (!document.querySelector('link[href="./channels/ch2/styles.css"]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -31,7 +31,7 @@ export async function init() {
     document.head.appendChild(link);
   }
   
-  // Dynamically load the JS (avoid duplicates)
+  // Dynamically load the JS for slideshow functionality
   if (!document.querySelector('script[src="./channels/ch2/script.js"]')) {
     const script = document.createElement('script');
     script.src = './channels/ch2/script.js';
