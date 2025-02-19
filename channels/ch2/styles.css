@@ -1,114 +1,51 @@
 /* channels/ch2/styles.css */
 
-/* CSS Variables for Theming */
+/* Basic CSS Variables */
 :root {
   --primary-color: #fff;
   --background-color: #000;
-  --accent-color: #333;
   --font-base: 1.2rem;
 }
 
-/* Infomercial Container */
-#infomercial-container {
+/* Slideshow Container */
+#slideshow-container {
   background: var(--background-color);
   color: var(--primary-color);
   width: 100%;
   min-height: 100vh;
   padding-top: 50px;
   box-sizing: border-box;
-  position: relative;
+  text-align: center;
   overflow: hidden;
-}
-
-/* LIVE Badge */
-.live-badge {
-  position: fixed;
-  top: 5px;
-  left: 5px;
-  background: var(--accent-color);
-  color: var(--primary-color);
-  padding: 5px 10px;
-  font-weight: bold;
-  z-index: 1000;
-  animation: blink 1s infinite alternate;
-}
-@keyframes blink {
-  0% { opacity: 0.8; }
-  100% { opacity: 1; }
 }
 
 /* Slideshow Styles */
 .slideshow {
   width: 80%;
   max-width: 800px;
-  margin: 20px auto;
+  margin: 0 auto;
   position: relative;
   overflow: hidden;
 }
+
+/* Slide */
 .slide {
   display: none;
   width: 100%;
-  text-align: center;
   transition: opacity 0.5s ease;
 }
 .slide.active {
   display: block;
+  opacity: 1;
 }
 .slide img {
   width: 100%;
   height: auto;
-  object-fit: contain; /* Shows full picture */
+  object-fit: contain; /* Ensures full image is visible */
   display: block;
 }
 .caption {
   margin-top: 10px;
   font-size: var(--font-base);
   text-align: center;
-}
-
-/* Countdown Timer */
-.countdown {
-  position: fixed;
-  top: 10px;
-  right: 20px;
-  font-size: 1.5rem;
-  background: var(--accent-color);
-  padding: 5px 10px;
-  color: var(--primary-color);
-  border-radius: 5px;
-  z-index: 200;
-}
-
-/* Limited Spots Counter */
-.spots {
-  position: fixed;
-  top: 10px;
-  left: 20px;
-  font-size: 1.5rem;
-  background: var(--accent-color);
-  padding: 5px 10px;
-  color: var(--primary-color);
-  border-radius: 5px;
-  z-index: 200;
-}
-
-/* TV Guide Popup */
-#tv-guide-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.9);
-  color: var(--primary-color);
-  padding: 20px;
-  border-radius: 10px;
-  z-index: 5000;
-  display: none;
-}
-.hidden { display: none; }
-
-/* Responsive Adjustments */
-@media (max-width: 600px) {
-  .caption { font-size: 1rem; }
-  .countdown, .spots { font-size: 1.2rem; }
 }
