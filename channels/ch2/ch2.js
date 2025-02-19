@@ -3,15 +3,16 @@
 export async function init() {
   console.log("Channel 2 Infomercial module loaded.");
 
-  // Get the Channel 2 container (the section with id="section2")
+  // Get the Channel 2 container from the main page (Section with id="section2")
   const container = document.getElementById('section2');
 
-  // Prevent re-initialization if already loaded
+  // Prevent re-initialization if the infomercial is already loaded
   if (container.querySelector('#infomercial-container')) {
     console.log("Infomercial already loaded; skipping re-init.");
     return;
   }
 
+  // Load the external markup from index.html
   try {
     const response = await fetch('./channels/ch2/index.html');
     if (!response.ok) {
