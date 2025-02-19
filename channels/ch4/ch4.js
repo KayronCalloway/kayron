@@ -1,4 +1,3 @@
-// channels/ch4/ch4.js
 export async function init() {
   const container = document.getElementById('section4');
   if (!container) {
