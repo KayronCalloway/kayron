@@ -1,22 +1,37 @@
 // channels/ch2/script.js
 
-(function() {
-  // ---------- SLIDESHOW WITH RANDOM TRANSITION EFFECTS ----------
+(() => {
+  // --- Configuration Constants ---
+  const SLIDE_INTERVAL = 4500; // milliseconds
+  const BUTTON_TEXT_INTERVAL = 4000;
+  const COUNTDOWN_INTERVAL = 1000;
+  const SPOTS_INTERVAL = 9000;
+
+  const buttonMessages = [
+    "Hire Kayron Now!",
+    "LIMITED TIME OFFER!",
+    "Kayron WILL CHANGE YOUR BUSINESS!",
+    "BOOK A CALL NOW – SPOTS ARE LIMITED!",
+    "LET’S BUILD SOMETHING GREAT TOGETHER!"
+  ];
+
+  // --- SLIDESHOW WITH RANDOM TRANSITION EFFECTS ---
   const slides = document.querySelectorAll('.slide');
   let currentSlide = 0;
   const totalSlides = slides.length;
-  const slideInterval = 5000; // 5 seconds per slide
   const transitionEffects = ["fade", "zoom", "slide-left", "slide-right", "static-glitch"];
 
-  function applyTransitionEffect(slide) {
+  const applyTransitionEffect = (slide) => {
     const effect = transitionEffects[Math.floor(Math.random() * transitionEffects.length)];
-    slide.classList.add(effect);
-    setTimeout(() => {
+    const handleAnimationEnd = () => {
       slide.classList.remove(effect);
-    }, 800);
-  }
+      slide.removeEventListener('animationend', handleAnimationEnd);
+    };
+    slide.addEventListener('animationend', handleAnimationEnd);
+    slide.classList.add(effect);
+  };
 
-  function showSlide(index) {
+  const showSlide = (index) => {
     index = Math.max(0, Math.min(index, totalSlides - 1));
     slides.forEach((slide, i) => {
       if (i === index) {
@@ -27,129 +42,102 @@
       }
     });
     currentSlide = index;
-  }
+  };
 
-  function nextSlide() {
+  setInterval(() => {
     currentSlide = (currentSlide + 1) % totalSlides;
     showSlide(currentSlide);
-    // Play slide change sound effect
-    if (slideChangeSound) {
-      slideChangeSound.play();
+  }, SLIDE_INTERVAL);
+
+  // --- KEYBOARD NAVIGATION FOR SLIDESHOW ---
+  window.addEventListener('keyup', (e) => {
+    if (e.key === "ArrowRight") {
+      currentSlide = (currentSlide + 1) % totalSlides;
+      showSlide(currentSlide);
+    } else if (e.key === "ArrowLeft") {
+      currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+      showSlide(currentSlide);
     }
-  }
+  });
 
-  setInterval(nextSlide, slideInterval);
-
-  // ---------- DYNAMIC CTA BUTTON TEXT ----------
-  const buttonMessages = [
-    "Hire Kayron Now!",
-    "LIMITED TIME OFFER!",
-    "Kayron WILL CHANGE YOUR BUSINESS!",
-    "BOOK A CALL NOW – SPOTS ARE LIMITED!",
-    "LET’S BUILD SOMETHING GREAT TOGETHER!"
-  ];
-
-  function updateButtonText() {
+  // --- DYNAMIC CTA BUTTON TEXT ---
+  const updateButtonText = () => {
     const button = document.querySelector('.cta-button');
     if (button) {
-      const newText = buttonMessages[Math.floor(Math.random() * buttonMessages.length)];
-      button.innerText = newText;
+      button.innerText = buttonMessages[Math.floor(Math.random() * buttonMessages.length)];
     }
-  }
+  };
+  setInterval(updateButtonText, BUTTON_TEXT_INTERVAL);
 
-  setInterval(updateButtonText, 4000);
-
-  // ---------- COUNTDOWN TIMER ----------
+  // --- COUNTDOWN TIMER ---
   let time = 30;
   setInterval(() => {
-    time--;
-    if (time < 0) time = 30;
+    time = (time - 1 < 0) ? 30 : time - 1;
     const timerEl = document.getElementById('timer');
     if (timerEl) timerEl.innerText = time;
-  }, 1000);
+  }, COUNTDOWN_INTERVAL);
 
-  // ---------- LIMITED SPOTS COUNTER ----------
+  // --- LIMITED SPOTS COUNTER ---
   let spotsLeft = 10;
   setInterval(() => {
-    if (spotsLeft > 1) {
+    if (spotsLeft > 0) {
       spotsLeft--;
       const spotsEl = document.getElementById("spots-counter");
       if (spotsEl) spotsEl.innerText = spotsLeft;
     }
-  }, 8000);
+  }, SPOTS_INTERVAL);
 
-  // ---------- TESTIMONIAL TICKER UPDATE ----------
-  const testimonials = [
-    '"Kayron’s strategies changed my business overnight!" - CEO of Amazing Corp',
-    '"Hiring Kayron was the best decision I made for my company!" - Startup Founder',
-    '"The results were unbelievable. Thank you, Kayron!" - Marketing Director',
-    '"I went from struggling to thriving. I highly recommend working with Kayron!" - Business Owner'
-  ];
+  // --- TICKER SPEED ADJUSTMENT (Debounced Resize) ---
+  const tickerText = document.querySelector('.ticker-text');
+  const updateTickerSpeed = () => {
+    const textLength = tickerText.offsetWidth;
+    const containerWidth = document.querySelector('.ticker').offsetWidth;
+    const duration = Math.max(5, (textLength / containerWidth) * 8);
+    tickerText.style.animationDuration = `${duration}s`;
+  };
 
-  function updateTestimonial() {
-    const testimonialEl = document.getElementById('testimonial-text');
-    if (testimonialEl) {
-      testimonialEl.innerText = testimonials[Math.floor(Math.random() * testimonials.length)];
-    }
-  }
+  // Debounce function
+  const debounce = (func, delay) => {
+    let timeout;
+    return () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(func, delay);
+    };
+  };
 
-  setInterval(updateTestimonial, 10000);
+  updateTickerSpeed();
+  window.addEventListener('resize', debounce(updateTickerSpeed, 250));
 
-  // ---------- TICKER MOTION BLUR EFFECT ----------
-  const ticker = document.querySelector('.ticker-text');
-  setInterval(() => {
-    if (ticker) {
-      ticker.classList.add("fast");
-      setTimeout(() => ticker.classList.remove("fast"), 200);
-    }
-  }, 3000);
+  // --- LIVE BADGE (Real-Time Clock) ---
+  const updateLiveTime = () => {
+    const liveTimeEl = document.getElementById('live-time');
+    if (liveTimeEl) liveTimeEl.innerText = new Date().toLocaleTimeString();
+  };
+  setInterval(updateLiveTime, 1000);
+  updateLiveTime();
 
-  // ---------- SOUND EFFECTS ----------
-  const slideChangeSound = new Audio('audio/whoosh.mp3');
-  const buttonHoverSound = new Audio('audio/ka-ching.mp3');
-  const tickerStartSound = new Audio('audio/ticker-hum.mp3');
-
-  // Play button hover sound on CTA hover
-  const ctaButton = document.querySelector('.cta-button');
-  if (ctaButton) {
-    ctaButton.addEventListener('mouseenter', () => {
-      buttonHoverSound.play();
-    });
-  }
-  // Play ticker sound once after 1 second
-  setTimeout(() => {
-    tickerStartSound.play();
-  }, 1000);
-
-  // ---------- TV GLITCH EFFECT ----------
-  function triggerTVGlitch() {
+  // --- TV GLITCH EFFECT ---
+  const triggerTVGlitch = () => {
     const glitch = document.querySelector('.tv-glitch');
     if (glitch) {
       glitch.style.display = "block";
-      setTimeout(() => {
-        glitch.style.display = "none";
-      }, 250);
+      setTimeout(() => { glitch.style.display = "none"; }, 250);
     }
-  }
+  };
   setInterval(triggerTVGlitch, Math.floor(Math.random() * (30000 - 15000) + 15000));
 
-  // ---------- TV GUIDE POPUP ----------
-  // Show TV guide popup when clicking outside the infomercial container
+  // --- TV GUIDE POPUP ---
   document.addEventListener('click', (e) => {
     if (!e.target.closest('#infomercial-container')) {
       const guidePopup = document.getElementById('tv-guide-popup');
-      if (guidePopup) {
-        guidePopup.style.display = 'block';
-      }
+      if (guidePopup) guidePopup.style.display = 'block';
     }
   });
-  // Close TV guide popup
   const closeGuide = document.getElementById('close-tv-guide');
   if (closeGuide) {
     closeGuide.addEventListener('click', (e) => {
       e.stopPropagation();
-      const guidePopup = document.getElementById('tv-guide-popup');
-      guidePopup.style.display = 'none';
+      document.getElementById('tv-guide-popup').style.display = 'none';
     });
   }
 })();
