@@ -1,11 +1,11 @@
 /* channels/ch2/styles.css */
 
-/* CSS Custom Properties (for easy theme adjustments) */
+/* CSS Custom Properties for Theme */
 :root {
   --primary-color: #fff;
   --background-color: #000;
   --accent-color: red;
-  --font-size-base: 1.2rem;
+  --font-base: 1.2rem;
 }
 
 /* Reduce motion for users who prefer it */
@@ -79,9 +79,9 @@
   bottom: 10%;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0,0,0,0.7);
+  background: rgba(0, 0, 0, 0.7);
   padding: 10px;
-  font-size: var(--font-size-base);
+  font-size: var(--font-base);
   text-align: center;
 }
 
@@ -186,7 +186,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(0,0,0,0.9);
+  background: rgba(0, 0, 0, 0.9);
   color: var(--primary-color);
   padding: 20px;
   border-radius: 10px;
@@ -195,7 +195,7 @@
 }
 .hidden { display: none; }
 
-/* Responsive Adjustments (Mobile-First) */
+/* Responsive Adjustments */
 @media (max-width: 600px) {
   .cta-button { font-size: 1.2rem; padding: 10px 20px; }
   .ticker { font-size: 0.9rem; }
