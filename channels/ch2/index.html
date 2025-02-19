@@ -1,60 +1,43 @@
 <!-- channels/ch2/index.html -->
-<div id="infomercial-container" role="main" aria-label="Infomercial Channel 2">
-  <!-- LIVE Badge with Real-Time Clock -->
-  <div class="live-badge" aria-live="polite">
-    LIVE • <span id="live-time"></span>
-  </div>
-
-  <!-- Slideshow Section -->
+<div id="infomercial-container" role="main" aria-label="Channel 2 Infomercial">
+  <!-- Slideshow -->
   <div class="slideshow" role="region" aria-label="Slideshow">
     <!-- Slide 1 -->
     <div class="slide active">
       <img src="visuals/VOL 1. FIRST c.001.jpeg" alt="Vol 1" loading="lazy">
-      <div class="slide-caption">"Experience the Vision"</div>
+      <div class="caption">"Experience the Vision"</div>
     </div>
     <!-- Slide 2 -->
     <div class="slide">
       <img src="visuals/bulletproof.jpg" alt="Bulletproof" loading="lazy">
-      <div class="slide-caption">"Strength in Strategy"</div>
+      <div class="caption">"Strength in Strategy"</div>
     </div>
     <!-- Slide 3 -->
     <div class="slide">
       <img src="visuals/dou.jpg" alt="C'est Bon" loading="lazy">
-      <div class="slide-caption">"Luxury in Every Detail"</div>
+      <div class="caption">"Luxury in Every Detail"</div>
     </div>
     <!-- Slide 4 -->
     <div class="slide">
       <img src="visuals/mtr.jpg" alt="MTR" loading="lazy">
-      <div class="slide-caption">"Revolutionizing the Game"</div>
+      <div class="caption">"Revolutionizing the Game"</div>
     </div>
   </div>
-
-  <!-- CNBC/ESPN-Style Ticker at Bottom -->
+  
+  <!-- Ticker (appears only at the bottom) -->
   <div class="ticker" role="marquee" aria-label="Infomercial Headlines">
     <div class="ticker-text">
-      🚀 "Don't wait!! Hire Kayron Now!" | 📈 "Innovative strategies deliver results!" | 💡 "Transforming brands into movements!" | 🔥 "Your next big idea starts here!"
+      🚀 "Don't wait, hire Kayron now!" | 📈 "Innovative strategies deliver results!" | 💡 "Transforming brands into movements!" | 🔥 "Your next big idea starts here!"
     </div>
   </div>
-
+  
   <!-- Countdown Timer -->
-  <div class="countdown-timer">
-    Limited Time Offer: <span id="timer">30</span> seconds left!
+  <div class="countdown">
+    Offer expires in <span id="timer">30</span> seconds!
   </div>
-
+  
   <!-- Limited Spots Counter -->
-  <p id="limited-spots">
-    Spots Left: <span id="spots-counter">10</span>
-  </p>
-
-  <!-- TV Guide Popup -->
-  <div id="tv-guide-popup" class="hidden" role="dialog" aria-label="TV Guide">
-    <h2>TV Guide</h2>
-    <ul>
-      <li><strong>CH 1:</strong> Essentials</li>
-      <li><strong>CH 2:</strong> Infomercial - "Don't Wait, Call Now!"</li>
-      <li><strong>CH 3:</strong> Skills Showcase</li>
-      <li><strong>CH 4:</strong> Influences & Projects</li>
-    </ul>
-    <button id="close-tv-guide" aria-label="Close TV Guide">Close</button>
+  <div class="spots">
+    Spots left: <span id="spots-counter">10</span>
   </div>
 </div>
