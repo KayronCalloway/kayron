@@ -6,7 +6,7 @@ export async function init() {
     return;
   }
   // Prevent duplicate initialization
-  if (container.querySelector('.video-embed')) {
+  if (container.querySelector('#youtube-player-4')) {
     console.log("Channel 4 already loaded; skipping initialization.");
     return;
   }
@@ -30,13 +30,32 @@ export async function init() {
     document.head.appendChild(link);
   }
   
-  // Force refresh of the iframe to trigger autoplay
+  // Use the YouTube IFrame API to create a player in Channel 4
   setTimeout(() => {
-    const iframe = container.querySelector('iframe');
-    if (iframe) {
-      const src = iframe.src;
-      iframe.src = src;
-      console.log("Channel 4 iframe refreshed to trigger autoplay.");
+    if (typeof YT !== 'undefined' && YT.Player) {
+      new YT.Player('youtube-player-4', {
+        videoId: 'OFlnSoPm7x4', // New video ID
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          loop: 1,
+          playlist: 'OFlnSoPm7x4', // required for looping the same video
+          modestbranding: 1,
+          rel: 0,
+          playsinline: 1,
+          fs: 0,
+          showinfo: 0,
+          mute: 1 // start muted to allow autoplay
+        },
+        events: {
+          onReady: event => {
+            event.target.playVideo();
+            console.log("Channel 4 YouTube Player ready and playing.");
+          }
+        }
+      });
+    } else {
+      console.error("YouTube API not available for Channel 4.");
     }
   }, 500);
 }
