@@ -1,5 +1,19 @@
-.video-embed {
-  background: var(--bg-color);
-  margin: 0 auto;
-  /* Additional styling (e.g. borders or shadows) can be added here if desired */
+/* channels/ch4/styles.css */
+.video-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1; /* Places the video behind any channel content */
+}
+
+/* Ensure the YouTube iframe fills the container */
+#youtube-player-4 iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
