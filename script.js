@@ -71,20 +71,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Dynamic Module Loading ---
   const loadChannelContent = async moduleName => {
-    try {
-      let module;
-      if (moduleName === 'home') {
-        module = await import(`./channels/ch1/home.js`);
-      } else if (moduleName === 'ch2') {
-        module = await import(`./channels/ch2/ch2.js`);
-      } else {
-        module = await import(`./channels/${moduleName}.js`);
-      }
-      module.init();
-    } catch (err) {
-      console.warn(`Module for ${moduleName} failed to load.`, err);
+  try {
+    let module;
+    if (moduleName === 'home') {
+      module = await import(`./channels/ch1/home.js`);
+    } else if (moduleName === 'ch2') {
+      module = await import(`./channels/ch2/ch2.js`);
+    } else if (moduleName === 'skill games') {
+      module = await import(`./channels/ch3/ch3.js`);
+    } else if (moduleName === 'under the influence') {
+      module = await import(`./channels/ch4/ch4.js`);
     }
-  };
+    module.init();
+  } catch (err) {
+    console.warn(`Module for ${moduleName} failed to load.`, err);
+  }
+};
+
 
   // --- Service Worker Registration ---
   if ('serviceWorker' in navigator) {
