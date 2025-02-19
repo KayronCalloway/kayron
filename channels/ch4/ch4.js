@@ -30,7 +30,7 @@ export async function init() {
     document.head.appendChild(link);
   }
   
-  // Use the YouTube IFrame API to create a player in Channel 4
+  // Use the YouTube IFrame API to create a player in Channel 4.
   // We wait a short delay to ensure the HTML is in place.
   setTimeout(() => {
     if (typeof YT !== 'undefined' && YT.Player) {
@@ -47,11 +47,10 @@ export async function init() {
           playsinline: 1,
           fs: 0,
           showinfo: 0
-          // Note: We do not set mute here.
+          // We start muted by default; the observer in main.js will unmute if the channel is active.
         },
         events: {
           onReady: event => {
-            // Start muted by default.
             event.target.mute();
             event.target.playVideo();
             console.log("Channel 4 YouTube Player ready, starting muted.");
