@@ -1,18 +1,18 @@
 // channels/ch2/ch2.js
 
 export async function init() {
-  console.log("Channel 2 (Workbook) module loaded.");
+  console.log("Channel 2 (Infomercial) module loaded.");
 
   // Get the Channel 2 container (the <section> with id="section2")
   const container = document.getElementById('section2');
 
-  // Prevent re-initializing if the lookbook is already loaded.
-  if (container.querySelector('#lookbook-container')) {
-    console.log("Channel 2 is already loaded; skipping re-initialization.");
+  // Prevent re-initialization if already loaded
+  if (container.querySelector('#infomercial-container')) {
+    console.log("Infomercial content already loaded; skipping re-initialization.");
     return;
   }
 
-  // Load the external markup from ch2/index.html
+  // Load the external markup from index.html within the ch2 folder
   try {
     const response = await fetch('./channels/ch2/index.html');
     if (!response.ok) {
@@ -30,7 +30,7 @@ export async function init() {
   link.href = './channels/ch2/styles.css';
   document.head.appendChild(link);
 
-  // Dynamically load Channel 2-specific JavaScript for lookbook interactions
+  // Dynamically load Channel 2-specific JavaScript (if needed)
   const script = document.createElement('script');
   script.src = './channels/ch2/script.js';
   script.defer = true;
