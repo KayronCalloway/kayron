@@ -1,20 +1,11 @@
 /* channels/ch2/styles.css */
 
-/* CSS Custom Properties for Theme */
+/* CSS Variables for Consistent Theming */
 :root {
   --primary-color: #fff;
   --background-color: #000;
-  --accent-color: red;
+  --accent-color: #333;
   --font-base: 1.2rem;
-}
-
-/* Reduced Motion Preference */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none !important;
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-  }
 }
 
 /* Infomercial Container */
@@ -23,96 +14,48 @@
   color: var(--primary-color);
   width: 100%;
   min-height: 100vh;
-  padding-top: 100px;
+  padding-top: 50px;
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
 }
 
-/* LIVE Badge */
-.live-badge {
-  position: fixed;
-  top: 5px;
-  left: 5px;
-  background: var(--accent-color);
-  color: var(--primary-color);
-  padding: 5px 10px;
-  font-weight: bold;
-  z-index: 1000;
-  animation: blink 1s infinite alternate;
-}
-@keyframes blink {
-  0% { opacity: 0.8; }
-  100% { opacity: 1; }
-}
-
-/* Slideshow */
+/* Slideshow Styles */
 .slideshow {
-  width: 80vw;
-  max-width: 700px;
-  /* Adjusted height to preserve image aspect ratio */
-  height: auto;
-  margin: auto;
-  overflow: hidden;
+  width: 80%;
+  max-width: 800px;
+  margin: 0 auto;
   position: relative;
+  overflow: hidden;
 }
 .slide {
-  position: absolute;
+  display: none;
   width: 100%;
-  /* Allow slides to auto-adjust height based on content */
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s, transform 0.5s;
+  text-align: center;
 }
 .slide.active {
-  opacity: 1;
-  transform: translateY(0);
-  position: relative;
+  display: block;
 }
 .slide img {
   width: 100%;
-  /* Show the full picture without cropping */
   height: auto;
-  object-fit: contain;
+  object-fit: contain; /* Ensures the full picture is visible */
   display: block;
 }
-.slide-caption {
-  position: absolute;
-  bottom: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0,0,0,0.7);
-  padding: 10px;
+.caption {
+  margin-top: 10px;
   font-size: var(--font-base);
   text-align: center;
 }
 
-/* Random Transition Effects */
-.fade { animation: fadeIn 0.8s ease-in-out forwards; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-.zoom { transform: scale(0.8); animation: zoomIn 0.8s ease-in-out forwards; }
-@keyframes zoomIn { from { transform: scale(0.8); } to { transform: scale(1); } }
-
-.slide-left { transform: translateX(100%); animation: slideInLeft 0.8s ease-in-out forwards; }
-@keyframes slideInLeft { from { transform: translateX(100%); } to { transform: translateX(0); } }
-
-.slide-right { transform: translateX(-100%); animation: slideInRight 0.8s ease-in-out forwards; }
-@keyframes slideInRight { from { transform: translateX(-100%); } to { transform: translateX(0); } }
-
-.static-glitch { animation: glitchEffect 0.3s ease-in-out forwards; }
-@keyframes glitchEffect { from { opacity: 0.5; } to { opacity: 0; } }
-
-/* Removed CTA Button Styling since it's removed */
-
-/* Ticker */
+/* Ticker (Bottom of Channel 2 Only) */
 .ticker {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background: var(--background-color);
+  background: #111;
   color: var(--primary-color);
-  font-size: 1.2rem;
+  font-size: 1rem;
   white-space: nowrap;
   overflow: hidden;
   padding: 10px 0;
@@ -124,64 +67,39 @@
   animation: ticker 15s linear infinite;
   transition: filter 0.2s;
 }
-.ticker-text.fast { filter: blur(2px); }
 @keyframes ticker {
   from { transform: translateX(100%); }
   to { transform: translateX(-100%); }
 }
 
 /* Countdown Timer */
-.countdown-timer {
+.countdown {
   position: fixed;
-  top: 15px;
+  top: 10px;
   right: 20px;
   font-size: 1.5rem;
   background: var(--accent-color);
   padding: 5px 10px;
   color: var(--primary-color);
-  font-weight: bold;
   border-radius: 5px;
-  animation: flash 1s infinite;
   z-index: 200;
-}
-@keyframes flash {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
 }
 
 /* Limited Spots Counter */
-#limited-spots {
+.spots {
   position: fixed;
   top: 10px;
   left: 20px;
-  background: var(--accent-color);
-  color: var(--primary-color);
-  padding: 5px 10px;
   font-size: 1.5rem;
-  font-weight: bold;
+  background: var(--accent-color);
+  padding: 5px 10px;
+  color: var(--primary-color);
   border-radius: 5px;
-  animation: flash 1s infinite;
   z-index: 200;
 }
-
-/* TV Guide Popup */
-#tv-guide-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0,0,0,0.9);
-  color: var(--primary-color);
-  padding: 20px;
-  border-radius: 10px;
-  z-index: 5000;
-  display: none;
-}
-.hidden { display: none; }
 
 /* Responsive Adjustments */
 @media (max-width: 600px) {
   .ticker { font-size: 0.9rem; }
-  .slide-caption { font-size: 1rem; }
+  .caption { font-size: 1rem; }
 }
