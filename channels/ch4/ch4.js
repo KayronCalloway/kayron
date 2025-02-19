@@ -30,12 +30,13 @@ export async function init() {
     document.head.appendChild(link);
   }
   
-  // Use the YouTube IFrame API to create a player in Channel 4.
+  // Use the YouTube IFrame API to create a player in Channel 4
   // We wait a short delay to ensure the HTML is in place.
   setTimeout(() => {
     if (typeof YT !== 'undefined' && YT.Player) {
-      new YT.Player('youtube-player-4', {
-        videoId: 'OFlnSoPm7x4', // New video ID from your link
+      // Create the player and assign it to a global variable so it can be controlled from main.js.
+      window.channel4Player = new YT.Player('youtube-player-4', {
+        videoId: 'OFlnSoPm7x4', // New video ID
         playerVars: {
           autoplay: 1,
           controls: 0,
@@ -46,14 +47,14 @@ export async function init() {
           playsinline: 1,
           fs: 0,
           showinfo: 0
-          // Removed mute: 1 to allow unmuted playback
+          // Note: We do not set mute here.
         },
         events: {
           onReady: event => {
-            // Unmute the player now that it is ready.
-            event.target.unMute();
+            // Start muted by default.
+            event.target.mute();
             event.target.playVideo();
-            console.log("Channel 4 YouTube Player ready and playing unmuted.");
+            console.log("Channel 4 YouTube Player ready, starting muted.");
           }
         }
       });
@@ -62,4 +63,3 @@ export async function init() {
     }
   }, 500);
 }
-
