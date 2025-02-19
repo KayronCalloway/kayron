@@ -270,6 +270,30 @@ document.addEventListener('DOMContentLoaded', () => {
     ytObserver.observe(channel1);
   }
 
+    // --- Intersection Observer for Channel 4 YouTube Video Audio Control ---
+  const channel4 = document.getElementById("section4");
+  const channel4ObserverOptions = { root: null, threshold: 0.7 };
+  const channel4Observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.target.id === "section4") {
+        if (entry.intersectionRatio >= 0.7) {
+          if (window.channel4Player && typeof window.channel4Player.unMute === "function") {
+            window.channel4Player.unMute();
+            console.log("Channel 4 active: Unmuting video.");
+          }
+        } else {
+          if (window.channel4Player && typeof window.channel4Player.mute === "function") {
+            window.channel4Player.mute();
+            console.log("Channel 4 inactive: Muting video.");
+          }
+        }
+      }
+    });
+  }, channel4ObserverOptions);
+  if (channel4) {
+    channel4Observer.observe(channel4);
+  }
+  
 // Preload Channel 4 ("under the influence") so its video is already playing when scrolled into view.
 setTimeout(() => {
   loadChannelContent('under the influence');
