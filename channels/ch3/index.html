@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Channel 3: SkillShowdown – Executive Edition</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <main class="screen crt">
+    <section id="gameContainer">
+      <header>
+        <h1>📺 Channel 3: SkillShowdown</h1>
+        <h3>🚀 Executive Edition</h3>
+        <p id="gameMessage">"Welcome contestant! Get ready to test your skills!"</p>
+      </header>
+
+      <!-- Progress Bar -->
+      <div id="progressContainer" class="hidden">
+        <p>Round <span id="roundCount">1</span>/4</p>
+        <progress id="progressBar" value="0" max="4"></progress>
+      </div>
+
+      <!-- Question Round Container -->
+      <section id="questionContainer" class="hidden">
+        <p id="question"></p>
+        <div id="choices"></div>
+      </section>
+
+      <!-- Final Smash Round -->
+      <section id="finalRound" class="hidden">
+        <p>🚨 System Glitch! SMASH THE BUTTON to restore transmission!</p>
+        <button id="smashBtn">SMASH!</button>
+        <p id="smashCount">Clicks: 0</p>
+      </section>
+
+      <!-- Result Screen -->
+      <section id="resultScreen" class="hidden">
+        <h2>🏆 TRANSMISSION RESTORED!</h2>
+        <p>You've unlocked the full skillset of Kayron!</p>
+        <div id="unlockedSkills"></div>
+        <div class="links">
+          <a href="portfolio-link.html" class="btn">View Portfolio</a>
+          <a href="resume.pdf" class="btn">Download Resume</a>
+        </div>
+        <button id="restartBtn">Play Again</button>
+      </section>
+
+      <button id="startBtn">Start Game</button>
+    </section>
+  </main>
+</body>
+</html>
+
