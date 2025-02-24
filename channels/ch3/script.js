@@ -1,5 +1,5 @@
 // channels/ch3/script.js
-document.addEventListener("DOMContentLoaded", () => {
+function initGame() {
   const startBtn = document.getElementById("startBtn");
   const questionContainer = document.getElementById("questionContainer");
   const questionText = document.getElementById("question");
@@ -87,4 +87,10 @@ document.addEventListener("DOMContentLoaded", () => {
   restartBtn.addEventListener("click", () => {
     location.reload();
   });
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initGame);
+} else {
+  initGame();
+}
