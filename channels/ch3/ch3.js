@@ -29,12 +29,6 @@ export async function init() {
     link.href = './channels/ch3/styles.css';
     document.head.appendChild(link);
   }
-  
-  // Dynamically load the JS for SkillShowdown functionality
-  if (!document.querySelector('script[src="./channels/ch3/script.js"]')) {
-    const script = document.createElement('script');
-    script.src = './channels/ch3/script.js';
-    script.defer = true;
-    document.body.appendChild(script);
-  }
+
+  // Removed dynamic JS loading to prevent recursive loading of ch3.js
 }
