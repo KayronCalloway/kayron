@@ -16,6 +16,7 @@ export async function init() {
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
     const html = await response.text();
     container.innerHTML = html;
+    setTimeout(() => { if (typeof initGame === "function") { initGame(); } }, 0);
   } catch (error) {
     console.error("Failed to load Channel 3 markup:", error);
     container.innerHTML = `<div class="error">Error loading SkillShowdown content.</div>`;

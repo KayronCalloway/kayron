@@ -1,6 +1,7 @@
 // channels/ch3/script.js
 function initGame() {
   const startBtn = document.getElementById("startBtn");
+  if (!startBtn) { return; }
   const questionContainer = document.getElementById("questionContainer");
   const questionText = document.getElementById("question");
   const choicesContainer = document.getElementById("choices");
