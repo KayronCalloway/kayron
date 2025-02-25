@@ -107,61 +107,56 @@ const i18n = {
 // Game Show Content and Configuration
 const gameContent = {
   showTitle: "Get To Know Kayron!",
-  hostIntro: "Welcome to 'Get To Know Kayron!' - I'm your host and the star of the show! We've surveyed people who know me well about various aspects of my life, career, and personality. Can you guess what they said? Let's play!",
+  hostIntro: "Welcome to 'Get To Know Kayron!' - I'm your host and the star of the show! We've surveyed people who know me well, let's see how well you know me!",
   
   questions: [
     {
       question: "What do people say is my biggest strength as a Creative Director?",
-      answers: [
-        { text: "Design Thinking", points: 35 },
-        { text: "Team Leadership", points: 25 },
-        { text: "Creative Vision", points: 20 },
-        { text: "Problem Solving", points: 15 },
-        { text: "Communication", points: 5 }
+      options: [
+        { letter: "A", text: "Design Thinking", points: 35 },
+        { letter: "B", text: "Team Leadership", points: 25 },
+        { letter: "C", text: "Problem Solving", points: 15 },
+        { letter: "D", text: "Communication", points: 5 }
       ],
       insight: "Design thinking is at the core of how I approach every creative challenge!"
     },
     {
       question: "Name something I'm passionate about outside of work",
-      answers: [
-        { text: "Photography", points: 40 },
-        { text: "Music", points: 25 },
-        { text: "Travel", points: 20 },
-        { text: "Technology", points: 10 },
-        { text: "Fashion", points: 5 }
+      options: [
+        { letter: "A", text: "Photography", points: 40 },
+        { letter: "B", text: "Music", points: 25 },
+        { letter: "C", text: "Travel", points: 15 },
+        { letter: "D", text: "Fashion", points: 5 }
       ],
       insight: "Photography helps me see the world through a different lens!"
     },
     {
       question: "What's my favorite type of project to work on?",
-      answers: [
-        { text: "Brand Identity", points: 35 },
-        { text: "User Experience", points: 25 },
-        { text: "Digital Innovation", points: 20 },
-        { text: "Creative Strategy", points: 15 },
-        { text: "Interactive Design", points: 5 }
+      options: [
+        { letter: "A", text: "Brand Identity", points: 35 },
+        { letter: "B", text: "User Experience", points: 25 },
+        { letter: "C", text: "Digital Innovation", points: 15 },
+        { letter: "D", text: "Interactive Design", points: 5 }
       ],
       insight: "I love creating unique brand identities that tell compelling stories!"
     },
     {
       question: "What's my go-to software for creative work?",
-      answers: [
-        { text: "Adobe Suite", points: 35 },
-        { text: "Figma", points: 25 },
-        { text: "Sketch", points: 20 },
-        { text: "After Effects", points: 15 },
-        { text: "Procreate", points: 5 }
+      options: [
+        { letter: "A", text: "Adobe Suite", points: 35 },
+        { letter: "B", text: "Figma", points: 25 },
+        { letter: "C", text: "Sketch", points: 15 },
+        { letter: "D", text: "Procreate", points: 5 }
       ],
       insight: "Adobe Suite has been my trusted companion throughout my creative journey!"
     },
     {
       question: "What do my colleagues appreciate most about working with me?",
-      answers: [
-        { text: "Creative Vision", points: 35 },
-        { text: "Mentorship", points: 25 },
-        { text: "Collaboration", points: 20 },
-        { text: "Innovation", points: 15 },
-        { text: "Reliability", points: 5 }
+      options: [
+        { letter: "A", text: "Creative Vision", points: 35 },
+        { letter: "B", text: "Mentorship", points: 25 },
+        { letter: "C", text: "Innovation", points: 15 },
+        { letter: "D", text: "Reliability", points: 5 }
       ],
       insight: "I believe in fostering creativity and growth in every team member!"
     }
@@ -198,36 +193,23 @@ const GameShow = (function() {
   };
 
   let gameState = {
-    currentScreen: 'hostIntro',
+    currentScreen: 'game',  // Start directly with the game
     score: 0,
     currentQuestion: null,
-    revealedAnswers: new Set(),
     strikes: 0,
     timerId: null
   };
 
   let elements = {
     screens: {
-      hostIntro: document.getElementById('hostIntro'),
       game: document.getElementById('game-screen'),
-      commercial: document.getElementById('commercial-break'),
       results: document.getElementById('results-screen')
     }
   };
 
   function init() {
     resetGame();
-    startGameShow();
-  }
-
-  async function startGameShow() {
-    soundManager.play('transition');
-    await AnimationManager.showElement(elements.screens.hostIntro);
-    await new Promise(resolve => setTimeout(resolve, 5000));
-    await AnimationManager.hideElement(elements.screens.hostIntro);
-    await AnimationManager.showElement(elements.screens.game);
-    soundManager.sounds.background.play();
-    startGame();
+    startGame(); // Start game immediately
   }
 
   function startGame() {
@@ -235,6 +217,10 @@ const GameShow = (function() {
     gameState.strikes = 0;
     updateScoreDisplay();
     showNextQuestion();
+    
+    // Show game screen immediately
+    Object.values(elements.screens).forEach(screen => screen.classList.add('hidden'));
+    elements.screens.game.classList.remove('hidden');
   }
 
   function showNextQuestion() {
@@ -254,90 +240,65 @@ const GameShow = (function() {
 
     const randomIndex = Math.floor(Math.random() * availableQuestions.length);
     gameState.currentQuestion = availableQuestions[randomIndex];
-    gameState.revealedAnswers = new Set();
     
     const questionText = document.querySelector('.question-text');
-    const answerBoard = document.querySelector('.answer-board');
+    const optionsContainer = document.querySelector('.options-container');
     
     questionText.textContent = gameState.currentQuestion.question;
-    answerBoard.innerHTML = '';
+    optionsContainer.innerHTML = '';
     
-    // Create answer slots
-    gameState.currentQuestion.answers.forEach((answer, index) => {
-      const slot = document.createElement('div');
-      slot.className = 'answer-slot';
-      slot.dataset.index = index;
-      slot.innerHTML = `
-        <span class="number">${index + 1}</span>
-        <span class="answer hidden">?????</span>
-        <span class="points hidden">??</span>
+    // Create multiple choice buttons
+    gameState.currentQuestion.options.forEach(option => {
+      const button = document.createElement('button');
+      button.className = 'option-button';
+      button.innerHTML = `
+        <span class="option-letter">${option.letter}</span>
+        <span class="option-text">${option.text}</span>
       `;
-      answerBoard.appendChild(slot);
-    });
-
-    // Show answer input
-    const inputContainer = document.querySelector('.answer-input-container');
-    inputContainer.innerHTML = `
-      <input type="text" class="answer-input" placeholder="Enter your answer...">
-      <button class="submit-answer">Submit</button>
-    `;
-
-    const input = inputContainer.querySelector('.answer-input');
-    const submit = inputContainer.querySelector('.submit-answer');
-
-    input.addEventListener('keypress', e => {
-      if (e.key === 'Enter') submit.click();
-    });
-
-    submit.addEventListener('click', () => {
-      const answer = input.value.trim().toLowerCase();
-      checkAnswer(answer);
-      input.value = '';
-      input.focus();
+      button.onclick = () => selectAnswer(option);
+      optionsContainer.appendChild(button);
     });
   }
 
-  function checkAnswer(userAnswer) {
-    const matchingAnswer = gameState.currentQuestion.answers.find(a => 
-      a.text.toLowerCase() === userAnswer && !gameState.revealedAnswers.has(a.text)
+  function selectAnswer(selectedOption) {
+    if (!gameState.currentQuestion) return;
+    
+    const buttons = document.querySelectorAll('.option-button');
+    buttons.forEach(btn => btn.disabled = true);
+    
+    const points = selectedOption.points;
+    gameState.score += points;
+    updateScoreDisplay();
+    
+    // Show points and play sound
+    const selectedButton = Array.from(buttons).find(btn => 
+      btn.querySelector('.option-text').textContent === selectedOption.text
     );
-
-    if (matchingAnswer) {
-      revealAnswer(matchingAnswer);
-      gameState.score += matchingAnswer.points;
-      updateScoreDisplay();
-      soundManager.play('correct');
-      AnimationManager.celebrate();
-    } else {
-      gameState.strikes++;
-      updateStrikes();
-      soundManager.play('incorrect');
-      if (gameState.strikes >= config.maxStrikes) {
-        endGame();
-      }
-    }
-  }
-
-  function revealAnswer(answer) {
-    const index = gameState.currentQuestion.answers.findIndex(a => a.text === answer.text);
-    const slot = document.querySelector(`.answer-slot[data-index="${index}"]`);
     
-    gameState.revealedAnswers.add(answer.text);
+    selectedButton.classList.add('selected');
+    const pointsDisplay = document.createElement('div');
+    pointsDisplay.className = 'points-display';
+    pointsDisplay.textContent = `${points} POINTS!`;
+    selectedButton.appendChild(pointsDisplay);
     
-    // Flip animation
-    slot.classList.add('flip');
+    soundManager.play(points > 15 ? 'correct' : 'incorrect');
+    if (points > 15) AnimationManager.celebrate();
+    
+    // Show insight and move to next question
     setTimeout(() => {
-      slot.querySelector('.answer').textContent = answer.text;
-      slot.querySelector('.points').textContent = answer.points;
-      slot.querySelector('.answer').classList.remove('hidden');
-      slot.querySelector('.points').classList.remove('hidden');
-      slot.classList.remove('flip');
-    }, config.revealDelay / 2);
-  }
-
-  function updateStrikes() {
-    const strikesDisplay = document.querySelector('.strikes-display');
-    strikesDisplay.textContent = 'X'.repeat(gameState.strikes);
+      const insight = document.createElement('div');
+      insight.className = 'insight';
+      insight.textContent = gameState.currentQuestion.insight;
+      document.querySelector('.question-container').appendChild(insight);
+      
+      setTimeout(() => {
+        if (document.querySelector('.insight')) {
+          document.querySelector('.insight').remove();
+        }
+        gameState.currentQuestion = null;
+        showNextQuestion();
+      }, 2000);
+    }, 1500);
   }
 
   function updateScoreDisplay() {
@@ -373,16 +334,15 @@ const GameShow = (function() {
     
     resultsScreen.querySelector('.play-again').addEventListener('click', () => {
       resetGame();
-      startGameShow();
+      startGame();
     });
   }
 
   function resetGame() {
     gameState = {
-      currentScreen: 'hostIntro',
+      currentScreen: 'game',
       score: 0,
       currentQuestion: null,
-      revealedAnswers: new Set(),
       strikes: 0,
       playedQuestions: new Set(),
       timerId: null
