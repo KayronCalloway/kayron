@@ -1,149 +1,296 @@
 // channels/ch3/script.js
 window.initGame = function() {
-  console.log("initGame called. document.readyState:", document.readyState);
-  
-  const startBtn = document.getElementById("startBtn");
-  const questionContainer = document.getElementById("questionContainer");
-  const questionText = document.getElementById("question");
-  const choicesContainer = document.getElementById("choices");
-  const finalRound = document.getElementById("finalRound");
-  const smashBtn = document.getElementById("smashBtn");
-  const smashCountDisplay = document.getElementById("smashCount");
-  const resultScreen = document.getElementById("resultScreen");
-  const unlockedSkills = document.getElementById("unlockedSkills");
-  const restartBtn = document.getElementById("restartBtn");
-  const progressContainer = document.getElementById("progressContainer");
-  const roundCount = document.getElementById("roundCount");
-  const progressBar = document.getElementById("progressBar");
-  const gameMessage = document.getElementById("gameMessage");
-  
-  if (!startBtn) {
+  const gameElements = {
+    startBtn: document.getElementById("startBtn"),
+    questionContainer: document.getElementById("questionContainer"),
+    questionText: document.getElementById("question"),
+    answerInput: document.getElementById("answerInput"),
+    timerDisplay: document.getElementById("timer"),
+    scoreDisplay: document.getElementById("score"),
+    roundDisplay: document.getElementById("roundDisplay"),
+    resultScreen: document.getElementById("resultScreen"),
+    resultsContainer: document.getElementById("resultsContainer"),
+    restartBtn: document.getElementById("restartBtn"),
+    gameMessage: document.getElementById("gameMessage")
+  };
+
+  if (!gameElements.startBtn) {
     console.error("Start button not found, DOM might not be ready");
     setTimeout(window.initGame, 100);
     return;
   }
 
-  let smashCount = 0;
-  let skillsUnlocked = [];
-  let currentQuestionIndex = 0;
+  const gameState = {
+    currentRound: 1,
+    currentQuestion: 0,
+    score: 0,
+    timeLeft: 30,
+    timer: null,
+    answers: []
+  };
 
   const questions = [
-    {
-      question: "You've been hired to reposition a struggling brand. What's your first move?",
-      choices: [
-        "Storytelling & Brand Identity",
-        "Flood social media with ads",
-        "Change the logo and hope for the best"
-      ],
-      correct: 0,
-      skill: "Brand Strategy & Creative Direction"
-    },
-    {
-      question: "A startup asks for AI-driven growth recommendations. What do you prioritize?",
-      choices: [
-        "Ethical AI & Consumer Trust",
-        "Collect as much data as possible",
-        "Automate everything"
-      ],
-      correct: 0,
-      skill: "AI Ethics & Business Strategy"
-    }
+    // Round 1 Questions
+    [
+      {
+        question: "Name a key skill in modern financial analysis",
+        answers: [
+          { text: "Data Visualization", points: 30 },
+          { text: "Predictive Modeling", points: 25 },
+          { text: "Python/SQL", points: 20 },
+          { text: "Excel", points: 15 },
+          { text: "Statistical Analysis", points: 10 }
+        ]
+      },
+      {
+        question: "What's most important in brand development?",
+        answers: [
+          { text: "Story/Identity", points: 35 },
+          { text: "Target Audience", points: 25 },
+          { text: "Visual Design", points: 20 },
+          { text: "Market Research", points: 15 },
+          { text: "Consistency", points: 5 }
+        ]
+      },
+      {
+        question: "Top consideration in AI implementation?",
+        answers: [
+          { text: "Ethics", points: 40 },
+          { text: "ROI", points: 25 },
+          { text: "Scalability", points: 15 },
+          { text: "Integration", points: 12 },
+          { text: "Training", points: 8 }
+        ]
+      },
+      {
+        question: "Essential leadership quality?",
+        answers: [
+          { text: "Communication", points: 35 },
+          { text: "Vision", points: 25 },
+          { text: "Adaptability", points: 20 },
+          { text: "Empathy", points: 15 },
+          { text: "Decision-making", points: 5 }
+        ]
+      },
+      {
+        question: "Key factor in market expansion?",
+        answers: [
+          { text: "Market Research", points: 30 },
+          { text: "Strategy", points: 25 },
+          { text: "Resources", points: 20 },
+          { text: "Timing", points: 15 },
+          { text: "Competition", points: 10 }
+        ]
+      }
+    ],
+    // Round 2 Questions (Different questions, points will be doubled)
+    [
+      {
+        question: "Critical skill in consulting?",
+        answers: [
+          { text: "Problem Solving", points: 35 },
+          { text: "Communication", points: 25 },
+          { text: "Analysis", points: 20 },
+          { text: "Industry Knowledge", points: 15 },
+          { text: "Project Management", points: 5 }
+        ]
+      },
+      {
+        question: "Most valuable tech skill today?",
+        answers: [
+          { text: "AI/ML", points: 40 },
+          { text: "Data Analysis", points: 25 },
+          { text: "Programming", points: 15 },
+          { text: "Cloud Computing", points: 12 },
+          { text: "Cybersecurity", points: 8 }
+        ]
+      },
+      {
+        question: "Key to successful innovation?",
+        answers: [
+          { text: "User Focus", points: 35 },
+          { text: "Research", points: 25 },
+          { text: "Experimentation", points: 20 },
+          { text: "Collaboration", points: 15 },
+          { text: "Risk Taking", points: 5 }
+        ]
+      },
+      {
+        question: "Most important in project management?",
+        answers: [
+          { text: "Planning", points: 30 },
+          { text: "Communication", points: 25 },
+          { text: "Risk Management", points: 20 },
+          { text: "Team Leadership", points: 15 },
+          { text: "Budget Control", points: 10 }
+        ]
+      },
+      {
+        question: "Essential for digital transformation?",
+        answers: [
+          { text: "Change Management", points: 35 },
+          { text: "Strategy", points: 25 },
+          { text: "Technology", points: 20 },
+          { text: "Training", points: 15 },
+          { text: "Leadership", points: 5 }
+        ]
+      }
+    ]
   ];
 
-  function nextQuestion() {
-    if (currentQuestionIndex >= questions.length) {
-      questionContainer.classList.add("hidden");
-      progressContainer.classList.add("hidden");
-      finalRound.classList.remove("hidden");
-      return;
+  function startTimer() {
+    gameState.timeLeft = 30;
+    updateTimer();
+    gameState.timer = setInterval(() => {
+      gameState.timeLeft--;
+      updateTimer();
+      if (gameState.timeLeft <= 0) {
+        endRound();
+      }
+    }, 1000);
+  }
+
+  function updateTimer() {
+    gameElements.timerDisplay.textContent = gameState.timeLeft;
+    if (gameState.timeLeft <= 5) {
+      gameElements.timerDisplay.classList.add('urgent');
     }
+  }
+
+  function startRound() {
+    gameElements.questionContainer.classList.remove('hidden');
+    gameElements.answerInput.value = '';
+    gameElements.answerInput.focus();
+    gameState.currentQuestion = 0;
+    showQuestion();
+    startTimer();
+  }
+
+  function showQuestion() {
+    const currentQ = questions[gameState.currentRound - 1][gameState.currentQuestion];
+    gameElements.questionText.textContent = currentQ.question;
+    gameElements.roundDisplay.textContent = `Round ${gameState.currentRound}`;
+  }
+
+  function submitAnswer() {
+    const answer = gameElements.answerInput.value.trim().toLowerCase();
+    const currentQ = questions[gameState.currentRound - 1][gameState.currentQuestion];
     
-    // Update progress
-    roundCount.textContent = currentQuestionIndex + 1;
-    progressBar.value = currentQuestionIndex + 1;
+    // Store answer for review
+    gameState.answers.push({
+      question: currentQ.question,
+      answer: answer
+    });
+
+    // Clear input and move to next question
+    gameElements.answerInput.value = '';
+    gameState.currentQuestion++;
+
+    if (gameState.currentQuestion < questions[gameState.currentRound - 1].length) {
+      showQuestion();
+    } else {
+      endRound();
+    }
+  }
+
+  function endRound() {
+    clearInterval(gameState.timer);
+    calculateScore();
     
-    const { question, choices } = questions[currentQuestionIndex];
-    questionText.textContent = question;
-    choicesContainer.innerHTML = "";
-    
-    choices.forEach((choice, index) => {
-      const btn = document.createElement("button");
-      btn.textContent = choice;
-      btn.addEventListener("click", () => checkAnswer(index));
-      choicesContainer.appendChild(btn);
+    if (gameState.currentRound === 1) {
+      // Start round 2
+      gameState.currentRound = 2;
+      gameElements.gameMessage.textContent = "Get ready for Round 2! Points are doubled!";
+      setTimeout(startRound, 3000);
+    } else {
+      showFinalResults();
+    }
+  }
+
+  function calculateScore() {
+    gameState.answers.forEach((answerObj, index) => {
+      const roundIndex = index < 5 ? 0 : 1;
+      const questionIndex = index % 5;
+      const question = questions[roundIndex][questionIndex];
+      
+      const matchedAnswer = question.answers.find(ans => 
+        ans.text.toLowerCase().includes(answerObj.answer.toLowerCase()) ||
+        answerObj.answer.toLowerCase().includes(ans.text.toLowerCase())
+      );
+
+      if (matchedAnswer) {
+        const points = roundIndex === 1 ? matchedAnswer.points * 2 : matchedAnswer.points;
+        gameState.score += points;
+      }
     });
     
-    progressContainer.classList.remove("hidden");
-    questionContainer.classList.remove("hidden");
+    gameElements.scoreDisplay.textContent = gameState.score;
   }
 
-  function checkAnswer(selectedIndex) {
-    const currentQ = questions[currentQuestionIndex];
-    if (selectedIndex === currentQ.correct) {
-      skillsUnlocked.push(currentQ.skill);
-      gameMessage.textContent = "Correct answer! Moving to next question...";
+  function showFinalResults() {
+    gameElements.questionContainer.classList.add('hidden');
+    gameElements.resultScreen.classList.remove('hidden');
+    
+    const totalPossibleScore = questions.reduce((total, round, roundIndex) => {
+      return total + round.reduce((roundTotal, q) => {
+        return roundTotal + (q.answers[0].points * (roundIndex === 1 ? 2 : 1));
+      }, 0);
+    }, 0);
+
+    const percentage = (gameState.score / totalPossibleScore) * 100;
+    let message = "";
+    
+    if (percentage >= 80) {
+      message = "Outstanding! You're a Strategic Mastermind! 🏆";
+    } else if (percentage >= 60) {
+      message = "Great job! You've got solid business acumen! 🌟";
+    } else if (percentage >= 40) {
+      message = "Good effort! Keep developing those skills! 📈";
     } else {
-      gameMessage.textContent = "Not quite right, but let's continue...";
+      message = "Thanks for playing! Try again to improve your score! 💪";
     }
-    
-    currentQuestionIndex++;
-    setTimeout(nextQuestion, 1000);
+
+    gameElements.resultsContainer.innerHTML = `
+      <h2>${message}</h2>
+      <p>Final Score: ${gameState.score} points</p>
+      <div class="answer-review">
+        <h3>Your Best Answers:</h3>
+        ${generateAnswerReview()}
+      </div>
+    `;
   }
 
-  smashBtn.addEventListener("click", () => {
-    smashCount++;
-    smashCountDisplay.textContent = `Clicks: ${smashCount}`;
-    if (smashCount >= 15) {
-      finalRound.classList.add("hidden");
-      showResult();
+  function generateAnswerReview() {
+    return gameState.answers
+      .map((answer, index) => `
+        <div class="answer-item">
+          <strong>Q${index + 1}:</strong> ${answer.question}
+          <br>Your answer: ${answer.answer}
+        </div>
+      `)
+      .join('');
+  }
+
+  // Event Listeners
+  gameElements.startBtn.addEventListener('click', () => {
+    gameElements.startBtn.classList.add('hidden');
+    startRound();
+  });
+
+  gameElements.answerInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && gameElements.answerInput.value.trim()) {
+      submitAnswer();
     }
   });
 
-  function showResult() {
-    resultScreen.classList.remove("hidden");
-    if (skillsUnlocked.length === 0) {
-      skillsUnlocked.push("Basic Problem Solving");
-    }
-    unlockedSkills.innerHTML = skillsUnlocked.map(skill => `<div class="skill">✅ ${skill}</div>`).join("");
-  }
-
-  restartBtn.addEventListener("click", () => {
-    // Reset game state
-    smashCount = 0;
-    skillsUnlocked = [];
-    currentQuestionIndex = 0;
-    smashCountDisplay.textContent = "Clicks: 0";
-    
-    // Hide all sections
-    questionContainer.classList.add("hidden");
-    finalRound.classList.add("hidden");
-    resultScreen.classList.add("hidden");
-    progressContainer.classList.add("hidden");
-    
-    // Show start button
-    startBtn.classList.remove("hidden");
-    gameMessage.textContent = "Welcome contestant! Get ready to test your skills!";
-  });
-
-  // Start button event listener
-  startBtn.addEventListener("click", () => {
-    startBtn.classList.add("hidden");
-    gameMessage.textContent = "Game started! Choose wisely...";
-    progressBar.max = questions.length;
-    nextQuestion();
+  gameElements.restartBtn.addEventListener('click', () => {
+    location.reload();
   });
 };
 
-// Check if document is already loaded
+// Initialize game when DOM is ready
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", function() {
-    if (typeof window.initGame === "function") {
-      window.initGame();
-    }
-  });
+  document.addEventListener("DOMContentLoaded", window.initGame);
 } else {
-  // Document already loaded, call initGame directly
-  if (typeof window.initGame === "function") {
-    window.initGame();
-  }
+  window.initGame();
 }
