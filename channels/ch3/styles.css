@@ -15,16 +15,25 @@
   --text-tertiary: rgba(255, 255, 255, 0.6);
 }
 
-/* Base styles */
+/* TV Channel Aesthetic */
 body {
-  font-family: var(--primary-font);
-  background: var(--background);
-  color: var(--text-primary);
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
+  background: #000;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  overflow: hidden;
 }
 
-/* Game container */
+#skillshowdown-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+  overflow: hidden;
+}
+
+/* Base styles */
 .game-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -36,20 +45,68 @@ body {
 
 /* Screen transitions */
 .screen {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+  box-sizing: border-box;
+  background: transparent;
 }
 
 .screen.active {
-  opacity: 1;
-  transform: translateY(0);
+  display: block;
+  animation: tvTurnOn 0.5s ease-out;
 }
 
-.screen:not(.active) {
-  opacity: 0;
-  transform: scale(0.95);
+@keyframes tvTurnOn {
+  0% {
+    transform: scale(0.8);
+    filter: brightness(0);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+/* TV Static Effect */
+.screen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.1) 1px,
+    transparent 1px,
+    transparent 2px
+  );
   pointer-events: none;
+  z-index: 1;
+}
+
+/* Live Indicator */
+.live-indicator {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 0, 0, 0.8);
+  padding: 5px 15px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  animation: blink 2s infinite;
+  z-index: 2;
+}
+
+@keyframes blink {
+  50% { opacity: 0.5; }
 }
 
 /* Typography */
@@ -68,18 +125,20 @@ h1 {
 
 /* Question display */
 .question-container {
-  background: var(--surface);
-  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 15px;
   padding: 2rem;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  margin: 2rem auto;
+  max-width: 800px;
+  text-align: center;
+  border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .question-text {
-  font-size: 1.5rem;
-  font-weight: 500;
-  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 /* Answer input */
@@ -100,20 +159,104 @@ h1 {
   box-shadow: 0 0 0 2px var(--primary);
 }
 
-/* Timer */
-.timer-container {
-  position: relative;
-  height: 4px;
+/* Multiple Choice Options */
+.options-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 2rem auto;
+  max-width: 800px;
+}
+
+.option-button {
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 2px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 1.5rem;
+  font-size: 1.2rem;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  position: relative;
   overflow: hidden;
 }
 
-.timer-bar {
+.option-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.option-button.selected {
+  background: rgba(0, 255, 0, 0.3);
+  border-color: rgba(0, 255, 0, 0.5);
+}
+
+.option-button.correct {
+  background: rgba(0, 255, 0, 0.3);
+  border-color: #00ff00;
+}
+
+.option-button.incorrect {
+  background: rgba(255, 0, 0, 0.3);
+  border-color: #ff0000;
+}
+
+/* Timer */
+.timer-container {
   position: absolute;
+  top: 70px;
+  left: 20px;
+  right: 20px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.timer-bar {
   height: 100%;
-  background: var(--primary);
+  background: linear-gradient(90deg, #00ff00, #ffff00);
+  width: 100%;
   transition: width 0.1s linear;
+}
+
+/* Score Display */
+.score-display {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  z-index: 2;
+}
+
+/* Host Introduction */
+.host-content {
+  text-align: center;
+  max-width: 800px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Results Screen */
+.results-screen {
+  text-align: center;
+  padding: 2rem;
+}
+
+.final-score {
+  font-size: 4rem;
+  font-weight: bold;
+  margin: 2rem 0;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 /* Answer board */
@@ -140,79 +283,6 @@ h1 {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-/* Results screen */
-.results-container {
-  text-align: center;
-  padding: 3rem;
-}
-
-.performance-title {
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
-}
-
-.score-display {
-  font-size: 4rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 2rem 0;
-}
-
-.skills-showcase {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  margin: 2rem 0;
-}
-
-.skill-badge {
-  background: var(--surface);
-  padding: 0.75rem 1.5rem;
-  border-radius: 20px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.skill-badge i {
-  color: var(--accent);
-}
-
-/* Commercial break */
-.commercial-break {
-  background: var(--surface);
-  padding: 2rem;
-  border-radius: 20px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.commercial-break::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--primary), transparent);
-}
-
-.commercial-highlight {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.5s ease-out;
-}
-
-.commercial-highlight.visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* Buttons */
