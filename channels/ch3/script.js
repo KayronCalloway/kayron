@@ -106,815 +106,290 @@ const i18n = {
 
 // Game Show Content and Configuration
 const gameContent = {
-  showTitle: "Innovation Insights Challenge",
-  hostIntro: "Welcome to Innovation Insights! I'm Kayron Calloway, a Creative Director and Strategic Innovator who believes in the transformative power of design thinking and human-centered experiences. Today, we're exploring how creativity, technology, and user experience shape the future of innovation. Ready to challenge conventional thinking?",
+  showTitle: "Get To Know Kayron!",
+  hostIntro: "Welcome to 'Get To Know Kayron!' - I'm your host and the star of the show! We've surveyed people who know me well about various aspects of my life, career, and personality. Can you guess what they said? Let's play!",
   
-  categories: [
-    "Design Innovation",
-    "User Experience",
-    "Creative Strategy",
-    "Brand Storytelling",
-    "Future Vision"
-  ],
-
   questions: [
     {
-      category: "Design Innovation",
-      text: "What's the most crucial element in revolutionary product design?",
+      question: "What do people say is my biggest strength as a Creative Director?",
       answers: [
-        { text: "Human Connection", points: 35, insight: "Design that resonates emotionally" },
-        { text: "Simplicity", points: 25, insight: "Reducing complexity to essence" },
-        { text: "Craftsmanship", points: 20, insight: "Attention to every detail" },
-        { text: "Innovation", points: 15, insight: "Breaking new ground" },
-        { text: "Sustainability", points: 5, insight: "Future-conscious design" }
-      ]
+        { text: "Design Thinking", points: 35 },
+        { text: "Team Leadership", points: 25 },
+        { text: "Creative Vision", points: 20 },
+        { text: "Problem Solving", points: 15 },
+        { text: "Communication", points: 5 }
+      ],
+      insight: "Design thinking is at the core of how I approach every creative challenge!"
     },
     {
-      category: "User Experience",
-      text: "What defines an exceptional user experience?",
+      question: "Name something I'm passionate about outside of work",
       answers: [
-        { text: "Emotional Impact", points: 40, insight: "Creating lasting connections" },
-        { text: "Intuitive Design", points: 30, insight: "Natural interaction" },
-        { text: "Accessibility", points: 15, insight: "Universal usability" },
-        { text: "Performance", points: 10, insight: "Seamless operation" },
-        { text: "Delight", points: 5, insight: "Unexpected joy" }
-      ]
+        { text: "Photography", points: 40 },
+        { text: "Music", points: 25 },
+        { text: "Travel", points: 20 },
+        { text: "Technology", points: 10 },
+        { text: "Fashion", points: 5 }
+      ],
+      insight: "Photography helps me see the world through a different lens!"
     },
     {
-      category: "Creative Strategy",
-      text: "Key to transforming user behavior through design?",
+      question: "What's my favorite type of project to work on?",
       answers: [
-        { text: "Empathy", points: 35, insight: "Understanding human needs" },
-        { text: "Innovation", points: 25, insight: "Reimagining possibilities" },
-        { text: "Integration", points: 20, insight: "Seamless ecosystem" },
-        { text: "Education", points: 15, insight: "Guiding discovery" },
-        { text: "Feedback", points: 5, insight: "Continuous improvement" }
-      ]
+        { text: "Brand Identity", points: 35 },
+        { text: "User Experience", points: 25 },
+        { text: "Digital Innovation", points: 20 },
+        { text: "Creative Strategy", points: 15 },
+        { text: "Interactive Design", points: 5 }
+      ],
+      insight: "I love creating unique brand identities that tell compelling stories!"
     },
     {
-      category: "Brand Storytelling",
-      text: "Most important aspect of creating memorable brand experiences?",
+      question: "What's my go-to software for creative work?",
       answers: [
-        { text: "Emotional Resonance", points: 35, insight: "Creating deep connections" },
-        { text: "Visual Poetry", points: 25, insight: "Aesthetic impact" },
-        { text: "Cultural Impact", points: 20, insight: "Shaping culture" },
-        { text: "Authenticity", points: 15, insight: "True to values" },
-        { text: "Innovation", points: 5, insight: "Breaking conventions" }
-      ]
+        { text: "Adobe Suite", points: 35 },
+        { text: "Figma", points: 25 },
+        { text: "Sketch", points: 20 },
+        { text: "After Effects", points: 15 },
+        { text: "Procreate", points: 5 }
+      ],
+      insight: "Adobe Suite has been my trusted companion throughout my creative journey!"
     },
     {
-      category: "Future Vision",
-      text: "What will define next-generation user experiences?",
+      question: "What do my colleagues appreciate most about working with me?",
       answers: [
-        { text: "Seamless Integration", points: 35, insight: "Natural tech interaction" },
-        { text: "Emotional AI", points: 25, insight: "Empathetic technology" },
-        { text: "Sustainability", points: 20, insight: "Environmental harmony" },
-        { text: "Accessibility", points: 15, insight: "Universal design" },
-        { text: "Privacy", points: 5, insight: "User trust" }
-      ]
+        { text: "Creative Vision", points: 35 },
+        { text: "Mentorship", points: 25 },
+        { text: "Collaboration", points: 20 },
+        { text: "Innovation", points: 15 },
+        { text: "Reliability", points: 5 }
+      ],
+      insight: "I believe in fostering creativity and growth in every team member!"
     }
   ],
-
+  
   performanceLevels: [
     {
-      threshold: 85,
-      title: "Creative Visionary",
-      message: "Your insights demonstrate a profound understanding of how design, emotion, and innovation intersect to create transformative user experiences. You show the ability to think beyond conventional boundaries while maintaining a deep focus on human connection - exactly what's needed to shape the future of technology.",
-      skills: ["Design Innovation", "User Experience", "Creative Leadership"]
+      threshold: 300,
+      title: "My Best Friend!",
+      message: "Wow, you really know me well! We must have worked together or you've been following my journey closely!",
+      skills: ["Creative Vision", "Leadership Style", "Personal Interests"]
     },
     {
-      threshold: 70,
-      title: "Experience Architect",
-      message: "You effectively blend creative thinking with user-centered design principles, showing strong potential for crafting experiences that resonate deeply with people while pushing technological boundaries.",
-      skills: ["Experience Design", "Creative Strategy", "Innovation"]
+      threshold: 200,
+      title: "Close Colleague!",
+      message: "Great job! You have a solid understanding of who I am and what I do!",
+      skills: ["Work Style", "Creative Process", "Professional Goals"]
     },
     {
-      threshold: 50,
-      title: "Design Thinker",
-      message: "Your understanding of user experience and creative innovation shows promise. You're developing the perspective needed to create meaningful technological experiences.",
-      skills: ["Design Thinking", "User Empathy", "Creative Development"]
-    }
-  ],
-
-  commercialBreaks: [
-    {
-      title: "Experience Innovation",
-      content: "As Creative Director at Coloring with Gray, I revolutionized the fragrance experience through 'Reflections of You' - a product that adapts to each user's unique chemistry, demonstrating how technology and creativity can create deeply personal connections.",
-      duration: 5000
-    },
-    {
-      title: "Design Impact",
-      content: "My approach combines emotional intelligence with innovative technology, creating experiences that don't just serve users - they inspire them. Every project starts with one question: How can we make technology more human?",
-      duration: 5000
-    }
-  ],
-  
-  interstitials: [
-    {
-      title: "Design Philosophy",
-      content: "Great design isn't just about aesthetics - it's about creating experiences that enhance people's lives in meaningful ways.",
-      duration: 3000
-    },
-    {
-      title: "Innovation Perspective",
-      content: "The best innovations happen when we focus on the human element first, then let technology serve that vision.",
-      duration: 3000
+      threshold: 100,
+      title: "New Friend!",
+      message: "You're getting to know me! Keep learning about my journey in creative leadership!",
+      skills: ["Basic Background", "Career Highlights", "Creative Approach"]
     }
   ]
 };
-
-// Updated question format with multiple choice
-const gameQuestions = {
-  "Financial Analytics": [
-    {
-      question: "What financial metric is most important for evaluating startup growth?",
-      options: [
-        "Monthly Recurring Revenue (MRR)",
-        "Net Profit Margin",
-        "Customer Acquisition Cost (CAC)",
-        "Burn Rate"
-      ],
-      correct: 0,
-      insight: "MRR is crucial for startups as it indicates predictable, sustainable growth."
-    },
-    {
-      question: "Which analysis tool best predicts market trends?",
-      options: [
-        "Moving Average Convergence Divergence (MACD)",
-        "Relative Strength Index (RSI)",
-        "Machine Learning Models",
-        "Sentiment Analysis"
-      ],
-      correct: 2,
-      insight: "ML models can process vast amounts of data to identify complex patterns."
-    }
-  ],
-  "Strategic Leadership": [
-    {
-      question: "What's the most effective approach to team innovation?",
-      options: [
-        "Structured Brainstorming",
-        "Design Thinking Workshops",
-        "Autonomous Innovation Teams",
-        "Cross-functional Collaboration"
-      ],
-      correct: 1,
-      insight: "Design thinking combines creativity with user-centered problem solving."
-    },
-    {
-      question: "Which leadership style best promotes creative work?",
-      options: [
-        "Transformational Leadership",
-        "Servant Leadership",
-        "Democratic Leadership",
-        "Adaptive Leadership"
-      ],
-      correct: 0,
-      insight: "Transformational leaders inspire innovation through vision and motivation."
-    }
-  ],
-  "Creative Innovation": [
-    {
-      question: "What's key to successful product design?",
-      options: [
-        "Technical Excellence",
-        "User Experience (UX)",
-        "Visual Appeal",
-        "Feature Rich"
-      ],
-      correct: 1,
-      insight: "Great UX creates products that people love to use."
-    },
-    {
-      question: "Which approach best drives creative solutions?",
-      options: [
-        "Data-Driven Design",
-        "Competitive Analysis",
-        "User Research",
-        "Rapid Prototyping"
-      ],
-      correct: 2,
-      insight: "Understanding user needs leads to truly innovative solutions."
-    }
-  ]
-};
-
-// Simplified game state
-let currentQuestion = null;
-let score = 0;
-let timeLeft = 0;
-let timerId = null;
-
-function startGame() {
-  score = 0;
-  showNextQuestion();
-}
-
-function showNextQuestion() {
-  // Get random category and question
-  const categories = Object.keys(gameQuestions);
-  const category = categories[Math.floor(Math.random() * categories.length)];
-  const questions = gameQuestions[category];
-  currentQuestion = questions[Math.floor(Math.random() * questions.length)];
-  
-  // Update UI
-  document.querySelector('.question-text').textContent = currentQuestion.question;
-  
-  // Create option buttons
-  const optionsContainer = document.querySelector('.options-container');
-  optionsContainer.innerHTML = '';
-  
-  currentQuestion.options.forEach((option, index) => {
-    const button = document.createElement('button');
-    button.className = 'option-button';
-    button.textContent = option;
-    button.onclick = () => selectAnswer(index);
-    optionsContainer.appendChild(button);
-  });
-  
-  // Reset and start timer
-  timeLeft = DifficultySettings[gameConfig.difficulty].timeLimit;
-  startTimer();
-}
-
-function selectAnswer(index) {
-  // Prevent multiple selections
-  if (!currentQuestion) return;
-  
-  const buttons = document.querySelectorAll('.option-button');
-  buttons.forEach(btn => btn.disabled = true);
-  
-  const isCorrect = index === currentQuestion.correct;
-  const selectedButton = buttons[index];
-  const correctButton = buttons[currentQuestion.correct];
-  
-  // Show result
-  selectedButton.classList.add(isCorrect ? 'correct' : 'incorrect');
-  if (!isCorrect) {
-    correctButton.classList.add('correct');
-  }
-  
-  // Update score
-  if (isCorrect) {
-    score += Math.ceil(timeLeft * DifficultySettings[gameConfig.difficulty].pointMultiplier);
-    document.querySelector('.score-display').textContent = score;
-    AnimationManager.celebrate();
-  }
-  
-  // Show insight
-  const insight = document.createElement('div');
-  insight.className = 'insight';
-  insight.textContent = currentQuestion.insight;
-  document.querySelector('.question-container').appendChild(insight);
-  
-  // Next question after delay
-  setTimeout(() => {
-    currentQuestion = null;
-    showNextQuestion();
-  }, 3000);
-}
-
-function startTimer() {
-  if (timerId) clearInterval(timerId);
-  
-  const startTime = Date.now();
-  const totalTime = timeLeft * 1000;
-  
-  timerId = setInterval(() => {
-    const elapsed = Date.now() - startTime;
-    timeLeft = Math.max(0, Math.ceil((totalTime - elapsed) / 1000));
-    
-    // Update timer bar
-    const timerBar = document.querySelector('.timer-bar');
-    timerBar.style.width = `${(timeLeft * 1000 / totalTime) * 100}%`;
-    
-    if (timeLeft <= 0) {
-      clearInterval(timerId);
-      // Auto-select wrong answer if time runs out
-      const wrongIndex = (currentQuestion.correct + 1) % currentQuestion.options.length;
-      selectAnswer(wrongIndex);
-    }
-  }, 100);
-}
-
-// Sound Manager
-class SoundManager {
-  constructor() {
-    this.sounds = {
-      click: new Audio('sounds/click.mp3'),
-      correct: new Audio('sounds/correct.mp3'),
-      incorrect: new Audio('sounds/incorrect.mp3'),
-      success: new Audio('sounds/success.mp3'),
-      background: new Audio('sounds/background.mp3'),
-      transition: new Audio('sounds/transition.mp3')
-    };
-    
-    // Configure background music
-    this.sounds.background.loop = true;
-    this.sounds.background.volume = 0.3;
-    
-    // Initialize mute state
-    this.muted = localStorage.getItem('gameSoundMuted') === 'true';
-    this.updateMuteState();
-    
-    // Add mute toggle button
-    this.addMuteButton();
-  }
-  
-  play(soundName) {
-    if (!this.muted && this.sounds[soundName]) {
-      // Stop and reset the sound before playing
-      this.sounds[soundName].currentTime = 0;
-      this.sounds[soundName].play().catch(e => console.log('Sound play prevented:', e));
-    }
-  }
-  
-  toggleMute() {
-    this.muted = !this.muted;
-    localStorage.setItem('gameSoundMuted', this.muted);
-    this.updateMuteState();
-  }
-  
-  updateMuteState() {
-    Object.values(this.sounds).forEach(sound => {
-      sound.muted = this.muted;
-    });
-    
-    // Update mute button icon
-    const muteButton = document.getElementById('muteButton');
-    if (muteButton) {
-      muteButton.innerHTML = this.muted ? '🔇' : '🔊';
-    }
-  }
-  
-  addMuteButton() {
-    const muteButton = document.createElement('button');
-    muteButton.id = 'muteButton';
-    muteButton.className = 'mute-button';
-    muteButton.innerHTML = this.muted ? '🔇' : '🔊';
-    muteButton.addEventListener('click', () => {
-      this.toggleMute();
-      soundManager.play('click');
-    });
-    document.body.appendChild(muteButton);
-  }
-}
-
-// Initialize sound manager
-const soundManager = new SoundManager();
-
-// Enhanced Animation Manager
-class AnimationManager {
-  static async animateTransition(element, animation) {
-    return new Promise(resolve => {
-      element.style.animation = animation;
-      element.addEventListener('animationend', () => {
-        element.style.animation = '';
-        resolve();
-      }, { once: true });
-    });
-  }
-  
-  static async showElement(element) {
-    element.style.display = 'block';
-    await this.animateTransition(element, 'fadeIn 0.5s ease-out');
-  }
-  
-  static async hideElement(element) {
-    await this.animateTransition(element, 'fadeOut 0.5s ease-in');
-    element.style.display = 'none';
-  }
-  
-  static async celebrate() {
-    const container = document.createElement('div');
-    container.className = 'celebration-container';
-    document.body.appendChild(container);
-    
-    // Create particles
-    for (let i = 0; i < 50; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'celebration-particle';
-      particle.style.setProperty('--delay', `${Math.random() * 2}s`);
-      particle.style.setProperty('--x-end', `${-50 + Math.random() * 100}vw`);
-      container.appendChild(particle);
-    }
-    
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    container.remove();
-  }
-}
-
-// Leaderboard System
-class LeaderboardManager {
-  constructor() {
-    this.leaderboard = JSON.parse(localStorage.getItem('gameLeaderboard')) || [];
-  }
-  
-  addScore(score, difficulty) {
-    const entry = {
-      score,
-      difficulty,
-      date: new Date().toISOString(),
-      timestamp: Date.now()
-    };
-    
-    this.leaderboard.push(entry);
-    this.leaderboard.sort((a, b) => b.score - a.score);
-    this.leaderboard = this.leaderboard.slice(0, 10); // Keep top 10
-    
-    localStorage.setItem('gameLeaderboard', JSON.stringify(this.leaderboard));
-    return this.getScoreRank(score);
-  }
-  
-  getScoreRank(score) {
-    return this.leaderboard.findIndex(entry => entry.score === score) + 1;
-  }
-  
-  getTopScores(difficulty = null) {
-    return this.leaderboard
-      .filter(entry => !difficulty || entry.difficulty === difficulty)
-      .slice(0, 10);
-  }
-  
-  displayLeaderboard(container) {
-    const difficultyFilter = document.createElement('select');
-    difficultyFilter.innerHTML = `
-      <option value="">All Difficulties</option>
-      <option value="easy">Easy</option>
-      <option value="medium">Medium</option>
-      <option value="hard">Hard</option>
-    `;
-    
-    difficultyFilter.addEventListener('change', (e) => {
-      this.updateLeaderboardDisplay(container, e.target.value);
-    });
-    
-    container.innerHTML = '<h2>Top Scores</h2>';
-    container.appendChild(difficultyFilter);
-    
-    this.updateLeaderboardDisplay(container);
-  }
-  
-  updateLeaderboardDisplay(container, difficulty = null) {
-    const scores = this.getTopScores(difficulty);
-    const table = document.createElement('table');
-    table.className = 'leaderboard-table';
-    
-    table.innerHTML = `
-      <thead>
-        <tr>
-          <th>Rank</th>
-          <th>Score</th>
-          <th>Difficulty</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${scores.map((entry, index) => `
-          <tr>
-            <td>#${index + 1}</td>
-            <td>${entry.score}</td>
-            <td>${entry.difficulty}</td>
-            <td>${new Date(entry.date).toLocaleDateString()}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    `;
-    
-    const existingTable = container.querySelector('table');
-    if (existingTable) {
-      container.replaceChild(table, existingTable);
-    } else {
-      container.appendChild(table);
-    }
-  }
-}
-
-// Difficulty System
-const DifficultySettings = {
-  easy: {
-    timeLimit: 30,
-    pointMultiplier: 1,
-    hintAllowed: true
-  },
-  medium: {
-    timeLimit: 20,
-    pointMultiplier: 1.5,
-    hintAllowed: false
-  },
-  hard: {
-    timeLimit: 15,
-    pointMultiplier: 2,
-    hintAllowed: false
-  }
-};
-
-// Initialize managers
-const leaderboardManager = new LeaderboardManager();
 
 // Game Module
 const GameShow = (function() {
-  /** @type {GameConfig} */
   const config = {
-    questionsPerRound: 5,
-    revealDelay: 500,
-    commercialBreakDuration: 5000,
-    inputDebounceTime: 300,
-    difficulty: 'medium', // default difficulty
+    revealDelay: 800,
+    answerRevealTime: 1500,
+    maxStrikes: 3
   };
 
-  /** @type {GameState} */
-  let gameState = null;
-  let elements = null;
+  let gameState = {
+    currentScreen: 'hostIntro',
+    score: 0,
+    currentQuestion: null,
+    revealedAnswers: new Set(),
+    strikes: 0,
+    timerId: null
+  };
+
+  let elements = {
+    screens: {
+      hostIntro: document.getElementById('hostIntro'),
+      game: document.getElementById('game-screen'),
+      commercial: document.getElementById('commercial-break'),
+      results: document.getElementById('results-screen')
+    }
+  };
 
   function init() {
-    // Initialize game state
-    gameState = {
-      currentScreen: 'hostIntro',
-      score: 0,
-      currentQuestionIndex: 0,
-      timeLeft: config.timeLimit,
-      timerId: null
-    };
-
-    // Cache DOM elements
-    elements = {
-      screens: {
-        hostIntro: document.getElementById('hostIntro'),
-        game: document.getElementById('game-screen'),
-        commercial: document.getElementById('commercial-break'),
-        results: document.getElementById('results-screen')
-      }
-    };
-
-    // Remove title screen and start button logic since we start automatically
-    document.getElementById('title-screen')?.remove();
-
-    // Initialize difficulty selector
-    initializeDifficultySelector();
-    
-    // Start the game show immediately
+    resetGame();
     startGameShow();
   }
 
   async function startGameShow() {
-    // Play intro animation and sound
     soundManager.play('transition');
-    
-    // Show host introduction
     await AnimationManager.showElement(elements.screens.hostIntro);
-    
-    // Wait for intro duration
     await new Promise(resolve => setTimeout(resolve, 5000));
-    
-    // Transition to game
     await AnimationManager.hideElement(elements.screens.hostIntro);
     await AnimationManager.showElement(elements.screens.game);
-    
-    // Start background music
     soundManager.sounds.background.play();
+    startGame();
+  }
+
+  function startGame() {
+    gameState.score = 0;
+    gameState.strikes = 0;
+    updateScoreDisplay();
+    showNextQuestion();
+  }
+
+  function showNextQuestion() {
+    if (gameState.strikes >= config.maxStrikes) {
+      endGame();
+      return;
+    }
+
+    const availableQuestions = gameContent.questions.filter(q => 
+      !gameState.playedQuestions?.includes(q)
+    );
+
+    if (availableQuestions.length === 0) {
+      endGame();
+      return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+    gameState.currentQuestion = availableQuestions[randomIndex];
+    gameState.revealedAnswers = new Set();
     
-    // Start the game
-    startRound();
-  }
-
-  // Private variables and methods
-  const config = {
-    questionsPerRound: 5,
-    revealDelay: 500,
-    commercialBreakDuration: 5000,
-    inputDebounceTime: 300,
-    difficulty: 'medium', // default difficulty
-  };
-
-  let gameState = null;
-  let elements = null;
-
-  // Cache DOM elements once
-  function cacheElements() {
-    elements = {
-      screens: {
-        hostIntro: document.getElementById('hostIntro'),
-        game: document.getElementById('game-screen'),
-        commercial: document.getElementById('commercial-break'),
-        results: document.getElementById('results-screen')
-      }
-    };
-  }
-
-  // Initialize game state
-  function initGameState() {
-    gameState = {
-      currentScreen: 'hostIntro',
-      score: 0,
-      currentQuestionIndex: 0,
-      timeLeft: config.timeLimit,
-      timerId: null
-    };
-  }
-
-  // Event handler setup with proper cleanup
-  function setupEventListeners() {
-    const handlers = {
-      startGame: () => transitionToScreen('game'),
-      playAgain: resetGame,
-      submitAnswer: handleAnswerSubmit
-    };
-
-    elements.buttons.startGame.addEventListener('click', handlers.startGame);
-    elements.buttons.playAgain.addEventListener('click', handlers.playAgain);
-    elements.game.answerInput.addEventListener('keypress', debounce(handlers.submitAnswer, config.inputDebounceTime));
-
-    // Return cleanup function
-    return () => {
-      elements.buttons.startGame.removeEventListener('click', handlers.startGame);
-      elements.buttons.playAgain.removeEventListener('click', handlers.playAgain);
-      elements.game.answerInput.removeEventListener('keypress', handlers.submitAnswer);
-    };
-  }
-
-  // Debounce utility function
-  function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
-  }
-
-  // Screen transition with animations
-  async function transitionToScreen(screenName) {
-    if (!elements.screens[screenName]) return;
-
-    const currentScreen = elements.screens[gameState.currentScreen];
-    const nextScreen = elements.screens[screenName];
-
-    currentScreen.classList.add('fade-out');
+    const questionText = document.querySelector('.question-text');
+    const answerBoard = document.querySelector('.answer-board');
     
-    setTimeout(() => {
-      Object.values(elements.screens).forEach(screen => {
-        screen.classList.add('hidden');
-      });
-      
-      nextScreen.classList.remove('hidden');
-      nextScreen.classList.add('fade-in');
-      
-      gameState.currentScreen = screenName;
-      
-      if (screenName === 'game') {
-        startRound();
-      }
-    }, 300);
-  }
-
-  // Timer management
-  function startTimer() {
-    if (gameState.timerId) clearInterval(gameState.timerId);
+    questionText.textContent = gameState.currentQuestion.question;
+    answerBoard.innerHTML = '';
     
-    const startTime = Date.now();
-    const totalTime = config.timeLimit * 1000;
+    // Create answer slots
+    gameState.currentQuestion.answers.forEach((answer, index) => {
+      const slot = document.createElement('div');
+      slot.className = 'answer-slot';
+      slot.dataset.index = index;
+      slot.innerHTML = `
+        <span class="number">${index + 1}</span>
+        <span class="answer hidden">?????</span>
+        <span class="points hidden">??</span>
+      `;
+      answerBoard.appendChild(slot);
+    });
 
-    gameState.timerId = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const timeLeft = Math.max(0, totalTime - elapsed);
-      
-      gameState.timeLeft = Math.ceil(timeLeft / 1000);
-      
-      // Update UI
-      requestAnimationFrame(() => {
-        elements.game.timer.textContent = gameState.timeLeft;
-        elements.game.timerBar.style.width = `${(timeLeft / totalTime) * 100}%`;
-      });
+    // Show answer input
+    const inputContainer = document.querySelector('.answer-input-container');
+    inputContainer.innerHTML = `
+      <input type="text" class="answer-input" placeholder="Enter your answer...">
+      <button class="submit-answer">Submit</button>
+    `;
 
-      if (timeLeft <= 0) {
-        clearInterval(gameState.timerId);
-        handleRoundEnd();
-      }
-    }, 100);
-  }
+    const input = inputContainer.querySelector('.answer-input');
+    const submit = inputContainer.querySelector('.submit-answer');
 
-  // Round management
-  function startRound() {
-    gameState.timeLeft = config.timeLimit;
-    gameState.currentQuestionIndex = 0;
-    
-    updateUI();
-    startTimer();
-  }
+    input.addEventListener('keypress', e => {
+      if (e.key === 'Enter') submit.click();
+    });
 
-  // UI updates batched together
-  function updateUI() {
-    requestAnimationFrame(() => {
-      const question = gameContent.questions[gameState.currentQuestionIndex];
-      elements.game.questionDisplay.textContent = question.text;
-      elements.game.roundNumber.textContent = `ROUND ${gameState.round}`;
-      elements.game.currentScore.textContent = gameState.score;
-      elements.game.answerInput.value = '';
-      elements.game.answerInput.focus();
+    submit.addEventListener('click', () => {
+      const answer = input.value.trim().toLowerCase();
+      checkAnswer(answer);
+      input.value = '';
+      input.focus();
     });
   }
 
-  // Answer handling with validation
-  function handleAnswerSubmit(event) {
-    if (event.key !== 'Enter' || !gameState.isGameActive) return;
-    
-    const answer = elements.game.answerInput.value.trim().toLowerCase();
-    if (!answer) return;
-
-    const question = gameContent.questions[gameState.currentQuestionIndex];
-    const matchingAnswer = question.answers.find(a => 
-      a.text.toLowerCase() === answer && !gameState.revealedAnswers.has(a.text)
+  function checkAnswer(userAnswer) {
+    const matchingAnswer = gameState.currentQuestion.answers.find(a => 
+      a.text.toLowerCase() === userAnswer && !gameState.revealedAnswers.has(a.text)
     );
 
     if (matchingAnswer) {
-      const points = gameState.round === 2 ? matchingAnswer.points * 2 : matchingAnswer.points;
-      gameState.score += points;
-      gameState.revealedAnswers.add(matchingAnswer.text);
-      
-      updateAnswerBoard(matchingAnswer);
-    }
-
-    elements.game.answerInput.value = '';
-  }
-
-  // Answer board updates optimized
-  function updateAnswerBoard(answer) {
-    const answerElement = document.createElement('div');
-    answerElement.classList.add('answer');
-    answerElement.innerHTML = `
-      <span class="answer-text">${answer.text}</span>
-      <span class="answer-points">${answer.points}</span>
-    `;
-    
-    requestAnimationFrame(() => {
-      elements.game.answersContainer.appendChild(answerElement);
-      answerElement.classList.add('reveal');
-    });
-  }
-
-  // Round end handling
-  function handleRoundEnd() {
-    gameState.isGameActive = false;
-    
-    if (gameState.round < config.rounds) {
-      gameState.round++;
-      showCommercialBreak();
+      revealAnswer(matchingAnswer);
+      gameState.score += matchingAnswer.points;
+      updateScoreDisplay();
+      soundManager.play('correct');
+      AnimationManager.celebrate();
     } else {
-      showFinalResults();
+      gameState.strikes++;
+      updateStrikes();
+      soundManager.play('incorrect');
+      if (gameState.strikes >= config.maxStrikes) {
+        endGame();
+      }
     }
   }
 
-  // Commercial break handling
-  async function showCommercialBreak() {
-    soundManager.play('transition');
-    await AnimationManager.hideElement(elements.screens.game);
-    await AnimationManager.showElement(elements.screens.commercial);
+  function revealAnswer(answer) {
+    const index = gameState.currentQuestion.answers.findIndex(a => a.text === answer.text);
+    const slot = document.querySelector(`.answer-slot[data-index="${index}"]`);
     
-    // Enhanced commercial break animation
-    const highlights = document.querySelectorAll('.commercial-highlight');
-    for (const highlight of highlights) {
-      await AnimationManager.showElement(highlight);
-      await new Promise(resolve => setTimeout(resolve, 2000));
-    }
+    gameState.revealedAnswers.add(answer.text);
     
-    await AnimationManager.hideElement(elements.screens.commercial);
-    await AnimationManager.showElement(elements.screens.game);
+    // Flip animation
+    slot.classList.add('flip');
+    setTimeout(() => {
+      slot.querySelector('.answer').textContent = answer.text;
+      slot.querySelector('.points').textContent = answer.points;
+      slot.querySelector('.answer').classList.remove('hidden');
+      slot.querySelector('.points').classList.remove('hidden');
+      slot.classList.remove('flip');
+    }, config.revealDelay / 2);
   }
 
-  // Results display
+  function updateStrikes() {
+    const strikesDisplay = document.querySelector('.strikes-display');
+    strikesDisplay.textContent = 'X'.repeat(gameState.strikes);
+  }
+
+  function updateScoreDisplay() {
+    document.querySelector('.score-display').textContent = `Score: ${gameState.score}`;
+  }
+
+  function endGame() {
+    showFinalResults();
+  }
+
   async function showFinalResults() {
     soundManager.play('success');
     soundManager.sounds.background.pause();
-    soundManager.sounds.background.currentTime = 0;
     
+    const performanceLevel = gameContent.performanceLevels.find(level => 
+      gameState.score >= level.threshold
+    ) || gameContent.performanceLevels[gameContent.performanceLevels.length - 1];
+
     await AnimationManager.hideElement(elements.screens.game);
-    await AnimationManager.showElement(elements.screens.results);
     
-    if (gameState.score > 0) {
-      await AnimationManager.celebrate();
-    }
+    const resultsScreen = elements.screens.results;
+    resultsScreen.innerHTML = `
+      <h2>${performanceLevel.title}</h2>
+      <div class="final-score">Score: ${gameState.score}</div>
+      <p>${performanceLevel.message}</p>
+      <div class="skills-list">
+        ${performanceLevel.skills.map(skill => `<span class="skill-badge">${skill}</span>`).join('')}
+      </div>
+      <button class="play-again">Play Again</button>
+    `;
+
+    await AnimationManager.showElement(resultsScreen);
+    
+    resultsScreen.querySelector('.play-again').addEventListener('click', () => {
+      resetGame();
+      startGameShow();
+    });
   }
 
-  // Game reset
   function resetGame() {
-    if (gameState.timerId) clearInterval(gameState.timerId);
-    
-    // Clear UI
-    elements.game.answersContainer.innerHTML = '';
-    elements.game.previousAnswers.innerHTML = '';
-    
-    // Reset game state
-    initGameState();
-    
-    // Start new game directly
-    transitionToScreen('hostIntro');
+    gameState = {
+      currentScreen: 'hostIntro',
+      score: 0,
+      currentQuestion: null,
+      revealedAnswers: new Set(),
+      strikes: 0,
+      playedQuestions: new Set(),
+      timerId: null
+    };
+    updateScoreDisplay();
   }
 
-  // Public API
   return {
     init,
     config,
@@ -922,135 +397,9 @@ const GameShow = (function() {
   };
 })();
 
-// TV Effects
-function addTVEffects() {
-  const glitch = document.getElementById('screen-glitch');
-  setInterval(() => {
-    glitch.style.opacity = Math.random() > 0.95 ? '0.1' : '0';
-  }, 100);
-}
-
-// Performance message generator
-function getPerformanceMessage(score) {
-  const performanceLevel = gameContent.performanceLevels.find(level => score >= level.threshold) 
-    || gameContent.performanceLevels[gameContent.performanceLevels.length - 1];
-
-  return performanceLevel.message;
-}
-
-// Show performance results
-function showPerformanceResults(score) {
-  const performanceLevel = gameContent.performanceLevels.find(level => score >= level.threshold) 
-    || gameContent.performanceLevels[gameContent.performanceLevels.length - 1];
-
-  const resultsContainer = document.getElementById('final-results');
-  
-  // Create an engaging results display
-  const resultsHTML = `
-    <div class="results-container">
-      <h2 class="performance-title">${performanceLevel.title}</h2>
-      <div class="score-display">
-        <span class="score-number">${score}</span>
-        <span class="score-label">points</span>
-      </div>
-      <p class="performance-message">${performanceLevel.message}</p>
-      <div class="skills-showcase">
-        ${performanceLevel.skills.map(skill => `
-          <div class="skill-badge">
-            <i class="fas fa-star"></i>
-            <span>${skill}</span>
-          </div>
-        `).join('')}
-      </div>
-      <div class="portfolio-link">
-        <p>Want to see more of my work?</p>
-        <a href="https://github.com/KayronCalloway" target="_blank">
-          Check out my portfolio
-        </a>
-      </div>
-    </div>
-  `;
-
-  resultsContainer.innerHTML = resultsHTML;
-  
-  // Add some flair with animations
-  anime({
-    targets: '.score-number',
-    innerHTML: [0, score],
-    round: 1,
-    easing: 'easeInOutExpo',
-    duration: 2000
-  });
-
-  // Stagger the skill badges
-  anime({
-    targets: '.skill-badge',
-    opacity: [0, 1],
-    translateY: [20, 0],
-    delay: anime.stagger(200)
-  });
-}
-
-// Initialize game when DOM is ready
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", GameShow.init);
+// Initialize game when channel loads
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = GameShow;
 } else {
   GameShow.init();
 }
-
-// Add difficulty selector to title screen
-function initializeDifficultySelector() {
-  const selector = document.createElement('div');
-  selector.className = 'difficulty-selector';
-  selector.innerHTML = `
-    <h3>Select Difficulty</h3>
-    <div class="difficulty-buttons">
-      <button data-difficulty="easy">Easy</button>
-      <button data-difficulty="medium">Medium</button>
-      <button data-difficulty="hard">Hard</button>
-    </div>
-  `;
-  
-  selector.querySelectorAll('button').forEach(button => {
-    button.addEventListener('click', () => {
-      selector.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-      button.classList.add('active');
-      GameShow.difficulty = button.dataset.difficulty;
-    });
-  });
-  
-  document.getElementById('hostIntro').appendChild(selector);
-}
-
-// Update endGame function
-async function endGame() {
-  soundManager.play('success');
-  soundManager.sounds.background.pause();
-  soundManager.sounds.background.currentTime = 0;
-  
-  const finalScore = Math.round(GameShow.score * GameShow.difficultyMultiplier);
-  const rank = leaderboardManager.addScore(finalScore, GameShow.difficulty);
-  
-  await AnimationManager.hideElement(document.getElementById('game-screen'));
-  await AnimationManager.showElement(document.getElementById('results-screen'));
-  
-  // Update results display
-  const resultsContainer = document.getElementById('results-screen');
-  resultsContainer.querySelector('.score-display').textContent = finalScore;
-  
-  if (rank <= 3) {
-    await AnimationManager.celebrate();
-    resultsContainer.querySelector('.performance-title').textContent = 'New High Score!';
-  }
-  
-  // Show leaderboard
-  const leaderboardContainer = document.createElement('div');
-  leaderboardContainer.className = 'leaderboard-container';
-  resultsContainer.appendChild(leaderboardContainer);
-  leaderboardManager.displayLeaderboard(leaderboardContainer);
-}
-
-// Initialize difficulty selector when game loads
-document.addEventListener('DOMContentLoaded', () => {
-  initializeDifficultySelector();
-});
