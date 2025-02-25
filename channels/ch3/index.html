@@ -1,35 +1,37 @@
 <!-- channels/ch3/index.html -->
 <div id="skillshowdown-container" class="channel-content">
   <header>
-    <h1>📺 SkillShowdown – Executive Edition</h1>
-    <h3>Test Your Strategic Skills</h3>
-    <p id="gameMessage">"Welcome contestant! Get ready to test your skills!"</p>
+    <h1>📺 Fast Money - Executive Edition</h1>
+    <h3>Think Fast, Score High!</h3>
+    <p id="gameMessage">"Welcome contestant! Get ready for Fast Money!"</p>
   </header>
   
-  <!-- Progress Bar -->
-  <div id="progressContainer" class="hidden">
-    <p>Round <span id="roundCount">1</span>/4</p>
-    <progress id="progressBar" value="0" max="4"></progress>
+  <!-- Game Info Display -->
+  <div id="gameInfo" class="hidden">
+    <div class="round-info">
+      <h2 id="roundDisplay">Round 1</h2>
+      <div class="timer-container">
+        <span>Time Left:</span>
+        <span id="timer" class="timer">30</span>
+      </div>
+    </div>
+    <div class="score-container">
+      <span>Score:</span>
+      <span id="score">0</span>
+    </div>
   </div>
   
   <!-- Question Round -->
   <section id="questionContainer" class="hidden">
     <p id="question"></p>
-    <div id="choices"></div>
-  </section>
-  
-  <!-- Final Smash Round -->
-  <section id="finalRound" class="hidden">
-    <p>🚨 System Glitch! SMASH THE BUTTON to restore transmission!</p>
-    <button id="smashBtn">SMASH!</button>
-    <p id="smashCount">Clicks: 0</p>
+    <div class="input-container">
+      <input type="text" id="answerInput" placeholder="Type your answer and press Enter" autocomplete="off">
+    </div>
   </section>
   
   <!-- Result Screen -->
   <section id="resultScreen" class="hidden">
-    <h2>🏆 TRANSMISSION RESTORED!</h2>
-    <p>You've unlocked the full skillset of Kayron!</p>
-    <div id="unlockedSkills"></div>
+    <div id="resultsContainer"></div>
     <div class="links">
       <a href="portfolio-link.html" class="btn">View Portfolio</a>
       <a href="static-resume.pdf" class="btn">Download Resume</a>
@@ -38,5 +40,5 @@
   </section>
   
   <!-- Start Button -->
-  <button id="startBtn">Start Game</button>
+  <button id="startBtn">Start Fast Money Round</button>
 </div>
