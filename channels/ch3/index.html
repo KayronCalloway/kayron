@@ -1,44 +1,119 @@
 <!-- channels/ch3/index.html -->
-<div id="skillshowdown-container" class="channel-content">
-  <header>
-    <h1>📺 Fast Money - Executive Edition</h1>
-    <h3>Think Fast, Score High!</h3>
-    <p id="gameMessage">"Welcome contestant! Get ready for Fast Money!"</p>
-  </header>
+<div id="gameshow-container">
+  <!-- TV Static Overlay -->
+  <div id="tv-static"></div>
   
-  <!-- Game Info Display -->
-  <div id="gameInfo" class="hidden">
-    <div class="round-info">
-      <h2 id="roundDisplay">Round 1</h2>
-      <div class="timer-container">
-        <span>Time Left:</span>
-        <span id="timer" class="timer">30</span>
+  <!-- Channel Info -->
+  <div id="channel-info">
+    <div class="channel-number">CH 3</div>
+    <div class="recording-dot"></div>
+    <div class="timestamp">LIVE</div>
+  </div>
+
+  <!-- Show Title Screen -->
+  <div id="title-screen" class="game-screen">
+    <div class="title-content">
+      <h1>SKILL FEUD</h1>
+      <div class="subtitle">with your host</div>
+      <h2>KAYRON CALLOWAY</h2>
+      <div class="show-description">
+        Where Business Meets Entertainment!
       </div>
     </div>
-    <div class="score-container">
-      <span>Score:</span>
-      <span id="score">0</span>
+    <button id="startShowBtn" class="tv-button">START SHOW</button>
+  </div>
+
+  <!-- Host Introduction -->
+  <div id="host-intro" class="game-screen hidden">
+    <div class="host-content">
+      <div class="host-image"></div>
+      <div class="host-speech">
+        "Welcome to Skill Feud! I'm Kayron Calloway, and today we're diving into the world of business, technology, and innovation. Are you ready to play Fast Money?"
+      </div>
+    </div>
+    <button id="startGameBtn" class="tv-button">I'M READY!</button>
+  </div>
+
+  <!-- Fast Money Round -->
+  <div id="fast-money" class="game-screen hidden">
+    <div class="game-header">
+      <div class="round-info">
+        <span id="roundNumber">ROUND 1</span>
+        <div class="timer-container">
+          <div id="timer-bar"></div>
+          <span id="timer">30</span>
+        </div>
+      </div>
+      <div class="score-display">
+        <span>SCORE</span>
+        <span id="current-score">0</span>
+      </div>
+    </div>
+
+    <div class="question-area">
+      <div id="question-display"></div>
+      <div class="answer-input">
+        <input type="text" id="answer-input" placeholder="Your answer..." autocomplete="off">
+        <div class="previous-answers" id="previous-answers"></div>
+      </div>
+    </div>
+
+    <!-- Answer Board -->
+    <div id="answer-board" class="hidden">
+      <div class="board-header">TOP ANSWERS</div>
+      <div class="answers-container"></div>
     </div>
   </div>
-  
-  <!-- Question Round -->
-  <section id="questionContainer" class="hidden">
-    <p id="question"></p>
-    <div class="input-container">
-      <input type="text" id="answerInput" placeholder="Type your answer and press Enter" autocomplete="off">
+
+  <!-- Commercial Break -->
+  <div id="commercial-break" class="game-screen hidden">
+    <div class="commercial-content">
+      <h2>We'll be right back after these messages!</h2>
+      <div class="skill-showcase">
+        <div class="skill-item" data-skill="Financial Analysis">
+          <i class="fas fa-chart-line"></i>
+          <span>Financial Analysis</span>
+        </div>
+        <div class="skill-item" data-skill="Strategic Planning">
+          <i class="fas fa-chess"></i>
+          <span>Strategic Planning</span>
+        </div>
+        <div class="skill-item" data-skill="AI Implementation">
+          <i class="fas fa-brain"></i>
+          <span>AI Implementation</span>
+        </div>
+      </div>
     </div>
-  </section>
-  
-  <!-- Result Screen -->
-  <section id="resultScreen" class="hidden">
-    <div id="resultsContainer"></div>
-    <div class="links">
-      <a href="portfolio-link.html" class="btn">View Portfolio</a>
-      <a href="static-resume.pdf" class="btn">Download Resume</a>
+  </div>
+
+  <!-- Final Results -->
+  <div id="final-results" class="game-screen hidden">
+    <div class="results-header">
+      <h2>SHOW WRAP</h2>
+      <div class="final-score">TOTAL SCORE: <span id="final-score">0</span></div>
     </div>
-    <button id="restartBtn">Play Again</button>
-  </section>
-  
-  <!-- Start Button -->
-  <button id="startBtn">Start Fast Money Round</button>
+    
+    <div class="results-content">
+      <div class="performance-summary">
+        <h3>Performance Analysis</h3>
+        <div id="performance-details"></div>
+      </div>
+      
+      <div class="unlocked-content">
+        <h3>You've Unlocked</h3>
+        <div id="unlocked-skills"></div>
+      </div>
+    </div>
+
+    <div class="call-to-action">
+      <a href="#portfolio" class="cta-button">View Full Portfolio</a>
+      <a href="#contact" class="cta-button">Get in Touch</a>
+    </div>
+
+    <button id="playAgainBtn" class="tv-button">NEXT EPISODE</button>
+  </div>
+
+  <!-- TV Effects -->
+  <div id="channel-change-effect"></div>
+  <div id="screen-glitch"></div>
 </div>
