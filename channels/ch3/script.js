@@ -213,12 +213,21 @@ const GameShow = (function() {
   }
 
   function startGame() {
-    gameState.score = 0;
-    gameState.strikes = 0;
+    // Reset game state
+    gameState = {
+      currentScreen: 'game',
+      score: 0,
+      currentQuestion: null,
+      strikes: 0,
+      playedQuestions: new Set(),
+      timerId: null
+    };
+    
+    // Update display and show first question
     updateScoreDisplay();
     showNextQuestion();
     
-    // Show game screen immediately
+    // Show game screen
     Object.values(elements.screens).forEach(screen => screen.classList.add('hidden'));
     elements.screens.game.classList.remove('hidden');
   }
