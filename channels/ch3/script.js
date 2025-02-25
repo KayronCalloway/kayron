@@ -223,6 +223,180 @@ const gameContent = {
   ]
 };
 
+// Updated question format with multiple choice
+const gameQuestions = {
+  "Financial Analytics": [
+    {
+      question: "What financial metric is most important for evaluating startup growth?",
+      options: [
+        "Monthly Recurring Revenue (MRR)",
+        "Net Profit Margin",
+        "Customer Acquisition Cost (CAC)",
+        "Burn Rate"
+      ],
+      correct: 0,
+      insight: "MRR is crucial for startups as it indicates predictable, sustainable growth."
+    },
+    {
+      question: "Which analysis tool best predicts market trends?",
+      options: [
+        "Moving Average Convergence Divergence (MACD)",
+        "Relative Strength Index (RSI)",
+        "Machine Learning Models",
+        "Sentiment Analysis"
+      ],
+      correct: 2,
+      insight: "ML models can process vast amounts of data to identify complex patterns."
+    }
+  ],
+  "Strategic Leadership": [
+    {
+      question: "What's the most effective approach to team innovation?",
+      options: [
+        "Structured Brainstorming",
+        "Design Thinking Workshops",
+        "Autonomous Innovation Teams",
+        "Cross-functional Collaboration"
+      ],
+      correct: 1,
+      insight: "Design thinking combines creativity with user-centered problem solving."
+    },
+    {
+      question: "Which leadership style best promotes creative work?",
+      options: [
+        "Transformational Leadership",
+        "Servant Leadership",
+        "Democratic Leadership",
+        "Adaptive Leadership"
+      ],
+      correct: 0,
+      insight: "Transformational leaders inspire innovation through vision and motivation."
+    }
+  ],
+  "Creative Innovation": [
+    {
+      question: "What's key to successful product design?",
+      options: [
+        "Technical Excellence",
+        "User Experience (UX)",
+        "Visual Appeal",
+        "Feature Rich"
+      ],
+      correct: 1,
+      insight: "Great UX creates products that people love to use."
+    },
+    {
+      question: "Which approach best drives creative solutions?",
+      options: [
+        "Data-Driven Design",
+        "Competitive Analysis",
+        "User Research",
+        "Rapid Prototyping"
+      ],
+      correct: 2,
+      insight: "Understanding user needs leads to truly innovative solutions."
+    }
+  ]
+};
+
+// Simplified game state
+let currentQuestion = null;
+let score = 0;
+let timeLeft = 0;
+let timerId = null;
+
+function startGame() {
+  score = 0;
+  showNextQuestion();
+}
+
+function showNextQuestion() {
+  // Get random category and question
+  const categories = Object.keys(gameQuestions);
+  const category = categories[Math.floor(Math.random() * categories.length)];
+  const questions = gameQuestions[category];
+  currentQuestion = questions[Math.floor(Math.random() * questions.length)];
+  
+  // Update UI
+  document.querySelector('.question-text').textContent = currentQuestion.question;
+  
+  // Create option buttons
+  const optionsContainer = document.querySelector('.options-container');
+  optionsContainer.innerHTML = '';
+  
+  currentQuestion.options.forEach((option, index) => {
+    const button = document.createElement('button');
+    button.className = 'option-button';
+    button.textContent = option;
+    button.onclick = () => selectAnswer(index);
+    optionsContainer.appendChild(button);
+  });
+  
+  // Reset and start timer
+  timeLeft = DifficultySettings[gameConfig.difficulty].timeLimit;
+  startTimer();
+}
+
+function selectAnswer(index) {
+  // Prevent multiple selections
+  if (!currentQuestion) return;
+  
+  const buttons = document.querySelectorAll('.option-button');
+  buttons.forEach(btn => btn.disabled = true);
+  
+  const isCorrect = index === currentQuestion.correct;
+  const selectedButton = buttons[index];
+  const correctButton = buttons[currentQuestion.correct];
+  
+  // Show result
+  selectedButton.classList.add(isCorrect ? 'correct' : 'incorrect');
+  if (!isCorrect) {
+    correctButton.classList.add('correct');
+  }
+  
+  // Update score
+  if (isCorrect) {
+    score += Math.ceil(timeLeft * DifficultySettings[gameConfig.difficulty].pointMultiplier);
+    document.querySelector('.score-display').textContent = score;
+    AnimationManager.celebrate();
+  }
+  
+  // Show insight
+  const insight = document.createElement('div');
+  insight.className = 'insight';
+  insight.textContent = currentQuestion.insight;
+  document.querySelector('.question-container').appendChild(insight);
+  
+  // Next question after delay
+  setTimeout(() => {
+    currentQuestion = null;
+    showNextQuestion();
+  }, 3000);
+}
+
+function startTimer() {
+  if (timerId) clearInterval(timerId);
+  
+  const startTime = Date.now();
+  const totalTime = timeLeft * 1000;
+  
+  timerId = setInterval(() => {
+    const elapsed = Date.now() - startTime;
+    timeLeft = Math.max(0, Math.ceil((totalTime - elapsed) / 1000));
+    
+    // Update timer bar
+    const timerBar = document.querySelector('.timer-bar');
+    timerBar.style.width = `${(timeLeft * 1000 / totalTime) * 100}%`;
+    
+    if (timeLeft <= 0) {
+      clearInterval(timerId);
+      // Auto-select wrong answer if time runs out
+      const wrongIndex = (currentQuestion.correct + 1) % currentQuestion.options.length;
+      selectAnswer(wrongIndex);
+    }
+  }, 100);
+}
+
 // Sound Manager
 class SoundManager {
   constructor() {
