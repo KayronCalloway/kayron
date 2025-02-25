@@ -223,6 +223,221 @@ const gameContent = {
   ]
 };
 
+// Sound Manager
+class SoundManager {
+  constructor() {
+    this.sounds = {
+      click: new Audio('sounds/click.mp3'),
+      correct: new Audio('sounds/correct.mp3'),
+      incorrect: new Audio('sounds/incorrect.mp3'),
+      success: new Audio('sounds/success.mp3'),
+      background: new Audio('sounds/background.mp3'),
+      transition: new Audio('sounds/transition.mp3')
+    };
+    
+    // Configure background music
+    this.sounds.background.loop = true;
+    this.sounds.background.volume = 0.3;
+    
+    // Initialize mute state
+    this.muted = localStorage.getItem('gameSoundMuted') === 'true';
+    this.updateMuteState();
+    
+    // Add mute toggle button
+    this.addMuteButton();
+  }
+  
+  play(soundName) {
+    if (!this.muted && this.sounds[soundName]) {
+      // Stop and reset the sound before playing
+      this.sounds[soundName].currentTime = 0;
+      this.sounds[soundName].play().catch(e => console.log('Sound play prevented:', e));
+    }
+  }
+  
+  toggleMute() {
+    this.muted = !this.muted;
+    localStorage.setItem('gameSoundMuted', this.muted);
+    this.updateMuteState();
+  }
+  
+  updateMuteState() {
+    Object.values(this.sounds).forEach(sound => {
+      sound.muted = this.muted;
+    });
+    
+    // Update mute button icon
+    const muteButton = document.getElementById('muteButton');
+    if (muteButton) {
+      muteButton.innerHTML = this.muted ? '🔇' : '🔊';
+    }
+  }
+  
+  addMuteButton() {
+    const muteButton = document.createElement('button');
+    muteButton.id = 'muteButton';
+    muteButton.className = 'mute-button';
+    muteButton.innerHTML = this.muted ? '🔇' : '🔊';
+    muteButton.addEventListener('click', () => {
+      this.toggleMute();
+      soundManager.play('click');
+    });
+    document.body.appendChild(muteButton);
+  }
+}
+
+// Initialize sound manager
+const soundManager = new SoundManager();
+
+// Enhanced Animation Manager
+class AnimationManager {
+  static async animateTransition(element, animation) {
+    return new Promise(resolve => {
+      element.style.animation = animation;
+      element.addEventListener('animationend', () => {
+        element.style.animation = '';
+        resolve();
+      }, { once: true });
+    });
+  }
+  
+  static async showElement(element) {
+    element.style.display = 'block';
+    await this.animateTransition(element, 'fadeIn 0.5s ease-out');
+  }
+  
+  static async hideElement(element) {
+    await this.animateTransition(element, 'fadeOut 0.5s ease-in');
+    element.style.display = 'none';
+  }
+  
+  static async celebrate() {
+    const container = document.createElement('div');
+    container.className = 'celebration-container';
+    document.body.appendChild(container);
+    
+    // Create particles
+    for (let i = 0; i < 50; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'celebration-particle';
+      particle.style.setProperty('--delay', `${Math.random() * 2}s`);
+      particle.style.setProperty('--x-end', `${-50 + Math.random() * 100}vw`);
+      container.appendChild(particle);
+    }
+    
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    container.remove();
+  }
+}
+
+// Leaderboard System
+class LeaderboardManager {
+  constructor() {
+    this.leaderboard = JSON.parse(localStorage.getItem('gameLeaderboard')) || [];
+  }
+  
+  addScore(score, difficulty) {
+    const entry = {
+      score,
+      difficulty,
+      date: new Date().toISOString(),
+      timestamp: Date.now()
+    };
+    
+    this.leaderboard.push(entry);
+    this.leaderboard.sort((a, b) => b.score - a.score);
+    this.leaderboard = this.leaderboard.slice(0, 10); // Keep top 10
+    
+    localStorage.setItem('gameLeaderboard', JSON.stringify(this.leaderboard));
+    return this.getScoreRank(score);
+  }
+  
+  getScoreRank(score) {
+    return this.leaderboard.findIndex(entry => entry.score === score) + 1;
+  }
+  
+  getTopScores(difficulty = null) {
+    return this.leaderboard
+      .filter(entry => !difficulty || entry.difficulty === difficulty)
+      .slice(0, 10);
+  }
+  
+  displayLeaderboard(container) {
+    const difficultyFilter = document.createElement('select');
+    difficultyFilter.innerHTML = `
+      <option value="">All Difficulties</option>
+      <option value="easy">Easy</option>
+      <option value="medium">Medium</option>
+      <option value="hard">Hard</option>
+    `;
+    
+    difficultyFilter.addEventListener('change', (e) => {
+      this.updateLeaderboardDisplay(container, e.target.value);
+    });
+    
+    container.innerHTML = '<h2>Top Scores</h2>';
+    container.appendChild(difficultyFilter);
+    
+    this.updateLeaderboardDisplay(container);
+  }
+  
+  updateLeaderboardDisplay(container, difficulty = null) {
+    const scores = this.getTopScores(difficulty);
+    const table = document.createElement('table');
+    table.className = 'leaderboard-table';
+    
+    table.innerHTML = `
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Score</th>
+          <th>Difficulty</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${scores.map((entry, index) => `
+          <tr>
+            <td>#${index + 1}</td>
+            <td>${entry.score}</td>
+            <td>${entry.difficulty}</td>
+            <td>${new Date(entry.date).toLocaleDateString()}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    `;
+    
+    const existingTable = container.querySelector('table');
+    if (existingTable) {
+      container.replaceChild(table, existingTable);
+    } else {
+      container.appendChild(table);
+    }
+  }
+}
+
+// Difficulty System
+const DifficultySettings = {
+  easy: {
+    timeLimit: 30,
+    pointMultiplier: 1,
+    hintAllowed: true
+  },
+  medium: {
+    timeLimit: 20,
+    pointMultiplier: 1.5,
+    hintAllowed: false
+  },
+  hard: {
+    timeLimit: 15,
+    pointMultiplier: 2,
+    hintAllowed: false
+  }
+};
+
+// Initialize managers
+const leaderboardManager = new LeaderboardManager();
+
 // Game Module
 const GameShow = (function() {
   /** @type {GameConfig} */
@@ -232,7 +447,8 @@ const GameShow = (function() {
     questionsPerRound: 5,
     revealDelay: 500,
     commercialBreakDuration: 5000,
-    inputDebounceTime: 300
+    inputDebounceTime: 300,
+    difficulty: 'medium', // default difficulty
   };
 
   /** @type {GameState} */
@@ -249,7 +465,7 @@ const GameShow = (function() {
     elements = {
       screens: {
         title: document.getElementById('title-screen'),
-        hostIntro: document.getElementById('host-intro'),
+        hostIntro: document.getElementById('hostIntro'),
         fastMoney: document.getElementById('fast-money'),
         commercial: document.getElementById('commercial-break'),
         results: document.getElementById('final-results')
@@ -318,7 +534,8 @@ const GameShow = (function() {
     questionsPerRound: 5,
     revealDelay: 500,
     commercialBreakDuration: 5000,
-    inputDebounceTime: 300
+    inputDebounceTime: 300,
+    difficulty: 'medium', // default difficulty
   };
 
   let gameState = null;
@@ -331,7 +548,7 @@ const GameShow = (function() {
     elements = {
       screens: {
         title: document.getElementById('title-screen'),
-        hostIntro: document.getElementById('host-intro'),
+        hostIntro: document.getElementById('hostIntro'),
         fastMoney: document.getElementById('fast-money'),
         commercial: document.getElementById('commercial-break'),
         results: document.getElementById('final-results')
@@ -406,7 +623,7 @@ const GameShow = (function() {
   }
 
   // Screen transition with animations
-  function transitionToScreen(screenName) {
+  async function transitionToScreen(screenName) {
     if (!elements.screens[screenName]) return;
 
     const currentScreen = elements.screens[gameState.currentScreen];
@@ -529,23 +746,34 @@ const GameShow = (function() {
   }
 
   // Commercial break handling
-  function showCommercialBreak() {
-    transitionToScreen('commercial');
-    setTimeout(() => {
-      transitionToScreen('fastMoney');
-    }, config.commercialBreakDuration);
+  async function showCommercialBreak() {
+    soundManager.play('transition');
+    await AnimationManager.hideElement(elements.screens.fastMoney);
+    await AnimationManager.showElement(elements.screens.commercial);
+    
+    // Enhanced commercial break animation
+    const highlights = document.querySelectorAll('.commercial-highlight');
+    for (const highlight of highlights) {
+      await AnimationManager.showElement(highlight);
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+    
+    await AnimationManager.hideElement(elements.screens.commercial);
+    await AnimationManager.showElement(elements.screens.fastMoney);
   }
 
   // Results display
-  function showFinalResults() {
-    transitionToScreen('results');
-    const finalScore = gameState.score;
-    const performance = getPerformanceMessage(finalScore);
+  async function showFinalResults() {
+    soundManager.play('success');
+    soundManager.sounds.background.pause();
+    soundManager.sounds.background.currentTime = 0;
     
-    requestAnimationFrame(() => {
-      elements.screens.results.querySelector('.final-score').textContent = finalScore;
-      elements.screens.results.querySelector('.performance-message').textContent = performance;
-    });
+    await AnimationManager.hideElement(elements.screens.fastMoney);
+    await AnimationManager.showElement(elements.screens.results);
+    
+    if (gameState.score > 0) {
+      await AnimationManager.celebrate();
+    }
   }
 
   // Game reset
@@ -679,3 +907,60 @@ if (document.readyState === "loading") {
 } else {
   GameShow.init();
 }
+
+// Add difficulty selector to title screen
+function initializeDifficultySelector() {
+  const selector = document.createElement('div');
+  selector.className = 'difficulty-selector';
+  selector.innerHTML = `
+    <h3>Select Difficulty</h3>
+    <div class="difficulty-buttons">
+      <button data-difficulty="easy">Easy</button>
+      <button data-difficulty="medium">Medium</button>
+      <button data-difficulty="hard">Hard</button>
+    </div>
+  `;
+  
+  selector.querySelectorAll('button').forEach(button => {
+    button.addEventListener('click', () => {
+      selector.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      button.classList.add('active');
+      GameShow.difficulty = button.dataset.difficulty;
+    });
+  });
+  
+  document.getElementById('title-screen').appendChild(selector);
+}
+
+// Update endGame function
+async function endGame() {
+  soundManager.play('success');
+  soundManager.sounds.background.pause();
+  soundManager.sounds.background.currentTime = 0;
+  
+  const finalScore = Math.round(GameShow.score * GameShow.difficultyMultiplier);
+  const rank = leaderboardManager.addScore(finalScore, GameShow.difficulty);
+  
+  await AnimationManager.hideElement(document.getElementById('game-screen'));
+  await AnimationManager.showElement(document.getElementById('results-screen'));
+  
+  // Update results display
+  const resultsContainer = document.getElementById('results-screen');
+  resultsContainer.querySelector('.score-display').textContent = finalScore;
+  
+  if (rank <= 3) {
+    await AnimationManager.celebrate();
+    resultsContainer.querySelector('.performance-title').textContent = 'New High Score!';
+  }
+  
+  // Show leaderboard
+  const leaderboardContainer = document.createElement('div');
+  leaderboardContainer.className = 'leaderboard-container';
+  resultsContainer.appendChild(leaderboardContainer);
+  leaderboardManager.displayLeaderboard(leaderboardContainer);
+}
+
+// Initialize difficulty selector when game loads
+document.addEventListener('DOMContentLoaded', () => {
+  initializeDifficultySelector();
+});
