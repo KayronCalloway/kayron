@@ -3,6 +3,9 @@ function initGame() {
   const startBtn = document.getElementById("startBtn");
   console.log("initGame called. document.readyState:", document.readyState, "startBtn:", startBtn);
   if (!startBtn) { setTimeout(initGame, 100); return; }
+  // Automatically start the game by hiding the start button and starting the game
+  startBtn.classList.add("hidden");
+  nextQuestion();
   const questionContainer = document.getElementById("questionContainer");
   const questionText = document.getElementById("question");
   const choicesContainer = document.getElementById("choices");
@@ -12,13 +15,6 @@ function initGame() {
   const resultScreen = document.getElementById("resultScreen");
   const unlockedSkills = document.getElementById("unlockedSkills");
   const restartBtn = document.getElementById("restartBtn");
-
-  console.log("Attaching event listener to startBtn");
-  startBtn.addEventListener("click", () => {
-    console.log("Start button clicked");
-    startBtn.classList.add("hidden");
-    nextQuestion();
-  });
 
   let smashCount = 0;
   let skillsUnlocked = [];
