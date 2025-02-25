@@ -16,20 +16,31 @@ export async function init() {
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
     const html = await response.text();
     container.innerHTML = html;
-    setTimeout(() => { if (typeof initGame === "function") { initGame(); } }, 0);
+    
+    // Dynamically load CSS if not already loaded
+    if (!document.querySelector('link[href="./channels/ch3/styles.css"]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = './channels/ch3/styles.css';
+      document.head.appendChild(link);
+    }
+    
+    // Dynamically load the script.js file
+    if (!document.querySelector('script[src="./channels/ch3/script.js"]')) {
+      const script = document.createElement('script');
+      script.src = './channels/ch3/script.js';
+      script.onload = function() {
+        console.log("script.js loaded, calling initGame");
+        if (typeof window.initGame === "function") {
+          window.initGame();
+        }
+      };
+      document.body.appendChild(script);
+    }
+    
   } catch (error) {
     console.error("Failed to load Channel 3 markup:", error);
     container.innerHTML = `<div class="error">Error loading SkillShowdown content.</div>`;
     return;
   }
-  
-  // Dynamically load CSS if not already loaded
-  if (!document.querySelector('link[href="./channels/ch3/styles.css"]')) {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = './channels/ch3/styles.css';
-    document.head.appendChild(link);
-  }
-
-  // Removed dynamic JS loading to prevent recursive loading of ch3.js
 }
