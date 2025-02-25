@@ -442,8 +442,6 @@ const leaderboardManager = new LeaderboardManager();
 const GameShow = (function() {
   /** @type {GameConfig} */
   const config = {
-    rounds: 2,
-    timePerRound: 30,
     questionsPerRound: 5,
     revealDelay: 500,
     commercialBreakDuration: 5000,
@@ -454,83 +452,60 @@ const GameShow = (function() {
   /** @type {GameState} */
   let gameState = null;
   let elements = null;
-  let timer = null;
-  let inputTimer = null;
 
-  /**
-   * Cache DOM elements and set up accessibility attributes
-   * @private
-   */
-  function cacheElements() {
+  function init() {
+    // Initialize game state
+    gameState = {
+      currentScreen: 'hostIntro',
+      score: 0,
+      currentQuestionIndex: 0,
+      timeLeft: config.timeLimit,
+      timerId: null
+    };
+
+    // Cache DOM elements
     elements = {
       screens: {
-        title: document.getElementById('title-screen'),
         hostIntro: document.getElementById('hostIntro'),
-        fastMoney: document.getElementById('fast-money'),
+        game: document.getElementById('game-screen'),
         commercial: document.getElementById('commercial-break'),
-        results: document.getElementById('final-results')
-      },
-      buttons: {
-        startShow: document.getElementById('startShowBtn'),
-        startGame: document.getElementById('startGameBtn'),
-        playAgain: document.getElementById('playAgainBtn')
-      },
-      game: {
-        questionDisplay: document.getElementById('question-display'),
-        answerInput: document.getElementById('answer-input'),
-        timer: document.getElementById('timer'),
-        timerBar: document.getElementById('timer-bar'),
-        currentScore: document.getElementById('current-score'),
-        roundNumber: document.getElementById('roundNumber'),
-        answerBoard: document.getElementById('answer-board'),
-        answersContainer: document.querySelector('.answers-container'),
-        previousAnswers: document.getElementById('previous-answers')
+        results: document.getElementById('results-screen')
       }
     };
 
-    // Set up accessibility attributes
-    setupAccessibility();
-  }
+    // Remove title screen and start button logic since we start automatically
+    document.getElementById('title-screen')?.remove();
 
-  /**
-   * Set up accessibility attributes and keyboard navigation
-   * @private
-   */
-  function setupAccessibility() {
-    // Add ARIA labels
-    elements.game.questionDisplay.setAttribute('aria-live', 'polite');
-    elements.game.timer.setAttribute('aria-label', i18n.t('timeRemaining'));
-    elements.game.answerInput.setAttribute('aria-label', i18n.t('enterAnswer'));
+    // Initialize difficulty selector
+    initializeDifficultySelector();
     
-    // Add keyboard navigation
-    elements.game.answerInput.addEventListener('keydown', handleKeyboardNavigation);
+    // Start the game show immediately
+    startGameShow();
   }
 
-  /**
-   * Handle keyboard navigation
-   * @param {KeyboardEvent} event - Keyboard event
-   * @private
-   */
-  function handleKeyboardNavigation(event) {
-    if (event.key === 'Tab') {
-      const focusableElements = document.querySelectorAll('button, input, [tabindex="0"]');
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
-
-      if (event.shiftKey && document.activeElement === firstElement) {
-        event.preventDefault();
-        lastElement.focus();
-      } else if (!event.shiftKey && document.activeElement === lastElement) {
-        event.preventDefault();
-        firstElement.focus();
-      }
-    }
+  async function startGameShow() {
+    // Play intro animation and sound
+    soundManager.play('transition');
+    
+    // Show host introduction
+    await AnimationManager.showElement(elements.screens.hostIntro);
+    
+    // Wait for intro duration
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    
+    // Transition to game
+    await AnimationManager.hideElement(elements.screens.hostIntro);
+    await AnimationManager.showElement(elements.screens.game);
+    
+    // Start background music
+    soundManager.sounds.background.play();
+    
+    // Start the game
+    startRound();
   }
 
   // Private variables and methods
   const config = {
-    rounds: 2,
-    timePerRound: 30,
     questionsPerRound: 5,
     revealDelay: 500,
     commercialBreakDuration: 5000,
@@ -540,34 +515,15 @@ const GameShow = (function() {
 
   let gameState = null;
   let elements = null;
-  let timer = null;
-  let inputTimer = null;
 
   // Cache DOM elements once
   function cacheElements() {
     elements = {
       screens: {
-        title: document.getElementById('title-screen'),
         hostIntro: document.getElementById('hostIntro'),
-        fastMoney: document.getElementById('fast-money'),
+        game: document.getElementById('game-screen'),
         commercial: document.getElementById('commercial-break'),
-        results: document.getElementById('final-results')
-      },
-      buttons: {
-        startShow: document.getElementById('startShowBtn'),
-        startGame: document.getElementById('startGameBtn'),
-        playAgain: document.getElementById('playAgainBtn')
-      },
-      game: {
-        questionDisplay: document.getElementById('question-display'),
-        answerInput: document.getElementById('answer-input'),
-        timer: document.getElementById('timer'),
-        timerBar: document.getElementById('timer-bar'),
-        currentScore: document.getElementById('current-score'),
-        roundNumber: document.getElementById('roundNumber'),
-        answerBoard: document.getElementById('answer-board'),
-        answersContainer: document.querySelector('.answers-container'),
-        previousAnswers: document.getElementById('previous-answers')
+        results: document.getElementById('results-screen')
       }
     };
   }
@@ -575,34 +531,28 @@ const GameShow = (function() {
   // Initialize game state
   function initGameState() {
     gameState = {
-      currentScreen: 'title',
-      round: 1,
+      currentScreen: 'hostIntro',
       score: 0,
-      timeLeft: config.timePerRound,
       currentQuestionIndex: 0,
-      answers: [],
-      revealedAnswers: new Set(),
-      isGameActive: false
+      timeLeft: config.timeLimit,
+      timerId: null
     };
   }
 
   // Event handler setup with proper cleanup
   function setupEventListeners() {
     const handlers = {
-      startShow: () => transitionToScreen('hostIntro'),
-      startGame: () => transitionToScreen('fastMoney'),
+      startGame: () => transitionToScreen('game'),
       playAgain: resetGame,
       submitAnswer: handleAnswerSubmit
     };
 
-    elements.buttons.startShow.addEventListener('click', handlers.startShow);
     elements.buttons.startGame.addEventListener('click', handlers.startGame);
     elements.buttons.playAgain.addEventListener('click', handlers.playAgain);
     elements.game.answerInput.addEventListener('keypress', debounce(handlers.submitAnswer, config.inputDebounceTime));
 
     // Return cleanup function
     return () => {
-      elements.buttons.startShow.removeEventListener('click', handlers.startShow);
       elements.buttons.startGame.removeEventListener('click', handlers.startGame);
       elements.buttons.playAgain.removeEventListener('click', handlers.playAgain);
       elements.game.answerInput.removeEventListener('keypress', handlers.submitAnswer);
@@ -641,7 +591,7 @@ const GameShow = (function() {
       
       gameState.currentScreen = screenName;
       
-      if (screenName === 'fastMoney') {
+      if (screenName === 'game') {
         startRound();
       }
     }, 300);
@@ -649,12 +599,12 @@ const GameShow = (function() {
 
   // Timer management
   function startTimer() {
-    if (timer) clearInterval(timer);
+    if (gameState.timerId) clearInterval(gameState.timerId);
     
     const startTime = Date.now();
-    const totalTime = config.timePerRound * 1000;
+    const totalTime = config.timeLimit * 1000;
 
-    timer = setInterval(() => {
+    gameState.timerId = setInterval(() => {
       const elapsed = Date.now() - startTime;
       const timeLeft = Math.max(0, totalTime - elapsed);
       
@@ -667,7 +617,7 @@ const GameShow = (function() {
       });
 
       if (timeLeft <= 0) {
-        clearInterval(timer);
+        clearInterval(gameState.timerId);
         handleRoundEnd();
       }
     }, 100);
@@ -675,9 +625,8 @@ const GameShow = (function() {
 
   // Round management
   function startRound() {
-    gameState.isGameActive = true;
-    gameState.timeLeft = config.timePerRound;
-    gameState.currentQuestionIndex = (gameState.round - 1) * config.questionsPerRound;
+    gameState.timeLeft = config.timeLimit;
+    gameState.currentQuestionIndex = 0;
     
     updateUI();
     startTimer();
@@ -748,7 +697,7 @@ const GameShow = (function() {
   // Commercial break handling
   async function showCommercialBreak() {
     soundManager.play('transition');
-    await AnimationManager.hideElement(elements.screens.fastMoney);
+    await AnimationManager.hideElement(elements.screens.game);
     await AnimationManager.showElement(elements.screens.commercial);
     
     // Enhanced commercial break animation
@@ -759,7 +708,7 @@ const GameShow = (function() {
     }
     
     await AnimationManager.hideElement(elements.screens.commercial);
-    await AnimationManager.showElement(elements.screens.fastMoney);
+    await AnimationManager.showElement(elements.screens.game);
   }
 
   // Results display
@@ -768,7 +717,7 @@ const GameShow = (function() {
     soundManager.sounds.background.pause();
     soundManager.sounds.background.currentTime = 0;
     
-    await AnimationManager.hideElement(elements.screens.fastMoney);
+    await AnimationManager.hideElement(elements.screens.game);
     await AnimationManager.showElement(elements.screens.results);
     
     if (gameState.score > 0) {
@@ -778,8 +727,7 @@ const GameShow = (function() {
 
   // Game reset
   function resetGame() {
-    if (timer) clearInterval(timer);
-    if (inputTimer) clearTimeout(inputTimer);
+    if (gameState.timerId) clearInterval(gameState.timerId);
     
     // Clear UI
     elements.game.answersContainer.innerHTML = '';
@@ -794,41 +742,9 @@ const GameShow = (function() {
 
   // Public API
   return {
-    init: function() {
-      try {
-        Analytics.init();
-        Analytics.logEvent('Game', 'Initialize');
-        
-        cacheElements();
-        initGameState();
-        setupEventListeners();
-        addTVEffects();
-        
-        // Announce game ready for screen readers
-        elements.screens.title.setAttribute('aria-label', 'Game Show Ready');
-      } catch (error) {
-        Analytics.logError('Game initialization failed', error);
-        console.error('Failed to initialize game:', error);
-      }
-    },
-    
-    /**
-     * Reset the game state
-     * @public
-     */
-    reset: resetGame,
-    
-    /**
-     * Set the game language
-     * @param {string} locale - Language code
-     * @public
-     */
-    setLanguage: function(locale) {
-      if (i18n.translations[locale]) {
-        i18n.currentLocale = locale;
-        updateUI();
-      }
-    }
+    init,
+    config,
+    gameState
   };
 })();
 
@@ -929,7 +845,7 @@ function initializeDifficultySelector() {
     });
   });
   
-  document.getElementById('title-screen').appendChild(selector);
+  document.getElementById('hostIntro').appendChild(selector);
 }
 
 // Update endGame function
