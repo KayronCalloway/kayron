@@ -193,23 +193,36 @@ const GameShow = (function() {
   };
 
   let gameState = {
-    currentScreen: 'game',  // Start directly with the game
+    currentScreen: 'game',
     score: 0,
     currentQuestion: null,
     strikes: 0,
     timerId: null
   };
 
-  let elements = {
-    screens: {
-      game: document.getElementById('game-screen'),
-      results: document.getElementById('results-screen')
-    }
-  };
+  let elements = {};
 
   function init() {
-    resetGame();
-    startGame(); // Start game immediately
+    // Initialize DOM elements
+    elements = {
+      screens: {
+        game: document.getElementById('game-screen'),
+        results: document.getElementById('results-screen')
+      },
+      game: {
+        questionText: document.querySelector('.question-text'),
+        optionsContainer: document.querySelector('.options-container'),
+        scoreDisplay: document.querySelector('.score-display')
+      }
+    };
+
+    // Start the game only after elements are initialized
+    if (elements.screens.game && elements.game.questionText && elements.game.optionsContainer) {
+      resetGame();
+      startGame();
+    } else {
+      console.error('Required game elements not found in DOM');
+    }
   }
 
   function startGame() {
@@ -255,11 +268,9 @@ const GameShow = (function() {
     gameState.currentQuestion = availableQuestions[randomIndex];
     gameState.playedQuestions.add(gameState.currentQuestion);
     
-    const questionText = document.querySelector('.question-text');
-    const optionsContainer = document.querySelector('.options-container');
-    
-    questionText.textContent = gameState.currentQuestion.question;
-    optionsContainer.innerHTML = '';
+    // Update DOM with new question
+    elements.game.questionText.textContent = gameState.currentQuestion.question;
+    elements.game.optionsContainer.innerHTML = '';
     
     // Create multiple choice buttons
     gameState.currentQuestion.options.forEach(option => {
@@ -270,7 +281,7 @@ const GameShow = (function() {
         <span class="option-text">${option.text}</span>
       `;
       button.onclick = () => selectAnswer(option);
-      optionsContainer.appendChild(button);
+      elements.game.optionsContainer.appendChild(button);
     });
   }
 
@@ -316,7 +327,7 @@ const GameShow = (function() {
   }
 
   function updateScoreDisplay() {
-    document.querySelector('.score-display').textContent = `Score: ${gameState.score}`;
+    elements.game.scoreDisplay.textContent = `Score: ${gameState.score}`;
   }
 
   function endGame() {
