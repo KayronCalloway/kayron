@@ -219,7 +219,6 @@ const GameShow = (function() {
       score: 0,
       currentQuestion: null,
       strikes: 0,
-      playedQuestions: new Set(),
       timerId: null
     };
     
@@ -238,8 +237,13 @@ const GameShow = (function() {
       return;
     }
 
+    // Initialize playedQuestions if it doesn't exist
+    if (!gameState.playedQuestions) {
+      gameState.playedQuestions = new Set();
+    }
+
     const availableQuestions = gameContent.questions.filter(q => 
-      !gameState.playedQuestions?.includes(q)
+      !gameState.playedQuestions.has(q)
     );
 
     if (availableQuestions.length === 0) {
@@ -249,6 +253,7 @@ const GameShow = (function() {
 
     const randomIndex = Math.floor(Math.random() * availableQuestions.length);
     gameState.currentQuestion = availableQuestions[randomIndex];
+    gameState.playedQuestions.add(gameState.currentQuestion);
     
     const questionText = document.querySelector('.question-text');
     const optionsContainer = document.querySelector('.options-container');
@@ -353,7 +358,6 @@ const GameShow = (function() {
       score: 0,
       currentQuestion: null,
       strikes: 0,
-      playedQuestions: new Set(),
       timerId: null
     };
     updateScoreDisplay();
