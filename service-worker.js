@@ -2,24 +2,23 @@
 
 const CACHE_VERSION = 'tv-portfolio-cache-v1';
 const CACHE_ASSETS = [
-  '/',
-  '/index.html',
-  '/styles.css',
-  '/script.js',
-  '/visuals/Merova.woff2',
-  '/visuals/Merova.otf',
-  '/audio/channel-click1.aif',
-  '/audio/channel-click2.aif',
-  '/audio/channel-click3.aif',
-  '/audio/channel-click4.aif',
-  '/audio/channel-click5.aif',
-  '/audio/channel-click6.aif',
-  '/audio/channel-click7.aif',
-  '/audio/channel-click8.aif',
-  '/audio/channel-click9.aif',
-  '/audio/channel-click10.aif',
-  '/audio/channel-click11.aif',
-  '/static-resume.pdf'
+  './',
+  './index.html',
+  './styles.css',
+  './script.js',
+  './visuals/Merova.otf',
+  './audio/channel-click1.aif',
+  './audio/channel-click2.aif',
+  './audio/channel-click3.aif',
+  './audio/channel-click4.aif',
+  './audio/channel-click5.aif',
+  './audio/channel-click6.aif',
+  './audio/channel-click7.aif',
+  './audio/channel-click8.aif',
+  './audio/channel-click9.aif',
+  './audio/channel-click10.aif',
+  './audio/channel-click11.aif'
+  // './static-resume.pdf' - commented until file exists
 ];
 
 // Installation: Cache all necessary assets

@@ -58,8 +58,7 @@ body {
 /* --- Import Merova Font --- */
 @font-face {
   font-family: 'Merova';
-  src: url('visuals/Merova.woff2') format('woff2'),
-       url('visuals/Merova.otf') format('opentype');
+  src: url('visuals/Merova.otf') format('opentype');
   font-display: swap;
 }
 

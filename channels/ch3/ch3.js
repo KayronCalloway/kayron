@@ -6,7 +6,7 @@ export async function init() {
     return;
   }
   // Prevent duplicate initialization
-  if (container.querySelector('#skillshowdown-container')) {
+  if (container.querySelector('#gameshow-container')) {
     console.log("Channel 3 already loaded; skipping initialization.");
     return;
   }
