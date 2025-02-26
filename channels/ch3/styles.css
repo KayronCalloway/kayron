@@ -232,22 +232,20 @@
 }
 
 /* TV Channel Aesthetic */
-body {
+#section3 {
   background: #000;
   color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
   margin: 0;
   min-height: 100vh;
   overflow: hidden;
 }
 
-#gameshow-container {
+#section3 #gameshow-container {
   position: relative;
   width: 100%;
   height: 100vh;
   background-color: var(--bg-color);
   overflow: hidden;
-  font-family: 'Merova', sans-serif;
   color: var(--primary-color);
 }
 
@@ -328,14 +326,15 @@ body {
 }
 
 /* Typography */
-h1, h2, h3 {
-  font-family: 'Merova', sans-serif;
+#section3 h1, 
+#section3 h2, 
+#section3 h3 {
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
-h1 {
+#section3 h1 {
   font-size: 3.5rem;
   color: var(--primary-color);
   text-shadow: 0 0 10px var(--glow-color);
@@ -394,7 +393,7 @@ h1 {
   margin: 1.5rem auto;
 }
 
-.option-button {
+#section3 .option-button {
   background: transparent;
   border: 2px solid var(--primary-color);
   border-radius: 0;
@@ -410,7 +409,6 @@ h1 {
   align-items: center;
   gap: 1rem;
   margin-bottom: 0.75rem;
-  font-family: 'Merova', sans-serif;
 }
 
 .option-button:hover {
@@ -576,10 +574,9 @@ h1 {
   position: relative;
 }
 
-.host-speech {
+#section3 .host-speech {
   font-size: 1.5rem;
   line-height: 1.6;
-  font-family: 'Merova', sans-serif;
   color: var(--primary-color);
 }
 
@@ -654,38 +651,36 @@ h1 {
   margin: 2rem 0;
 }
 
-.cta-button {
+#section3 .cta-button {
   background: transparent;
   border: 2px solid var(--primary-color);
   color: var(--primary-color);
   padding: 1rem 2rem;
   margin: 0 1rem;
   text-decoration: none;
-  font-family: 'Merova', sans-serif;
   font-size: 1.1rem;
   transition: all 0.3s ease;
 }
 
-.cta-button:hover {
+#section3 .cta-button:hover {
   background: var(--primary-color);
   color: var(--bg-color);
   transform: scale(1.05);
 }
 
-#playAgainBtn {
+#section3 #playAgainBtn {
   background: var(--accent-color);
   color: var(--bg-color);
   border: none;
   padding: 1rem 2rem;
   font-size: 1.2rem;
-  font-family: 'Merova', sans-serif;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
   margin-top: 2rem;
 }
 
-#playAgainBtn:hover {
+#section3 #playAgainBtn:hover {
   transform: scale(1.05);
   box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
 }
@@ -867,19 +862,17 @@ button:active {
   gap: 0.5rem;
 }
 
-#roundNumber {
+#section3 #roundNumber {
   font-size: 1.5rem;
   font-weight: bold;
   color: var(--primary-color);
-  font-family: 'Merova', sans-serif;
 }
 
-.score-display {
+#section3 .score-display {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  font-family: 'Merova', sans-serif;
 }
 
 .score-display span:first-child {
