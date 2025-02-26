@@ -654,6 +654,16 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = GameShow;
 } else {
   window.initGame = function() {
-    GameShow.init();
+    // Make sure all previous instances are cleaned up
+    if (GameShow && GameShow.gameState && GameShow.gameState.timerId) {
+      clearInterval(GameShow.gameState.timerId);
+    }
+    
+    // Ensure animations and sounds are properly initialized
+    if (AnimationManager && soundManager) {
+      GameShow.init();
+    } else {
+      console.error("Required dependencies for game not loaded");
+    }
   };
 }

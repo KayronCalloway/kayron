@@ -240,6 +240,15 @@
   overflow: hidden;
 }
 
+/* Reset header styles that shouldn't leak */
+#section3 .menu-button,
+#section3 button:not(.option-button, #playAgainBtn, .cta-button) {
+  font-size: inherit;
+  padding: inherit;
+  margin: inherit;
+  border: inherit;
+}
+
 #section3 #gameshow-container {
   position: relative;
   width: 100%;
@@ -1014,7 +1023,7 @@ header h3 {
 }
 
 /* Button Styles */
-button {
+#section3 button {
   padding: 1rem 2rem;
   font-size: 1.2rem;
   border: none;
@@ -1023,28 +1032,28 @@ button {
   transition: all 0.3s ease;
 }
 
-#startBtn {
+#section3 #startBtn {
   background: #e74c3c;
   color: white;
   font-weight: bold;
 }
 
-#startBtn:hover {
+#section3 #startBtn:hover {
   background: #c0392b;
   transform: scale(1.05);
 }
 
-#restartBtn {
+#section3 #restartBtn {
   background: #3498db;
   color: white;
   margin-top: 1rem;
 }
 
-#restartBtn:hover {
+#section3 #restartBtn:hover {
   background: #2980b9;
 }
 
-.btn {
+#section3 .btn {
   display: inline-block;
   padding: 0.8rem 1.5rem;
   margin: 0.5rem;
@@ -1055,7 +1064,7 @@ button {
   transition: all 0.3s ease;
 }
 
-.btn:hover {
+#section3 .btn:hover {
   background: #27ae60;
   transform: scale(1.05);
 }
