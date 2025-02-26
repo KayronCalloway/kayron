@@ -1,18 +1,13 @@
-/* Modern, Apple-inspired design system */
+/* Game show styles that match the TV aesthetic of the main site */
 :root {
-  --primary-font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
-  --display-font: 'SF Pro Display', var(--primary-font);
-  
-  /* Color palette inspired by Apple's design */
-  --background: #000000;
-  --surface: #1c1c1e;
-  --primary: #0a84ff;
-  --secondary: #5e5ce6;
-  --accent: #30d158;
-  --error: #ff453a;
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.8);
-  --text-tertiary: rgba(255, 255, 255, 0.6);
+  --bg-color: #000;
+  --primary-color: #fff;
+  --accent-color: #ffd700;
+  --surface-color: rgba(0, 0, 0, 0.7);
+  --header-bg: rgba(0, 0, 0, 0.85);
+  --highlight-color: #ff453a;
+  --success-color: #30d158;
+  --glow-color: rgba(255, 255, 255, 0.5);
 }
 
 /* Game Container */
@@ -246,12 +241,14 @@ body {
   overflow: hidden;
 }
 
-#skillshowdown-container {
+#gameshow-container {
   position: relative;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
-  background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+  background-color: var(--bg-color);
   overflow: hidden;
+  font-family: 'Merova', sans-serif;
+  color: var(--primary-color);
 }
 
 /* Base styles */
@@ -332,16 +329,16 @@ body {
 
 /* Typography */
 h1, h2, h3 {
-  font-family: var(--display-font);
+  font-family: 'Merova', sans-serif;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 h1 {
   font-size: 3.5rem;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--primary-color);
+  text-shadow: 0 0 10px var(--glow-color);
 }
 
 /* Question display */
@@ -389,70 +386,183 @@ h1 {
   max-width: 800px;
 }
 
+.options-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 800px;
+  margin: 1.5rem auto;
+}
+
 .option-button {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  padding: 1.5rem;
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  border-radius: 0;
+  padding: 1.2rem;
   font-size: 1.2rem;
-  color: #fff;
+  color: var(--primary-color);
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: left;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  font-family: 'Merova', sans-serif;
 }
 
 .option-button:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
+  background: var(--primary-color);
+  color: var(--bg-color);
+  transform: scale(1.02);
 }
 
 .option-button.selected {
-  background: rgba(0, 255, 0, 0.3);
-  border-color: rgba(0, 255, 0, 0.5);
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--bg-color);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
 }
 
 .option-button.correct {
-  background: rgba(0, 255, 0, 0.3);
-  border-color: #00ff00;
+  background: var(--success-color);
+  border-color: var(--success-color);
+  color: var(--bg-color);
 }
 
 .option-button.incorrect {
-  background: rgba(255, 0, 0, 0.3);
-  border-color: #ff0000;
+  background: var(--highlight-color);
+  border-color: var(--highlight-color);
+  color: var(--bg-color);
+}
+
+.option-letter {
+  background: var(--accent-color);
+  color: var(--bg-color);
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 0;
+  min-width: 2.5rem;
+  text-align: center;
+}
+
+.option-text {
+  flex-grow: 1;
+}
+
+.points-display {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg-color);
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+  font-weight: bold;
+  font-size: 1.5rem;
+  z-index: 10;
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.insight {
+  background: var(--surface-color);
+  padding: 1rem;
+  margin: 1rem 0;
+  color: var(--primary-color);
+  font-style: italic;
+  animation: fadeIn 0.5s ease;
+  border-left: 3px solid var(--accent-color);
+  max-width: 800px;
+  width: 100%;
 }
 
 /* Timer */
 .timer-container {
-  position: absolute;
-  top: 70px;
-  left: 20px;
-  right: 20px;
+  width: 100%;
+  max-width: 300px;
   height: 6px;
   background: rgba(255, 255, 255, 0.2);
-  border-radius: 3px;
   overflow: hidden;
-  z-index: 2;
+  position: relative;
+  margin-top: 0.5rem;
 }
 
-.timer-bar {
+#timer-bar {
   height: 100%;
-  background: linear-gradient(90deg, #00ff00, #ffff00);
+  background: var(--accent-color);
   width: 100%;
   transition: width 0.1s linear;
 }
 
-/* Score Display */
-.score-display {
+#timer {
   position: absolute;
-  top: 20px;
-  left: 20px;
-  font-size: 2rem;
-  font-weight: bold;
-  color: #fff;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-  z-index: 2;
+  right: -30px;
+  top: -8px;
+  font-size: 0.9rem;
+  color: var(--primary-color);
+}
+
+/* Commercial Break Styles */
+#commercial-break {
+  text-align: center;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.commercial-content {
+  max-width: 800px;
+  width: 100%;
+  background: var(--surface-color);
+  border: 2px solid var(--primary-color);
+  padding: 2rem;
+}
+
+.commercial-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: var(--primary-color);
+}
+
+.skill-showcase {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.skill-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.skill-item:hover {
+  transform: scale(1.05);
+}
+
+.skill-item span {
+  font-size: 1.2rem;
+  color: var(--accent-color);
+}
+
+/* Score Display */
+/* Game area styles */
+.question-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  margin: 1rem auto;
 }
 
 /* Host Introduction */
@@ -461,9 +571,16 @@ h1 {
   max-width: 800px;
   margin: 4rem auto;
   padding: 2rem;
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: 15px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface-color);
+  border: 2px solid var(--primary-color);
+  position: relative;
+}
+
+.host-speech {
+  font-size: 1.5rem;
+  line-height: 1.6;
+  font-family: 'Merova', sans-serif;
+  color: var(--primary-color);
 }
 
 /* Results Screen */
@@ -472,12 +589,105 @@ h1 {
   padding: 2rem;
 }
 
+#final-results {
+  text-align: center;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.results-header h2 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  text-shadow: 0 0 10px var(--glow-color);
+}
+
 .final-score {
-  font-size: 4rem;
-  font-weight: bold;
+  font-size: 2.5rem;
+  color: var(--accent-color);
   margin: 2rem 0;
-  color: #fff;
-  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.results-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 800px;
+  width: 100%;
+  background: var(--surface-color);
+  border: 2px solid var(--primary-color);
+  padding: 2rem;
+}
+
+.performance-summary h3,
+.unlocked-content h3 {
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+#performance-details h4 {
+  font-size: 1.5rem;
+  color: var(--accent-color);
+  margin-bottom: 0.5rem;
+}
+
+#unlocked-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+#unlocked-skills .skill-item {
+  background: var(--surface-color);
+  border: 1px solid var(--accent-color);
+  padding: 0.5rem 1rem;
+  color: var(--accent-color);
+}
+
+.call-to-action {
+  margin: 2rem 0;
+}
+
+.cta-button {
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 1rem 2rem;
+  margin: 0 1rem;
+  text-decoration: none;
+  font-family: 'Merova', sans-serif;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+  background: var(--primary-color);
+  color: var(--bg-color);
+  transform: scale(1.05);
+}
+
+#playAgainBtn {
+  background: var(--accent-color);
+  color: var(--bg-color);
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  font-family: 'Merova', sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 2rem;
+}
+
+#playAgainBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
 }
 
 /* Answer board */
@@ -638,12 +848,51 @@ button:active {
   border: 0;
 }
 
-/* channels/ch3/styles.css */
-#skillshowdown-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Game header styles */
+.game-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-bottom: 2px solid var(--primary-color);
+  position: relative;
+}
+
+.round-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+#roundNumber {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  font-family: 'Merova', sans-serif;
+}
+
+.score-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Merova', sans-serif;
+}
+
+.score-display span:first-child {
+  font-size: 1rem;
+  color: var(--primary-color);
+  opacity: 0.8;
+}
+
+#current-score {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--accent-color);
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 header {
@@ -716,13 +965,18 @@ header h3 {
   margin-bottom: 2rem;
 }
 
-#question {
+#question-display {
   font-size: 1.8rem;
-  color: #fff;
+  color: var(--primary-color);
   margin-bottom: 1.5rem;
-  padding: 1rem;
-  background: rgba(0,0,0,0.2);
-  border-radius: 10px;
+  padding: 1.5rem;
+  background: var(--surface-color);
+  border: 2px solid var(--primary-color);
+  text-align: center;
+  font-family: 'Merova', sans-serif;
+  max-width: 800px;
+  width: 100%;
+  text-shadow: 0 0 8px var(--glow-color);
 }
 
 .input-container {
@@ -827,7 +1081,7 @@ button {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  #skillshowdown-container {
+  #gameshow-container {
     padding: 1rem;
   }
   
