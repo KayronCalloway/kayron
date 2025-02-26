@@ -78,6 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (moduleName === 'ch2') {
       module = await import(`./channels/ch2/ch2.js`);
     } else if (moduleName === 'skill games') {
+      // Reset any global styles that might have been set by the game
+      resetMenuStyles();
       module = await import(`./channels/ch3/ch3.js`);
     } else if (moduleName === 'under the influence') {
       module = await import(`./channels/ch4/ch4.js`);
@@ -85,6 +87,17 @@ document.addEventListener('DOMContentLoaded', () => {
     module.init();
   } catch (err) {
     console.warn(`Module for ${moduleName} failed to load.`, err);
+  }
+};
+
+// Function to reset menu button styles
+const resetMenuStyles = () => {
+  if (menuButton) {
+    menuButton.style.fontSize = ''; 
+    menuButton.style.padding = '10px 15px';
+    menuButton.style.border = '2px solid var(--primary-color)';
+    menuButton.style.color = 'var(--primary-color)';
+    menuButton.style.background = 'transparent';
   }
 };
 
@@ -209,6 +222,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (entry.isIntersecting) {
         const newChannel = entry.target.id;
         if (currentChannel !== newChannel) {
+          // If leaving channel 3, reset menu button styles
+          if (currentChannel === 'section3') {
+            resetMenuStyles();
+          }
+          
           currentChannel = newChannel;
           playRandomChannelSound();
           triggerChannelStatic();
