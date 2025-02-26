@@ -167,7 +167,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- TV Guide Menu Toggle ---
   const toggleTVGuide = show => {
     if (show) {
+      // Force display to flex regardless of current state
       tvGuide.style.display = 'flex';
+      // Make sure it's above all other elements
+      tvGuide.style.zIndex = 9999; 
+      // Delay opacity change to allow display change to take effect
       setTimeout(() => {
         tvGuide.style.opacity = 1;
         tvGuide.setAttribute('aria-hidden', 'false');
@@ -178,7 +182,13 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
     }
   };
-  menuButton.addEventListener('click', () => toggleTVGuide(tvGuide.style.display !== 'flex'));
+  
+  // Toggle guide when menu button is clicked
+  menuButton.addEventListener('click', () => {
+    const isCurrentlyVisible = tvGuide.style.display === 'flex' && tvGuide.style.opacity === '1';
+    toggleTVGuide(!isCurrentlyVisible);
+  });
+  
   closeGuide.addEventListener('click', () => toggleTVGuide(false));
   guideItems.forEach(item => {
     item.addEventListener('click', () => {
