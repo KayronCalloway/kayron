@@ -12,19 +12,60 @@
  * @property {number} timeLeft - Remaining time in seconds
  * @property {number} currentQuestionIndex - Index of current question
  * @property {Array} answers - Player's submitted answers
- * @property {Set} revealedAnswers - Set of revealed answers
+ * @property {Set} playedQuestions - Set of played questions
  * @property {boolean} isGameActive - Whether game is in progress
  */
 
-/**
- * @typedef {Object} GameConfig
- * @property {number} rounds - Total number of rounds
- * @property {number} timePerRound - Time per round in seconds
- * @property {number} questionsPerRound - Questions per round
- * @property {number} revealDelay - Delay for answer reveals in ms
- * @property {number} commercialBreakDuration - Duration of breaks in ms
- * @property {number} inputDebounceTime - Debounce time for input in ms
- */
+// Sound Manager
+const soundManager = {
+  sounds: {
+    correct: new Audio('../../audio/ka-ching.mp3'),
+    incorrect: new Audio('../../audio/click.mp3'),
+    success: new Audio('../../audio/whoosh.mp3'),
+    background: new Audio('../../audio/ticker-hum.mp3')
+  },
+  
+  play(soundId) {
+    try {
+      const sound = this.sounds[soundId];
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play().catch(err => console.warn(`Sound play failed: ${err.message}`));
+      }
+    } catch (error) {
+      console.error('Error playing sound:', error);
+    }
+  }
+};
+
+// Animation Manager
+const AnimationManager = {
+  celebrate() {
+    const container = document.createElement('div');
+    container.className = 'celebration-container';
+    document.body.appendChild(container);
+    
+    for (let i = 0; i < 30; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'celebration-particle';
+      particle.style.setProperty('--delay', `${Math.random() * 0.5}s`);
+      particle.style.left = `${Math.random() * 100}%`;
+      container.appendChild(particle);
+    }
+    
+    setTimeout(() => container.remove(), 3000);
+  },
+  
+  async showElement(element) {
+    element.classList.remove('hidden');
+    return new Promise(resolve => setTimeout(resolve, 300));
+  },
+  
+  async hideElement(element) {
+    element.classList.add('hidden');
+    return new Promise(resolve => setTimeout(resolve, 300));
+  }
+};
 
 // Analytics Setup
 const Analytics = {
@@ -193,55 +234,119 @@ const GameShow = (function() {
   };
 
   let gameState = {
-    currentScreen: 'game',
+    currentScreen: 'host-intro',
     score: 0,
     currentQuestion: null,
     strikes: 0,
-    timerId: null
+    timerId: null,
+    playedQuestions: new Set()
   };
 
   let elements = {};
 
   function init() {
+    // Setup game container
+    const container = document.getElementById('gameshow-container');
+    if (!container) {
+      console.error('Game container not found');
+      return;
+    }
+    
     // Initialize DOM elements
     elements = {
       screens: {
-        game: document.getElementById('game-screen'),
-        results: document.getElementById('results-screen')
+        hostIntro: document.getElementById('host-intro'),
+        fastMoney: document.getElementById('fast-money'),
+        commercial: document.getElementById('commercial-break'),
+        results: document.getElementById('final-results')
       },
       game: {
-        questionText: document.querySelector('.question-text'),
-        optionsContainer: document.querySelector('.options-container'),
-        scoreDisplay: document.querySelector('.score-display')
+        questionDisplay: document.getElementById('question-display'),
+        optionsContainer: document.createElement('div'),
+        scoreDisplay: document.getElementById('current-score'),
+        roundDisplay: document.getElementById('roundNumber'),
+        timerDisplay: document.getElementById('timer'),
+        timerBar: document.getElementById('timer-bar')
       }
     };
 
-    // Start the game only after elements are initialized
-    if (elements.screens.game && elements.game.questionText && elements.game.optionsContainer) {
-      resetGame();
+    // Create options container
+    elements.game.optionsContainer.className = 'options-container';
+    const questionArea = document.querySelector('.question-area');
+    if (questionArea) {
+      questionArea.appendChild(elements.game.optionsContainer);
+    }
+
+    // Setup event listeners
+    const playAgainBtn = document.getElementById('playAgainBtn');
+    if (playAgainBtn) {
+      playAgainBtn.addEventListener('click', resetGame);
+    }
+    
+    // Start background sound
+    soundManager.sounds.background.loop = true;
+    soundManager.sounds.background.volume = 0.3;
+    soundManager.play('background');
+
+    // Show host intro then start game after delay
+    showScreen('host-intro');
+    setTimeout(() => {
       startGame();
-    } else {
-      console.error('Required game elements not found in DOM');
+    }, 3000);
+    
+    // Initialize analytics
+    Analytics.init();
+    Analytics.logEvent('Game', 'Initialize');
+  }
+
+  function showScreen(screenName) {
+    // Hide all screens
+    Object.values(elements.screens).forEach(screen => {
+      if (screen) screen.classList.add('hidden');
+    });
+    
+    // Show requested screen
+    if (elements.screens[screenName]) {
+      elements.screens[screenName].classList.remove('hidden');
+      gameState.currentScreen = screenName;
     }
   }
 
   function startGame() {
     // Reset game state
     gameState = {
-      currentScreen: 'game',
+      currentScreen: 'fast-money',
       score: 0,
+      round: 1,
       currentQuestion: null,
       strikes: 0,
-      timerId: null
+      timerId: null,
+      playedQuestions: new Set()
     };
     
-    // Update display and show first question
+    // Update display
     updateScoreDisplay();
-    showNextQuestion();
+    updateRoundDisplay();
     
     // Show game screen
-    Object.values(elements.screens).forEach(screen => screen.classList.add('hidden'));
-    elements.screens.game.classList.remove('hidden');
+    showScreen('fast-money');
+    
+    // Show first question
+    showNextQuestion();
+    
+    Analytics.logEvent('Game', 'Start');
+  }
+
+  function updateScoreDisplay() {
+    if (elements.game.scoreDisplay) {
+      elements.game.scoreDisplay.textContent = gameState.score;
+    }
+  }
+
+  function updateRoundDisplay() {
+    if (elements.game.roundDisplay) {
+      elements.game.roundDisplay.textContent = `ROUND ${gameState.round}`;
+    }
   }
 
   function showNextQuestion() {
@@ -250,13 +355,9 @@ const GameShow = (function() {
       return;
     }
 
-    // Initialize playedQuestions if it doesn't exist
-    if (!gameState.playedQuestions) {
-      gameState.playedQuestions = new Set();
-    }
-
-    const availableQuestions = gameContent.questions.filter(q => 
-      !gameState.playedQuestions.has(q)
+    // Filter questions that haven't been played
+    const availableQuestions = gameContent.questions.filter(question => 
+      !Array.from(gameState.playedQuestions).includes(question)
     );
 
     if (availableQuestions.length === 0) {
@@ -269,19 +370,29 @@ const GameShow = (function() {
     gameState.playedQuestions.add(gameState.currentQuestion);
     
     // Update DOM with new question
-    elements.game.questionText.textContent = gameState.currentQuestion.question;
-    elements.game.optionsContainer.innerHTML = '';
+    if (elements.game.questionDisplay) {
+      elements.game.questionDisplay.textContent = gameState.currentQuestion.question;
+    }
     
-    // Create multiple choice buttons
-    gameState.currentQuestion.options.forEach(option => {
-      const button = document.createElement('button');
-      button.className = 'option-button';
-      button.innerHTML = `
-        <span class="option-letter">${option.letter}</span>
-        <span class="option-text">${option.text}</span>
-      `;
-      button.onclick = () => selectAnswer(option);
-      elements.game.optionsContainer.appendChild(button);
+    if (elements.game.optionsContainer) {
+      elements.game.optionsContainer.innerHTML = '';
+      
+      // Create multiple choice buttons
+      gameState.currentQuestion.options.forEach(option => {
+        const button = document.createElement('button');
+        button.className = 'option-button';
+        button.innerHTML = `
+          <span class="option-letter">${option.letter}</span>
+          <span class="option-text">${option.text}</span>
+        `;
+        button.addEventListener('click', () => selectAnswer(option));
+        elements.game.optionsContainer.appendChild(button);
+      });
+    }
+    
+    Analytics.logEvent('Game', 'NewQuestion', { 
+      question: gameState.currentQuestion.question,
+      round: gameState.round
     });
   }
 
@@ -300,78 +411,133 @@ const GameShow = (function() {
       btn.querySelector('.option-text').textContent === selectedOption.text
     );
     
-    selectedButton.classList.add('selected');
-    const pointsDisplay = document.createElement('div');
-    pointsDisplay.className = 'points-display';
-    pointsDisplay.textContent = `${points} POINTS!`;
-    selectedButton.appendChild(pointsDisplay);
+    if (selectedButton) {
+      selectedButton.classList.add('selected');
+      const pointsDisplay = document.createElement('div');
+      pointsDisplay.className = 'points-display';
+      pointsDisplay.textContent = `${points} POINTS!`;
+      selectedButton.appendChild(pointsDisplay);
+    }
     
     soundManager.play(points > 15 ? 'correct' : 'incorrect');
     if (points > 15) AnimationManager.celebrate();
+    
+    Analytics.logEvent('Game', 'AnswerSelected', {
+      question: gameState.currentQuestion.question,
+      answer: selectedOption.text,
+      points: points
+    });
     
     // Show insight and move to next question
     setTimeout(() => {
       const insight = document.createElement('div');
       insight.className = 'insight';
       insight.textContent = gameState.currentQuestion.insight;
-      document.querySelector('.question-container').appendChild(insight);
+      const questionArea = document.querySelector('.question-area');
+      if (questionArea) {
+        questionArea.appendChild(insight);
+      }
       
       setTimeout(() => {
-        if (document.querySelector('.insight')) {
-          document.querySelector('.insight').remove();
+        if (insight && insight.parentNode) {
+          insight.parentNode.removeChild(insight);
         }
-        gameState.currentQuestion = null;
-        showNextQuestion();
+        
+        // Check if we should go to next round
+        if (gameState.playedQuestions.size % 3 === 0 && gameState.playedQuestions.size > 0) {
+          gameState.round++;
+          updateRoundDisplay();
+          showCommercialBreak();
+        } else {
+          gameState.currentQuestion = null;
+          showNextQuestion();
+        }
       }, 2000);
     }, 1500);
   }
 
-  function updateScoreDisplay() {
-    elements.game.scoreDisplay.textContent = `Score: ${gameState.score}`;
+  function showCommercialBreak() {
+    showScreen('commercial');
+    
+    setTimeout(() => {
+      showScreen('fast-money');
+      gameState.currentQuestion = null;
+      showNextQuestion();
+    }, 4000);
+    
+    Analytics.logEvent('Game', 'CommercialBreak', { round: gameState.round });
   }
 
   function endGame() {
     showFinalResults();
+    Analytics.logEvent('Game', 'End', { finalScore: gameState.score });
   }
 
-  async function showFinalResults() {
-    soundManager.play('success');
-    soundManager.sounds.background.pause();
+  function showFinalResults() {
+    // Stop background sound
+    if (soundManager.sounds.background) {
+      soundManager.sounds.background.pause();
+    }
     
+    soundManager.play('success');
+    
+    // Calculate performance level
     const performanceLevel = gameContent.performanceLevels.find(level => 
       gameState.score >= level.threshold
     ) || gameContent.performanceLevels[gameContent.performanceLevels.length - 1];
 
-    await AnimationManager.hideElement(elements.screens.game);
+    // Update results screen
+    const finalScoreElement = document.getElementById('final-score');
+    if (finalScoreElement) {
+      finalScoreElement.textContent = gameState.score;
+    }
     
-    const resultsScreen = elements.screens.results;
-    resultsScreen.innerHTML = `
-      <h2>${performanceLevel.title}</h2>
-      <div class="final-score">Score: ${gameState.score}</div>
-      <p>${performanceLevel.message}</p>
-      <div class="skills-list">
-        ${performanceLevel.skills.map(skill => `<span class="skill-badge">${skill}</span>`).join('')}
-      </div>
-      <button class="play-again">Play Again</button>
-    `;
-
-    await AnimationManager.showElement(resultsScreen);
+    const performanceDetails = document.getElementById('performance-details');
+    if (performanceDetails) {
+      performanceDetails.innerHTML = `
+        <h4>${performanceLevel.title}</h4>
+        <p>${performanceLevel.message}</p>
+      `;
+    }
     
-    resultsScreen.querySelector('.play-again').addEventListener('click', () => {
-      resetGame();
-      startGame();
-    });
+    const unlockedSkills = document.getElementById('unlocked-skills');
+    if (unlockedSkills) {
+      unlockedSkills.innerHTML = performanceLevel.skills.map(skill => 
+        `<div class="skill-item">${skill}</div>`
+      ).join('');
+    }
+    
+    // Show results screen
+    showScreen('final-results');
   }
 
   function resetGame() {
     gameState = {
-      currentScreen: 'game',
+      currentScreen: 'host-intro',
       score: 0,
+      round: 1,
       currentQuestion: null,
       strikes: 0,
-      timerId: null
+      timerId: null,
+      playedQuestions: new Set()
     };
+    
     updateScoreDisplay();
+    updateRoundDisplay();
+    
+    // Restart background sound
+    if (soundManager.sounds.background) {
+      soundManager.sounds.background.currentTime = 0;
+      soundManager.play('background');
+    }
+    
+    // Show host intro then start game after delay
+    showScreen('host-intro');
+    setTimeout(() => {
+      startGame();
+    }, 3000);
+    
+    Analytics.logEvent('Game', 'Reset');
   }
 
   return {
@@ -385,5 +551,7 @@ const GameShow = (function() {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = GameShow;
 } else {
-  GameShow.init();
+  window.initGame = function() {
+    GameShow.init();
+  };
 }
