@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 };
 
-// Function to reset menu button styles
+// Function to reset menu button styles and ensure its visibility
 const resetMenuStyles = () => {
   if (menuButton) {
     menuButton.style.fontSize = ''; 
@@ -98,6 +98,8 @@ const resetMenuStyles = () => {
     menuButton.style.border = '2px solid var(--primary-color)';
     menuButton.style.color = 'var(--primary-color)';
     menuButton.style.background = 'transparent';
+    menuButton.style.display = 'block'; // Ensure it's visible
+    menuButton.style.opacity = '1';     // Ensure it's fully opaque
   }
 };
 
@@ -127,8 +129,11 @@ const resetMenuStyles = () => {
         landing.style.display = "none";
         mainContent.style.display = "block";
         document.body.style.overflow = "auto";
-        // Reveal the header (with your name and menu) after landing completes
+        // Reveal the header and menu button after landing completes
         gsap.to(header, { duration: 0.5, opacity: 1 });
+        gsap.to(menuButton, { duration: 0.5, opacity: 1 });
+        // Ensure menu button is visible and properly styled
+        menuButton.style.display = "block";
       }
     });
   };
@@ -183,7 +188,7 @@ const resetMenuStyles = () => {
       // Force display to flex regardless of current state
       tvGuide.style.display = 'flex';
       // Make sure it's above all other elements
-      tvGuide.style.zIndex = 9999; 
+      tvGuide.style.zIndex = 10001; // Higher than menu button to display over it
       // Delay opacity change to allow display change to take effect
       setTimeout(() => {
         tvGuide.style.opacity = 1;
