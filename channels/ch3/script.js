@@ -19,10 +19,10 @@
 // Sound Manager
 const soundManager = {
   sounds: {
-    correct: new Audio('../../audio/ka-ching.mp3'),
-    incorrect: new Audio('../../audio/click.mp3'),
-    success: new Audio('../../audio/whoosh.mp3'),
-    background: new Audio('../../audio/ticker-hum.mp3')
+    correct: new Audio('./audio/ka-ching.mp3'),
+    incorrect: new Audio('./audio/click.mp3'),
+    success: new Audio('./audio/whoosh.mp3'),
+    background: new Audio('./audio/ticker-hum.mp3')
   },
   
   play(soundId) {
@@ -283,11 +283,18 @@ const GameShow = (function() {
       playAgainBtn.addEventListener('click', resetGame);
     }
     
-    // Start background sound
-    soundManager.sounds.background.loop = true;
-    soundManager.sounds.background.volume = 0.3;
-    soundManager.play('background');
+    // Start background sound with error handling
+    try {
+      soundManager.sounds.background.loop = true;
+      soundManager.sounds.background.volume = 0.3;
+      soundManager.play('background');
+    } catch (error) {
+      console.warn('Could not play background sound:', error);
+    }
 
+    // Initialize timer
+    initializeTimer();
+    
     // Show host intro then start game after delay
     showScreen('host-intro');
     setTimeout(() => {
@@ -297,6 +304,53 @@ const GameShow = (function() {
     // Initialize analytics
     Analytics.init();
     Analytics.logEvent('Game', 'Initialize');
+  }
+  
+  // Initialize and setup timer functionality
+  function initializeTimer() {
+    if (elements.game.timerDisplay && elements.game.timerBar) {
+      // Initialize timer state
+      gameState.timeLeft = 30; // Default 30 seconds
+      elements.game.timerDisplay.textContent = gameState.timeLeft;
+      
+      // Reset any existing timer
+      if (gameState.timerId) {
+        clearInterval(gameState.timerId);
+        gameState.timerId = null;
+      }
+    }
+  }
+  
+  // Start the timer counting down
+  function startTimer() {
+    if (!elements.game.timerDisplay || !elements.game.timerBar) return;
+    
+    // Reset timer display
+    gameState.timeLeft = 30;
+    elements.game.timerDisplay.textContent = gameState.timeLeft;
+    elements.game.timerBar.style.width = '100%';
+    
+    // Clear any existing timer
+    if (gameState.timerId) {
+      clearInterval(gameState.timerId);
+    }
+    
+    // Start new timer
+    gameState.timerId = setInterval(() => {
+      gameState.timeLeft--;
+      
+      if (gameState.timeLeft <= 0) {
+        clearInterval(gameState.timerId);
+        gameState.timeLeft = 0;
+        // Time's up logic would go here
+      }
+      
+      // Update UI
+      elements.game.timerDisplay.textContent = gameState.timeLeft;
+      const percentLeft = (gameState.timeLeft / 30) * 100;
+      elements.game.timerBar.style.width = `${percentLeft}%`;
+      
+    }, 1000);
   }
 
   function showScreen(screenName) {
@@ -321,6 +375,7 @@ const GameShow = (function() {
       currentQuestion: null,
       strikes: 0,
       timerId: null,
+      timeLeft: 30,
       playedQuestions: new Set()
     };
     
@@ -331,10 +386,46 @@ const GameShow = (function() {
     // Show game screen
     showScreen('fast-money');
     
+    // Start timer
+    startTimer();
+    
     // Show first question
     showNextQuestion();
     
+    // Populate commercial break skill items dynamically
+    populateCommercialSkills();
+    
     Analytics.logEvent('Game', 'Start');
+  }
+  
+  // Populate skills in the commercial break dynamically
+  function populateCommercialSkills() {
+    const skillShowcase = document.querySelector('.skill-showcase');
+    if (!skillShowcase) return;
+    
+    // Clear existing skills
+    skillShowcase.innerHTML = '';
+    
+    // Sample skills to show
+    const skills = [
+      { name: "Creative Direction", icon: "lightbulb" },
+      { name: "Brand Development", icon: "bullseye" },
+      { name: "Digital Strategy", icon: "chart-network" }
+    ];
+    
+    // Add skills to showcase
+    skills.forEach(skill => {
+      const skillItem = document.createElement('div');
+      skillItem.className = 'skill-item';
+      skillItem.setAttribute('data-skill', skill.name);
+      
+      skillItem.innerHTML = `
+        <i class="fas fa-${skill.icon}"></i>
+        <span>${skill.name}</span>
+      `;
+      
+      skillShowcase.appendChild(skillItem);
+    });
   }
 
   function updateScoreDisplay() {
@@ -355,9 +446,9 @@ const GameShow = (function() {
       return;
     }
 
-    // Filter questions that haven't been played
+    // Filter questions that haven't been played - use proper Set checking
     const availableQuestions = gameContent.questions.filter(question => 
-      !Array.from(gameState.playedQuestions).includes(question)
+      !gameState.playedQuestions.has(question)
     );
 
     if (availableQuestions.length === 0) {
@@ -459,9 +550,20 @@ const GameShow = (function() {
   function showCommercialBreak() {
     showScreen('commercial');
     
+    // Update skills for this round
+    populateCommercialSkills();
+    
+    // Pause the timer during commercial break
+    if (gameState.timerId) {
+      clearInterval(gameState.timerId);
+      gameState.timerId = null;
+    }
+    
     setTimeout(() => {
       showScreen('fast-money');
       gameState.currentQuestion = null;
+      // Restart timer for next round
+      startTimer();
       showNextQuestion();
     }, 4000);
     

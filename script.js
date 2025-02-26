@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Toggle guide when menu button is clicked
   menuButton.addEventListener('click', () => {
-    const isCurrentlyVisible = tvGuide.style.display === 'flex' && tvGuide.style.opacity === '1';
+    const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity) === 1;
     toggleTVGuide(!isCurrentlyVisible);
   });
   
