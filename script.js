@@ -184,11 +184,18 @@ const resetMenuStyles = () => {
 
   // --- TV Guide Menu Toggle ---
   const toggleTVGuide = show => {
+    // Always make sure menu button is visible regardless of channel
+    if (menuButton) {
+      menuButton.style.display = 'block';
+      menuButton.style.opacity = '1';
+      menuButton.style.zIndex = '999999';
+    }
+    
     if (show) {
       // Force display to flex regardless of current state
       tvGuide.style.display = 'flex';
-      // Make sure it's above all other elements
-      tvGuide.style.zIndex = 10001; // Higher than menu button to display over it
+      // Make sure it's above all other elements but below the menu button
+      tvGuide.style.zIndex = '999998';
       // Delay opacity change to allow display change to take effect
       setTimeout(() => {
         tvGuide.style.opacity = 1;
@@ -230,6 +237,17 @@ const resetMenuStyles = () => {
           // If leaving channel 3, reset menu button styles
           if (currentChannel === 'section3') {
             resetMenuStyles();
+          }
+          
+          // Hide all channel numbers first
+          document.querySelectorAll('.channel-number-overlay').forEach(overlay => {
+            overlay.style.display = 'none';
+          });
+          
+          // Only show the current channel number
+          const currentOverlay = document.querySelector(`#${newChannel} .channel-number-overlay`);
+          if (currentOverlay) {
+            currentOverlay.style.display = 'block';
           }
           
           currentChannel = newChannel;

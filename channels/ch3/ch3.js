@@ -32,6 +32,14 @@ export async function init() {
     const html = await response.text();
     container.innerHTML = html;
     
+    // Make sure the menu button is visible
+    const menuButton = document.getElementById('menuButton');
+    if (menuButton) {
+      menuButton.style.zIndex = '999999';
+      menuButton.style.display = 'block';
+      menuButton.style.opacity = '1';
+    }
+    
     // Add channel number overlay with high z-index to ensure visibility
     ensureChannelNumberVisible(container);
     
@@ -45,6 +53,15 @@ export async function init() {
     gameInitialized = true;
     
     console.log("Channel 3 game show initialized successfully");
+    
+    // Force the game to be visible
+    const gameContainer = container.querySelector('#game-show-container');
+    if (gameContainer) {
+      gameContainer.style.display = 'flex';
+      gameContainer.style.visibility = 'visible';
+      gameContainer.style.opacity = '1';
+    }
+    
   } catch (error) {
     console.error("Failed to load Channel 3 markup:", error);
     const container = document.getElementById('section3');
@@ -124,12 +141,34 @@ async function initializeGameShow() {
     menuButton.style.pointerEvents = 'auto';
   }
   
-  // Initialize the Game Show Manager
-  const GameShowManager = new GameShow();
-  GameShowManager.init();
-  
-  // Make sure we expose the game manager globally for debugging
-  window.GameShowManager = GameShowManager;
+  try {
+    // Initialize the Game Show Manager
+    const GameShowManager = new GameShow();
+    GameShowManager.init();
+    
+    // Make sure we expose the game manager globally for debugging
+    window.GameShowManager = GameShowManager;
+    
+    // Ensure all game screens are properly initialized
+    const hostIntro = document.getElementById('host-intro');
+    if (hostIntro) {
+      hostIntro.classList.remove('hidden');
+    }
+    
+    console.log("Game show initialized successfully");
+  } catch (error) {
+    console.error("Error initializing game show:", error);
+    // Fallback display in case of initialization error
+    const container = document.getElementById('game-show-container');
+    if (container) {
+      container.innerHTML = `
+        <div style="color: white; text-align: center; padding: 20px;">
+          <h2>Game Show Coming Soon!</h2>
+          <p>Test your skills with our interactive game experience.</p>
+        </div>
+      `;
+    }
+  }
 }
 
 // Game Show Class
