@@ -20,6 +20,12 @@
   color: var(--game-primary);
   overflow: hidden;
   font-family: 'Merova', sans-serif;
+  padding: 80px 20px 70px 20px; /* Add padding to avoid overlap with header/footer */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Channel Information */
