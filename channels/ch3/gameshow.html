@@ -1,0 +1,90 @@
+<!-- channels/ch3/gameshow.html -->
+<div id="game-show-container">
+  <!-- TV Static Overlay -->
+  <div id="tv-static"></div>
+  
+  <!-- Channel Info -->
+  <div id="channel-info">
+    <div class="channel-number">CH 3</div>
+    <div class="recording-dot"></div>
+    <div class="timestamp">LIVE</div>
+  </div>
+  
+  <!-- Host Introduction Screen -->
+  <div id="host-intro" class="game-screen">
+    <div class="host-content">
+      <div class="host-image"></div>
+      <h1>Skill Feud!</h1>
+      <div class="host-speech">
+        <p>"Welcome to Skill Feud! I'm your host Kayron Calloway. Today we're testing your knowledge about my professional expertise in business analytics, creative direction, and strategic development."</p>
+        <p>"Are you ready to play? Get set for Fast Money!"</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Game Round Screen -->
+  <div id="game-round" class="game-screen hidden">
+    <div class="game-header">
+      <div class="round-info">
+        <span id="round-number">ROUND 1</span>
+        <div class="timer-container">
+          <div id="timer-bar"></div>
+          <span id="timer">30</span>
+        </div>
+      </div>
+      <div class="score-display">
+        <span>SCORE</span>
+        <span id="current-score">0</span>
+      </div>
+    </div>
+
+    <div class="question-area">
+      <div id="question-display"></div>
+      <div id="options-container"></div>
+    </div>
+  </div>
+
+  <!-- Commercial Break Screen -->
+  <div id="commercial-break" class="game-screen hidden">
+    <div class="commercial-content">
+      <h2>We'll be right back after these messages!</h2>
+      <div class="skill-showcase">
+        <!-- Skills will be populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Final Results Screen -->
+  <div id="final-results" class="game-screen hidden">
+    <div class="results-header">
+      <h2>SHOW WRAP</h2>
+      <div class="final-score">TOTAL SCORE: <span id="final-score">0</span></div>
+    </div>
+    
+    <div class="results-content">
+      <div class="performance-summary">
+        <h3>Performance Analysis</h3>
+        <div id="performance-details"></div>
+      </div>
+      
+      <div class="unlocked-content">
+        <h3>Your Professional Strengths</h3>
+        <div id="unlocked-skills"></div>
+      </div>
+    </div>
+
+    <div class="call-to-action">
+      <a href="#portfolio" class="cta-button">View Full Portfolio</a>
+      <a href="#contact" class="cta-button">Get in Touch</a>
+    </div>
+
+    <button id="play-again-btn" class="play-again-button">PLAY AGAIN</button>
+  </div>
+
+  <!-- TV Effects -->
+  <div id="channel-change-effect"></div>
+  <div id="screen-glitch"></div>
+</div>
+
+<!-- Channel Indicator - Maintained for Consistency -->
+<div class="channel-number-overlay">CH 03</div>
