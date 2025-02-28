@@ -123,6 +123,26 @@
   margin-bottom: 1rem;
 }
 
+.start-game-button {
+  background: var(--game-accent);
+  color: black;
+  padding: 15px 30px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  margin-top: 20px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  transition: all 0.3s ease;
+  animation: pulse 2s infinite;
+}
+
+.start-game-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+}
+
 /* Game Round Screen */
 .game-header {
   width: 100%;

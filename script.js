@@ -134,8 +134,30 @@ const resetMenuStyles = () => {
         gsap.to(menuButton, { duration: 0.5, opacity: 1 });
         // Ensure menu button is visible and properly styled
         menuButton.style.display = "block";
+        menuButton.style.zIndex = "999999";
+        menuButton.style.pointerEvents = "auto";
+        
+        // Force the menu button to be top-most and interactive
+        ensureMenuButtonVisibility();
       }
     });
+  };
+  
+  // Function to ensure menu button is always visible and interactive
+  const ensureMenuButtonVisibility = () => {
+    if (menuButton) {
+      menuButton.style.display = "block";
+      menuButton.style.opacity = "1";
+      menuButton.style.zIndex = "999999";
+      menuButton.style.position = "fixed";
+      menuButton.style.pointerEvents = "auto";
+      
+      // Re-attach event listener to ensure it works
+      menuButton.onclick = () => {
+        const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity) === 1;
+        toggleTVGuide(!isCurrentlyVisible);
+      };
+    }
   };
 
   powerButton.addEventListener('click', () => {
@@ -250,6 +272,9 @@ const resetMenuStyles = () => {
             currentOverlay.style.display = 'block';
           }
           
+          // ALWAYS ensure menu button is visible when changing channels
+          ensureMenuButtonVisibility();
+          
           currentChannel = newChannel;
           playRandomChannelSound();
           triggerChannelStatic();
@@ -260,6 +285,9 @@ const resetMenuStyles = () => {
             loadChannelContent(moduleName);
           }
           distortAndWarpContent();
+          
+          // Re-check menu button visibility after a slight delay to ensure it's not overridden
+          setTimeout(ensureMenuButtonVisibility, 500);
         }
       }
     });

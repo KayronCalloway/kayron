@@ -70,8 +70,8 @@
 /* Product Carousel */
 .product-carousel {
   display: flex;
-  width: 90%;
-  max-width: 1200px;
+  width: 85%;
+  max-width: 1100px;
   margin: 0 auto;
   position: relative;
   min-height: 450px;
@@ -282,7 +282,7 @@
 
 /* Testimonial Section */
 .testimonial-section {
-  width: 90%;
+  width: 80%;
   max-width: 800px;
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid var(--infomercial-accent);
@@ -314,7 +314,7 @@
 
 /* Call To Action */
 .cta-section {
-  width: 90%;
+  width: 80%;
   max-width: 600px;
   background: rgba(0, 0, 0, 0.7);
   border: 2px solid var(--infomercial-highlight);
