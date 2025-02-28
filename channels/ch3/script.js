@@ -152,75 +152,54 @@ const gameContent = {
   
   questions: [
     {
-      question: "What do people say is my biggest strength as a Creative Director?",
+      question: "What's Kayron's favorite programming language?",
       options: [
-        { letter: "A", text: "Design Thinking", points: 35 },
-        { letter: "B", text: "Team Leadership", points: 25 },
-        { letter: "C", text: "Problem Solving", points: 15 },
-        { letter: "D", text: "Communication", points: 5 }
+        { letter: "A", text: "JavaScript", points: 20 },
+        { letter: "B", text: "Python", points: 10 },
+        { letter: "C", text: "Java", points: 5 },
+        { letter: "D", text: "C++", points: 5 }
       ],
-      insight: "Design thinking is at the core of how I approach every creative challenge!"
+      insight: "JavaScript is Kayron's go-to language for both frontend and backend development!"
     },
     {
-      question: "Name something I'm passionate about outside of work",
+      question: "Which project is Kayron most proud of?",
       options: [
-        { letter: "A", text: "Photography", points: 40 },
-        { letter: "B", text: "Music", points: 25 },
-        { letter: "C", text: "Travel", points: 15 },
-        { letter: "D", text: "Fashion", points: 5 }
+        { letter: "A", text: "AI-powered chatbot", points: 10 },
+        { letter: "B", text: "Personal portfolio website", points: 5 },
+        { letter: "C", text: "Game development project", points: 15 },
+        { letter: "D", text: "Machine learning model", points: 20 }
       ],
-      insight: "Photography helps me see the world through a different lens!"
+      insight: "Kayron's passion for AI and machine learning shines through in his projects!"
     },
     {
-      question: "What's my favorite type of project to work on?",
+      question: "What's Kayron's preferred development environment?",
       options: [
-        { letter: "A", text: "Brand Identity", points: 35 },
-        { letter: "B", text: "User Experience", points: 25 },
-        { letter: "C", text: "Digital Innovation", points: 15 },
-        { letter: "D", text: "Interactive Design", points: 5 }
+        { letter: "A", text: "VS Code", points: 20 },
+        { letter: "B", text: "Sublime Text", points: 5 },
+        { letter: "C", text: "IntelliJ IDEA", points: 10 },
+        { letter: "D", text: "Vim", points: 15 }
       ],
-      insight: "I love creating unique brand identities that tell compelling stories!"
-    },
-    {
-      question: "What's my go-to software for creative work?",
-      options: [
-        { letter: "A", text: "Adobe Suite", points: 35 },
-        { letter: "B", text: "Figma", points: 25 },
-        { letter: "C", text: "Sketch", points: 15 },
-        { letter: "D", text: "Procreate", points: 5 }
-      ],
-      insight: "Adobe Suite has been my trusted companion throughout my creative journey!"
-    },
-    {
-      question: "What do my colleagues appreciate most about working with me?",
-      options: [
-        { letter: "A", text: "Creative Vision", points: 35 },
-        { letter: "B", text: "Mentorship", points: 25 },
-        { letter: "C", text: "Innovation", points: 15 },
-        { letter: "D", text: "Reliability", points: 5 }
-      ],
-      insight: "I believe in fostering creativity and growth in every team member!"
+      insight: "VS Code's extensibility and integrated features make it Kayron's top choice!"
     }
   ],
-  
   performanceLevels: [
     {
-      threshold: 300,
-      title: "My Best Friend!",
-      message: "Wow, you really know me well! We must have worked together or you've been following my journey closely!",
-      skills: ["Creative Vision", "Leadership Style", "Personal Interests"]
+      threshold: 50,
+      title: "Tech Virtuoso!",
+      message: "You really know your stuff! Your understanding of technology and development is impressive.",
+      skills: ["Advanced Problem Solving", "Technical Excellence", "Innovation"]
     },
     {
-      threshold: 200,
-      title: "Close Colleague!",
-      message: "Great job! You have a solid understanding of who I am and what I do!",
-      skills: ["Work Style", "Creative Process", "Professional Goals"]
+      threshold: 30,
+      title: "Rising Star!",
+      message: "Great job! You've shown a solid grasp of development concepts.",
+      skills: ["Problem Solving", "Technical Knowledge", "Quick Learning"]
     },
     {
-      threshold: 100,
-      title: "New Friend!",
-      message: "You're getting to know me! Keep learning about my journey in creative leadership!",
-      skills: ["Basic Background", "Career Highlights", "Creative Approach"]
+      threshold: 0,
+      title: "Tech Explorer!",
+      message: "Good start! Keep exploring and learning about technology.",
+      skills: ["Curiosity", "Determination", "Growth Mindset"]
     }
   ]
 };
@@ -649,21 +628,7 @@ const GameShow = (function() {
   };
 })();
 
-// Initialize game when channel loads
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = GameShow;
-} else {
-  window.initGame = function() {
-    // Make sure all previous instances are cleaned up
-    if (GameShow && GameShow.gameState && GameShow.gameState.timerId) {
-      clearInterval(GameShow.gameState.timerId);
-    }
-    
-    // Ensure animations and sounds are properly initialized
-    if (AnimationManager && soundManager) {
-      GameShow.init();
-    } else {
-      console.error("Required dependencies for game not loaded");
-    }
-  };
-}
+// Initialize game when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  GameShow.init();
+});
