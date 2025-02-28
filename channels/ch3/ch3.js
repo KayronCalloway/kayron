@@ -286,13 +286,8 @@ class GameShow {
     // Start background sound
     this.playSound('background', { loop: true, volume: 0.3 });
     
-    // Show host intro and start the game
+    // Show host intro screen only - wait for button click to start
     this.showScreen('host-intro');
-    
-    // Auto-start game after delay
-    setTimeout(() => {
-      this.startGame();
-    }, 3000);
   }
   
   // Cache DOM elements for better performance
@@ -322,6 +317,24 @@ class GameShow {
   
   // Set up game event listeners
   setupEvents() {
+    // Start game button
+    const startGameBtn = document.getElementById('start-game-button');
+    if (startGameBtn) {
+      startGameBtn.addEventListener('click', () => {
+        this.startGame();
+        // Add flash effect when clicked
+        gsap.to(startGameBtn, {
+          backgroundColor: "#fff",
+          duration: 0.1,
+          yoyo: true,
+          repeat: 1,
+          onComplete: () => {
+            startGameBtn.style.display = 'none';
+          }
+        });
+      });
+    }
+    
     // Play again button
     if (this.elements.ui.playAgainBtn) {
       this.elements.ui.playAgainBtn.addEventListener('click', () => this.resetGame());
@@ -335,6 +348,15 @@ class GameShow {
         const options = this.elements.ui.optionsContainer?.children;
         if (options && options[index]) {
           options[index].click();
+        }
+      }
+      
+      // Enter key to start game when on intro screen
+      if (e.key === 'Enter' && document.getElementById('host-intro') && 
+          !document.getElementById('host-intro').classList.contains('hidden')) {
+        const startGameBtn = document.getElementById('start-game-button');
+        if (startGameBtn) {
+          startGameBtn.click();
         }
       }
     });
