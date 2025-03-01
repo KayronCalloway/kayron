@@ -1,437 +1,263 @@
-import { dom, sound, setupEventListeners, animations, errorTracker } from './utils.js';
-import channelManager from './channelManager.js';
+document.addEventListener('DOMContentLoaded', () => {
+  // --- DOM Elements ---
+  const powerButton = document.getElementById('powerButton');
+  const landing = document.getElementById('landing');
+  const landingName = document.getElementById('landingName');
+  const landingSubtitle = document.getElementById('landingSubtitle');
+  const mainContent = document.getElementById('mainContent');
+  const header = document.getElementById('header');
+  const menuButton = document.getElementById('menuButton');
+  const tvGuide = document.getElementById('tvGuide');
+  const closeGuide = document.getElementById('closeGuide');
+  const guideItems = document.querySelectorAll('.tv-guide-list nav ul li');
+  const staticOverlay = document.getElementById('staticOverlay');
+  const clickSound = document.getElementById('clickSound');
+  const backToTop = document.getElementById('backToTop');
 
-// Initialize the app when DOM is loaded
-document.addEventListener('DOMContentLoaded', initApp);
+  let landingSequenceComplete = false;
+  let autoScrollTimeout;
+  let currentChannel = null;
 
-/**
- * Initialize the application
- */
-function initApp() {
-  // Register channel modules
-  registerChannels();
-  
-  // Initialize DOM elements cache
-  cacheElements();
-  
-  // Application state
-  const state = {
-    landingSequenceComplete: false,
-    autoScrollTimeout: null,
-    currentChannel: null
+  // --- Channel-Click Sounds ---
+  const channelSounds = Array.from({ length: 11 }, (_, i) => {
+    const audio = new Audio(`audio/channel-click${i + 1}.aif`);
+    audio.preload = 'auto';
+    return audio;
+  });
+  const playRandomChannelSound = () => {
+    const randomIndex = Math.floor(Math.random() * channelSounds.length);
+    channelSounds[randomIndex].play().catch(error => console.error('Audio playback failed:', error));
   };
-  
-  // Set up event listeners
-  setupAppEventListeners(state);
-  
-  // Initialize intersection observers for channel detection
-  setupChannelObservers(state);
-  
-  // Preload assets
-  preloadAssets();
-  
-  // Set up analytics
-  setupAnalytics();
-  
-  console.log('TV Portfolio initialized successfully');
-}
 
-/**
- * Register all channel modules with the channel manager
- */
-function registerChannels() {
-  channelManager.registerAll({
-    'home': { 
-      path: './channels/ch1/home.js',
-      sectionId: 'section1' 
-    },
-    'ch2': { 
-      path: './channels/ch2/ch2.js',
-      sectionId: 'section2' 
-    },
-    'skill games': { 
-      path: './channels/ch3/ch3.js',
-      sectionId: 'section3' 
-    },
-    'under the influence': { 
-      path: './channels/ch4/ch4.js',
-      sectionId: 'section4',
-      preload: true
+  // --- Analytics Reporting using Web Vitals ---
+  const sendToAnalytics = (metricName, metric) => {
+    const body = { [metricName]: metric.value, path: window.location.pathname };
+    navigator.sendBeacon('/analytics', JSON.stringify(body));
+    console.log(`Tracked ${metricName}:`, metric.value);
+  };
+  webVitals.getCLS(metric => sendToAnalytics('CLS', metric));
+  webVitals.getFID(metric => sendToAnalytics('FID', metric));
+  webVitals.getLCP(metric => sendToAnalytics('LCP', metric));
+
+  // --- Haptic Feedback ---
+  const triggerHaptic = () => {
+    if (navigator.vibrate) {
+      navigator.vibrate([50, 30, 50]);
+    }
+  };
+
+  // --- Swipe Navigation ---
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+  document.addEventListener('touchend', e => {
+    const touchEndX = e.changedTouches[0].screenX;
+    const diffX = touchStartX - touchEndX;
+    if (Math.abs(diffX) > 50) {
+      const direction = diffX > 0 ? 'next' : 'prev';
+      navigateChannels(direction);
     }
   });
-}
+  const navigateChannels = direction => {
+    const sections = Array.from(document.querySelectorAll('.channel-section'));
+    const currentIndex = sections.findIndex(sec => sec.id === currentChannel);
+    let targetIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
+    targetIndex = Math.max(0, Math.min(sections.length - 1, targetIndex));
+    sections[targetIndex].scrollIntoView({ behavior: 'smooth' });
+    console.log(`Now viewing channel ${targetIndex + 1}`);
+    triggerHaptic();
+  };
 
-/**
- * Cache commonly used DOM elements
- */
-function cacheElements() {
-  // UI Elements
-  dom.get('#powerButton');
-  dom.get('#landing');
-  dom.get('#landingName');
-  dom.get('#landingSubtitle');
-  dom.get('#mainContent');
-  dom.get('#header');
-  dom.get('#menuButton');
-  dom.get('#tvGuide');
-  dom.get('#closeGuide');
-  dom.get('#staticOverlay');
-  dom.get('#clickSound');
-  dom.get('#backToTop');
-  
-  // Channel sections
-  dom.get('#section1');
-  dom.get('#section2');
-  dom.get('#section3');
-  dom.get('#section4');
-  
-  // Guide items
-  dom.getAll('.tv-guide-list nav ul li');
-}
-
-/**
- * Setup event listeners for the application
- * @param {Object} state - Application state object
- */
-function setupAppEventListeners(state) {
-  const powerButton = dom.get('#powerButton');
-  const landing = dom.get('#landing');
-  const mainContent = dom.get('#mainContent');
-  const menuButton = dom.get('#menuButton');
-  const tvGuide = dom.get('#tvGuide');
-  const closeGuide = dom.get('#closeGuide');
-  const backToTop = dom.get('#backToTop');
-  const guideItems = dom.getAll('.tv-guide-list nav ul li');
-  
-  // Power button click handler
-  if (powerButton) {
-    powerButton.addEventListener('click', () => {
-      // Play click sound
-      sound.play('./audio/click.mp3');
-      
-      // Start landing sequence
-      startLandingSequence(state);
-    });
-    
-    // Touch effects for power button
-    powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
-    powerButton.addEventListener('touchend', () => 
-      setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
-    );
-  }
-  
-  // Menu button click handler
-  if (menuButton && tvGuide) {
-    menuButton.addEventListener('click', () => {
-      const isCurrentlyVisible = tvGuide.style.display === 'flex' && 
-                                parseFloat(tvGuide.style.opacity) === 1;
-      toggleTVGuide(!isCurrentlyVisible);
-    });
-  }
-  
-  // Close guide button
-  if (closeGuide) {
-    closeGuide.addEventListener('click', () => toggleTVGuide(false));
-  }
-  
-  // Guide item click handlers
-  if (guideItems.length) {
-    guideItems.forEach(item => {
-      item.addEventListener('click', () => {
-        const targetSection = document.getElementById(item.getAttribute('data-target'));
-        if (targetSection) {
-          targetSection.scrollIntoView({ behavior: 'smooth' });
-          toggleTVGuide(false);
-          
-          // Get channel title from DOM
-          const channelTitle = item.querySelector('.channel-title')?.textContent || 'channel';
-          console.log(`Now viewing ${channelTitle}`);
-          
-          // Haptic feedback
-          triggerHaptic();
-        }
-      });
-    });
-  }
-  
-  // Scroll handler for landing sequence
-  window.addEventListener('scroll', () => {
-    if (state.landingSequenceComplete && landing.style.display !== "none") {
-      clearTimeout(state.autoScrollTimeout);
-      revealMainContent();
+  // --- Dynamic Module Loading ---
+  const loadChannelContent = async moduleName => {
+  try {
+    let module;
+    if (moduleName === 'home') {
+      module = await import(`./channels/ch1/home.js`);
+    } else if (moduleName === 'ch2') {
+      module = await import(`./channels/ch2/ch2.js`);
+    } else if (moduleName === 'skill games') {
+      // Reset any global styles that might have been set by the game
+      resetMenuStyles();
+      module = await import(`./channels/ch3/ch3.js`);
+    } else if (moduleName === 'under the influence') {
+      module = await import(`./channels/ch4/ch4.js`);
     }
-  }, { once: true, passive: true });
-  
-  // Back to top button
-  if (backToTop) {
-    backToTop.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-    
-    // Show/hide back to top button based on scroll position
-    window.addEventListener('scroll', throttle(() => {
-      backToTop.style.display = window.pageYOffset > 300 ? 'block' : 'none';
-    }, 100));
+    module.init();
+  } catch (err) {
+    console.warn(`Module for ${moduleName} failed to load.`, err);
   }
-  
-  // Swipe navigation
-  setupSwipeNavigation();
-}
+};
 
-/**
- * Start the landing sequence animation
- * @param {Object} state - Application state object
- */
-function startLandingSequence(state) {
-  const powerButton = dom.get('#powerButton');
-  const landing = dom.get('#landing');
-  const landingName = dom.get('#landingName');
-  const landingSubtitle = dom.get('#landingSubtitle');
-  const staticOverlay = dom.get('#staticOverlay');
+// Function to reset menu button styles and ensure its visibility
+const resetMenuStyles = () => {
+  if (menuButton) {
+    menuButton.style.fontSize = ''; 
+    menuButton.style.padding = '10px 15px';
+    menuButton.style.border = '2px solid var(--primary-color)';
+    menuButton.style.color = 'var(--primary-color)';
+    menuButton.style.background = 'transparent';
+    menuButton.style.display = 'block'; // Ensure it's visible
+    menuButton.style.opacity = '1';     // Ensure it's fully opaque
+  }
+};
+
+
+  // --- Service Worker Registration ---
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js')
+        .then(reg => console.log('Service Worker registered:', reg))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    });
+  }
+
+  // --- Power Button Touch Glow ---
+  powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
+  powerButton.addEventListener('touchend', () =>
+    setTimeout(() => powerButton.classList.remove('touch-glow'), 200)
+  );
+
+  // --- Reveal Main Content & Reveal Header ---
+  const revealMainContent = () => {
+    window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
+    gsap.to(landing, {
+      duration: 0.5,
+      opacity: 0,
+      onComplete: () => {
+        landing.style.display = "none";
+        mainContent.style.display = "block";
+        document.body.style.overflow = "auto";
+        // Reveal the header and menu button after landing completes
+        gsap.to(header, { duration: 0.5, opacity: 1 });
+        gsap.to(menuButton, { duration: 0.5, opacity: 1 });
+        // Ensure menu button is visible and properly styled
+        menuButton.style.display = "block";
+        menuButton.style.zIndex = "999999";
+        menuButton.style.pointerEvents = "auto";
+        
+        // Force the menu button to be top-most and interactive
+        ensureMenuButtonVisibility();
+      }
+    });
+  };
   
-  // Disable power button to prevent multiple clicks
-  if (powerButton) {
+  // Function to ensure menu button is always visible and interactive
+  const ensureMenuButtonVisibility = () => {
+    if (menuButton) {
+      menuButton.style.display = "block";
+      menuButton.style.opacity = "1";
+      menuButton.style.zIndex = "999999";
+      menuButton.style.position = "fixed";
+      menuButton.style.pointerEvents = "auto";
+      
+      // Re-attach event listener to ensure it works
+      menuButton.onclick = () => {
+        const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity) === 1;
+        toggleTVGuide(!isCurrentlyVisible);
+      };
+    }
+  };
+
+  powerButton.addEventListener('click', () => {
     powerButton.style.pointerEvents = 'none';
-    
-    // Fade out power button
+    if (clickSound) {
+      clickSound.play().catch(error => console.error('Click sound failed:', error));
+    }
     gsap.to(powerButton, {
       duration: 0.3,
       opacity: 0,
       ease: "power2.out",
       onComplete: () => powerButton.style.display = "none"
     });
-  }
-  
-  // Create animation timeline
-  const tl = gsap.timeline({
-    onComplete: () => {
-      state.landingSequenceComplete = true;
-      state.autoScrollTimeout = setTimeout(() => {
-        if (landing.style.display !== "none") revealMainContent();
-      }, 3000);
-    }
+    const tl = gsap.timeline({
+      onComplete: () => {
+        landingSequenceComplete = true;
+        autoScrollTimeout = setTimeout(() => {
+          if (landing.style.display !== "none") revealMainContent();
+        }, 3000);
+      }
+    });
+    tl.to(landing, { duration: 0.15, backgroundColor: "#fff", ease: "power2.out" })
+      .to(landing, { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" })
+      .to(staticOverlay, { duration: 0.2, opacity: 0.3 })
+      .to(staticOverlay, { duration: 0.2, opacity: 0 })
+      .to(landingName, { duration: 1.2, width: "100%", opacity: 1, ease: "power2.out" })
+      .to(landingSubtitle, { duration: 0.7, opacity: 1, ease: "power2.out" }, "-=0.3")
+      .to("#landingSubtitle .subtitle-item", { duration: 1, opacity: 1, ease: "power2.out", stagger: 0.5 }, "+=0.3");
   });
-  
-  // Animation sequence
-  tl.to(landing, { duration: 0.15, backgroundColor: "#fff", ease: "power2.out" })
-    .to(landing, { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" })
-    .to(staticOverlay, { duration: 0.2, opacity: 0.3 })
-    .to(staticOverlay, { duration: 0.2, opacity: 0 })
-    .to(landingName, { duration: 1.2, width: "100%", opacity: 1, ease: "power2.out" })
-    .to(landingSubtitle, { duration: 0.7, opacity: 1, ease: "power2.out" }, "-=0.3")
-    .to("#landingSubtitle .subtitle-item", { duration: 1, opacity: 1, ease: "power2.out", stagger: 0.5 }, "+=0.3");
-}
 
-/**
- * Reveal the main content after landing sequence
- */
-function revealMainContent() {
-  const landing = dom.get('#landing');
-  const mainContent = dom.get('#mainContent');
-  const header = dom.get('#header');
-  const menuButton = dom.get('#menuButton');
-  
-  // Scroll to main content
-  window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
-  
-  // Fade out landing and show main content
-  gsap.to(landing, {
-    duration: 0.5,
-    opacity: 0,
-    onComplete: () => {
-      landing.style.display = "none";
-      mainContent.style.display = "block";
-      document.body.style.overflow = "auto";
-      
-      // Reveal header and menu button
-      gsap.to(header, { duration: 0.5, opacity: 1 });
-      gsap.to(menuButton, { duration: 0.5, opacity: 1 });
-      
-      // Ensure menu button is visible
-      ensureMenuButtonVisibility();
+  window.addEventListener('scroll', () => {
+    if (landingSequenceComplete && landing.style.display !== "none") {
+      clearTimeout(autoScrollTimeout);
+      revealMainContent();
     }
+  }, { once: true, passive: true });
+
+  // --- Back to Top Button ---
+  const toggleBackToTop = () => {
+    backToTop.style.display = window.pageYOffset > 300 ? 'block' : 'none';
+  };
+  window.addEventListener('scroll', throttle(toggleBackToTop, 100));
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
-}
 
-/**
- * Function to ensure menu button is always visible and interactive
- */
-function ensureMenuButtonVisibility() {
-  const menuButton = dom.get('#menuButton');
-  
-  if (menuButton) {
-    menuButton.style.display = "block";
-    menuButton.style.opacity = "1";
-    menuButton.style.zIndex = "var(--z-index-menu)";
-    menuButton.style.position = "fixed";
-    menuButton.style.pointerEvents = "auto";
-    
-    // Re-attach event listener to ensure it works
-    menuButton.onclick = () => {
-      const tvGuide = dom.get('#tvGuide');
-      const isCurrentlyVisible = tvGuide.style.display === 'flex' && 
-                                parseFloat(tvGuide.style.opacity) === 1;
-      toggleTVGuide(!isCurrentlyVisible);
-    };
-  }
-}
-
-/**
- * Toggle TV Guide visibility
- * @param {boolean} show - Whether to show or hide the guide
- */
-function toggleTVGuide(show) {
-  const tvGuide = dom.get('#tvGuide');
-  const menuButton = dom.get('#menuButton');
-  
-  // Always ensure menu button is visible
-  if (menuButton) {
-    menuButton.style.display = 'block';
-    menuButton.style.opacity = '1';
-    menuButton.style.zIndex = 'var(--z-index-menu)';
-  }
-  
-  if (show) {
-    // Force display to flex
-    tvGuide.style.display = 'flex';
-    // Set z-index just below menu button
-    tvGuide.style.zIndex = 'var(--z-index-guide)';
-    
-    // Delay opacity change to allow display change to take effect
-    setTimeout(() => {
-      tvGuide.style.opacity = 1;
-      tvGuide.setAttribute('aria-hidden', 'false');
-    }, 10);
-  } else {
-    tvGuide.style.opacity = 0;
-    tvGuide.setAttribute('aria-hidden', 'true');
-    setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
-  }
-}
-
-/**
- * Function to reset menu button styles
- */
-function resetMenuStyles() {
-  const menuButton = dom.get('#menuButton');
-  
-  if (menuButton) {
-    menuButton.style.fontSize = ''; 
-    menuButton.style.padding = 'var(--button-padding)';
-    menuButton.style.border = 'var(--button-border)';
-    menuButton.style.color = 'var(--primary-color)';
-    menuButton.style.background = 'transparent';
-    menuButton.style.display = 'block';
-    menuButton.style.opacity = '1';
-  }
-}
-
-/**
- * Haptic feedback function
- */
-function triggerHaptic() {
-  if (navigator.vibrate) {
-    navigator.vibrate([50, 30, 50]);
-  }
-}
-
-/**
- * Setup swipe navigation for mobile devices
- */
-function setupSwipeNavigation() {
-  let touchStartX = 0;
-  
-  document.addEventListener('touchstart', e => {
-    touchStartX = e.changedTouches[0].screenX;
-  }, { passive: true });
-  
-  document.addEventListener('touchend', e => {
-    const touchEndX = e.changedTouches[0].screenX;
-    const diffX = touchStartX - touchEndX;
-    
-    if (Math.abs(diffX) > 50) {
-      const direction = diffX > 0 ? 'next' : 'prev';
-      navigateChannels(direction);
+  // --- TV Guide Menu Toggle ---
+  const toggleTVGuide = show => {
+    // Always make sure menu button is visible regardless of channel
+    if (menuButton) {
+      menuButton.style.display = 'block';
+      menuButton.style.opacity = '1';
+      menuButton.style.zIndex = '999999';
     }
-  }, { passive: true });
-}
-
-/**
- * Navigate between channels
- * @param {string} direction - 'next' or 'prev'
- */
-function navigateChannels(direction) {
-  const sections = Array.from(document.querySelectorAll('.channel-section'));
-  const currentSectionId = channelManager.getActiveChannel();
-  
-  // Get the current section and index
-  const currentIndex = sections.findIndex(sec => 
-    sec.id === currentSectionId || 
-    sec.id === `section${currentSectionId}`
-  );
-  
-  // Calculate target index with bounds checking
-  let targetIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
-  targetIndex = Math.max(0, Math.min(sections.length - 1, targetIndex));
-  
-  // Scroll to target section
-  sections[targetIndex].scrollIntoView({ behavior: 'smooth' });
-  console.log(`Now viewing channel ${targetIndex + 1}`);
-  
-  // Provide haptic feedback
-  triggerHaptic();
-  
-  // Play channel change sound
-  playRandomChannelSound();
-}
-
-/**
- * Play a random channel change sound
- */
-function playRandomChannelSound() {
-  const randomIndex = Math.floor(Math.random() * 11) + 1;
-  sound.play(`./audio/channel-click${randomIndex}.aif`);
-}
-
-/**
- * Analytics setup using Web Vitals
- */
-function setupAnalytics() {
-  const sendToAnalytics = (metricName, metric) => {
-    const body = { [metricName]: metric.value, path: window.location.pathname };
     
-    try {
-      navigator.sendBeacon('/analytics', JSON.stringify(body));
-      console.log(`Tracked ${metricName}:`, metric.value);
-    } catch (error) {
-      errorTracker.track('Analytics', error);
+    if (show) {
+      // Force display to flex regardless of current state
+      tvGuide.style.display = 'flex';
+      // Make sure it's above all other elements but below the menu button
+      tvGuide.style.zIndex = '999998';
+      // Delay opacity change to allow display change to take effect
+      setTimeout(() => {
+        tvGuide.style.opacity = 1;
+        tvGuide.setAttribute('aria-hidden', 'false');
+      }, 10);
+    } else {
+      tvGuide.style.opacity = 0;
+      tvGuide.setAttribute('aria-hidden', 'true');
+      setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
     }
   };
   
-  if (typeof webVitals !== 'undefined') {
-    webVitals.getCLS(metric => sendToAnalytics('CLS', metric));
-    webVitals.getFID(metric => sendToAnalytics('FID', metric));
-    webVitals.getLCP(metric => sendToAnalytics('LCP', metric));
-  }
-}
-
-/**
- * Setup channel observers to detect when a channel is in view
- * @param {Object} state - Application state object
- */
-function setupChannelObservers(state) {
-  const observerOptions = { root: null, threshold: 0.7 };
+  // Toggle guide when menu button is clicked
+  menuButton.addEventListener('click', () => {
+    const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity) === 1;
+    toggleTVGuide(!isCurrentlyVisible);
+  });
   
+  closeGuide.addEventListener('click', () => toggleTVGuide(false));
+  guideItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const targetSection = document.getElementById(item.getAttribute('data-target'));
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+        toggleTVGuide(false);
+        console.log(`Now viewing ${item.querySelector('.channel-title').textContent}`);
+        triggerHaptic();
+      }
+    });
+  });
+
+  // --- Intersection Observer for Channel Transitions ---
+  const observerOptions = { root: null, threshold: 0.7 };
   const observerCallback = entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        const channelSection = entry.target;
-        const newChannelId = channelSection.id;
-        
-        // If this is a different channel than the current one
-        if (state.currentChannel !== newChannelId) {
-          // Reset styles if leaving Channel 3
-          if (state.currentChannel === 'section3') {
+        const newChannel = entry.target.id;
+        if (currentChannel !== newChannel) {
+          // If leaving channel 3, reset menu button styles
+          if (currentChannel === 'section3') {
             resetMenuStyles();
           }
           
@@ -440,177 +266,127 @@ function setupChannelObservers(state) {
             overlay.style.display = 'none';
           });
           
-          // Show current channel number
-          const currentOverlay = channelSection.querySelector('.channel-number-overlay');
+          // Only show the current channel number
+          const currentOverlay = document.querySelector(`#${newChannel} .channel-number-overlay`);
           if (currentOverlay) {
             currentOverlay.style.display = 'block';
           }
           
-          // Always ensure menu button visibility
+          // ALWAYS ensure menu button is visible when changing channels
           ensureMenuButtonVisibility();
           
-          // Update current channel
-          state.currentChannel = newChannelId;
-          
-          // Play channel change sound
+          currentChannel = newChannel;
           playRandomChannelSound();
-          
-          // Add TV static effect
           triggerChannelStatic();
-          
-          // Animate channel number
-          animateChannelNumber(newChannelId);
-          
-          // Log channel change
-          console.log(`Now viewing channel ${newChannelId.slice(-1)}`);
-          
-          // Load channel content through channel manager
-          const moduleName = channelSection.dataset.module;
+          animateChannelNumber(newChannel);
+          console.log(`Now viewing channel ${newChannel.slice(-1)}`);
+          const moduleName = entry.target.dataset.module;
           if (moduleName) {
-            channelManager.initChannel(moduleName);
+            loadChannelContent(moduleName);
           }
-          
-          // Apply channel transition effect
           distortAndWarpContent();
           
-          // Re-check menu button after slight delay
+          // Re-check menu button visibility after a slight delay to ensure it's not overridden
           setTimeout(ensureMenuButtonVisibility, 500);
         }
       }
     });
   };
-  
-  // Create observer and observe all channel sections
   const observer = new IntersectionObserver(observerCallback, observerOptions);
-  document.querySelectorAll('.channel-section').forEach(section => {
-    observer.observe(section);
-  });
-  
-  // Setup YouTube player audio control for Channel 1
-  setupYouTubeAudioControl('section1', 'youtubePlayer');
-  
-  // Setup YouTube player audio control for Channel 4
-  setupYouTubeAudioControl('section4', 'channel4Player');
-}
+  document.querySelectorAll('.channel-section').forEach(section => observer.observe(section));
 
-/**
- * Setup YouTube player audio control based on visibility
- * @param {string} sectionId - Section ID to observe
- * @param {string} playerName - Name of the YouTube player global variable
- */
-function setupYouTubeAudioControl(sectionId, playerName) {
-  const section = dom.get(`#${sectionId}`);
-  if (!section) return;
-  
-  const ytObserverOptions = { root: null, threshold: 0.7 };
-  
-  const ytObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.target.id === sectionId) {
-        const player = window[playerName];
-        
-        if (entry.intersectionRatio >= 0.7) {
-          if (player && typeof player.unMute === 'function') {
-            player.unMute();
-            console.log(`${sectionId} active: Unmuting video.`);
-          }
-        } else {
-          if (player && typeof player.mute === 'function') {
-            player.mute();
-            console.log(`${sectionId} inactive: Muting video.`);
-          }
-        }
-      }
-    });
-  }, ytObserverOptions);
-  
-  ytObserver.observe(section);
-}
-
-/**
- * Trigger the static overlay effect during channel changes
- */
-function triggerChannelStatic() {
-  const staticOverlay = dom.get('#staticOverlay');
-  
-  if (staticOverlay) {
+  // --- Trigger Static Overlay Effect ---
+  const triggerChannelStatic = () => {
     gsap.to(staticOverlay, {
       duration: 0.2,
       opacity: 0.3,
       onComplete: () => gsap.to(staticOverlay, { duration: 0.2, opacity: 0 })
     });
-  }
-}
+  };
 
-/**
- * Animate the channel number overlay when changing channels
- * @param {string} channelId - Channel section ID
- */
-function animateChannelNumber(channelId) {
-  const channelOverlay = dom.get(`#${channelId} .channel-number-overlay`);
-  
-  if (channelOverlay) {
-    gsap.fromTo(
-      channelOverlay, 
-      { scale: 1, filter: "brightness(1)" },
-      { scale: 1.2, filter: "brightness(2)", duration: 0.2, yoyo: true, repeat: 1 }
-    );
-  }
-}
+  // --- Animate Channel Number Overlay ---
+  const animateChannelNumber = channelId => {
+    const channelOverlay = document.querySelector(`#${channelId} .channel-number-overlay`);
+    if (channelOverlay) {
+      gsap.fromTo(channelOverlay, { scale: 1, filter: "brightness(1)" },
+        { scale: 1.2, filter: "brightness(2)", duration: 0.2, yoyo: true, repeat: 1 });
+    }
+  };
 
-/**
- * Apply a distort/warp effect to content during channel changes
- */
-function distortAndWarpContent() {
-  const mainContent = dom.get('#mainContent');
-  
-  if (mainContent) {
+  // --- Distort/Warp Content on Channel Change ---
+  const distortAndWarpContent = () => {
     gsap.fromTo(
       mainContent,
       { filter: "none", transform: "skewX(0deg)" },
-      { 
-        filter: "blur(2px) contrast(1.2)", 
-        transform: "skewX(5deg)", 
-        duration: 0.3, 
-        ease: "power2.out", 
-        yoyo: true, 
-        repeat: 1 
-      }
+      { filter: "blur(2px) contrast(1.2)", transform: "skewX(5deg)", duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }
     );
-  }
-}
+  };
 
-/**
- * Preload assets for faster loading
- */
-function preloadAssets() {
-  // Preload Channel 4 if configured for preloading
-  const moduleInfo = channelManager._channels.get('under the influence');
-  if (moduleInfo && moduleInfo.preload) {
-    setTimeout(() => {
-      channelManager.loadModule('under the influence');
-    }, 2000);
+  // --- Intersection Observer for YouTube Video Audio Control ---
+  const channel1 = document.getElementById("section1");
+  const ytObserverOptions = {
+    root: null,
+    threshold: 0.7
+  };
+  const ytObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.target.id === "section1") {
+        if (entry.intersectionRatio >= 0.7) {
+          if (youtubePlayer && typeof youtubePlayer.unMute === "function") {
+            youtubePlayer.unMute();
+            console.log("Channel 1 active: Unmuting video.");
+          }
+        } else {
+          if (youtubePlayer && typeof youtubePlayer.mute === "function") {
+            youtubePlayer.mute();
+            console.log("Channel 1 inactive: Muting video.");
+          }
+        }
+      }
+    });
+  }, ytObserverOptions);
+  if (channel1) {
+    ytObserver.observe(channel1);
+  }
+
+    // --- Intersection Observer for Channel 4 YouTube Video Audio Control ---
+  const channel4 = document.getElementById("section4");
+  const channel4ObserverOptions = { root: null, threshold: 0.7 };
+  const channel4Observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.target.id === "section4") {
+        if (entry.intersectionRatio >= 0.7) {
+          if (window.channel4Player && typeof window.channel4Player.unMute === "function") {
+            window.channel4Player.unMute();
+            console.log("Channel 4 active: Unmuting video.");
+          }
+        } else {
+          if (window.channel4Player && typeof window.channel4Player.mute === "function") {
+            window.channel4Player.mute();
+            console.log("Channel 4 inactive: Muting video.");
+          }
+        }
+      }
+    });
+  }, channel4ObserverOptions);
+  if (channel4) {
+    channel4Observer.observe(channel4);
   }
   
-  // Preload channel click sounds
-  for (let i = 1; i <= 12; i++) {
-    sound.get(`./audio/channel-click${i}.aif`);
+// Preload Channel 4 ("under the influence") so its video is already playing when scrolled into view.
+setTimeout(() => {
+  loadChannelContent('under the influence');
+}, 2000);
+  
+  // --- Throttle Utility Function ---
+  function throttle(fn, wait) {
+    let lastTime = 0;
+    return function(...args) {
+      const now = Date.now();
+      if (now - lastTime >= wait) {
+        lastTime = now;
+        fn.apply(this, args);
+      }
+    };
   }
-}
-
-/**
- * Throttle function to limit frequency of function calls
- * @param {Function} fn - Function to throttle
- * @param {number} wait - Milliseconds to wait between calls
- * @returns {Function} Throttled function
- */
-function throttle(fn, wait) {
-  let lastTime = 0;
-  return function(...args) {
-    const now = Date.now();
-    if (now - lastTime >= wait) {
-      lastTime = now;
-      fn.apply(this, args);
-    }
-  };
-}
+});

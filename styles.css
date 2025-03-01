@@ -1,7 +1,9 @@
-/* Main styles for TV Portfolio */
-/* Global CSS variables are now in css-variables.css */
-
-html {
+/* --- CSS Variables & Global Base Styles --- */
+:root {
+  --bg-color: #000;
+  --primary-color: #fff;
+  --header-bg: rgba(0, 0, 0, 0.85);
+  --static-duration: 0.3s;
   font-size: clamp(16px, 1.5vw, 20px);
 }
 
