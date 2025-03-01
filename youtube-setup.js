@@ -29,16 +29,16 @@ function onYouTubeIframeAPIReady() {
     return;
   }
   
-  console.log('Creating YouTube player with ID: KISNE4qOIBM');
+  console.log('Creating YouTube player with ID: jfKfPfyJRdk');
   youtubePlayer = new YT.Player('youtube-player', {
-    videoId: 'KISNE4qOIBM', // Your YouTube video ID
+    videoId: 'jfKfPfyJRdk', // Lo-fi beats video
     width: '100%',
     height: '100%',
     playerVars: {
       autoplay: 1,
       controls: 0,
       loop: 1,
-      playlist: 'KISNE4qOIBM', // Required for looping the same video
+      playlist: 'jfKfPfyJRdk', // Required for looping the same video
       modestbranding: 1,
       rel: 0,
       playsinline: 1,
