@@ -29,16 +29,16 @@ function onYouTubeIframeAPIReady() {
     return;
   }
   
-  console.log('Creating YouTube player with ID: jfKfPfyJRdk');
+  console.log('Creating YouTube player with ID: KISNE4qOIBM');
   youtubePlayer = new YT.Player('youtube-player', {
-    videoId: 'jfKfPfyJRdk', // Lo-fi beats video
+    videoId: 'KISNE4qOIBM', // Original video ID
     width: '100%',
     height: '100%',
     playerVars: {
       autoplay: 1,
       controls: 0,
       loop: 1,
-      playlist: 'jfKfPfyJRdk', // Required for looping the same video
+      playlist: 'KISNE4qOIBM', // Required for looping the same video
       modestbranding: 1,
       rel: 0,
       playsinline: 1,
@@ -92,10 +92,15 @@ function onYouTubeIframeAPIReady() {
       },
       onError: event => {
         console.error('YouTube player error:', event.data);
-        // On error, try to create a backup static background
+        // On error, apply a more interesting fallback background
         const section1 = document.getElementById('section1');
         if (section1) {
-          section1.style.backgroundColor = '#000';
+          const videoBackground = section1.querySelector('.video-background');
+          if (videoBackground) {
+            videoBackground.style.background = "url('visuals/static.gif') center center repeat";
+            videoBackground.style.backgroundSize = 'cover';
+            videoBackground.style.opacity = '0.7';
+          }
         }
       }
     }

@@ -14,7 +14,18 @@ export async function init() {
       videoBackground.style.width = '100%';
       videoBackground.style.height = '100%';
       videoBackground.style.overflow = 'hidden';
+      videoBackground.style.background = "#000000 url('../visuals/static.gif') center center repeat";
       console.log('Video background styles applied');
+      
+      // Check if YouTube player is working, if not create a static background
+      setTimeout(() => {
+        const iframe = section1.querySelector('#youtube-player iframe');
+        if (!iframe) {
+          console.log('No YouTube iframe found, applying static background as fallback');
+          videoBackground.style.backgroundSize = 'cover';
+          videoBackground.style.opacity = '0.7';
+        }
+      }, 3000);
     }
     
     // Ensure buttons are visible and positioned correctly
