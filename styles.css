@@ -223,17 +223,10 @@ body {
   text-align: center;
 }
 .channel-buttons {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   display: flex;
-  flex-direction: column;
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
-  z-index: 10;
-  pointer-events: auto; /* Ensure buttons are clickable */
 }
 .channel-button {
   padding: 12px 20px;
@@ -431,8 +424,7 @@ body {
   width: 100% !important;
   height: 100% !important;
   overflow: hidden;
-  z-index: 0; /* Changed to 0 to ensure video is behind buttons but still visible */
-  background: #000; /* Add a black background in case video fails to load */
+  z-index: -1;
 }
 .video-background iframe {
   width: 100% !important;

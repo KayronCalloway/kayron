@@ -2,24 +2,12 @@
 
 export async function init() {
   try {
-    // Check if modals are already loaded
-    if (document.getElementById('resumeModal')) {
-      console.log('Channel 1 modals already loaded, just setting up event listeners.');
-      setupModalEventListeners();
-      return;
-    }
-    
     // Load the modal HTML fragment for Channel 1 using async/await.
-    console.log('Loading Channel 1 modals...');
     const response = await fetch('./channels/ch1/modals.html');
-    if (!response.ok) {
-      throw new Error(`Failed to fetch modals: ${response.status} ${response.statusText}`);
-    }
     const html = await response.text();
     const container = document.createElement('div');
     container.innerHTML = html;
     document.body.appendChild(container);
-    console.log('Channel 1 modals loaded successfully');
     setupModalEventListeners();
   } catch (err) {
     console.error('Failed to load modals:', err);
@@ -71,37 +59,14 @@ function setupModalEventListeners() {
     const triggerButton = document.getElementById(buttonId);
     const modal = document.getElementById(modalId);
     const closeButton = document.getElementById(closeButtonId);
-    
-    if (!triggerButton) {
-      console.warn(`Button with id ${buttonId} not found`);
-    }
-    if (!modal) {
-      console.warn(`Modal with id ${modalId} not found`);
-    }
-    if (!closeButton) {
-      console.warn(`Close button with id ${closeButtonId} not found`);
-    }
-    
     if (triggerButton && modal && closeButton) {
-      console.log(`Setting up event listeners for ${modalId}`);
-      // Remove any existing event listeners
-      const newTriggerButton = triggerButton.cloneNode(true);
-      triggerButton.parentNode.replaceChild(newTriggerButton, triggerButton);
-      
-      const newCloseButton = closeButton.cloneNode(true);
-      closeButton.parentNode.replaceChild(newCloseButton, closeButton);
-      
-      newTriggerButton.addEventListener('click', () => {
-        console.log(`Opening modal ${modalId}`);
+      triggerButton.addEventListener('click', () => {
         modal.style.display = 'flex';
         animateModalIn(modal);
       });
-      newCloseButton.addEventListener('click', () => {
-        console.log(`Closing modal ${modalId}`);
+      closeButton.addEventListener('click', () => {
         animateModalOut(modal);
       });
-    } else {
-      console.error(`Could not setup modal ${modalId} - some elements are missing`);
     }
   };
 
