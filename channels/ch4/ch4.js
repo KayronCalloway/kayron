@@ -1,30 +1,105 @@
 // channels/ch4/ch4.js
-function initializeDropdown() {
-  setTimeout(() => {
-    const dropdown = document.querySelector('.dropdown');
-    if (dropdown) {
-      dropdown.addEventListener('click', function(e) {
-        if (e.target.classList.contains('dropdown-toggle') || e.target === dropdown) {
-          dropdown.classList.toggle('active');
-          
-          // Change the arrow direction
-          const toggleText = dropdown.querySelector('.dropdown-toggle');
-          if (dropdown.classList.contains('active')) {
-            toggleText.textContent = 'Under The Influence ▲';
-          } else {
-            toggleText.textContent = 'Under The Influence ▼';
-          }
-        }
-      });
-      
-      // Start with dropdown open by default
-      setTimeout(() => {
-        dropdown.classList.add('active');
-        const toggleText = dropdown.querySelector('.dropdown-toggle');
-        toggleText.textContent = 'Under The Influence ▲';
-      }, 1000);
+function createModal() {
+  // Create the modal HTML
+  const modalHTML = `
+    <div id="influenceModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal-box" tabindex="-1">
+        <button id="closeInfluence" class="close-modal" aria-label="Close Influence">&times;</button>
+        <div class="modal-static" id="influenceStatic"></div>
+        <div class="modal-content">
+          <h2>Under The Influence</h2>
+          <h3>Warren Buffett & Charlie Munger</h3>
+          <div class="role-model-description">
+            <p>I admire Warren and Charlie not for their extraordinary wealth, but for their unwavering commitment to integrity and ethical principles. Their philosophies transcend business, offering profound wisdom on continuous learning, finding meaningful happiness, and living with purpose. They embody what it means to succeed while remaining principled—a rare quality that inspires me to pursue both excellence and character in everything I do.</p>
+          </div>
+          <div class="role-model-quotes">
+            <div class="role-model-quote">
+              <p>"You can't make a good deal with a bad person."</p>
+              <p class="quote-author">— Warren Buffett</p>
+            </div>
+            <div class="role-model-quote">
+              <p>"The best way to get what you want is to deserve what you want. How could it be otherwise?"</p>
+              <p class="quote-author">— Charlie Munger</p>
+            </div>
+            <div class="role-model-quote">
+              <p>"Someone will always be getting richer faster than you. This is not a tragedy."</p>
+              <p class="quote-author">— Charlie Munger</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Append the modal to the body
+  const container = document.createElement('div');
+  container.innerHTML = modalHTML;
+  document.body.appendChild(container);
+}
+
+function setupModalEventListeners() {
+  // GSAP Animation: "Coming Out of the Box"
+  const animateModalIn = modal => {
+    gsap.fromTo(
+      modal,
+      { 
+        opacity: 0, 
+        scale: 0.8, 
+        y: 20, 
+        rotationX: 5,
+        transformOrigin: "top center" // makes it look like it's emerging from the top edge
+      },
+      { 
+        opacity: 1, 
+        scale: 1, 
+        y: 0, 
+        rotationX: 0, 
+        duration: 0.6, 
+        ease: "power2.out" 
+      }
+    );
+  };
+
+  const animateModalOut = modal => {
+    gsap.to(modal, {
+      opacity: 0,
+      scale: 0.8,
+      y: 20,
+      rotationX: 5,
+      duration: 0.5,
+      ease: "power2.in",
+      transformOrigin: "top center",
+      onComplete: () => {
+        modal.classList.add('hidden');
+      }
+    });
+  };
+
+  // Setup modal trigger and close events
+  const triggerButton = document.getElementById('influenceButton');
+  const modal = document.getElementById('influenceModal');
+  const closeButton = document.getElementById('closeInfluence');
+  
+  if (triggerButton && modal && closeButton) {
+    triggerButton.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+      modal.style.display = 'flex';
+      animateModalIn(modal);
+    });
+    
+    closeButton.addEventListener('click', () => {
+      animateModalOut(modal);
+    });
+  }
+
+  // Close the modal on Escape key press
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      if (modal && !modal.classList.contains('hidden')) {
+        animateModalOut(modal);
+      }
     }
-  }, 500); // Wait for DOM to be fully loaded
+  });
 }
 
 export async function init() {
@@ -58,8 +133,9 @@ export async function init() {
     document.head.appendChild(link);
   }
   
-  // Initialize the dropdown functionality
-  initializeDropdown();
+  // Create and set up the modal
+  createModal();
+  setTimeout(setupModalEventListeners, 500);
   
   // Use the YouTube IFrame API to create a player in Channel 4.
   // We wait a short delay to ensure the HTML is in place.
