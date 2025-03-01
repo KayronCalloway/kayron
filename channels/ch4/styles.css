@@ -1,4 +1,4 @@
-//* channels/ch4/styles.css */
+/* channels/ch4/styles.css */
 .video-background {
   position: absolute;
   top: 0;
@@ -6,7 +6,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  z-index: -1; /* Ensures the video stays in the background */
+  z-index: 1; /* Updated z-index */
   background: #000; /* fallback background color */
 }
 
@@ -17,4 +17,138 @@
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+/* Role Model Overlay */
+.role-model-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  padding: 20px;
+  box-sizing: border-box;
+  pointer-events: none; /* Allow clicks to pass through to the video */
+}
+
+.role-model-content {
+  max-width: 700px;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  border-left: 4px solid #1e90ff;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  animation: fadeIn 1.5s ease-out;
+  overflow-y: auto;
+  max-height: 85vh;
+}
+
+.role-model-content h2 {
+  font-size: 2.2rem;
+  margin: 0 0 5px 0;
+  color: #1e90ff;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.role-model-content h3 {
+  font-size: 1.6rem;
+  margin: 0 0 25px 0;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.role-model-quotes {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: 25px 0;
+}
+
+.role-model-quote {
+  font-style: italic;
+  position: relative;
+  padding: 0 20px;
+  border-left: 3px solid #1e90ff;
+  background: rgba(30, 144, 255, 0.1);
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.role-model-quote p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  margin: 0 0 10px 0;
+}
+
+.quote-author {
+  font-size: 0.9rem !important;
+  text-align: right;
+  opacity: 0.8;
+  margin: 0 !important;
+}
+
+.role-model-description {
+  margin-top: 20px;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Channel Number - fixed in bottom corner */
+.channel-number-overlay {
+  position: fixed;
+  bottom: 40px;
+  right: 20px;
+  font-size: 2rem;
+  color: var(--primary-color, #fff);
+  opacity: 0.8;
+  z-index: 999998;
+  pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .role-model-content {
+    padding: 20px;
+    max-width: 90%;
+    max-height: 75vh;
+  }
+  
+  .role-model-content h2 {
+    font-size: 1.8rem;
+  }
+  
+  .role-model-content h3 {
+    font-size: 1.3rem;
+  }
+  
+  .role-model-quote p {
+    font-size: 1rem;
+  }
+  
+  .role-model-description {
+    font-size: 0.95rem;
+  }
+  
+  .role-model-quotes {
+    gap: 15px;
+  }
+  
+  .role-model-quote {
+    padding: 10px;
+  }
 }
