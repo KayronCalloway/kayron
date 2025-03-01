@@ -606,8 +606,8 @@ class GameShow {
       clearInterval(this.state.timerInterval);
     }
     
-    // Reset timer display
-    this.state.timeLeft = 30;
+    // Reset timer display with a longer time since questions are more complex
+    this.state.timeLeft = 45; // Increased from 30 to 45 seconds
     if (this.elements.ui.timerDisplay) {
       this.elements.ui.timerDisplay.textContent = this.state.timeLeft;
     }
@@ -626,11 +626,11 @@ class GameShow {
       
       // Update timer bar
       if (this.elements.ui.timerBar) {
-        const percentLeft = (this.state.timeLeft / 30) * 100;
+        const percentLeft = (this.state.timeLeft / 45) * 100; // Also updated here
         this.elements.ui.timerBar.style.width = `${percentLeft}%`;
         
         // Add warning color when time is running low
-        if (this.state.timeLeft <= 10) {
+        if (this.state.timeLeft <= 15) { // Updated from 10 to 15
           this.elements.ui.timerBar.style.backgroundColor = '#ff453a';
         } else {
           this.elements.ui.timerBar.style.backgroundColor = '#ffd700';
@@ -699,8 +699,17 @@ class GameShow {
     // Clear previous options
     optionsContainer.innerHTML = '';
     
+    // Copy and randomize the options
+    const randomizedOptions = [...this.state.currentQuestion.options];
+    
+    // Shuffle the options
+    for (let i = randomizedOptions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [randomizedOptions[i], randomizedOptions[j]] = [randomizedOptions[j], randomizedOptions[i]];
+    }
+    
     // Create button for each option
-    this.state.currentQuestion.options.forEach((option, index) => {
+    randomizedOptions.forEach((option, index) => {
       const button = document.createElement('button');
       button.className = 'option-button';
       
@@ -817,17 +826,29 @@ class GameShow {
     const questionArea = document.querySelector('.question-area');
     if (!questionArea) return;
     
+    // Remove any existing insight
+    const existingInsight = questionArea.querySelector('.insight');
+    if (existingInsight) {
+      existingInsight.remove();
+    }
+    
     const insight = document.createElement('div');
     insight.className = 'insight';
     insight.textContent = this.state.currentQuestion.insight;
     questionArea.appendChild(insight);
     
     // Animate insight appearance
-    gsap.fromTo(
-      insight,
-      { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }
-    );
+    try {
+      gsap.fromTo(
+        insight,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }
+      );
+    } catch (error) {
+      console.error("Animation error:", error);
+      insight.style.opacity = '1';
+      insight.style.transform = 'translateY(0)';
+    }
   }
   
   // Create celebration particles effect
