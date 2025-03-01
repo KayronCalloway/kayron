@@ -142,6 +142,14 @@ async function initializeGameShow() {
   }
   
   try {
+    // Make sure Font Awesome is loaded for icons
+    if (!document.querySelector('link[href*="font-awesome"]')) {
+      const fontAwesome = document.createElement('link');
+      fontAwesome.rel = 'stylesheet';
+      fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
+      document.head.appendChild(fontAwesome);
+    }
+    
     // Initialize the Game Show Manager
     const GameShowManager = new GameShow();
     GameShowManager.init();
@@ -153,6 +161,19 @@ async function initializeGameShow() {
     const hostIntro = document.getElementById('host-intro');
     if (hostIntro) {
       hostIntro.classList.remove('hidden');
+      // Make sure host intro is visible
+      hostIntro.style.display = 'flex';
+      hostIntro.style.visibility = 'visible';
+      hostIntro.style.opacity = '1';
+      hostIntro.style.zIndex = '10';
+    }
+    
+    // Make sure the start button is clickable
+    const startButton = document.getElementById('start-game-button');
+    if (startButton) {
+      startButton.style.zIndex = '20';
+      startButton.style.position = 'relative';
+      console.log("Start button initialized");
     }
     
     console.log("Game show initialized successfully");
@@ -292,12 +313,27 @@ class GameShow {
   
   // Cache DOM elements for better performance
   cacheElements() {
-    // Game screens
+    console.log("Caching DOM elements");
+    
+    // Game screens with detailed logging
+    const hostIntro = document.getElementById('host-intro');
+    const gameRound = document.getElementById('game-round');
+    const commercial = document.getElementById('commercial-break');
+    const results = document.getElementById('final-results');
+    
+    console.log("Game screens found:", {
+      hostIntro: !!hostIntro,
+      gameRound: !!gameRound,
+      commercial: !!commercial,
+      results: !!results
+    });
+    
+    // Store game screens
     this.elements.screens = {
-      hostIntro: document.getElementById('host-intro'),
-      gameRound: document.getElementById('game-round'),
-      commercial: document.getElementById('commercial-break'),
-      results: document.getElementById('final-results')
+      hostIntro: hostIntro,
+      gameRound: gameRound, 
+      commercial: commercial,
+      results: results
     };
     
     // Game UI elements
@@ -313,35 +349,98 @@ class GameShow {
       unlockedSkills: document.getElementById('unlocked-skills'),
       playAgainBtn: document.getElementById('play-again-btn')
     };
+    
+    // Make sure the game container is visible
+    const gameContainer = document.getElementById('game-show-container');
+    if (gameContainer) {
+      gameContainer.style.display = 'flex';
+      gameContainer.style.visibility = 'visible';
+      gameContainer.style.opacity = '1';
+      gameContainer.style.zIndex = '100';
+    } else {
+      console.error("Game container not found!");
+    }
+    
+    // Ensure host intro is visible initially
+    if (hostIntro) {
+      hostIntro.classList.remove('hidden');
+      hostIntro.style.display = 'flex';
+      hostIntro.style.visibility = 'visible';
+      hostIntro.style.opacity = '1';
+      hostIntro.style.zIndex = '10';
+    }
+    
+    // Make sure other screens are hidden initially
+    [gameRound, commercial, results].forEach(screen => {
+      if (screen) {
+        screen.classList.add('hidden');
+        screen.style.display = 'none';
+      }
+    });
   }
   
   // Set up game event listeners
   setupEvents() {
-    // Start game button
+    console.log("Setting up game event listeners");
+    
+    // Start game button with extra logging and explicit handling
     const startGameBtn = document.getElementById('start-game-button');
     if (startGameBtn) {
-      startGameBtn.addEventListener('click', () => {
+      // Remove any existing event listeners
+      startGameBtn.replaceWith(startGameBtn.cloneNode(true));
+      
+      // Get fresh reference
+      const newStartBtn = document.getElementById('start-game-button');
+      
+      // Make sure button is visible and clickable
+      newStartBtn.style.display = 'block';
+      newStartBtn.style.visibility = 'visible';
+      newStartBtn.style.opacity = '1';
+      newStartBtn.style.position = 'relative';
+      newStartBtn.style.zIndex = '100';
+      newStartBtn.style.pointerEvents = 'auto';
+      
+      // Add click handler with debugging
+      const startGameHandler = () => {
+        console.log("Start game button clicked!");
         this.startGame();
-        // Add flash effect when clicked
-        gsap.to(startGameBtn, {
-          backgroundColor: "#fff",
-          duration: 0.1,
-          yoyo: true,
-          repeat: 1,
-          onComplete: () => {
-            startGameBtn.style.display = 'none';
-          }
-        });
-      });
+        
+        // Add flash effect when clicked (with fallback)
+        try {
+          gsap.to(newStartBtn, {
+            backgroundColor: "#fff",
+            duration: 0.1,
+            yoyo: true,
+            repeat: 1,
+            onComplete: () => {
+              newStartBtn.style.display = 'none';
+            }
+          });
+        } catch (error) {
+          console.error("Animation error:", error);
+          // Fallback
+          newStartBtn.style.display = 'none';
+        }
+      };
+      
+      // Add event listener with both click and touch events for mobile
+      newStartBtn.addEventListener('click', startGameHandler);
+      newStartBtn.addEventListener('touchstart', startGameHandler);
+      
+      console.log("Start game button event listener attached");
+    } else {
+      console.error("Start game button not found!");
     }
     
     // Play again button
     if (this.elements.ui.playAgainBtn) {
-      this.elements.ui.playAgainBtn.addEventListener('click', () => this.resetGame());
+      const playAgainHandler = () => this.resetGame();
+      this.elements.ui.playAgainBtn.addEventListener('click', playAgainHandler);
+      this.elements.ui.playAgainBtn.addEventListener('touchstart', playAgainHandler);
     }
     
     // Add keyboard control (for accessibility)
-    document.addEventListener('keydown', (e) => {
+    const keydownHandler = (e) => {
       // Number keys 1-4 for answering questions
       if (this.state.isGameActive && e.key >= '1' && e.key <= '4') {
         const index = parseInt(e.key) - 1;
@@ -352,14 +451,20 @@ class GameShow {
       }
       
       // Enter key to start game when on intro screen
-      if (e.key === 'Enter' && document.getElementById('host-intro') && 
-          !document.getElementById('host-intro').classList.contains('hidden')) {
+      if (e.key === 'Enter') {
+        const hostIntro = document.getElementById('host-intro');
         const startGameBtn = document.getElementById('start-game-button');
-        if (startGameBtn) {
+        
+        if (hostIntro && !hostIntro.classList.contains('hidden') && startGameBtn) {
+          console.log("Enter key pressed on intro screen");
           startGameBtn.click();
         }
       }
-    });
+    };
+    
+    // Remove any existing event listener and add new one
+    document.removeEventListener('keydown', keydownHandler);
+    document.addEventListener('keydown', keydownHandler);
   }
   
   // Play sound with error handling
@@ -384,29 +489,54 @@ class GameShow {
   
   // Show a specific screen and hide others
   showScreen(screenName) {
-    // Hide all screens
+    console.log(`Showing screen: ${screenName}`);
+    
+    // Hide all screens with explicit styles
     Object.values(this.elements.screens).forEach(screen => {
       if (screen) {
         screen.classList.add('hidden');
+        screen.style.display = 'none';
+        screen.style.visibility = 'hidden';
+        screen.style.opacity = '0';
       }
     });
     
-    // Show requested screen with animation
+    // Show requested screen with explicit styles and animation
     const screen = this.elements.screens[screenName];
     if (screen) {
+      // First remove hidden class
       screen.classList.remove('hidden');
       
+      // Then set explicit styles for visibility
+      screen.style.display = 'flex';
+      screen.style.visibility = 'visible';
+      screen.style.opacity = '1';
+      screen.style.zIndex = '10';
+      
       // Add entrance animation
-      gsap.fromTo(
-        screen,
-        { opacity: 0, scale: 0.95 },
-        { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }
-      );
+      try {
+        gsap.fromTo(
+          screen,
+          { opacity: 0, scale: 0.95 },
+          { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }
+        );
+      } catch (error) {
+        console.error("Animation error:", error);
+        // Fallback if GSAP fails
+        screen.style.opacity = '1';
+        screen.style.transform = 'scale(1)';
+      }
+      
+      console.log(`Screen ${screenName} is now visible`);
+    } else {
+      console.error(`Screen ${screenName} not found in cached elements`);
     }
   }
   
   // Start a new game
   startGame() {
+    console.log("Game starting...");
+    
     // Reset game state
     this.state = {
       currentRound: 1,
@@ -421,14 +551,33 @@ class GameShow {
     this.updateScoreDisplay();
     this.updateRoundDisplay();
     
-    // Show game screen
-    this.showScreen('game-round');
+    // Show game screen with explicit visibility settings
+    const gameRound = this.elements.screens.gameRound;
+    if (gameRound) {
+      // First remove hidden class
+      gameRound.classList.remove('hidden');
+      
+      // Then set explicit styles
+      gameRound.style.display = 'flex';
+      gameRound.style.visibility = 'visible';
+      gameRound.style.opacity = '1';
+      gameRound.style.zIndex = '10';
+    }
+    
+    // Hide host intro with explicit settings
+    const hostIntro = this.elements.screens.hostIntro;
+    if (hostIntro) {
+      hostIntro.classList.add('hidden');
+      hostIntro.style.display = 'none';
+    }
     
     // Start timer
     this.startTimer();
     
     // Show first question
     this.showNextQuestion();
+    
+    console.log("Game started successfully");
   }
   
   // Update score display
