@@ -37,7 +37,7 @@ export async function init() {
       channelButtons.style.transform = 'translate(-50%, -50%)';
       channelButtons.style.zIndex = '10';
       channelButtons.style.display = 'flex';
-      channelButtons.style.flexDirection = 'column';
+      channelButtons.style.flexDirection = 'row';
       channelButtons.style.gap = '20px';
       console.log('Channel buttons styles applied');
     }
