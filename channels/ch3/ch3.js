@@ -1,69 +1,53 @@
 // channels/ch3/ch3.js
+import { loadHTML, loadCSS, dom, sound, errorTracker } from '../../utils.js';
 
-// Track initialization state
-let gameInitialized = false;
-let gameResources = {
-  stylesheet: null,
-  script: null
-};
-
+/**
+ * Initialize Channel 3's game show
+ * @returns {Function} Cleanup function
+ */
 export async function init() {
   try {
-    // Container validation
+    // Check container
     const container = document.getElementById('section3');
     if (!container) {
       console.error("Channel 3 container not found");
       return;
     }
     
-    // Prevent duplicate initialization
-    if (container.querySelector('#game-show-container') && gameInitialized) {
-      console.log("Game show already loaded; skipping initialization.");
-      return;
-    }
-    
-    // Clear container before initializing
+    // Clear container
     container.innerHTML = '';
     
     // Load the game HTML fragment
-    const response = await fetch('./channels/ch3/gameshow.html');
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    await loadHTML('./channels/ch3/gameshow.html', container);
     
-    const html = await response.text();
-    container.innerHTML = html;
+    // Load CSS with cache busting
+    await loadCSS('./channels/ch3/styles.css', true);
     
-    // Make sure the menu button is visible
-    const menuButton = document.getElementById('menuButton');
-    if (menuButton) {
-      menuButton.style.zIndex = '999999';
-      menuButton.style.display = 'block';
-      menuButton.style.opacity = '1';
-    }
+    // Initialize game components and get cleanup function
+    const gameManager = new GameShow();
+    const cleanupGame = gameManager.init();
     
-    // Add channel number overlay with high z-index to ensure visibility
-    ensureChannelNumberVisible(container);
+    // Store the manager globally for debugging
+    window.GameShowManager = gameManager;
     
-    // Dynamically load CSS if not already loaded
-    await loadStylesheet();
-    
-    // Initialize game components
-    await initializeGameShow();
-    
-    // Track successful initialization
-    gameInitialized = true;
-    
-    console.log("Channel 3 game show initialized successfully");
-    
-    // Force the game to be visible
-    const gameContainer = container.querySelector('#game-show-container');
-    if (gameContainer) {
-      gameContainer.style.display = 'flex';
-      gameContainer.style.visibility = 'visible';
-      gameContainer.style.opacity = '1';
-    }
-    
+    // Return cleanup function
+    return () => {
+      if (cleanupGame && typeof cleanupGame === 'function') {
+        cleanupGame();
+      }
+      
+      // Remove global reference
+      if (window.GameShowManager) {
+        delete window.GameShowManager;
+      }
+      
+      console.log('Channel 3 cleanup complete');
+    };
   } catch (error) {
-    console.error("Failed to load Channel 3 markup:", error);
+    errorTracker.track('Channel3.init', error);
+    console.error('Failed to load game show:', error);
+    
+    // Display error message
     const container = document.getElementById('section3');
     if (container) {
       container.innerHTML = `
@@ -74,104 +58,26 @@ export async function init() {
   }
 }
 
-// Ensure the channel number is always visible
-function ensureChannelNumberVisible(container) {
-  // Remove any existing overlay
-  const existingOverlay = container.querySelector('.channel-number-overlay');
-  if (existingOverlay) {
-    existingOverlay.remove();
-  }
+/**
+ * Explicit cleanup function
+ */
+export function cleanup() {
+  // Explicit cleanup if needed
   
-  // Create a fixed position overlay with very high z-index
-  const channelOverlay = document.createElement('div');
-  channelOverlay.className = 'channel-number-overlay';
-  channelOverlay.textContent = 'CH 03';
-  channelOverlay.style.cssText = `
-    position: fixed;
-    bottom: 40px;
-    right: 20px;
-    z-index: 999998;
-    font-size: 2rem;
-    color: var(--primary-color, #fff);
-    opacity: 0.8;
-    pointer-events: none;
-  `;
-  container.appendChild(channelOverlay);
+  // Stop sounds
+  sound.stop('./audio/ticker-hum.mp3');
+  sound.stop('./audio/ka-ching.mp3');
+  sound.stop('./audio/click.mp3');
+  sound.stop('./audio/whoosh.mp3');
+  
+  // Remove celebration effects if any
+  const celebrations = document.querySelectorAll('.celebration-container');
+  celebrations.forEach(cel => cel.remove());
 }
 
-// Load game stylesheet with proper cleanup
-async function loadStylesheet() {
-  // Remove any existing stylesheet to prevent conflicts
-  const existingStylesheet = document.querySelector('link[href*="channels/ch3/styles.css"]');
-  if (existingStylesheet) {
-    existingStylesheet.remove();
-  }
-  
-  // Create new stylesheet
-  return new Promise((resolve) => {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = './channels/ch3/styles.css?' + new Date().getTime(); // Cache busting
-    link.id = 'ch3-stylesheet';
-    
-    // Track when loaded
-    link.onload = () => {
-      gameResources.stylesheet = link;
-      resolve();
-    };
-    
-    link.onerror = () => {
-      console.error("Failed to load Channel 3 stylesheet");
-      resolve(); // Resolve anyway to prevent blocking
-    };
-    
-    document.head.appendChild(link);
-  });
-}
-
-// Initialize the game show
-async function initializeGameShow() {
-  // Ensure the menu button remains visible
-  const menuButton = document.getElementById('menuButton');
-  if (menuButton) {
-    menuButton.style.zIndex = '999999';
-    menuButton.style.display = 'block';
-    menuButton.style.opacity = '1';
-    menuButton.style.position = 'fixed';
-    menuButton.style.pointerEvents = 'auto';
-  }
-  
-  try {
-    // Initialize the Game Show Manager
-    const GameShowManager = new GameShow();
-    GameShowManager.init();
-    
-    // Make sure we expose the game manager globally for debugging
-    window.GameShowManager = GameShowManager;
-    
-    // Ensure all game screens are properly initialized
-    const hostIntro = document.getElementById('host-intro');
-    if (hostIntro) {
-      hostIntro.classList.remove('hidden');
-    }
-    
-    console.log("Game show initialized successfully");
-  } catch (error) {
-    console.error("Error initializing game show:", error);
-    // Fallback display in case of initialization error
-    const container = document.getElementById('game-show-container');
-    if (container) {
-      container.innerHTML = `
-        <div style="color: white; text-align: center; padding: 20px;">
-          <h2>Game Show Coming Soon!</h2>
-          <p>Test your skills with our interactive game experience.</p>
-        </div>
-      `;
-    }
-  }
-}
-
-// Game Show Class
+/**
+ * Game Show Class - Manages the interactive game experience
+ */
 class GameShow {
   constructor() {
     // Game state
@@ -265,62 +171,80 @@ class GameShow {
         }
       ]
     };
-    
-    // Sound effects
-    this.sounds = {
-      correct: new Audio('./audio/ka-ching.mp3'),
-      incorrect: new Audio('./audio/click.mp3'),
-      success: new Audio('./audio/whoosh.mp3'),
-      background: new Audio('./audio/ticker-hum.mp3')
-    };
   }
   
-  // Initialize game
+  /**
+   * Initialize the game
+   * @returns {Function} Cleanup function
+   */
   init() {
     // Cache DOM elements
     this.cacheElements();
     
     // Set up event listeners
-    this.setupEvents();
+    const eventCleanup = this.setupEvents();
     
     // Start background sound
-    this.playSound('background', { loop: true, volume: 0.3 });
+    sound.play('./audio/ticker-hum.mp3', { loop: true, volume: 0.3 });
     
     // Show host intro screen only - wait for button click to start
     this.showScreen('host-intro');
+    
+    // Return cleanup function
+    return () => {
+      // Clean up event listeners
+      eventCleanup();
+      
+      // Clear timer if running
+      if (this.state.timerInterval) {
+        clearInterval(this.state.timerInterval);
+      }
+      
+      // Stop background sound
+      sound.stop('./audio/ticker-hum.mp3');
+      
+      console.log('Game show instance cleanup complete');
+    };
   }
   
-  // Cache DOM elements for better performance
+  /**
+   * Cache DOM elements for better performance
+   */
   cacheElements() {
     // Game screens
     this.elements.screens = {
-      hostIntro: document.getElementById('host-intro'),
-      gameRound: document.getElementById('game-round'),
-      commercial: document.getElementById('commercial-break'),
-      results: document.getElementById('final-results')
+      hostIntro: dom.get('#host-intro'),
+      gameRound: dom.get('#game-round'),
+      commercial: dom.get('#commercial-break'),
+      results: dom.get('#final-results')
     };
     
     // Game UI elements
     this.elements.ui = {
-      questionDisplay: document.getElementById('question-display'),
-      optionsContainer: document.getElementById('options-container'),
-      currentScore: document.getElementById('current-score'),
-      roundDisplay: document.getElementById('round-number'),
-      timerDisplay: document.getElementById('timer'),
-      timerBar: document.getElementById('timer-bar'),
-      finalScore: document.getElementById('final-score'),
-      performanceDetails: document.getElementById('performance-details'),
-      unlockedSkills: document.getElementById('unlocked-skills'),
-      playAgainBtn: document.getElementById('play-again-btn')
+      questionDisplay: dom.get('#question-display'),
+      optionsContainer: dom.get('#options-container'),
+      currentScore: dom.get('#current-score'),
+      roundDisplay: dom.get('#round-number'),
+      timerDisplay: dom.get('#timer'),
+      timerBar: dom.get('#timer-bar'),
+      finalScore: dom.get('#final-score'),
+      performanceDetails: dom.get('#performance-details'),
+      unlockedSkills: dom.get('#unlocked-skills'),
+      playAgainBtn: dom.get('#play-again-btn')
     };
   }
   
-  // Set up game event listeners
+  /**
+   * Set up game event listeners
+   * @returns {Function} Cleanup function
+   */
   setupEvents() {
+    const listeners = [];
+    
     // Start game button
-    const startGameBtn = document.getElementById('start-game-button');
+    const startGameBtn = dom.get('#start-game-button');
     if (startGameBtn) {
-      startGameBtn.addEventListener('click', () => {
+      const startHandler = () => {
         this.startGame();
         // Add flash effect when clicked
         gsap.to(startGameBtn, {
@@ -332,16 +256,21 @@ class GameShow {
             startGameBtn.style.display = 'none';
           }
         });
-      });
+      };
+      
+      startGameBtn.addEventListener('click', startHandler);
+      listeners.push([startGameBtn, 'click', startHandler]);
     }
     
     // Play again button
     if (this.elements.ui.playAgainBtn) {
-      this.elements.ui.playAgainBtn.addEventListener('click', () => this.resetGame());
+      const playAgainHandler = () => this.resetGame();
+      this.elements.ui.playAgainBtn.addEventListener('click', playAgainHandler);
+      listeners.push([this.elements.ui.playAgainBtn, 'click', playAgainHandler]);
     }
     
-    // Add keyboard control (for accessibility)
-    document.addEventListener('keydown', (e) => {
+    // Keyboard controls
+    const keyHandler = (e) => {
       // Number keys 1-4 for answering questions
       if (this.state.isGameActive && e.key >= '1' && e.key <= '4') {
         const index = parseInt(e.key) - 1;
@@ -359,30 +288,23 @@ class GameShow {
           startGameBtn.click();
         }
       }
-    });
-  }
-  
-  // Play sound with error handling
-  playSound(soundId, options = {}) {
-    try {
-      const sound = this.sounds[soundId];
-      if (!sound) return;
-      
-      // Apply options
-      if (options.loop !== undefined) sound.loop = options.loop;
-      if (options.volume !== undefined) sound.volume = options.volume;
-      
-      // Play sound with error handling
-      sound.currentTime = 0;
-      sound.play().catch(err => {
-        console.warn(`Failed to play sound: ${err.message}`);
+    };
+    
+    document.addEventListener('keydown', keyHandler);
+    listeners.push([document, 'keydown', keyHandler]);
+    
+    // Return cleanup function
+    return () => {
+      listeners.forEach(([element, event, handler]) => {
+        element.removeEventListener(event, handler);
       });
-    } catch (error) {
-      console.error('Error playing sound:', error);
-    }
+    };
   }
   
-  // Show a specific screen and hide others
+  /**
+   * Show a specific screen and hide others
+   * @param {string} screenName - Screen name to show
+   */
   showScreen(screenName) {
     // Hide all screens
     Object.values(this.elements.screens).forEach(screen => {
@@ -405,7 +327,9 @@ class GameShow {
     }
   }
   
-  // Start a new game
+  /**
+   * Start a new game
+   */
   startGame() {
     // Reset game state
     this.state = {
@@ -431,21 +355,27 @@ class GameShow {
     this.showNextQuestion();
   }
   
-  // Update score display
+  /**
+   * Update score display
+   */
   updateScoreDisplay() {
     if (this.elements.ui.currentScore) {
       this.elements.ui.currentScore.textContent = this.state.score;
     }
   }
   
-  // Update round display
+  /**
+   * Update round display
+   */
   updateRoundDisplay() {
     if (this.elements.ui.roundDisplay) {
       this.elements.ui.roundDisplay.textContent = `ROUND ${this.state.currentRound}`;
     }
   }
   
-  // Start countdown timer
+  /**
+   * Start countdown timer
+   */
   startTimer() {
     // Clear any existing timer
     if (this.state.timerInterval) {
@@ -477,9 +407,9 @@ class GameShow {
         
         // Add warning color when time is running low
         if (this.state.timeLeft <= 10) {
-          this.elements.ui.timerBar.style.backgroundColor = '#ff453a';
+          this.elements.ui.timerBar.style.backgroundColor = 'var(--danger-color)';
         } else {
-          this.elements.ui.timerBar.style.backgroundColor = '#ffd700';
+          this.elements.ui.timerBar.style.backgroundColor = 'var(--accent-color)';
         }
       }
       
@@ -495,7 +425,9 @@ class GameShow {
     }, 1000);
   }
   
-  // Show the next question
+  /**
+   * Show the next question
+   */
   showNextQuestion() {
     // If we've played all questions, end the game
     if (this.state.playedQuestions.size >= this.content.questions.length) {
@@ -537,7 +469,9 @@ class GameShow {
     this.displayOptions();
   }
   
-  // Display multiple choice options
+  /**
+   * Display multiple choice options
+   */
   displayOptions() {
     const optionsContainer = this.elements.ui.optionsContainer;
     if (!optionsContainer) return;
@@ -547,8 +481,8 @@ class GameShow {
     
     // Create button for each option
     this.state.currentQuestion.options.forEach((option, index) => {
-      const button = document.createElement('button');
-      button.className = 'option-button';
+      // Create a button using the helper
+      const button = dom.create('button', { className: 'option-button' });
       
       // Use letter labels (A, B, C, D)
       const letter = String.fromCharCode(65 + index); // A, B, C, D
@@ -579,7 +513,10 @@ class GameShow {
     });
   }
   
-  // Handle player's answer selection
+  /**
+   * Handle player's answer selection
+   * @param {Object} selectedOption - The selected answer option
+   */
   selectAnswer(selectedOption) {
     // Prevent multiple answers
     const buttons = document.querySelectorAll('.option-button');
@@ -605,9 +542,10 @@ class GameShow {
       }
       
       // Display points
-      const pointsDisplay = document.createElement('div');
-      pointsDisplay.className = 'points-display';
-      pointsDisplay.textContent = `${points} POINTS!`;
+      const pointsDisplay = dom.create('div', {
+        className: 'points-display',
+        textContent: `${points} POINTS!`
+      });
       selectedButton.appendChild(pointsDisplay);
       
       // Animate points display
@@ -619,7 +557,7 @@ class GameShow {
     }
     
     // Play appropriate sound
-    this.playSound(points > 15 ? 'correct' : 'incorrect');
+    sound.play(points > 15 ? './audio/ka-ching.mp3' : './audio/click.mp3');
     
     // Add celebration effect for high-point answers
     if (points > 15) {
@@ -656,16 +594,19 @@ class GameShow {
     }, 1500);
   }
   
-  // Show insight about the answer
+  /**
+   * Show insight about the answer
+   */
   showInsight() {
     if (!this.state.currentQuestion || !this.state.currentQuestion.insight) return;
     
     const questionArea = document.querySelector('.question-area');
     if (!questionArea) return;
     
-    const insight = document.createElement('div');
-    insight.className = 'insight';
-    insight.textContent = this.state.currentQuestion.insight;
+    const insight = dom.create('div', {
+      className: 'insight',
+      textContent: this.state.currentQuestion.insight
+    });
     questionArea.appendChild(insight);
     
     // Animate insight appearance
@@ -676,17 +617,17 @@ class GameShow {
     );
   }
   
-  // Create celebration particles effect
+  /**
+   * Create celebration particles effect
+   */
   celebrateAnswer() {
     // Create container for particles
-    const container = document.createElement('div');
-    container.className = 'celebration-container';
+    const container = dom.create('div', { className: 'celebration-container' });
     document.body.appendChild(container);
     
     // Create multiple particles
     for (let i = 0; i < 30; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'celebration-particle';
+      const particle = dom.create('div', { className: 'celebration-particle' });
       
       // Randomize particle properties
       particle.style.setProperty('--delay', `${Math.random() * 0.5}s`);
@@ -703,7 +644,9 @@ class GameShow {
     setTimeout(() => container.remove(), 3000);
   }
   
-  // Show commercial break
+  /**
+   * Show commercial break
+   */
   showCommercialBreak() {
     this.showScreen('commercial');
     
@@ -722,9 +665,11 @@ class GameShow {
     }, 5000);
   }
   
-  // Populate commercial break content
+  /**
+   * Populate commercial break content
+   */
   populateCommercialContent() {
-    const skillShowcase = document.querySelector('.skill-showcase');
+    const skillShowcase = dom.get('.skill-showcase');
     if (!skillShowcase) return;
     
     // Clear existing skills
@@ -747,13 +692,10 @@ class GameShow {
     
     // Add skills to showcase
     roundSkills.forEach((skill, index) => {
-      const skillItem = document.createElement('div');
-      skillItem.className = 'skill-item';
-      
-      skillItem.innerHTML = `
-        <i class="fas fa-${skill.icon}"></i>
-        <span>${skill.name}</span>
-      `;
+      const skillItem = dom.create('div', {
+        className: 'skill-item',
+        innerHTML: `<i class="fas fa-${skill.icon}"></i><span>${skill.name}</span>`
+      });
       
       skillShowcase.appendChild(skillItem);
       
@@ -772,20 +714,22 @@ class GameShow {
     });
   }
   
-  // End the game and show results
+  /**
+   * End the game and show results
+   */
   endGame() {
     this.showFinalResults();
     this.state.isGameActive = false;
     clearInterval(this.state.timerInterval);
   }
   
-  // Show final results screen
+  /**
+   * Show final results screen
+   */
   showFinalResults() {
     // Stop background music and play success sound
-    if (this.sounds.background) {
-      this.sounds.background.pause();
-    }
-    this.playSound('success');
+    sound.stop('./audio/ticker-hum.mp3');
+    sound.play('./audio/whoosh.mp3');
     
     // Determine performance level based on score
     const performanceLevel = this.content.performanceLevels.find(level => 
@@ -827,7 +771,9 @@ class GameShow {
     this.showScreen('results');
   }
   
-  // Reset the game to play again
+  /**
+   * Reset the game to play again
+   */
   resetGame() {
     // Reset game state
     this.state = {
@@ -844,15 +790,9 @@ class GameShow {
     this.updateRoundDisplay();
     
     // Restart background music
-    if (this.sounds.background) {
-      this.sounds.background.currentTime = 0;
-      this.playSound('background', { loop: true, volume: 0.3 });
-    }
+    sound.play('./audio/ticker-hum.mp3', { loop: true, volume: 0.3 });
     
-    // Show host intro then start game after delay
+    // Show host intro
     this.showScreen('host-intro');
-    setTimeout(() => {
-      this.startGame();
-    }, 3000);
   }
 }

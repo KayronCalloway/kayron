@@ -1,76 +1,82 @@
 // channels/ch2/ch2.js
+import { loadHTML, loadCSS, dom, animations, sound, errorTracker } from '../../utils.js';
 
+/**
+ * Initialize Channel 2
+ * @returns {Function} Cleanup function
+ */
 export async function init() {
   try {
-    // Container validation
-    const container = document.getElementById('section2');
-    if (!container) {
-      console.error("Channel 2 container not found");
-      return;
-    }
+    // Load HTML content
+    await loadHTML('./channels/ch2/infomercial.html', document.getElementById('section2'));
     
-    // Prevent duplicate initialization
-    if (container.querySelector('#infomercial-container')) {
-      console.log("Infomercial already loaded; skipping initialization.");
-      return;
-    }
+    // Load CSS
+    await loadCSS('./channels/ch2/styles.css');
     
-    // Load the HTML fragment for Channel 2 using async/await
-    const response = await fetch('./channels/ch2/infomercial.html');
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    // Setup event listeners
+    const cleanup = setupInfomercialEventListeners();
     
-    const html = await response.text();
-    container.innerHTML = html;
-    
-    // Add channel number overlay if it doesn't exist
-    if (!container.querySelector('.channel-number-overlay')) {
-      const channelOverlay = document.createElement('div');
-      channelOverlay.className = 'channel-number-overlay';
-      channelOverlay.textContent = 'CH 02';
-      container.appendChild(channelOverlay);
-    }
-    
-    // Dynamically load CSS
-    if (!document.querySelector('link[href="./channels/ch2/styles.css"]')) {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = './channels/ch2/styles.css';
-      document.head.appendChild(link);
-    }
-    
-    // Setup event listeners and initialize the infomercial experience
-    setupInfomercialEventListeners();
-    
+    // Log success
     console.log("Channel 2 infomercial initialized successfully");
+    
+    // Return cleanup function
+    return cleanup;
   } catch (error) {
-    console.error("Failed to load Channel 2 markup:", error);
+    errorTracker.track('Channel2.init', error);
+    console.error('Failed to initialize Channel 2:', error);
+    
+    // Display error message
     const container = document.getElementById('section2');
     if (container) {
       container.innerHTML = `<div class="error">Error loading infomercial content.</div>
-                           <div class="channel-number-overlay">CH 02</div>`;
+                         <div class="channel-number-overlay">CH 02</div>`;
     }
   }
 }
 
+/**
+ * Setup infomercial event listeners
+ * @returns {Function} Cleanup function
+ */
 function setupInfomercialEventListeners() {
-  // Initialize product showcase carousel
-  initProductCarousel();
+  // Initialize all infomercial components
+  const carouselCleanup = initProductCarousel();
+  const buttonsCleanup = setupCTAButtons();
+  const effectsCleanup = addInfomercialEffects();
   
-  // Setup "Buy Now" and CTA button interactions
-  setupCTAButtons();
-  
-  // Add special infomercial effects
-  addInfomercialEffects();
+  // Return combined cleanup function
+  return () => {
+    carouselCleanup();
+    buttonsCleanup();
+    effectsCleanup();
+    console.log('Channel 2 cleanup complete');
+  };
 }
 
+/**
+ * Initialize product carousel
+ * @returns {Function} Cleanup function
+ */
 function initProductCarousel() {
-  const carousel = document.querySelector('.product-carousel');
-  if (!carousel) return;
+  const carousel = dom.get('.product-carousel');
+  if (!carousel) return () => {};
   
-  const products = carousel.querySelectorAll('.product-item');
+  const products = dom.getAll('.product-carousel .product-item');
   let currentProduct = 0;
   const productInterval = 8000; // Showcase each product for 8 seconds
   
+  // Testimonials content
+  const testimonials = [
+    "\"This completely changed my approach to business strategy!\"",
+    "\"The innovation and attention to detail are remarkable.\"",
+    "\"Nothing else compares to the quality and vision here.\"",
+    "\"A revolutionary product that delivers real results.\""
+  ];
+  
+  /**
+   * Show a specific product
+   * @param {number} index - Product index to display
+   */
   function showProduct(index) {
     // Normalize index within bounds
     index = Math.max(0, Math.min(index, products.length - 1));
@@ -87,36 +93,39 @@ function initProductCarousel() {
     currentItem.setAttribute('aria-hidden', 'false');
     
     // Apply animation effects
-    gsap.fromTo(
-      currentItem.querySelector('.product-details'),
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
-    );
+    const productDetails = currentItem.querySelector('.product-details');
+    if (productDetails) {
+      gsap.fromTo(
+        productDetails,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+      );
+    }
     
-    gsap.fromTo(
-      currentItem.querySelector('.product-image'),
-      { opacity: 0, scale: 0.9 },
-      { opacity: 1, scale: 1, duration: 1, ease: "back.out(1.2)" }
-    );
+    const productImage = currentItem.querySelector('.product-image');
+    if (productImage) {
+      gsap.fromTo(
+        productImage,
+        { opacity: 0, scale: 0.9 },
+        { opacity: 1, scale: 1, duration: 1, ease: "back.out(1.2)" }
+      );
+    }
     
     // Update testimonial if exists
-    const testimonial = document.querySelector('.testimonial');
-    const testimonials = [
-      "\"This completely changed my approach to business strategy!\"",
-      "\"The innovation and attention to detail are remarkable.\"",
-      "\"Nothing else compares to the quality and vision here.\"",
-      "\"A revolutionary product that delivers real results.\""
-    ];
-    
+    const testimonial = dom.get('.testimonial');
     if (testimonial) {
-      gsap.to(testimonial, { opacity: 0, duration: 0.3, onComplete: () => {
-        testimonial.textContent = testimonials[index];
-        gsap.to(testimonial, { opacity: 1, duration: 0.5 });
-      }});
+      gsap.to(testimonial, { 
+        opacity: 0, 
+        duration: 0.3, 
+        onComplete: () => {
+          testimonial.textContent = testimonials[index];
+          gsap.to(testimonial, { opacity: 1, duration: 0.5 });
+        }
+      });
     }
     
     // Update price flash animation
-    const priceFlash = document.querySelector('.price-flash');
+    const priceFlash = dom.get('.price-flash');
     if (priceFlash) {
       gsap.fromTo(
         priceFlash,
@@ -128,66 +137,96 @@ function initProductCarousel() {
     currentProduct = index;
   }
   
-  // Initial display
+  // Show initial product
   showProduct(0);
   
-  // Setup automatic rotation
-  setInterval(() => {
+  // Setup rotation interval
+  const rotationInterval = setInterval(() => {
     currentProduct = (currentProduct + 1) % products.length;
     showProduct(currentProduct);
   }, productInterval);
   
-  // Setup manual navigation with arrow buttons
-  const prevButton = document.querySelector('.prev-button');
-  const nextButton = document.querySelector('.next-button');
+  // Setup navigation buttons
+  const prevButton = dom.get('.prev-button');
+  const nextButton = dom.get('.next-button');
   
+  // Event handlers
+  const prevHandler = () => {
+    currentProduct = (currentProduct - 1 + products.length) % products.length;
+    showProduct(currentProduct);
+  };
+  
+  const nextHandler = () => {
+    currentProduct = (currentProduct + 1) % products.length;
+    showProduct(currentProduct);
+  };
+  
+  // Attach event listeners
   if (prevButton) {
-    prevButton.addEventListener('click', () => {
-      currentProduct = (currentProduct - 1 + products.length) % products.length;
-      showProduct(currentProduct);
-    });
+    prevButton.addEventListener('click', prevHandler);
   }
   
   if (nextButton) {
-    nextButton.addEventListener('click', () => {
-      currentProduct = (currentProduct + 1) % products.length;
-      showProduct(currentProduct);
-    });
+    nextButton.addEventListener('click', nextHandler);
   }
+  
+  // Return cleanup function
+  return () => {
+    clearInterval(rotationInterval);
+    
+    if (prevButton) {
+      prevButton.removeEventListener('click', prevHandler);
+    }
+    
+    if (nextButton) {
+      nextButton.removeEventListener('click', nextHandler);
+    }
+  };
 }
 
+/**
+ * Setup CTA button event handlers
+ * @returns {Function} Cleanup function
+ */
 function setupCTAButtons() {
   // Find all CTA buttons
-  const ctaButtons = document.querySelectorAll('.cta-button, .buy-now-button');
+  const ctaButtons = dom.getAll('.cta-button, .buy-now-button');
+  if (!ctaButtons.length) return () => {};
+  
+  // List to store event listeners for cleanup
+  const listeners = [];
   
   ctaButtons.forEach(button => {
-    button.addEventListener('click', event => {
+    const clickHandler = event => {
       event.preventDefault();
       
       // Create vibrant "clicked" effect
       const buttonRect = button.getBoundingClientRect();
-      const ripple = document.createElement('div');
-      ripple.className = 'button-ripple';
-      ripple.style.top = `${event.clientY - buttonRect.top}px`;
-      ripple.style.left = `${event.clientX - buttonRect.left}px`;
+      const ripple = dom.create('div', {
+        className: 'button-ripple',
+        style: {
+          top: `${event.clientY - buttonRect.top}px`,
+          left: `${event.clientX - buttonRect.left}px`
+        }
+      });
       button.appendChild(ripple);
       
       // Add pulsating glow effect
       button.classList.add('pulsate');
       
-      // Play "ka-ching" sound effect if available
-      const kaChingSound = new Audio('./audio/ka-ching.mp3');
-      kaChingSound.volume = 0.4;
-      kaChingSound.play().catch(err => console.warn('Could not play sound:', err));
+      // Play "ka-ching" sound effect
+      sound.play('./audio/ka-ching.mp3', { volume: 0.4 });
       
-      // Show "Added to Cart" or "Thank You" message
+      // Show confirmation message
       const productContainer = button.closest('.product-item');
       if (productContainer) {
-        const confirmMessage = document.createElement('div');
-        confirmMessage.className = 'confirm-message';
-        confirmMessage.textContent = 'Added to Cart!';
+        const confirmMessage = dom.create('div', { 
+          className: 'confirm-message',
+          textContent: 'Added to Cart!'
+        });
         productContainer.appendChild(confirmMessage);
         
+        // Animate confirmation
         gsap.fromTo(
           confirmMessage,
           { opacity: 0, y: -20 },
@@ -201,59 +240,111 @@ function setupCTAButtons() {
           ripple.remove();
         }, 2000);
       }
-    });
+    };
+    
+    // Attach the event
+    button.addEventListener('click', clickHandler);
+    
+    // Save for cleanup
+    listeners.push([button, 'click', clickHandler]);
   });
+  
+  // Return cleanup function
+  return () => {
+    listeners.forEach(([element, event, handler]) => {
+      element.removeEventListener(event, handler);
+    });
+  };
 }
 
+/**
+ * Add special visual effects for the infomercial
+ * @returns {Function} Cleanup function
+ */
 function addInfomercialEffects() {
-  // Add special visual effects that mimic TV infomercials
+  const animations = [];
   
   // Flashing "Limited Time Offer" element
-  const limitedTimeOffer = document.querySelector('.limited-time');
+  const limitedTimeOffer = dom.get('.limited-time');
   if (limitedTimeOffer) {
     // Create flashing animation using GSAP
-    gsap.to(limitedTimeOffer, {
+    const limitedAnim = gsap.to(limitedTimeOffer, {
       opacity: 0.2,
       duration: 0.7,
       ease: "power1.inOut",
       repeat: -1,
       yoyo: true
     });
+    animations.push(limitedAnim);
   }
   
-  // Pulsating price element
-  const priceElements = document.querySelectorAll('.price-tag');
+  // Pulsating price elements
+  const priceElements = dom.getAll('.price-tag');
+  const priceAnims = [];
+  
   priceElements.forEach(price => {
-    gsap.to(price, {
+    const priceAnim = gsap.to(price, {
       scale: 1.05,
       duration: 1.5,
       ease: "power1.inOut",
       repeat: -1,
       yoyo: true
     });
+    priceAnims.push(priceAnim);
   });
+  animations.push(...priceAnims);
   
   // Add TV scan lines effect
-  const infomercialContainer = document.getElementById('infomercial-container');
+  const infomercialContainer = dom.get('#infomercial-container');
+  let scanLines = null;
+  
   if (infomercialContainer) {
-    const scanLines = document.createElement('div');
-    scanLines.className = 'tv-scan-lines';
+    scanLines = dom.create('div', { className: 'tv-scan-lines' });
     infomercialContainer.appendChild(scanLines);
   }
   
   // Add "As Seen On TV" badge
-  const asSeenOnTV = document.createElement('div');
-  asSeenOnTV.className = 'as-seen-on-tv';
-  asSeenOnTV.innerHTML = `<span>AS SEEN ON TV</span>`;
-  document.querySelector('#infomercial-container')?.appendChild(asSeenOnTV);
+  let asSeenOnTV = null;
   
-  // Rotate and pulse the badge
-  gsap.to(asSeenOnTV, {
-    rotation: 10,
-    scale: 1.1,
-    duration: 2,
-    ease: "elastic.out(1, 0.3)",
-    repeat: -1,
-    yoyo: true
-  });
+  if (infomercialContainer) {
+    asSeenOnTV = dom.create('div', { 
+      className: 'as-seen-on-tv',
+      innerHTML: '<span>AS SEEN ON TV</span>'
+    });
+    infomercialContainer.appendChild(asSeenOnTV);
+    
+    // Rotate and pulse the badge
+    const badgeAnim = gsap.to(asSeenOnTV, {
+      rotation: 10,
+      scale: 1.1,
+      duration: 2,
+      ease: "elastic.out(1, 0.3)",
+      repeat: -1,
+      yoyo: true
+    });
+    animations.push(badgeAnim);
+  }
+  
+  // Return cleanup function
+  return () => {
+    // Kill all animations
+    animations.forEach(anim => anim.kill());
+    
+    // Remove DOM elements added dynamically
+    if (scanLines && scanLines.parentNode) {
+      scanLines.parentNode.removeChild(scanLines);
+    }
+    
+    if (asSeenOnTV && asSeenOnTV.parentNode) {
+      asSeenOnTV.parentNode.removeChild(asSeenOnTV);
+    }
+  };
+}
+
+/**
+ * Cleanup function to be called when channel is unloaded
+ */
+export function cleanup() {
+  // Additional cleanup if needed
+  console.log('Channel 2 explicit cleanup called');
 }
