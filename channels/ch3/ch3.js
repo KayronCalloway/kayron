@@ -25,12 +25,23 @@ export async function init() {
     // Clear container before initializing
     container.innerHTML = '';
     
+    // Add a wrapper for the game to control its dimensions
+    const gameWrapper = document.createElement('div');
+    gameWrapper.className = 'game-wrapper';
+    gameWrapper.style.cssText = `
+      width: 100%;
+      max-width: 1000px;
+      margin: 20px auto;
+      position: relative;
+    `;
+    container.appendChild(gameWrapper);
+    
     // Load the game HTML fragment
     const response = await fetch('./channels/ch3/gameshow.html');
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
     
     const html = await response.text();
-    container.innerHTML = html;
+    gameWrapper.innerHTML = html;
     
     // Make sure the menu button is visible
     const menuButton = document.getElementById('menuButton');
@@ -55,7 +66,7 @@ export async function init() {
     console.log("Channel 3 game show initialized successfully");
     
     // Force the game to be visible
-    const gameContainer = container.querySelector('#game-show-container');
+    const gameContainer = gameWrapper.querySelector('#game-show-container');
     if (gameContainer) {
       gameContainer.style.display = 'flex';
       gameContainer.style.visibility = 'visible';
