@@ -15,23 +15,18 @@
 #game-show-container {
   position: relative;
   width: 100%;
-  height: 100%;
-  max-height: calc(100vh - 120px); /* Ensure it stays within viewport minus header/footer space */
+  height: 100vh;
   background-color: var(--game-bg);
   color: var(--game-primary);
   overflow: hidden;
   font-family: 'Merova', sans-serif;
-  padding: 20px;
+  padding: 80px 20px 70px 20px; /* Add padding to avoid overlap with header/footer */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 50;
-  border: 3px solid var(--game-accent);
-  border-radius: 8px;
-  margin: 10px auto;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 /* Channel Information */
@@ -77,11 +72,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
+  padding: 2rem;
   transition: opacity 0.5s ease;
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: 100%;
 }
 
 .hidden {
@@ -98,21 +90,18 @@
   background: var(--game-surface);
   border: 2px solid var(--game-accent);
   border-radius: 10px;
-  padding: 1.5rem;
+  padding: 2rem;
   text-align: center;
   position: relative;
   animation: fadeIn 1s ease-out;
-  margin: 10px 0;
-  max-height: calc(100vh - 180px);
-  overflow-y: auto;
 }
 
 .host-image {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   background-color: var(--game-accent);
   border-radius: 50%;
-  margin: 0 auto 1rem;
+  margin: 0 auto 1.5rem;
   border: 3px solid var(--game-primary);
   box-shadow: 0 0 15px var(--game-glow);
   background-image: url('../../visuals/bulletproof.jpg');
@@ -121,18 +110,17 @@
 }
 
 .host-content h1 {
-  font-size: 2.5rem;
+  font-size: 3rem;
   color: var(--game-accent);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
   letter-spacing: 2px;
 }
 
 .host-speech {
-  font-size: 1.2rem;
-  line-height: 1.4;
+  font-size: 1.4rem;
+  line-height: 1.5;
   color: var(--game-primary);
-  margin-bottom: 1rem;
 }
 
 .host-speech p {
@@ -142,17 +130,16 @@
 .start-game-button {
   background: var(--game-accent);
   color: black;
-  padding: 12px 25px;
-  font-size: 1.3rem;
+  padding: 15px 30px;
+  font-size: 1.5rem;
   font-weight: bold;
   border: none;
   border-radius: 8px;
-  margin-top: 10px;
+  margin-top: 20px;
   cursor: pointer;
   box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
   transition: all 0.3s ease;
   animation: pulse 2s infinite;
-  display: inline-block;
 }
 
 .start-game-button:hover {
@@ -231,24 +218,23 @@
 /* Question Area */
 .question-area {
   width: 100%;
-  max-width: 800px;
+  max-width: 900px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 #question-display {
-  font-size: 1.8rem;
+  font-size: 2.2rem;
   text-align: center;
   background: var(--game-surface);
-  padding: 1.2rem;
+  padding: 1.5rem;
   border: 2px solid var(--game-accent);
   border-radius: 10px;
   color: var(--game-primary);
   width: 100%;
-  margin-bottom: 0.8rem;
-  word-wrap: break-word;
+  margin-bottom: 1rem;
 }
 
 /* Answer Options */
@@ -256,15 +242,15 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 0.7rem;
+  gap: 1rem;
 }
 
 .option-button {
   background: transparent;
   border: 2px solid var(--game-primary);
   border-radius: 8px;
-  padding: 0.9rem;
-  font-size: 1.2rem;
+  padding: 1.2rem;
+  font-size: 1.4rem;
   color: var(--game-primary);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -273,7 +259,7 @@
   overflow: hidden;
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 1rem;
 }
 
 .option-button:hover {
@@ -410,38 +396,38 @@
 /* Final Results Screen */
 .results-header {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .results-header h2 {
-  font-size: 2.5rem;
+  font-size: 3rem;
   color: var(--game-accent);
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
   text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
 }
 
 .final-score {
-  font-size: 1.6rem;
+  font-size: 2rem;
   color: var(--game-primary);
 }
 
 #final-score {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
   color: var(--game-accent);
 }
 
 .results-content {
-  max-width: 800px;
+  max-width: 900px;
   width: 90%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
   background: var(--game-surface);
   border: 2px solid var(--game-primary);
-  padding: 1.5rem;
+  padding: 2rem;
   border-radius: 10px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .performance-summary h3,
@@ -507,13 +493,13 @@
   background: var(--game-accent);
   color: black;
   border: none;
-  padding: 0.9rem 2rem;
-  font-size: 1.1rem;
+  padding: 1.2rem 2.5rem;
+  font-size: 1.3rem;
   font-weight: bold;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 0.8rem;
+  margin-top: 1rem;
 }
 
 .play-again-button:hover {
@@ -523,7 +509,7 @@
 
 /* TV Effects */
 #tv-static {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -534,11 +520,10 @@
   pointer-events: none;
   z-index: 1;
   animation: staticNoise 0.5s steps(1) infinite;
-  border-radius: 6px;
 }
 
 #screen-glitch {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -546,11 +531,10 @@
   background: transparent;
   pointer-events: none;
   z-index: 2;
-  border-radius: 6px;
 }
 
 #channel-change-effect {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -559,20 +543,17 @@
   pointer-events: none;
   z-index: 100;
   opacity: 0;
-  border-radius: 6px;
 }
 
 /* Celebration Effects */
 .celebration-container {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
   z-index: 101;
-  border-radius: 6px;
-  overflow: hidden;
 }
 
 .celebration-particle {
@@ -611,76 +592,33 @@
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-  #game-show-container {
-    max-height: calc(100vh - 100px);
-    padding: 15px;
-    margin: 5px auto;
-  }
-  
   .host-speech {
-    font-size: 1rem;
-  }
-  
-  .host-image {
-    width: 80px;
-    height: 80px;
-  }
-  
-  .host-content h1 {
-    font-size: 2rem;
+    font-size: 1.2rem;
   }
   
   #question-display {
-    font-size: 1.4rem;
-    padding: 0.8rem;
-  }
-  
-  .option-button {
-    padding: 0.7rem;
-    font-size: 1rem;
-  }
-  
-  .option-letter {
-    padding: 0.3rem 0.5rem;
-    min-width: 1.8rem;
-  }
-  
-  .points-display {
-    font-size: 1.2rem;
-    padding: 0.4rem 0.8rem;
-  }
-  
-  .results-header h2 {
-    font-size: 2rem;
-  }
-  
-  .performance-summary h3 {
-    font-size: 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  #game-show-container {
-    padding: 10px;
-    border-width: 2px;
-  }
-  
-  .host-content {
+    font-size: 1.6rem;
     padding: 1rem;
   }
   
-  .game-header {
-    padding: 0.5rem;
-  }
-  
-  #question-display {
-    font-size: 1.2rem;
-    padding: 0.6rem;
-  }
-  
   .option-button {
-    padding: 0.5rem;
-    font-size: 0.9rem;
+    padding: 1rem;
+    font-size: 1.2rem;
+  }
+  
+  .option-letter {
+    padding: 0.3rem 0.7rem;
+    min-width: 2rem;
+  }
+  
+  .call-to-action {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .points-display {
+    font-size: 1.4rem;
+    padding: 0.5rem 1rem;
   }
 }
 
