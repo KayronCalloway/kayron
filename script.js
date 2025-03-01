@@ -72,8 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Dynamic Module Loading ---
   const loadChannelContent = async moduleName => {
   try {
+    console.log(`Loading module for ${moduleName}...`);
     let module;
     if (moduleName === 'home') {
+      // Preload Channel 1 with higher priority
+      console.log('Loading home module for Channel 1');
       module = await import(`./channels/ch1/home.js`);
     } else if (moduleName === 'ch2') {
       module = await import(`./channels/ch2/ch2.js`);
@@ -84,9 +87,16 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (moduleName === 'under the influence') {
       module = await import(`./channels/ch4/ch4.js`);
     }
-    module.init();
+    
+    if (module) {
+      console.log(`Module for ${moduleName} loaded successfully, initializing...`);
+      await module.init();
+      console.log(`Module for ${moduleName} initialized`);
+    } else {
+      console.warn(`No module definition found for ${moduleName}`);
+    }
   } catch (err) {
-    console.warn(`Module for ${moduleName} failed to load.`, err);
+    console.error(`Module for ${moduleName} failed to load or initialize:`, err);
   }
 };
 
