@@ -4,8 +4,11 @@ let youtubePlayer;
 
 // Called by the YouTube IFrame API when it's ready.
 function onYouTubeIframeAPIReady() {
+  console.log('YouTube API ready, initializing player');
   youtubePlayer = new YT.Player('youtube-player', {
     videoId: 'KISNE4qOIBM', // Your YouTube video ID
+    width: '100%',
+    height: '100%',
     playerVars: {
       autoplay: 1,
       controls: 0,
@@ -19,6 +22,7 @@ function onYouTubeIframeAPIReady() {
     },
     events: {
       onReady: event => {
+        console.log('YouTube player ready');
         // Mute the video initially to allow autoplay.
         event.target.mute();
         event.target.playVideo();
@@ -28,8 +32,20 @@ function onYouTubeIframeAPIReady() {
           if (iframe) {
             iframe.style.width = '100%';
             iframe.style.height = '100%';
+            iframe.style.position = 'absolute';
+            iframe.style.top = '0';
+            iframe.style.left = '0';
+            console.log('YouTube iframe styles applied');
+          } else {
+            console.error('YouTube iframe not found for styling');
           }
         }, 500);
+      },
+      onStateChange: event => {
+        console.log(`YouTube player state changed: ${event.data}`);
+      },
+      onError: event => {
+        console.error('YouTube player error:', event.data);
       }
     }
   });
