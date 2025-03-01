@@ -1,4 +1,32 @@
 // channels/ch4/ch4.js
+function initializeDropdown() {
+  setTimeout(() => {
+    const dropdown = document.querySelector('.dropdown');
+    if (dropdown) {
+      dropdown.addEventListener('click', function(e) {
+        if (e.target.classList.contains('dropdown-toggle') || e.target === dropdown) {
+          dropdown.classList.toggle('active');
+          
+          // Change the arrow direction
+          const toggleText = dropdown.querySelector('.dropdown-toggle');
+          if (dropdown.classList.contains('active')) {
+            toggleText.textContent = 'Under The Influence ▲';
+          } else {
+            toggleText.textContent = 'Under The Influence ▼';
+          }
+        }
+      });
+      
+      // Start with dropdown open by default
+      setTimeout(() => {
+        dropdown.classList.add('active');
+        const toggleText = dropdown.querySelector('.dropdown-toggle');
+        toggleText.textContent = 'Under The Influence ▲';
+      }, 1000);
+    }
+  }, 500); // Wait for DOM to be fully loaded
+}
+
 export async function init() {
   const container = document.getElementById('section4');
   if (!container) {
@@ -29,6 +57,9 @@ export async function init() {
     link.href = './channels/ch4/styles.css';
     document.head.appendChild(link);
   }
+  
+  // Initialize the dropdown functionality
+  initializeDropdown();
   
   // Use the YouTube IFrame API to create a player in Channel 4.
   // We wait a short delay to ensure the HTML is in place.
