@@ -239,6 +239,10 @@ const resetMenuStyles = () => {
   closeGuide.addEventListener('click', () => toggleTVGuide(false));
   guideItems.forEach(item => {
     item.addEventListener('click', () => {
+      // Dispatch channel change event to stop any running audio
+      const channelChangeEvent = new Event('channelChange');
+      document.dispatchEvent(channelChangeEvent);
+      
       const targetSection = document.getElementById(item.getAttribute('data-target'));
       if (targetSection) {
         targetSection.scrollIntoView({ behavior: 'smooth' });
@@ -256,6 +260,10 @@ const resetMenuStyles = () => {
       if (entry.isIntersecting) {
         const newChannel = entry.target.id;
         if (currentChannel !== newChannel) {
+          // Dispatch channel change event to stop any running audio
+          const channelChangeEvent = new Event('channelChange');
+          document.dispatchEvent(channelChangeEvent);
+          
           // If leaving channel 3, reset menu button styles
           if (currentChannel === 'section3') {
             resetMenuStyles();

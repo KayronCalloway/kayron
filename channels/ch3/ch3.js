@@ -7,6 +7,24 @@ let gameResources = {
   script: null
 };
 
+// Function to stop all game sounds
+function stopAllChannelSounds() {
+  if (window.GameShowManager && window.GameShowManager.sounds) {
+    // Stop all sounds in the game
+    Object.values(window.GameShowManager.sounds).forEach(sound => {
+      if (sound && typeof sound.pause === 'function') {
+        sound.pause();
+        if (typeof sound.currentTime !== 'undefined') {
+          sound.currentTime = 0;
+        }
+      }
+    });
+  }
+}
+
+// Add a global event listener to stop sounds when changing channels
+document.addEventListener('channelChange', stopAllChannelSounds);
+
 export async function init() {
   try {
     // Container validation
@@ -297,7 +315,6 @@ class GameShow {
     this.sounds = {
       correct: new Audio('./audio/ka-ching.mp3'),
       incorrect: new Audio('./audio/click.mp3'),
-      success: new Audio('./audio/whoosh.mp3'),
       background: new Audio('./audio/gameshow.aif')
     };
   }
@@ -1029,11 +1046,14 @@ class GameShow {
   
   // Show final results screen
   showFinalResults() {
-    // Stop background music and play success sound
+    // Stop background music
     if (this.sounds.background) {
       this.sounds.background.pause();
+      this.sounds.background.currentTime = 0;
     }
-    this.playSound('success');
+    
+    // Play correct sound for success
+    this.playSound('correct');
     
     // Determine performance level based on score
     const performanceLevel = this.content.performanceLevels.find(level => 
