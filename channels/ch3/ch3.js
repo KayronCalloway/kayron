@@ -854,7 +854,33 @@ class GameShow {
   
   // Show commercial break
   showCommercialBreak() {
-    this.showScreen('commercial');
+    console.log("Showing commercial break...");
+    
+    // Get the commercial screen element
+    const commercialScreen = this.elements.screens.commercial;
+    
+    if (!commercialScreen) {
+      console.error("Commercial screen element not found!");
+      // Skip commercial and continue with next question
+      this.state.currentQuestion = null;
+      this.startTimer();
+      this.showNextQuestion();
+      return;
+    }
+    
+    // Make sure the commercial screen is visible with explicit styles
+    commercialScreen.classList.remove('hidden');
+    commercialScreen.style.display = 'flex';
+    commercialScreen.style.visibility = 'visible';
+    commercialScreen.style.opacity = '1';
+    commercialScreen.style.zIndex = '15';
+    
+    // Hide other screens
+    const gameRound = this.elements.screens.gameRound;
+    if (gameRound) {
+      gameRound.classList.add('hidden');
+      gameRound.style.display = 'none';
+    }
     
     // Populate commercial break content
     this.populateCommercialContent();
@@ -862,22 +888,52 @@ class GameShow {
     // Pause timer during commercial
     clearInterval(this.state.timerInterval);
     
+    console.log("Commercial break started, will end in 5 seconds");
+    
     // Resume game after commercial break
     setTimeout(() => {
-      this.showScreen('game-round');
+      console.log("Commercial break ending...");
+      
+      // Hide commercial screen
+      commercialScreen.classList.add('hidden');
+      commercialScreen.style.display = 'none';
+      
+      // Show game round screen
+      if (gameRound) {
+        gameRound.classList.remove('hidden');
+        gameRound.style.display = 'flex';
+        gameRound.style.visibility = 'visible';
+        gameRound.style.opacity = '1';
+      }
+      
       this.state.currentQuestion = null;
       this.startTimer();
       this.showNextQuestion();
+      
+      console.log("Game resumed after commercial");
     }, 5000);
   }
   
   // Populate commercial break content
   populateCommercialContent() {
+    console.log("Populating commercial content...");
+    
     const skillShowcase = document.querySelector('.skill-showcase');
-    if (!skillShowcase) return;
+    if (!skillShowcase) {
+      console.error("Skill showcase element not found!");
+      return;
+    }
     
     // Clear existing skills
     skillShowcase.innerHTML = '';
+    
+    // Make sure the commercial content is visible
+    const commercialContent = document.querySelector('.commercial-content');
+    if (commercialContent) {
+      commercialContent.style.display = 'block';
+      commercialContent.style.visibility = 'visible';
+      commercialContent.style.opacity = '1';
+    }
     
     // Show different skills based on current round
     const skills = [
@@ -894,31 +950,48 @@ class GameShow {
       Math.min(this.state.currentRound * 2 + 1, skills.length)
     );
     
-    // Add skills to showcase
-    roundSkills.forEach((skill, index) => {
-      const skillItem = document.createElement('div');
-      skillItem.className = 'skill-item';
-      
-      skillItem.innerHTML = `
-        <i class="fas fa-${skill.icon}"></i>
-        <span>${skill.name}</span>
+    // Create skill items directly with proper HTML
+    let skillsHTML = '';
+    roundSkills.forEach(skill => {
+      skillsHTML += `
+        <div class="skill-item">
+          <i class="fas fa-${skill.icon}"></i>
+          <span>${skill.name}</span>
+        </div>
       `;
-      
-      skillShowcase.appendChild(skillItem);
-      
-      // Add staggered entrance animation
-      gsap.fromTo(
-        skillItem,
-        { y: 20, opacity: 0 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          duration: 0.5, 
-          ease: "back.out(1.2)",
-          delay: index * 0.2 // Stagger effect
-        }
-      );
     });
+    
+    // Set the HTML content
+    skillShowcase.innerHTML = skillsHTML;
+    
+    // Get the newly created elements and animate them
+    const skillItems = skillShowcase.querySelectorAll('.skill-item');
+    
+    // Add staggered entrance animation
+    try {
+      skillItems.forEach((skillItem, index) => {
+        gsap.fromTo(
+          skillItem,
+          { y: 20, opacity: 0 },
+          { 
+            y: 0, 
+            opacity: 1, 
+            duration: 0.5, 
+            ease: "back.out(1.2)",
+            delay: index * 0.2 // Stagger effect
+          }
+        );
+      });
+    } catch (error) {
+      console.error("Animation error:", error);
+      // Fallback if animation fails
+      skillItems.forEach(item => {
+        item.style.opacity = '1';
+        item.style.transform = 'translateY(0)';
+      });
+    }
+    
+    console.log(`Commercial content populated with ${roundSkills.length} skills`);
   }
   
   // End the game and show results
