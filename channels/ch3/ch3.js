@@ -213,76 +213,82 @@ class GameShow {
     this.content = {
       questions: [
         {
-          question: "What's Kayron's favorite programming language?",
+          question: "A client hires you for a major creative project but suddenly wants to pivot in a completely new direction. What's your move?",
           options: [
-            { text: "JavaScript", points: 20, correct: true },
-            { text: "Python", points: 10 },
-            { text: "Java", points: 5 },
-            { text: "C++", points: 5 }
+            { text: "Stick to the original plan—changing direction now would waste time and resources.", points: 5 },
+            { text: "Express your concerns but ultimately follow their lead—they're paying, after all.", points: 10 },
+            { text: "Strategically suggest a middle ground that aligns with their new vision while keeping key elements intact.", points: 15 },
+            { text: "Reframe the pivot as an opportunity for innovation—proactively present fresh ideas that meet their new goals while maintaining quality.", points: 20, correct: true }
           ],
-          insight: "JavaScript is Kayron's go-to language for both frontend and backend development!"
+          insight: "This highlights adaptability, problem-solving, and client management skills!"
         },
         {
-          question: "Which project is Kayron most proud of?",
+          question: "You're leading a team on a high-stakes project, but a key deadline is unexpectedly moved up. What's your approach?",
           options: [
-            { text: "AI-powered chatbot", points: 10 },
-            { text: "Personal portfolio website", points: 5 },
-            { text: "Game development project", points: 15 },
-            { text: "Machine learning model", points: 20, correct: true }
+            { text: "Work harder and push through—even if it means long hours and stress.", points: 5 },
+            { text: "Restructure tasks and redistribute the workload efficiently to meet the deadline.", points: 10 },
+            { text: "Communicate with the team, adjust priorities, and propose realistic solutions to maintain quality under pressure.", points: 15 },
+            { text: "Stay calm, motivate the team, and introduce a streamlined approach that increases efficiency without sacrificing the creative vision.", points: 20, correct: true }
           ],
-          insight: "Kayron's passion for AI and machine learning shines through in his projects!"
+          insight: "This showcases leadership, time management, and resilience under pressure!"
         },
         {
-          question: "What's Kayron's preferred development environment?",
+          question: "You're presenting a brand strategy to a high-profile client, but mid-meeting, they seem skeptical. What do you do?",
           options: [
-            { text: "VS Code", points: 20, correct: true },
-            { text: "Sublime Text", points: 5 },
-            { text: "IntelliJ IDEA", points: 10 },
-            { text: "Vim", points: 15 }
+            { text: "Stick to the script—you prepared for this.", points: 5 },
+            { text: "Address their concerns briefly but move forward with confidence.", points: 10 },
+            { text: "Adapt on the spot, engaging them in a discussion and tailoring the presentation to their reactions.", points: 15 },
+            { text: "Flip the approach—turn the meeting into a collaborative conversation where they feel involved in shaping the direction.", points: 20, correct: true }
           ],
-          insight: "VS Code's extensibility and integrated features make it Kayron's top choice!"
+          insight: "This highlights communication, adaptability, and persuasion skills!"
         },
         {
-          question: "What business sector is Kayron most experienced in?",
+          question: "Your fragrance project hits a supply chain issue, and a key ingredient is unavailable. How do you react?",
           options: [
-            { text: "Entertainment", points: 20, correct: true },
-            { text: "Finance", points: 10 },
-            { text: "Healthcare", points: 5 },
-            { text: "Retail", points: 5 }
+            { text: "Pause production until the ingredient is back in stock.", points: 5 },
+            { text: "Find a similar replacement and move forward with minimal changes.", points: 10 },
+            { text: "Experiment with alternatives, ensuring the final product maintains the intended essence and quality.", points: 15 },
+            { text: "Use this as a chance to refine the formula, possibly improving the fragrance while communicating transparently with your audience.", points: 20, correct: true }
           ],
-          insight: "Kayron has extensive experience in the entertainment industry, particularly with financial analytics!"
+          insight: "This tests problem-solving, creativity, and strategic thinking!"
         },
         {
-          question: "What skill is Kayron continuously improving?",
+          question: "You're consulting for a brand that needs a major creative refresh, but their leadership is hesitant about big changes. How do you handle it?",
           options: [
-            { text: "Project Management", points: 5 },
-            { text: "Creative Direction", points: 10 },
-            { text: "Data Analysis", points: 15 },
-            { text: "Strategic Planning", points: 20, correct: true }
+            { text: "Follow their instructions and make only small tweaks.", points: 5 },
+            { text: "Show them industry trends but ultimately let them decide.", points: 10 },
+            { text: "Present a vision that bridges innovation with elements they're comfortable with.", points: 15 },
+            { text: "Build trust by educating them on long-term benefits and showing a phased approach to transformation.", points: 20, correct: true }
           ],
-          insight: "Strategic planning and business development are areas where Kayron consistently excels!"
+          insight: "This demonstrates leadership, strategic thinking, and influence!"
         }
       ],
       
       // Performance levels based on score
       performanceLevels: [
         {
-          threshold: 70,
-          title: "Business Virtuoso!",
-          message: "You have exceptional understanding of Kayron's professional profile and capabilities!",
-          skills: ["Strategic Vision", "Business Acumen", "Creative Direction"]
+          threshold: 95,
+          title: "Creative Architect",
+          message: "You're not just part of the industry—you help redefine it. Your ability to balance technical skills with leadership, adaptability, and strategy makes you a force in any project. Keep pushing boundaries!",
+          skills: ["Visionary Leadership", "Strategic Innovation", "Client Trust"]
         },
         {
-          threshold: 40,
-          title: "Rising Star!",
-          message: "You have a solid grasp of Kayron's professional profile and key strengths.",
-          skills: ["Problem Solving", "Business Knowledge", "Analytical Thinking"]
+          threshold: 75,
+          title: "Visionary Collaborator",
+          message: "You don't just execute—you shape the direction of projects, lead with confidence, and bring fresh ideas while keeping teams aligned. You see the big picture and execute accordingly!",
+          skills: ["Creative Direction", "Team Leadership", "Strategic Thinking"]
+        },
+        {
+          threshold: 45,
+          title: "Strategic Problem Solver",
+          message: "You adapt well to challenges and use a balanced approach between structure and creativity. Your leadership style is thoughtful and effective!",
+          skills: ["Adaptability", "Problem Solving", "Project Management"]
         },
         {
           threshold: 0,
-          title: "Potential Explorer!",
-          message: "You're starting to understand Kayron's professional offerings and capabilities.",
-          skills: ["Curiosity", "Learning Mindset", "Professional Interest"]
+          title: "Reliable Executor",
+          message: "You get things done efficiently and follow through on commitments. Your strength is consistency, and with more flexibility, you can elevate your impact even further!",
+          skills: ["Reliability", "Efficiency", "Practical Thinking"]
         }
       ]
     };
