@@ -1,146 +1,25 @@
 // channels/ch3/ch3.js
 
-// Track initialization state
-let gameInitialized = false;
-let gameResources = {
-  stylesheet: null,
-  script: null
-};
-
 export async function init() {
   try {
-    // Container validation
-    const container = document.getElementById('section3');
-    if (!container) {
-      console.error("Channel 3 container not found");
-      return;
-    }
-    
-    // Prevent duplicate initialization
-    if (container.querySelector('#game-show-container') && gameInitialized) {
-      console.log("Game show already loaded; skipping initialization.");
-      return;
-    }
-    
-    // Clear container before initializing
-    container.innerHTML = '';
-    
     // Load the game HTML fragment
     const response = await fetch('./channels/ch3/gameshow.html');
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
     
     const html = await response.text();
+    const container = document.createElement('div');
     container.innerHTML = html;
-    
-    // Make sure the menu button is visible
-    const menuButton = document.getElementById('menuButton');
-    if (menuButton) {
-      menuButton.style.zIndex = '999999';
-      menuButton.style.display = 'block';
-      menuButton.style.opacity = '1';
-    }
-    
-    // Add channel number overlay with high z-index to ensure visibility
-    ensureChannelNumberVisible(container);
-    
-    // Dynamically load CSS if not already loaded
-    await loadStylesheet();
+    document.body.appendChild(container);
     
     // Initialize game components
-    await initializeGameShow();
-    
-    // Track successful initialization
-    gameInitialized = true;
-    
-    console.log("Channel 3 game show initialized successfully");
-    
-    // Force the game to be visible
-    const gameContainer = container.querySelector('#game-show-container');
-    if (gameContainer) {
-      gameContainer.style.display = 'flex';
-      gameContainer.style.visibility = 'visible';
-      gameContainer.style.opacity = '1';
-    }
-    
-  } catch (error) {
-    console.error("Failed to load Channel 3 markup:", error);
-    const container = document.getElementById('section3');
-    if (container) {
-      container.innerHTML = `
-        <div class="error">Error loading game show content.</div>
-        <div class="channel-number-overlay">CH 03</div>
-      `;
-    }
+    initializeGameShow();
+  } catch (err) {
+    console.error('Failed to load game show:', err);
   }
-}
-
-// Ensure the channel number is always visible
-function ensureChannelNumberVisible(container) {
-  // Remove any existing overlay
-  const existingOverlay = container.querySelector('.channel-number-overlay');
-  if (existingOverlay) {
-    existingOverlay.remove();
-  }
-  
-  // Create a fixed position overlay with very high z-index
-  const channelOverlay = document.createElement('div');
-  channelOverlay.className = 'channel-number-overlay';
-  channelOverlay.textContent = 'CH 03';
-  channelOverlay.style.cssText = `
-    position: fixed;
-    bottom: 40px;
-    right: 20px;
-    z-index: 999998;
-    font-size: 2rem;
-    color: var(--primary-color, #fff);
-    opacity: 0.8;
-    pointer-events: none;
-  `;
-  container.appendChild(channelOverlay);
-}
-
-// Load game stylesheet with proper cleanup
-async function loadStylesheet() {
-  // Remove any existing stylesheet to prevent conflicts
-  const existingStylesheet = document.querySelector('link[href*="channels/ch3/styles.css"]');
-  if (existingStylesheet) {
-    existingStylesheet.remove();
-  }
-  
-  // Create new stylesheet
-  return new Promise((resolve) => {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = './channels/ch3/styles.css?' + new Date().getTime(); // Cache busting
-    link.id = 'ch3-stylesheet';
-    
-    // Track when loaded
-    link.onload = () => {
-      gameResources.stylesheet = link;
-      resolve();
-    };
-    
-    link.onerror = () => {
-      console.error("Failed to load Channel 3 stylesheet");
-      resolve(); // Resolve anyway to prevent blocking
-    };
-    
-    document.head.appendChild(link);
-  });
 }
 
 // Initialize the game show
-async function initializeGameShow() {
-  // Ensure the menu button remains visible
-  const menuButton = document.getElementById('menuButton');
-  if (menuButton) {
-    menuButton.style.zIndex = '999999';
-    menuButton.style.display = 'block';
-    menuButton.style.opacity = '1';
-    menuButton.style.position = 'fixed';
-    menuButton.style.pointerEvents = 'auto';
-  }
-  
+function initializeGameShow() {
   try {
     // Initialize the Game Show Manager
     const GameShowManager = new GameShow();
@@ -851,8 +730,5 @@ class GameShow {
     
     // Show host intro then start game after delay
     this.showScreen('host-intro');
-    setTimeout(() => {
-      this.startGame();
-    }, 3000);
   }
 }

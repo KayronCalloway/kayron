@@ -2,15 +2,35 @@
 
 export async function init() {
   try {
-    // Load the modal HTML fragment for Channel 1 using async/await.
-    const response = await fetch('./channels/ch1/modals.html');
-    const html = await response.text();
-    const container = document.createElement('div');
-    container.innerHTML = html;
-    document.body.appendChild(container);
+    // Load the HTML fragment for Channel 1 using async/await.
+    const indexResponse = await fetch('./channels/ch1/index.html');
+    if (!indexResponse.ok) throw new Error(`HTTP error! Status: ${indexResponse.status}`);
+    
+    const indexHtml = await indexResponse.text();
+    const indexContainer = document.createElement('div');
+    indexContainer.innerHTML = indexHtml;
+    document.body.appendChild(indexContainer);
+    
+    // Load the modal HTML fragment
+    const modalResponse = await fetch('./channels/ch1/modals.html');
+    if (!modalResponse.ok) throw new Error(`HTTP error! Status: ${modalResponse.status}`);
+    
+    const modalHtml = await modalResponse.text();
+    const modalContainer = document.createElement('div');
+    modalContainer.innerHTML = modalHtml;
+    document.body.appendChild(modalContainer);
+    
+    // Dynamically load CSS if not already loaded
+    if (!document.querySelector('link[href="./channels/ch1/styles.css"]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = './channels/ch1/styles.css';
+      document.head.appendChild(link);
+    }
+    
     setupModalEventListeners();
   } catch (err) {
-    console.error('Failed to load modals:', err);
+    console.error('Failed to load channel 1:', err);
   }
 }
 
@@ -26,7 +46,7 @@ function setupModalEventListeners() {
         scale: 0.8, 
         y: 20, 
         rotationX: 5,
-        transformOrigin: "top center" // makes it look like it’s emerging from the top edge
+        transformOrigin: "top center" // makes it look like it's emerging from the top edge
       },
       { 
         opacity: 1, 

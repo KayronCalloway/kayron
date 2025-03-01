@@ -1,10 +1,8 @@
 // youtube-setup.js
 
-let youtubePlayer;
-
 // Called by the YouTube IFrame API when it's ready.
 function onYouTubeIframeAPIReady() {
-  youtubePlayer = new YT.Player('youtube-player', {
+  window.youtubePlayer = new YT.Player('youtube-player', {
     videoId: 'KISNE4qOIBM', // Your YouTube video ID
     playerVars: {
       autoplay: 1,
@@ -40,8 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const powerButton = document.getElementById('powerButton');
   if (powerButton) {
     powerButton.addEventListener('click', () => {
-      if (youtubePlayer && typeof youtubePlayer.unMute === 'function') {
-        youtubePlayer.unMute();
+      if (window.youtubePlayer && typeof window.youtubePlayer.unMute === 'function') {
+        window.youtubePlayer.unMute();
       }
     });
   }

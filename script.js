@@ -84,7 +84,11 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (moduleName === 'under the influence') {
       module = await import(`./channels/ch4/ch4.js`);
     }
-    module.init();
+    
+    // Initialize the module
+    if (module && typeof module.init === 'function') {
+      module.init();
+    }
   } catch (err) {
     console.warn(`Module for ${moduleName} failed to load.`, err);
   }
@@ -332,13 +336,13 @@ const resetMenuStyles = () => {
     entries.forEach(entry => {
       if (entry.target.id === "section1") {
         if (entry.intersectionRatio >= 0.7) {
-          if (youtubePlayer && typeof youtubePlayer.unMute === "function") {
-            youtubePlayer.unMute();
+          if (window.youtubePlayer && typeof window.youtubePlayer.unMute === "function") {
+            window.youtubePlayer.unMute();
             console.log("Channel 1 active: Unmuting video.");
           }
         } else {
-          if (youtubePlayer && typeof youtubePlayer.mute === "function") {
-            youtubePlayer.mute();
+          if (window.youtubePlayer && typeof window.youtubePlayer.mute === "function") {
+            window.youtubePlayer.mute();
             console.log("Channel 1 inactive: Muting video.");
           }
         }

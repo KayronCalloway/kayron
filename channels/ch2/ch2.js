@@ -2,53 +2,19 @@
 
 export async function init() {
   try {
-    // Container validation
-    const container = document.getElementById('section2');
-    if (!container) {
-      console.error("Channel 2 container not found");
-      return;
-    }
-    
-    // Prevent duplicate initialization
-    if (container.querySelector('#infomercial-container')) {
-      console.log("Infomercial already loaded; skipping initialization.");
-      return;
-    }
-    
     // Load the HTML fragment for Channel 2 using async/await
     const response = await fetch('./channels/ch2/infomercial.html');
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
     
     const html = await response.text();
+    const container = document.createElement('div');
     container.innerHTML = html;
-    
-    // Add channel number overlay if it doesn't exist
-    if (!container.querySelector('.channel-number-overlay')) {
-      const channelOverlay = document.createElement('div');
-      channelOverlay.className = 'channel-number-overlay';
-      channelOverlay.textContent = 'CH 02';
-      container.appendChild(channelOverlay);
-    }
-    
-    // Dynamically load CSS
-    if (!document.querySelector('link[href="./channels/ch2/styles.css"]')) {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = './channels/ch2/styles.css';
-      document.head.appendChild(link);
-    }
+    document.body.appendChild(container);
     
     // Setup event listeners and initialize the infomercial experience
     setupInfomercialEventListeners();
-    
-    console.log("Channel 2 infomercial initialized successfully");
-  } catch (error) {
-    console.error("Failed to load Channel 2 markup:", error);
-    const container = document.getElementById('section2');
-    if (container) {
-      container.innerHTML = `<div class="error">Error loading infomercial content.</div>
-                           <div class="channel-number-overlay">CH 02</div>`;
-    }
+  } catch (err) {
+    console.error('Failed to load infomercial:', err);
   }
 }
 
