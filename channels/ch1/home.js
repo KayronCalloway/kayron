@@ -35,7 +35,7 @@ export async function init() {
   try {
     console.log('Loading Channel 1 modals...');
     const response = await fetch('./channels/ch1/modals.html');
-    if (\!response.ok) {
+    if (!response.ok) {
       throw new Error(`Failed to fetch modals: ${response.status} ${response.statusText}`);
     }
     const html = await response.text();
@@ -94,7 +94,7 @@ function setupModalEventListeners() {
     const modal = document.getElementById(modalId);
     const closeButton = document.getElementById(closeButtonId);
     
-    console.log(`Setting up ${modalId}: Button=${\!\!triggerButton}, Modal=${\!\!modal}, CloseButton=${\!\!closeButton}`);
+    console.log(`Setting up ${modalId}: Button=${!!triggerButton}, Modal=${!!modal}, CloseButton=${!!closeButton}`);
     
     if (triggerButton && modal && closeButton) {
       triggerButton.addEventListener('click', () => {
