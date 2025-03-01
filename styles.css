@@ -431,7 +431,7 @@ body {
   width: 100% !important;
   height: 100% !important;
   overflow: hidden;
-  z-index: 1; /* Changed from -1 to ensure video is visible but below buttons */
+  z-index: 0; /* Changed to 0 to ensure video is behind buttons but still visible */
   background: #000; /* Add a black background in case video fails to load */
 }
 .video-background iframe {
