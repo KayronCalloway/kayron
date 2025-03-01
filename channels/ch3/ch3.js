@@ -346,7 +346,6 @@ class GameShow {
       timerBar: document.getElementById('timer-bar'),
       finalScore: document.getElementById('final-score'),
       performanceDetails: document.getElementById('performance-details'),
-      unlockedSkills: document.getElementById('unlocked-skills'),
       playAgainBtn: document.getElementById('play-again-btn')
     };
     
@@ -1024,25 +1023,6 @@ class GameShow {
         <h4>${performanceLevel.title}</h4>
         <p>${performanceLevel.message}</p>
       `;
-    }
-    
-    if (this.elements.ui.unlockedSkills) {
-      this.elements.ui.unlockedSkills.innerHTML = performanceLevel.skills.map(skill => 
-        `<div class="skill-item">${skill}</div>`
-      ).join('');
-      
-      // Animate skills appearance
-      gsap.fromTo(
-        this.elements.ui.unlockedSkills.children,
-        { scale: 0, opacity: 0 },
-        { 
-          scale: 1, 
-          opacity: 1, 
-          duration: 0.6, 
-          stagger: 0.2, 
-          ease: "back.out(1.7)" 
-        }
-      );
     }
     
     // Show results screen with animation
