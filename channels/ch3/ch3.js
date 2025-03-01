@@ -9,19 +9,46 @@ let gameResources = {
 
 // Function to stop all game sounds
 function stopAllChannelSounds() {
+  console.log("Channel change detected, stopping all Channel 3 sounds");
+  
+  // First check if the GameShowManager is available globally
   if (window.GameShowManager && window.GameShowManager.sounds) {
-    // Stop all sounds in the game
+    console.log("Found GameShowManager, stopping sounds");
+    
+    // Call the stopAllSounds method if it exists
+    if (typeof window.GameShowManager.stopAllSounds === 'function') {
+      window.GameShowManager.stopAllSounds();
+      return;
+    }
+    
+    // Otherwise use the direct approach as fallback
     Object.values(window.GameShowManager.sounds).forEach(sound => {
       if (sound && typeof sound.pause === 'function') {
+        console.log("Stopping sound:", sound.src);
         sound.pause();
         if (typeof sound.currentTime !== 'undefined') {
           sound.currentTime = 0;
         }
+        // Ensure the sound is no longer looping
+        sound.loop = false;
       }
     });
   }
+  
+  // Additional safety check for any audio elements that might be playing
+  // This catches any sounds that might not be properly tracked
+  document.querySelectorAll('audio').forEach(audio => {
+    if (audio.src && audio.src.includes('gameshow.aif')) {
+      console.log("Stopping loose audio element:", audio.src);
+      audio.pause();
+      audio.currentTime = 0;
+      audio.loop = false;
+    }
+  });
 }
 
+// Remove any existing event listener to prevent duplicates
+document.removeEventListener('channelChange', stopAllChannelSounds);
 // Add a global event listener to stop sounds when changing channels
 document.addEventListener('channelChange', stopAllChannelSounds);
 
@@ -78,6 +105,31 @@ export async function init() {
       gameContainer.style.display = 'flex';
       gameContainer.style.visibility = 'visible';
       gameContainer.style.opacity = '1';
+      
+      // Trigger curtain animation
+      setTimeout(() => {
+        console.log("Triggering curtain opening animation");
+        const curtainLeft = container.querySelector('.curtain-left');
+        const curtainRight = container.querySelector('.curtain-right');
+        
+        if (curtainLeft && curtainRight) {
+          // Reset animation states
+          curtainLeft.style.transform = 'translateX(0%)';
+          curtainRight.style.transform = 'translateX(0%)';
+          
+          // Remove any existing animations
+          curtainLeft.style.animation = 'none';
+          curtainRight.style.animation = 'none';
+          
+          // Force reflow to ensure the animation restarts
+          void curtainLeft.offsetWidth;
+          void curtainRight.offsetWidth;
+          
+          // Re-apply the animation
+          curtainLeft.style.animation = 'curtain-left 2s cubic-bezier(0.7, 0, 0.3, 1) forwards';
+          curtainRight.style.animation = 'curtain-right 2s cubic-bezier(0.7, 0, 0.3, 1) forwards';
+        }
+      }, 1000);
     }
     
   } catch (error) {
@@ -286,26 +338,26 @@ class GameShow {
       performanceLevels: [
         {
           threshold: 95,
-          title: "Creative Architect",
-          message: "You're not just part of the industry—you help redefine it. Your ability to balance technical skills with leadership, adaptability, and strategy makes you a force in any project. Keep pushing boundaries!",
+          title: "Creative Genius!",
+          message: "Wow! You've got the kind of creative problem-solving that companies dream about! If I were hiring (which I hope you are), I'd be sending an offer letter right now. My approach to challenges combines vision, innovation, and people skills!",
           skills: ["Visionary Leadership", "Strategic Innovation", "Client Trust"]
         },
         {
           threshold: 75,
-          title: "Visionary Collaborator",
-          message: "You don't just execute—you shape the direction of projects, lead with confidence, and bring fresh ideas while keeping teams aligned. You see the big picture and execute accordingly!",
+          title: "Creative Superstar!",
+          message: "Nice job! You've got the kind of thinking that makes projects successful! I bring this same approach to my work—leading with creative confidence, bringing fresh ideas, and keeping everyone aligned toward awesome outcomes!",
           skills: ["Creative Direction", "Team Leadership", "Strategic Thinking"]
         },
         {
           threshold: 45,
-          title: "Strategic Problem Solver",
-          message: "You adapt well to challenges and use a balanced approach between structure and creativity. Your leadership style is thoughtful and effective!",
+          title: "Creative Problem Solver!",
+          message: "You've got solid skills! This reflects my balanced approach to work challenges—I adapt quickly, find solutions where others see roadblocks, and keep projects on track with a mix of structure and creative thinking!",
           skills: ["Adaptability", "Problem Solving", "Project Management"]
         },
         {
           threshold: 0,
-          title: "Reliable Executor",
-          message: "You get things done efficiently and follow through on commitments. Your strength is consistency, and with more flexibility, you can elevate your impact even further!",
+          title: "Creative Contender!",
+          message: "Thanks for playing! Even when faced with tough choices, I bring reliability and efficiency to every project. My greatest strength is following through on commitments while still bringing creative thinking to practical challenges!",
           skills: ["Reliability", "Efficiency", "Practical Thinking"]
         }
       ]
@@ -650,7 +702,7 @@ class GameShow {
         if (this.state.timeLeft <= 15) { // Updated from 10 to 15
           this.elements.ui.timerBar.style.backgroundColor = '#ff453a';
         } else {
-          this.elements.ui.timerBar.style.backgroundColor = '#ffd700';
+          this.elements.ui.timerBar.style.backgroundColor = '#1e90ff'; // Updated from gold to blue
         }
       }
       
@@ -822,13 +874,14 @@ class GameShow {
           insight.parentNode.removeChild(insight);
         }
         
-        // Check if we should go to commercial break
-        const questionsPerRound = 2; // Show commercial every 2 questions
-        if (this.state.playedQuestions.size % questionsPerRound === 0) {
+        // Only show a commercial break after the 3rd question (middle of the game)
+        if (this.state.playedQuestions.size === 3) {
           this.state.currentRound++;
           this.updateRoundDisplay();
+          console.log("Showing the only commercial break");
           this.showCommercialBreak();
         } else {
+          // For all other questions, just move to the next one
           this.state.currentQuestion = null;
           this.showNextQuestion();
         }
@@ -897,7 +950,7 @@ class GameShow {
   
   // Show commercial break
   showCommercialBreak() {
-    console.log("Showing commercial break...");
+    console.log("Showing the mid-game commercial break...");
     
     // Get the commercial screen element
     const commercialScreen = this.elements.screens.commercial;
@@ -925,13 +978,19 @@ class GameShow {
       gameRound.style.display = 'none';
     }
     
-    // Populate commercial break content
+    // Update commercial break title to indicate it's a mid-game break
+    const commercialTitle = document.querySelector('.commercial-content h2');
+    if (commercialTitle) {
+      commercialTitle.textContent = 'Mid-Game Break! Almost There!';
+    }
+    
+    // Populate commercial break content with more skills
     this.populateCommercialContent();
     
     // Pause timer during commercial
     clearInterval(this.state.timerInterval);
     
-    console.log("Commercial break started, will end in 5 seconds");
+    console.log("Commercial break started, will end in 4 seconds");
     
     // Resume game after commercial break
     setTimeout(() => {
@@ -954,12 +1013,12 @@ class GameShow {
       this.showNextQuestion();
       
       console.log("Game resumed after commercial");
-    }, 5000);
+    }, 4000);
   }
   
   // Populate commercial break content
   populateCommercialContent() {
-    console.log("Populating commercial content...");
+    console.log("Populating mid-game commercial content...");
     
     const skillShowcase = document.querySelector('.skill-showcase');
     if (!skillShowcase) {
@@ -978,24 +1037,19 @@ class GameShow {
       commercialContent.style.opacity = '1';
     }
     
-    // Show different skills based on current round
+    // Show all the skills for the mid-game break
     const skills = [
       { name: "Strategic Vision", icon: "eye" },
       { name: "Brand Development", icon: "paint-brush" },
       { name: "Business Analytics", icon: "chart-line" },
       { name: "Creative Direction", icon: "lightbulb" },
-      { name: "Project Management", icon: "tasks" }
+      { name: "Project Management", icon: "tasks" },
+      { name: "Client Relations", icon: "handshake" }
     ];
-    
-    // Select skills for this round
-    const roundSkills = skills.slice(
-      Math.min((this.state.currentRound - 1) * 2, skills.length - 3),
-      Math.min(this.state.currentRound * 2 + 1, skills.length)
-    );
     
     // Create skill items directly with proper HTML
     let skillsHTML = '';
-    roundSkills.forEach(skill => {
+    skills.forEach(skill => {
       skillsHTML += `
         <div class="skill-item">
           <i class="fas fa-${skill.icon}"></i>
@@ -1019,9 +1073,9 @@ class GameShow {
           { 
             y: 0, 
             opacity: 1, 
-            duration: 0.5, 
+            duration: 0.4, 
             ease: "back.out(1.2)",
-            delay: index * 0.2 // Stagger effect
+            delay: index * 0.15 // Faster stagger for more items
           }
         );
       });
@@ -1034,7 +1088,7 @@ class GameShow {
       });
     }
     
-    console.log(`Commercial content populated with ${roundSkills.length} skills`);
+    console.log(`Commercial content populated with ${skills.length} skills`);
   }
   
   // End the game and show results
@@ -1042,6 +1096,25 @@ class GameShow {
     this.showFinalResults();
     this.state.isGameActive = false;
     clearInterval(this.state.timerInterval);
+    
+    // Explicitly stop all sounds when game ends
+    this.stopAllSounds();
+  }
+  
+  // Method to stop all sounds owned by this game instance
+  stopAllSounds() {
+    // Stop all sounds in the game
+    Object.values(this.sounds).forEach(sound => {
+      if (sound && typeof sound.pause === 'function') {
+        console.log("Stopping game sound:", sound.src);
+        sound.pause();
+        if (typeof sound.currentTime !== 'undefined') {
+          sound.currentTime = 0;
+        }
+        // Ensure the sound is no longer looping
+        sound.loop = false;
+      }
+    });
   }
   
   // Show final results screen
