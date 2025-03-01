@@ -2,13 +2,13 @@
 :root {
   --game-bg: #000;
   --game-primary: #fff;
-  --game-accent: #ffd700;
+  --game-accent: #1e90ff; /* Changed from gold (#ffd700) to dodger blue */
   --game-highlight: #ff453a;
   --game-success: #30d158;
   --game-surface: rgba(0, 0, 0, 0.7);
   --game-glow: rgba(255, 255, 255, 0.5);
   --game-shadow: rgba(0, 0, 0, 0.5);
-  --game-gradient: linear-gradient(135deg, #6600cc, #9933ff);
+  --game-gradient: linear-gradient(135deg, #0066cc, #3399ff);
 }
 
 /* Game Container */
@@ -29,6 +29,53 @@
   z-index: 50;
 }
 
+/* Curtain Animation */
+.curtain-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.curtain {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  background: #1a1a1a;
+  z-index: 999;
+}
+
+.curtain-left {
+  left: 0;
+  border-right: 4px solid var(--game-accent);
+  transform: translateX(0%);
+  box-shadow: 3px 0 15px rgba(30, 144, 255, 0.5);
+  background-image: linear-gradient(to right, #0a0a0a, #1a1a1a);
+}
+
+.curtain-right {
+  right: 0;
+  border-left: 4px solid var(--game-accent);
+  transform: translateX(0%);
+  box-shadow: -3px 0 15px rgba(30, 144, 255, 0.5);
+  background-image: linear-gradient(to left, #0a0a0a, #1a1a1a);
+}
+
+@keyframes curtain-left {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes curtain-right {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(100%); }
+}
+
 /* Channel Information */
 #channel-info {
   position: absolute;
@@ -44,7 +91,7 @@
   font-size: 1.5rem;
   font-weight: bold;
   color: var(--game-accent);
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
+  text-shadow: 0 0 8px rgba(30, 144, 255, 0.7); /* Updated shadow color to match blue */
 }
 
 .recording-dot {
@@ -110,15 +157,15 @@
 }
 
 .host-content h1 {
-  font-size: 3rem;
+  font-size: 2.4rem;
   color: var(--game-accent);
   margin-bottom: 1.5rem;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  text-shadow: 0 0 10px rgba(30, 144, 255, 0.5); /* Updated shadow color to match blue */
   letter-spacing: 2px;
 }
 
 .host-speech {
-  font-size: 1.4rem;
+  font-size: 1.1rem;
   line-height: 1.5;
   color: var(--game-primary);
 }
@@ -129,22 +176,22 @@
 
 .start-game-button {
   background: var(--game-accent);
-  color: black;
-  padding: 15px 30px;
-  font-size: 1.5rem;
+  color: white; /* Changed to white for better contrast with blue */
+  padding: 12px 25px;
+  font-size: 1.2rem;
   font-weight: bold;
   border: none;
   border-radius: 8px;
   margin-top: 20px;
   cursor: pointer;
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  box-shadow: 0 0 20px rgba(30, 144, 255, 0.6);
   transition: all 0.3s ease;
   animation: pulse 2s infinite;
 }
 
 .start-game-button:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+  box-shadow: 0 0 30px rgba(30, 144, 255, 0.8);
 }
 
 /* Game Round Screen */
@@ -186,6 +233,7 @@
   background: var(--game-accent);
   width: 100%;
   transition: width 0.1s linear;
+  box-shadow: 0 0 5px rgba(30, 144, 255, 0.7); /* Added blue glow to timer bar */
 }
 
 #timer {
@@ -212,7 +260,7 @@
   font-size: 2.5rem;
   font-weight: bold;
   color: var(--game-accent);
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  text-shadow: 0 0 10px rgba(30, 144, 255, 0.5); /* Updated shadow color to match blue */
 }
 
 /* Question Area */
@@ -226,7 +274,7 @@
 }
 
 #question-display {
-  font-size: 1.7rem;
+  font-size: 1.4rem;
   text-align: center;
   background: var(--game-surface);
   padding: 1.2rem;
@@ -250,8 +298,8 @@
   background: transparent;
   border: 2px solid var(--game-primary);
   border-radius: 8px;
-  padding: 0.9rem;
-  font-size: 1.1rem;
+  padding: 0.8rem;
+  font-size: 0.95rem;
   color: var(--game-primary);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -276,7 +324,7 @@
 
 .option-letter {
   background: var(--game-accent);
-  color: black;
+  color: white; /* Changed to white for better contrast with blue */
   font-weight: bold;
   padding: 0.4rem 0.8rem;
   border-radius: 5px;
@@ -292,7 +340,7 @@
 .option-button.selected {
   background: var(--game-accent);
   border-color: var(--game-accent);
-  color: black;
+  color: white; /* Changed to white for better contrast with blue */
 }
 
 .option-button.correct {
@@ -314,6 +362,7 @@
   font-size: 1.4rem;
   z-index: 10;
   border-radius: 8px;
+  box-shadow: 0 0 15px rgba(30, 144, 255, 0.6); /* Added blue glow */
 }
 
 .insight {
@@ -354,7 +403,7 @@
 }
 
 .commercial-content h2 {
-  font-size: 2.5rem;
+  font-size: 1.8rem;
   color: var(--game-primary);
   margin-bottom: 2rem;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
@@ -364,7 +413,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2rem;
+  gap: 1.2rem;
   margin-top: 2rem;
 }
 
@@ -372,12 +421,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 0.8rem;
   background: rgba(0, 0, 0, 0.5);
-  padding: 1.5rem;
+  padding: 1.2rem;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
+  width: 30%;
+  min-width: 120px;
+  max-width: 160px;
 }
 
 .skill-item:hover {
@@ -404,19 +456,19 @@
 }
 
 .results-header h2 {
-  font-size: 3rem;
+  font-size: 2.2rem;
   color: var(--game-accent);
   margin-bottom: 1rem;
-  text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  text-shadow: 0 0 15px rgba(30, 144, 255, 0.5); /* Updated shadow to blue */
 }
 
 .final-score {
-  font-size: 2rem;
+  font-size: 1.6rem;
   color: var(--game-primary);
 }
 
 #final-score {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: bold;
   color: var(--game-accent);
 }
@@ -436,21 +488,22 @@
 
 .performance-summary h3,
 .unlocked-content h3 {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   color: var(--game-primary);
   margin-bottom: 1rem;
   text-align: center;
 }
 
 #performance-details h4 {
-  font-size: 2rem;
+  font-size: 1.7rem;
   color: var(--game-accent);
   margin-bottom: 0.5rem;
   text-align: center;
+  text-shadow: 0 0 8px rgba(30, 144, 255, 0.4); /* Added blue glow to title */
 }
 
 #performance-details p {
-  font-size: 1.2rem;
+  font-size: 1rem;
   text-align: center;
   margin-bottom: 1rem;
 }
@@ -495,7 +548,7 @@
 
 .play-again-button {
   background: var(--game-accent);
-  color: black;
+  color: white; /* Changed to white for better contrast with blue */
   border: none;
   padding: 1.2rem 2.5rem;
   font-size: 1.3rem;
@@ -508,7 +561,7 @@
 
 .play-again-button:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+  box-shadow: 0 8px 20px rgba(30, 144, 255, 0.6); /* Updated glow to blue */
 }
 
 /* TV Effects */

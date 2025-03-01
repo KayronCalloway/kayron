@@ -1,5 +1,11 @@
 <!-- channels/ch3/gameshow.html -->
 <div id="game-show-container">
+  <!-- Curtain Animation -->
+  <div class="curtain-container">
+    <div class="curtain curtain-left"></div>
+    <div class="curtain curtain-right"></div>
+  </div>
+
   <!-- TV Static Overlay -->
   <div id="tv-static"></div>
   
@@ -13,13 +19,12 @@
   <!-- Host Introduction Screen -->
   <div id="host-intro" class="game-screen" style="display:flex; visibility:visible; opacity:1; z-index:10;">
     <div class="host-content">
-      <div class="host-image"></div>
-      <h1>Professional Skill Challenge</h1>
+      <h1>Professional Skill Showdown!</h1>
       <div class="host-speech">
-        <p>"Welcome to the Professional Skill Challenge! I'm your host Kayron Calloway. Today we're testing your business acumen, strategic thinking, and creative problem-solving abilities."</p>
-        <p>"How would you handle these professional scenarios? Your decisions reveal your strengths as a leader and creative professional!"</p>
+        <p>"Welcome to the most entertaining job application you'll see today! I'm Kayron Calloway, your creative host, and I've turned my portfolio into this game because PowerPoints are boring!"</p>
+        <p>"Ready to see how I tackle real-world challenges? Play through these scenarios and discover why my creative problem-solving would make me an awesome addition to your team!"</p>
       </div>
-      <button id="start-game-button" class="start-game-button" style="position:relative; z-index:100; cursor:pointer; display:block; visibility:visible; opacity:1;">START CHALLENGE</button>
+      <button id="start-game-button" class="start-game-button" style="position:relative; z-index:100; cursor:pointer; display:block; visibility:visible; opacity:1;">LET'S PLAY!</button>
     </div>
   </div>
 
@@ -45,20 +50,12 @@
     </div>
   </div>
 
-  <!-- Commercial Break Screen -->
+  <!-- Commercial Break Screen (Only appears once mid-game) -->
   <div id="commercial-break" class="game-screen hidden" style="visibility: hidden; display: none;">
     <div class="commercial-content" style="display: block; visibility: visible; opacity: 1; z-index: 15;">
-      <h2>We'll be right back after these messages!</h2>
+      <h2>Mid-Game Break! Almost There!</h2>
       <div class="skill-showcase">
         <!-- Skills will be populated dynamically -->
-        <div class="skill-item">
-          <i class="fas fa-eye"></i>
-          <span>Strategic Vision</span>
-        </div>
-        <div class="skill-item">
-          <i class="fas fa-paint-brush"></i>
-          <span>Brand Development</span>
-        </div>
       </div>
     </div>
   </div>
@@ -66,18 +63,18 @@
   <!-- Final Results Screen -->
   <div id="final-results" class="game-screen hidden">
     <div class="results-header">
-      <h2>SHOW WRAP</h2>
-      <div class="final-score">TOTAL SCORE: <span id="final-score">0</span></div>
+      <h2>YOUR HIRING VERDICT</h2>
+      <div class="final-score">YOUR SCORE: <span id="final-score">0</span></div>
     </div>
     
     <div class="results-content">
       <div class="performance-summary">
-        <h3>Performance Analysis</h3>
+        <h3>Hiring Assessment</h3>
         <div id="performance-details"></div>
       </div>
     </div>
 
-    <button id="play-again-btn" class="play-again-button">PLAY AGAIN</button>
+    <button id="play-again-btn" class="play-again-button">INTERVIEW AGAIN!</button>
   </div>
 
   <!-- TV Effects -->

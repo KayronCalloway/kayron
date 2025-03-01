@@ -239,11 +239,32 @@ const resetMenuStyles = () => {
   closeGuide.addEventListener('click', () => toggleTVGuide(false));
   guideItems.forEach(item => {
     item.addEventListener('click', () => {
+      // Get the target section before triggering audio cleanup
+      const targetId = item.getAttribute('data-target');
+      const targetSection = document.getElementById(targetId);
+      
+      // Check if we're leaving channel 3 (section3)
+      if (currentChannel === 'section3') {
+        console.log("Leaving Channel 3 from TV guide, doing additional audio cleanup");
+        // Explicitly stop any gameshow audio that might be playing
+        document.querySelectorAll('audio').forEach(audio => {
+          if (audio.src && (audio.src.includes('gameshow.aif') || 
+                           audio.src.includes('ka-ching.mp3') || 
+                           audio.src.includes('click.mp3'))) {
+            console.log("Force stopping audio:", audio.src);
+            audio.pause();
+            audio.currentTime = 0;
+            audio.loop = false;
+          }
+        });
+        // Call global cleanup event
+        resetMenuStyles();
+      }
+      
       // Dispatch channel change event to stop any running audio
       const channelChangeEvent = new Event('channelChange');
       document.dispatchEvent(channelChangeEvent);
       
-      const targetSection = document.getElementById(item.getAttribute('data-target'));
       if (targetSection) {
         targetSection.scrollIntoView({ behavior: 'smooth' });
         toggleTVGuide(false);
@@ -264,8 +285,24 @@ const resetMenuStyles = () => {
           const channelChangeEvent = new Event('channelChange');
           document.dispatchEvent(channelChangeEvent);
           
-          // If leaving channel 3, reset menu button styles
+          console.log(`Channel change: from ${currentChannel} to ${newChannel}`);
+          
+          // Extra cleanup for channel 3 audio
           if (currentChannel === 'section3') {
+            console.log("Leaving Channel 3, doing additional audio cleanup");
+            // Explicitly stop any gameshow audio that might be playing
+            document.querySelectorAll('audio').forEach(audio => {
+              if (audio.src && (audio.src.includes('gameshow.aif') || 
+                               audio.src.includes('ka-ching.mp3') || 
+                               audio.src.includes('click.mp3'))) {
+                console.log("Force stopping audio:", audio.src);
+                audio.pause();
+                audio.currentTime = 0;
+                audio.loop = false;
+              }
+            });
+            
+            // Reset menu button styles
             resetMenuStyles();
           }
           
