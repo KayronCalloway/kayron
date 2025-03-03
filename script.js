@@ -159,19 +159,22 @@ const resetMenuStyles = () => {
   // Function to ensure menu button is always visible and interactive
   const ensureMenuButtonVisibility = () => {
     if (menuButton) {
+      // Restore to original design from styles.css
       menuButton.style.display = "block";
       menuButton.style.opacity = "1";
       menuButton.style.zIndex = "999999";
       menuButton.style.position = "fixed";
       menuButton.style.pointerEvents = "auto";
-      menuButton.style.cursor = "pointer";
-      menuButton.style.backgroundColor = "transparent";
-      menuButton.style.border = "2px solid var(--primary-color)";
-      menuButton.style.padding = "10px 15px";
-      menuButton.style.top = "10px";
-      menuButton.style.right = "20px";
-      menuButton.style.color = "var(--primary-color)";
-      menuButton.style.font = "inherit";
+      
+      // Remove custom styles we added that should be inherited from CSS
+      menuButton.style.cursor = "";
+      menuButton.style.backgroundColor = "";
+      menuButton.style.border = "";
+      menuButton.style.padding = "";
+      menuButton.style.top = "";
+      menuButton.style.right = "";
+      menuButton.style.color = "";
+      menuButton.style.font = "";
       
       // Re-attach event listener to ensure it works
       menuButton.onclick = () => {
@@ -242,15 +245,8 @@ const resetMenuStyles = () => {
       menuButton.style.display = 'block';
       menuButton.style.opacity = '1';
       menuButton.style.zIndex = '999999';
-      // Force all other styles to ensure visibility
       menuButton.style.position = 'fixed';
       menuButton.style.pointerEvents = 'auto';
-      menuButton.style.cursor = 'pointer';
-      menuButton.style.backgroundColor = 'transparent';
-      menuButton.style.border = '2px solid var(--primary-color)';
-      menuButton.style.padding = '10px 15px';
-      menuButton.style.top = '10px';
-      menuButton.style.right = '20px';
     }
     
     if (show) {
