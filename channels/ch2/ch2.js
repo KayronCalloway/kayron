@@ -18,12 +18,12 @@ export async function init() {
     // Dynamically load CSS first to prevent FOUC (Flash of Unstyled Content)
     await loadStyles();
     
-    // Load the HTML fragment for Channel 2 using async/await
-    const response = await fetch('./channels/ch2/infomercial.html');
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    // First, load the intro slideshow
+    const slideResponse = await fetch('./channels/ch2/index.html');
+    if (!slideResponse.ok) throw new Error(`HTTP error! Status: ${slideResponse.status}`);
     
-    const html = await response.text();
-    container.innerHTML = html;
+    const slideHtml = await slideResponse.text();
+    container.innerHTML = slideHtml;
     
     // Add channel number overlay if it doesn't exist
     if (!container.querySelector('.channel-number-overlay')) {
@@ -32,6 +32,67 @@ export async function init() {
       channelOverlay.textContent = 'CH 02';
       container.appendChild(channelOverlay);
     }
+    
+    // Load the slideshow script
+    await loadScript('./channels/ch2/script.js');
+    
+    // Add an interactive "Enter Showcase" button
+    const enterButton = document.createElement('button');
+    enterButton.id = 'enter-showcase-button';
+    enterButton.textContent = 'Enter Showcase';
+    enterButton.className = 'enter-button';
+    container.appendChild(enterButton);
+    
+    // Event listener for the enter button
+    enterButton.addEventListener('click', async () => {
+      // Play transition sound
+      const whoosh = new Audio('./audio/whoosh.mp3');
+      whoosh.volume = 0.5;
+      whoosh.play().catch(err => console.warn('Could not play sound:', err));
+      
+      // Add transition effect
+      const transition = document.createElement('div');
+      transition.className = 'slideshow-transition';
+      container.appendChild(transition);
+      
+      // Animate transition
+      gsap.to(transition, {
+        opacity: 1,
+        duration: 0.5,
+        onComplete: async () => {
+          // Load the infomercial content
+          const response = await fetch('./channels/ch2/infomercial.html');
+          if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+          
+          const html = await response.text();
+          container.innerHTML = html;
+          
+          // Re-add channel number overlay
+          const channelOverlay = document.createElement('div');
+          channelOverlay.className = 'channel-number-overlay';
+          channelOverlay.textContent = 'CH 02';
+          container.appendChild(channelOverlay);
+          
+          // Setup event listeners and initialize the infomercial experience
+          setupInfomercialEventListeners();
+          
+          // Fade out transition
+          const newTransition = document.createElement('div');
+          newTransition.className = 'slideshow-transition';
+          newTransition.style.opacity = 1;
+          container.appendChild(newTransition);
+          
+          gsap.to(newTransition, {
+            opacity: 0,
+            duration: 0.5,
+            delay: 0.2,
+            onComplete: () => {
+              newTransition.remove();
+            }
+          });
+        }
+      });
+    });
     
     // Ensure menu button is visible and interactive
     const menuButton = document.getElementById('menuButton');
@@ -55,13 +116,12 @@ export async function init() {
       tvGuide.style.zIndex = '999998';
     }
     
-    // Setup event listeners and initialize the infomercial experience
-    setupInfomercialEventListeners();
-    
     // Preload audio for better performance
     preloadAudio('./audio/ka-ching.mp3');
+    preloadAudio('./audio/whoosh.mp3');
+    preloadAudio('./audio/ticker-hum.mp3');
     
-    console.log("Channel 2 infomercial initialized successfully");
+    console.log("Channel 2 initialized successfully with slideshow intro");
   } catch (error) {
     console.error("Failed to load Channel 2 markup:", error);
     const container = document.getElementById('section2');
@@ -87,6 +147,24 @@ function loadStyles() {
   });
 }
 
+// Helper function to load scripts asynchronously
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    if (document.querySelector(`script[src="${src}"]`)) {
+      resolve();
+      return;
+    }
+    
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = src;
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = (e) => reject(e);
+    document.head.appendChild(script);
+  });
+}
+
 // Preload audio files
 function preloadAudio(src) {
   const audio = new Audio();
@@ -100,7 +178,7 @@ function cleanup() {
   // Stop any animations
   const animations = document.querySelectorAll('.limited-time, .price-tag, .as-seen-on-tv');
   animations.forEach(el => {
-    if (gsap.isTweening(el)) {
+    if (window.gsap && gsap.isTweening(el)) {
       gsap.killTweensOf(el);
     }
   });
@@ -109,6 +187,12 @@ function cleanup() {
   if (window.ch2CarouselTimer) {
     clearInterval(window.ch2CarouselTimer);
     window.ch2CarouselTimer = null;
+  }
+  
+  // Stop any audio
+  if (window.ch2TickerSound) {
+    window.ch2TickerSound.pause();
+    window.ch2TickerSound.currentTime = 0;
   }
 }
 
@@ -127,6 +211,12 @@ function setupInfomercialEventListeners() {
   
   // Add lazy loading for images
   setupLazyLoading();
+  
+  // Play ticker hum sound subtly in the background
+  playTickerSound();
+  
+  // Setup back to showcase button
+  setupBackButton();
 }
 
 function initProductCarousel() {
@@ -382,4 +472,145 @@ function setupLazyLoading() {
       img.src = 'visuals/static.png'; // Fallback image
     });
   });
+}
+
+// Play ticker hum sound in the background
+function playTickerSound() {
+  const tickerSound = new Audio('./audio/ticker-hum.mp3');
+  tickerSound.volume = 0.2;
+  tickerSound.loop = true;
+  
+  // Store reference for cleanup
+  window.ch2TickerSound = tickerSound;
+  
+  // Only play if user has interacted with the page
+  if (document.documentElement.classList.contains('user-interacted')) {
+    tickerSound.play().catch(err => console.warn('Could not play ticker sound:', err));
+  } else {
+    // Add event listener for first interaction
+    const playOnInteraction = () => {
+      tickerSound.play().catch(err => console.warn('Could not play ticker sound:', err));
+      document.documentElement.classList.add('user-interacted');
+      document.removeEventListener('click', playOnInteraction);
+    };
+    document.addEventListener('click', playOnInteraction);
+  }
+}
+
+// Setup back button to return to slideshow
+function setupBackButton() {
+  const backButton = document.getElementById('back-to-showcase');
+  const container = document.getElementById('section2');
+  
+  if (backButton && container) {
+    backButton.addEventListener('click', async () => {
+      // Play transition sound
+      const whoosh = new Audio('./audio/whoosh.mp3');
+      whoosh.volume = 0.5;
+      whoosh.play().catch(err => console.warn('Could not play sound:', err));
+      
+      // Stop ticker sound if playing
+      if (window.ch2TickerSound) {
+        window.ch2TickerSound.pause();
+        window.ch2TickerSound.currentTime = 0;
+      }
+      
+      // Add transition effect
+      const transition = document.createElement('div');
+      transition.className = 'slideshow-transition';
+      container.appendChild(transition);
+      
+      // Animate transition
+      gsap.to(transition, {
+        opacity: 1,
+        duration: 0.5,
+        onComplete: async () => {
+          // Clean up any running animations or timers
+          cleanup();
+          
+          // Load the slideshow content again
+          const slideResponse = await fetch('./channels/ch2/index.html');
+          if (!slideResponse.ok) throw new Error(`HTTP error! Status: ${slideResponse.status}`);
+          
+          const slideHtml = await slideResponse.text();
+          container.innerHTML = slideHtml;
+          
+          // Re-add channel number overlay
+          const channelOverlay = document.createElement('div');
+          channelOverlay.className = 'channel-number-overlay';
+          channelOverlay.textContent = 'CH 02';
+          container.appendChild(channelOverlay);
+          
+          // Load the slideshow script again
+          await loadScript('./channels/ch2/script.js');
+          
+          // Add Enter Showcase button again
+          const enterButton = document.createElement('button');
+          enterButton.id = 'enter-showcase-button';
+          enterButton.textContent = 'Enter Showcase';
+          enterButton.className = 'enter-button';
+          container.appendChild(enterButton);
+          
+          // Add the same event listener as before
+          enterButton.addEventListener('click', async () => {
+            const whoosh = new Audio('./audio/whoosh.mp3');
+            whoosh.volume = 0.5;
+            whoosh.play().catch(err => console.warn('Could not play sound:', err));
+            
+            const transition = document.createElement('div');
+            transition.className = 'slideshow-transition';
+            container.appendChild(transition);
+            
+            gsap.to(transition, {
+              opacity: 1,
+              duration: 0.5,
+              onComplete: async () => {
+                const response = await fetch('./channels/ch2/infomercial.html');
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                
+                const html = await response.text();
+                container.innerHTML = html;
+                
+                const channelOverlay = document.createElement('div');
+                channelOverlay.className = 'channel-number-overlay';
+                channelOverlay.textContent = 'CH 02';
+                container.appendChild(channelOverlay);
+                
+                setupInfomercialEventListeners();
+                
+                const newTransition = document.createElement('div');
+                newTransition.className = 'slideshow-transition';
+                newTransition.style.opacity = 1;
+                container.appendChild(newTransition);
+                
+                gsap.to(newTransition, {
+                  opacity: 0,
+                  duration: 0.5,
+                  delay: 0.2,
+                  onComplete: () => {
+                    newTransition.remove();
+                  }
+                });
+              }
+            });
+          });
+          
+          // Fade out transition
+          const newTransition = document.createElement('div');
+          newTransition.className = 'slideshow-transition';
+          newTransition.style.opacity = 1;
+          container.appendChild(newTransition);
+          
+          gsap.to(newTransition, {
+            opacity: 0,
+            duration: 0.5,
+            delay: 0.2,
+            onComplete: () => {
+              newTransition.remove();
+            }
+          });
+        }
+      });
+    });
+  }
 }
