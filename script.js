@@ -176,41 +176,84 @@ const resetMenuStyles = () => {
     });
   };
   
-  // Function to ensure menu button is always visible and interactive
+  // Function to ensure menu button is properly managed
   const ensureMenuButtonVisibility = () => {
-    // Only make the menu button visible if the header is visible (showing Kayron Calloway in top left)
-    if (menuButton && header && window.getComputedStyle(header).opacity > 0.9) {
-      console.log("Header is fully visible, showing menu button");
-      menuButton.style.display = "block";
-      menuButton.style.opacity = "1";
-      menuButton.style.zIndex = "999999"; // Keep extremely high z-index
-      menuButton.style.position = "fixed";
-      menuButton.style.pointerEvents = "auto";
-      
-      // Ensure tap target size is at least 44x44px for iOS Safari
-      menuButton.style.minHeight = "44px";
-      menuButton.style.minWidth = "44px";
-      
-      // Re-attach event listener to ensure it works with proper iOS handling
-      if (menuButton.onclick) {
-        menuButton.removeEventListener('click', menuButton.onclick);
-      }
-      
-      const menuClickHandler = () => {
-        const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity) === 1;
-        toggleTVGuide(!isCurrentlyVisible);
-      };
-      
-      menuButton.onclick = menuClickHandler;
-      menuButton.addEventListener('touchend', (e) => {
-        e.preventDefault(); // Prevent double-tap issues on iOS
-        menuClickHandler();
-      }, { passive: false });
-    } else if (menuButton) {
-      // If header is not visible yet, keep menu button hidden
-      console.log("Header not fully visible yet, keeping menu button hidden");
+    // FORCE hiding of menu button initially
+    if (menuButton) {
+      // Start with completely hiding the menu button with multiple techniques
       menuButton.style.display = "none";
+      menuButton.style.opacity = "0";
+      menuButton.style.visibility = "hidden";
+      menuButton.style.pointerEvents = "none";
     }
+    
+    // Critical check: Only show menu button when ALL conditions are met:
+    // 1. Header is fully visible (Kayron Calloway in top left)
+    // 2. We're on channel 1
+    // 3. Landing sequence is complete
+    // 4. Wait for sufficient time after everything is loaded
+    const showButton = () => {
+      if (menuButton && 
+          header && 
+          window.getComputedStyle(header).opacity > 0.9 && 
+          currentChannel === 'section1' && 
+          landingSequenceComplete && 
+          landing.style.display === "none") {
+        
+        console.log("ALL conditions met, showing menu button now");
+        // Override all hiding methods
+        menuButton.style.display = "block !important";
+        menuButton.style.opacity = "1";
+        menuButton.style.visibility = "visible";
+        menuButton.style.pointerEvents = "auto";
+        menuButton.style.zIndex = "999999";
+        
+        // Force style override with inline !important
+        menuButton.setAttribute('style', 
+          'display: block !important; ' +
+          'opacity: 1 !important; ' +
+          'visibility: visible !important; ' +
+          'pointer-events: auto !important; ' +
+          'position: fixed; ' +
+          'top: 10px; ' +
+          'right: 20px; ' +
+          'z-index: 999999;'
+        );
+        
+        // Ensure tap target size is at least 44x44px for iOS Safari
+        menuButton.style.minHeight = "44px";
+        menuButton.style.minWidth = "44px";
+        
+        // Re-attach event listener
+        if (menuButton.onclick) {
+          menuButton.removeEventListener('click', menuButton.onclick);
+        }
+        
+        const menuClickHandler = () => {
+          const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity || 0) === 1;
+          toggleTVGuide(!isCurrentlyVisible);
+        };
+        
+        menuButton.onclick = menuClickHandler;
+        menuButton.addEventListener('touchend', (e) => {
+          e.preventDefault(); // Prevent double-tap issues on iOS
+          menuClickHandler();
+        }, { passive: false });
+      } else {
+        console.log("Conditions not met for menu button display", {
+          headerVisible: header && window.getComputedStyle(header).opacity > 0.9,
+          onChannel1: currentChannel === 'section1',
+          landingDone: landingSequenceComplete,
+          landingHidden: landing.style.display === "none"
+        });
+      }
+    };
+    
+    // Initial attempt
+    showButton();
+    
+    // Second attempt with delay to ensure all styles are applied
+    setTimeout(showButton, 500);
     
     // Ensure TV Guide has the correct styles
     if (tvGuide) {
@@ -273,16 +316,11 @@ const resetMenuStyles = () => {
 
   // --- TV Guide Menu Toggle ---
   const toggleTVGuide = show => {
-    // Check if header is visible before showing menu button
-    const isHeaderVisible = header && window.getComputedStyle(header).opacity > 0.9;
-    
-    // Only show menu button if header is visible (Kayron Calloway name is showing)
-    if (menuButton && isHeaderVisible) {
-      menuButton.style.display = 'block';
-      menuButton.style.opacity = '1';
-      menuButton.style.zIndex = '999999';
-    } else if (menuButton) {
-      menuButton.style.display = 'none';
+    // Force the menu button to remain hidden until explicitly shown
+    // by the ensureMenuButtonVisibility function under the right conditions
+    if (menuButton) {
+      // Don't automatically show the menu button here
+      console.log("Menu button visibility check in toggleTVGuide");
     }
     
     // Make sure TV Guide exists
@@ -337,30 +375,44 @@ const resetMenuStyles = () => {
     }
   };
   
-  // Toggle guide when menu button is clicked
-  menuButton.addEventListener('click', () => {
-    console.log("Menu button clicked");
-    // Check if TV Guide exists first
-    if (!tvGuide) {
-      console.error("TV Guide element not found when clicking menu button");
-      return;
-    }
-    const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity || 0) === 1;
-    console.log("TV Guide current visibility state:", isCurrentlyVisible);
-    toggleTVGuide(!isCurrentlyVisible);
-  });
+  // Remove initial event listeners to prevent early triggering
+  menuButton.removeEventListener('click', () => {});
+  menuButton.removeEventListener('touchend', () => {});
   
-  // Add touchend handler for iOS Safari
-  menuButton.addEventListener('touchend', (e) => {
-    console.log("Menu button touch event");
-    e.preventDefault(); // Prevent double events on iOS
-    if (!tvGuide) {
-      console.error("TV Guide element not found when touching menu button");
-      return;
-    }
-    const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity || 0) === 1;
-    toggleTVGuide(!isCurrentlyVisible);
-  }, { passive: false });
+  // Register event listeners only after proper setup
+  const setupMenuButtonEvents = () => {
+    if (!menuButton) return;
+    
+    // Toggle guide when menu button is clicked
+    menuButton.addEventListener('click', () => {
+      console.log("Menu button clicked");
+      // Check if TV Guide exists first
+      if (!tvGuide) {
+        console.error("TV Guide element not found when clicking menu button");
+        return;
+      }
+      const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity || 0) === 1;
+      console.log("TV Guide current visibility state:", isCurrentlyVisible);
+      toggleTVGuide(!isCurrentlyVisible);
+    });
+    
+    // Add touchend handler for iOS Safari
+    menuButton.addEventListener('touchend', (e) => {
+      console.log("Menu button touch event");
+      e.preventDefault(); // Prevent double events on iOS
+      if (!tvGuide) {
+        console.error("TV Guide element not found when touching menu button");
+        return;
+      }
+      const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity || 0) === 1;
+      toggleTVGuide(!isCurrentlyVisible);
+    }, { passive: false });
+    
+    console.log("Menu button event listeners properly set up");
+  };
+  
+  // Delay setting up menu button events until after initial DOM operations
+  setTimeout(setupMenuButtonEvents, 1000);
   
   closeGuide.addEventListener('click', () => toggleTVGuide(false));
   // Channel descriptions for TV Guide
@@ -647,7 +699,7 @@ const resetMenuStyles = () => {
     ytObserver.observe(channel1);
   }
 
-    // --- Intersection Observer for Channel 4 YouTube Video Audio Control ---
+  // --- Intersection Observer for Channel 4 YouTube Video Audio Control ---
   const channel4 = document.getElementById("section4");
   const channel4ObserverOptions = { root: null, threshold: 0.7 };
   const channel4Observer = new IntersectionObserver((entries) => {
@@ -670,6 +722,20 @@ const resetMenuStyles = () => {
   if (channel4) {
     channel4Observer.observe(channel4);
   }
+  
+  // Force menu button to stay hidden until manually shown
+  const keepMenuHidden = () => {
+    if (menuButton) {
+      menuButton.style.display = "none";
+      menuButton.style.visibility = "hidden";
+      menuButton.style.opacity = "0";
+    }
+  };
+  keepMenuHidden();
+  // Run several times to catch any timing issues
+  setTimeout(keepMenuHidden, 100);
+  setTimeout(keepMenuHidden, 500);
+  setTimeout(keepMenuHidden, 1000);
   
 // Set initial intersection observer to detect when we first see Channel 1
 setTimeout(() => {

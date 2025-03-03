@@ -123,8 +123,10 @@ body {
   top: 10px;
   right: 20px;
   z-index: 999999; /* Extremely high z-index value to ensure visibility */
-  opacity: 0; /* Initially hidden, will be revealed with animation */
-  display: none; /* Hidden until Channel 1 is visible */
+  opacity: 0; /* Initially hidden */
+  display: none !important; /* Force hidden until explicitly enabled via JavaScript */
+  visibility: hidden; /* Doubly ensure it's hidden */
+  pointer-events: none; /* No interaction until enabled */
 }
 
 /* --- Landing Overlay --- */
