@@ -142,16 +142,11 @@ const resetMenuStyles = () => {
         landing.style.display = "none";
         mainContent.style.display = "block";
         document.body.style.overflow = "auto";
-        // Reveal the header and menu button after landing completes
+        // Reveal the header after landing completes
         gsap.to(header, { duration: 0.5, opacity: 1 });
-        gsap.to(menuButton, { duration: 0.5, opacity: 1 });
-        // Ensure menu button is visible and properly styled
-        menuButton.style.display = "block";
-        menuButton.style.zIndex = "999999";
-        menuButton.style.pointerEvents = "auto";
         
-        // Force the menu button to be top-most and interactive
-        ensureMenuButtonVisibility();
+        // Menu button will only be shown when Channel 1 is visible
+        // It's set by the intersection observer
       }
     });
   };
@@ -347,8 +342,14 @@ const resetMenuStyles = () => {
             currentOverlay.style.display = 'block';
           }
           
-          // ALWAYS ensure menu button and TV guide have the correct visibility and z-index
-          ensureMenuButtonVisibility();
+          // Show menu button only when Channel 1 (section1) is visible
+          if (newChannel === 'section1') {
+            menuButton.style.display = 'block';
+            // ALWAYS ensure menu button and TV guide have the correct visibility and z-index
+            ensureMenuButtonVisibility();
+          } else {
+            menuButton.style.display = 'none';
+          }
           
           // Make sure the TV Guide has the right styles even if not visible
           if (tvGuide) {
@@ -371,14 +372,16 @@ const resetMenuStyles = () => {
           }
           distortAndWarpContent();
           
-          // Re-check menu button and TV guide visibility after channel content has loaded
+          // Re-check menu button visibility after channel content has loaded
           setTimeout(() => {
-            ensureMenuButtonVisibility();
-            
-            // Extra check for button functionality
-            if (menuButton) {
-              menuButton.style.pointerEvents = 'auto';
-              menuButton.style.cursor = 'pointer';
+            if (newChannel === 'section1') {
+              ensureMenuButtonVisibility();
+              
+              // Extra check for button functionality
+              if (menuButton) {
+                menuButton.style.pointerEvents = 'auto';
+                menuButton.style.cursor = 'pointer';
+              }
             }
           }, 800);
         }
