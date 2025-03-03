@@ -162,69 +162,49 @@ const resetMenuStyles = () => {
           duration: 0.5, 
           opacity: 1,
           onComplete: () => {
-            // Only after header is fully visible, check if we should show menu button
+            // After header is fully visible, show menu button
             console.log("Header reveal complete");
-            // Check if we're on Channel 1 and only then show menu button
-            if (currentChannel === 'section1') {
-              setTimeout(() => {
-                ensureMenuButtonVisibility();
-              }, 200); // Small delay to ensure everything is rendered
-            }
+            // Show menu button regardless of which channel we're on
+            setTimeout(() => {
+              ensureMenuButtonVisibility();
+            }, 200); // Small delay to ensure everything is rendered
           }
         });
       }
     });
   };
   
-  // Function to ensure menu button is properly managed
+  // Function to make menu button follow header visibility
   const ensureMenuButtonVisibility = () => {
-    // FORCE hiding of menu button initially
+    // Initially hide menu button
     if (menuButton) {
-      // Start with completely hiding the menu button with multiple techniques
       menuButton.style.display = "none";
       menuButton.style.opacity = "0";
-      menuButton.style.visibility = "hidden";
-      menuButton.style.pointerEvents = "none";
     }
     
-    // Critical check: Only show menu button when ALL conditions are met:
-    // 1. Header is fully visible (Kayron Calloway in top left)
-    // 2. We're on channel 1
-    // 3. Landing sequence is complete
-    // 4. Wait for sufficient time after everything is loaded
+    // Simple function to show menu button - follows header visibility
     const showButton = () => {
-      if (menuButton && 
-          header && 
-          window.getComputedStyle(header).opacity > 0.9 && 
-          currentChannel === 'section1' && 
-          landingSequenceComplete && 
-          landing.style.display === "none") {
+      // Only show menu button when header is visible
+      if (menuButton && header && window.getComputedStyle(header).opacity > 0.5) {
+        console.log("Header is visible, showing menu button");
         
-        console.log("ALL conditions met, showing menu button now");
-        // Override all hiding methods
-        menuButton.style.display = "block !important";
+        // Make menu button visible
+        menuButton.style.display = "block";
         menuButton.style.opacity = "1";
         menuButton.style.visibility = "visible";
         menuButton.style.pointerEvents = "auto";
-        menuButton.style.zIndex = "999999";
         
-        // Force style override with inline !important
-        menuButton.setAttribute('style', 
-          'display: block !important; ' +
-          'opacity: 1 !important; ' +
-          'visibility: visible !important; ' +
-          'pointer-events: auto !important; ' +
-          'position: fixed; ' +
-          'top: 10px; ' +
-          'right: 20px; ' +
-          'z-index: 999999;'
-        );
+        // Position in top right corner
+        menuButton.style.position = "fixed";
+        menuButton.style.top = "10px";
+        menuButton.style.right = "20px";
+        menuButton.style.zIndex = "999999";
         
         // Ensure tap target size is at least 44x44px for iOS Safari
         menuButton.style.minHeight = "44px";
         menuButton.style.minWidth = "44px";
         
-        // Re-attach event listener
+        // Set up click handler
         if (menuButton.onclick) {
           menuButton.removeEventListener('click', menuButton.onclick);
         }
@@ -239,20 +219,15 @@ const resetMenuStyles = () => {
           e.preventDefault(); // Prevent double-tap issues on iOS
           menuClickHandler();
         }, { passive: false });
-      } else {
-        console.log("Conditions not met for menu button display", {
-          headerVisible: header && window.getComputedStyle(header).opacity > 0.9,
-          onChannel1: currentChannel === 'section1',
-          landingDone: landingSequenceComplete,
-          landingHidden: landing.style.display === "none"
-        });
+      } else if (menuButton) {
+        // If header is not visible, keep menu button hidden
+        menuButton.style.display = "none";
+        menuButton.style.opacity = "0";
       }
     };
     
-    // Initial attempt
+    // Call immediately and also after a delay
     showButton();
-    
-    // Second attempt with delay to ensure all styles are applied
     setTimeout(showButton, 500);
     
     // Ensure TV Guide has the correct styles
@@ -546,14 +521,9 @@ const resetMenuStyles = () => {
             currentOverlay.style.display = 'block';
           }
           
-          // Show menu button only when Channel 1 (section1) is visible
-          if (newChannel === 'section1') {
-            menuButton.style.display = 'block';
-            // ALWAYS ensure menu button and TV guide have the correct visibility and z-index
-            ensureMenuButtonVisibility();
-          } else {
-            menuButton.style.display = 'none';
-          }
+          // Always ensure menu button visibility, regardless of channel
+          // The menu button should follow the header, not the channel
+          ensureMenuButtonVisibility();
           
           // Make sure the TV Guide has the right styles even if not visible
           if (tvGuide) {

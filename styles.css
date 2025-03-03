@@ -124,9 +124,8 @@ body {
   right: 20px;
   z-index: 999999; /* Extremely high z-index value to ensure visibility */
   opacity: 0; /* Initially hidden */
-  display: none !important; /* Force hidden until explicitly enabled via JavaScript */
-  visibility: hidden; /* Doubly ensure it's hidden */
-  pointer-events: none; /* No interaction until enabled */
+  display: none; /* Hidden until explicitly enabled via JavaScript */
+  transition: opacity 0.3s ease; /* Smooth transition when appearing/disappearing */
 }
 
 /* --- Landing Overlay --- */
