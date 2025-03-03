@@ -262,6 +262,12 @@ const resetMenuStyles = () => {
       menuButton.style.zIndex = '999999';
     }
     
+    // Make sure TV Guide exists
+    if (!tvGuide) {
+      console.error("TV Guide element not found");
+      return;
+    }
+    
     if (show) {
       // Force display to flex regardless of current state
       tvGuide.style.display = 'flex';
@@ -284,6 +290,9 @@ const resetMenuStyles = () => {
       document.body.style.position = 'fixed';
       document.body.style.width = '100%';
       
+      // Log visibility state for debugging
+      console.log("Opening TV Guide");
+      
       // Delay opacity change to allow display change to take effect
       setTimeout(() => {
         tvGuide.style.opacity = 1;
@@ -298,15 +307,37 @@ const resetMenuStyles = () => {
       document.body.style.position = '';
       document.body.style.width = '';
       
+      // Log visibility state for debugging
+      console.log("Closing TV Guide");
+      
       setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
     }
   };
   
   // Toggle guide when menu button is clicked
   menuButton.addEventListener('click', () => {
-    const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity) === 1;
+    console.log("Menu button clicked");
+    // Check if TV Guide exists first
+    if (!tvGuide) {
+      console.error("TV Guide element not found when clicking menu button");
+      return;
+    }
+    const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity || 0) === 1;
+    console.log("TV Guide current visibility state:", isCurrentlyVisible);
     toggleTVGuide(!isCurrentlyVisible);
   });
+  
+  // Add touchend handler for iOS Safari
+  menuButton.addEventListener('touchend', (e) => {
+    console.log("Menu button touch event");
+    e.preventDefault(); // Prevent double events on iOS
+    if (!tvGuide) {
+      console.error("TV Guide element not found when touching menu button");
+      return;
+    }
+    const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity || 0) === 1;
+    toggleTVGuide(!isCurrentlyVisible);
+  }, { passive: false });
   
   closeGuide.addEventListener('click', () => toggleTVGuide(false));
   // Channel descriptions for TV Guide
@@ -349,6 +380,11 @@ const resetMenuStyles = () => {
         duration: 0.3
       });
       
+      // Get the channel title for logging
+      const channelTitle = item.querySelector('.channel-title') ? 
+                          item.querySelector('.channel-title').textContent : 
+                          `Channel ${targetId.slice(-1)}`;
+      
       // Check if we're leaving channel 3 (section3)
       if (currentChannel === 'section3' && targetId !== 'section3') {
         console.log("Leaving Channel 3 from TV guide, doing additional audio cleanup");
@@ -383,7 +419,7 @@ const resetMenuStyles = () => {
             toggleTVGuide(false);
           }, 200);
           
-          console.log(`Now viewing ${item.querySelector('.channel-title').textContent}`);
+          console.log(`Now viewing ${channelTitle}`);
           triggerHaptic();
         }, 500);
       }
