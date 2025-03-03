@@ -306,14 +306,16 @@ const resetMenuStyles = () => {
       if (entry.isIntersecting) {
         const newChannel = entry.target.id;
         if (currentChannel !== newChannel) {
-          // Dispatch channel change event to stop any running audio
-          const channelChangeEvent = new Event('channelChange');
-          document.dispatchEvent(channelChangeEvent);
+          // Dispatch channel change event to stop any running audio (only if not entering Channel 3)
+          if (newChannel !== 'section3') {
+            const channelChangeEvent = new Event('channelChange');
+            document.dispatchEvent(channelChangeEvent);
+          }
           
           console.log(`Channel change: from ${currentChannel} to ${newChannel}`);
           
-          // Extra cleanup for channel 3 audio
-          if (currentChannel === 'section3') {
+          // Extra cleanup for channel 3 audio - only do this when leaving Channel 3
+          if (currentChannel === 'section3' && newChannel !== 'section3') {
             console.log("Leaving Channel 3, doing additional audio cleanup");
             // Explicitly stop any gameshow audio that might be playing
             document.querySelectorAll('audio').forEach(audio => {
