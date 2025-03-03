@@ -104,17 +104,17 @@
 
   <!-- TV Guide Overlay Menu -->
   <div id="tvGuide" class="tv-guide" aria-hidden="true" style="display: none;">
-    <div class="tv-guide-header">TV Guide</div>
+    <div class="tv-guide-header">PROGRAM GUIDE</div>
     <div class="tv-guide-list">
       <nav>
         <ul>
           <li data-target="section1">
             <span class="channel-number">CH 01</span>
-            <span class="channel-title">Home</span>
+            <span class="channel-title">Home Portfolio</span>
           </li>
           <li data-target="section2">
             <span class="channel-number">CH 02</span>
-            <span class="channel-title">Infomercial</span>
+            <span class="channel-title">Creative Showcase</span>
           </li>
           <li data-target="section3">
             <span class="channel-number">CH 03</span>
@@ -127,7 +127,17 @@
         </ul>
       </nav>
     </div>
-    <button id="closeGuide" class="close-guide" aria-label="Close TV Guide">Close</button>
+    <div class="tv-guide-info">
+      <div class="now-showing">
+        <h3>NOW SHOWING</h3>
+        <p id="current-channel-info">Select a channel to view details</p>
+      </div>
+      <div class="time-slot">
+        <div class="time-indicator">8:00 PM - 11:00 PM</div>
+        <div class="date-display">March 2025</div>
+      </div>
+    </div>
+    <button id="closeGuide" class="close-guide" aria-label="Close TV Guide">Close Guide</button>
   </div>
 
   <!-- Back to Top Button -->
