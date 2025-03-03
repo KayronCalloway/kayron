@@ -141,6 +141,7 @@ export async function init() {
     menuButton.style.opacity = '1';
     menuButton.style.position = 'fixed';
     menuButton.style.pointerEvents = 'auto';
+    menuButton.style.cursor = 'pointer';
   }
   
   // Ensure TV Guide has correct positioning
