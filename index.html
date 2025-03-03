@@ -105,27 +105,71 @@
   <!-- TV Guide Overlay Menu -->
   <div id="tvGuide" class="tv-guide" aria-hidden="true" style="display: none;">
     <div class="tv-guide-header">PROGRAM GUIDE</div>
-    <div class="tv-guide-list">
-      <nav>
-        <ul>
-          <li data-target="section1">
+    <div class="tv-guide-grid">
+      <div class="tv-guide-time-header">
+        <div class="time-slot-header">8:00 PM</div>
+        <div class="time-slot-header">9:00 PM</div>
+        <div class="time-slot-header">10:00 PM</div>
+        <div class="time-slot-header">11:00 PM</div>
+      </div>
+      <div class="tv-guide-channels">
+        <div class="tv-guide-channel" data-target="section1">
+          <div class="channel-info">
             <span class="channel-number">CH 01</span>
             <span class="channel-title">Home Portfolio</span>
-          </li>
-          <li data-target="section2">
+          </div>
+          <div class="program-grid">
+            <div class="program-item" style="grid-column: 1 / span 2;">
+              <div class="program-title">Portfolio Showcase</div>
+              <div class="program-time">8:00 - 9:30 PM</div>
+            </div>
+            <div class="program-item" style="grid-column: 3 / span 2;">
+              <div class="program-title">Resume & Credentials</div>
+              <div class="program-time">9:30 - 11:00 PM</div>
+            </div>
+          </div>
+        </div>
+        <div class="tv-guide-channel" data-target="section2">
+          <div class="channel-info">
             <span class="channel-number">CH 02</span>
             <span class="channel-title">Creative Showcase</span>
-          </li>
-          <li data-target="section3">
+          </div>
+          <div class="program-grid">
+            <div class="program-item" style="grid-column: 1 / span 4;">
+              <div class="program-title">Creative Strategy Infomercial</div>
+              <div class="program-time">8:00 - 11:00 PM</div>
+            </div>
+          </div>
+        </div>
+        <div class="tv-guide-channel" data-target="section3">
+          <div class="channel-info">
             <span class="channel-number">CH 03</span>
             <span class="channel-title">Skill Games</span>
-          </li>
-          <li data-target="section4">
+          </div>
+          <div class="program-grid">
+            <div class="program-item" style="grid-column: 1 / span 2;">
+              <div class="program-title">Gameshow Challenge</div>
+              <div class="program-time">8:00 - 9:30 PM</div>
+            </div>
+            <div class="program-item" style="grid-column: 3 / span 2;">
+              <div class="program-title">Bonus Round</div>
+              <div class="program-time">9:30 - 11:00 PM</div>
+            </div>
+          </div>
+        </div>
+        <div class="tv-guide-channel" data-target="section4">
+          <div class="channel-info">
             <span class="channel-number">CH 04</span>
             <span class="channel-title">Under the Influence</span>
-          </li>
-        </ul>
-      </nav>
+          </div>
+          <div class="program-grid">
+            <div class="program-item" style="grid-column: 1 / span 4;">
+              <div class="program-title">Creative Influences & Inspirations</div>
+              <div class="program-time">8:00 - 11:00 PM</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="tv-guide-info">
       <div class="now-showing">
@@ -142,21 +186,6 @@
 
   <!-- Back to Top Button -->
   <button id="backToTop" class="back-to-top" aria-label="Back to Top">↑</button>
-  
-  <!-- Volume Control -->
-  <div id="volumeControl" class="volume-control">
-    <div class="volume-icon">
-      <svg viewBox="0 0 24 24" width="16" height="16" stroke="white" stroke-width="2" fill="none">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-      </svg>
-    </div>
-    <div class="volume-bar">
-      <div id="volumeLevel" class="volume-level"></div>
-    </div>
-    <div id="volumePercentage" class="volume-percentage">70%</div>
-  </div>
   
 </body>
 </html>

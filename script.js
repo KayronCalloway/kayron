@@ -27,41 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const playRandomChannelSound = () => {
     const randomIndex = Math.floor(Math.random() * channelSounds.length);
     channelSounds[randomIndex].play().catch(error => console.error('Audio playback failed:', error));
-    
-    // Show volume indicator when changing channels
-    showVolumeIndicator();
   };
   
-  // --- Volume Control ---
-  const volumeControl = document.getElementById('volumeControl');
-  const volumeLevel = document.getElementById('volumeLevel');
-  const volumePercentage = document.getElementById('volumePercentage');
-  let volumeValue = 70; // Default volume (0-100)
-  let volumeTimeout;
-  
-  // Show volume indicator
-  const showVolumeIndicator = () => {
-    if (volumeControl) {
-      // Clear any existing timeout
-      clearTimeout(volumeTimeout);
-      
-      // Show volume control
-      volumeControl.classList.add('active');
-      
-      // Set timeout to hide volume control after 2 seconds
-      volumeTimeout = setTimeout(() => {
-        volumeControl.classList.remove('active');
-      }, 2000);
-    }
-  };
-  
-  // Update volume display
-  const updateVolumeDisplay = (value) => {
-    if (volumeLevel && volumePercentage) {
-      volumeLevel.style.width = `${value}%`;
-      volumePercentage.textContent = `${value}%`;
-    }
-  };
+  // Volume control functionality removed
 
   // --- Analytics Reporting using Web Vitals ---
   const sendToAnalytics = (metricName, metric) => {
@@ -349,7 +317,8 @@ const resetMenuStyles = () => {
     'section4': 'Examine influences and inspirations that shape creative direction.'
   };
   
-  guideItems.forEach(item => {
+  // Make TV Guide channels clickable
+  document.querySelectorAll('.tv-guide-channel').forEach(item => {
     // Highlight effect on hover to show current selection
     item.addEventListener('mouseenter', () => {
       const targetId = item.getAttribute('data-target');
@@ -359,12 +328,12 @@ const resetMenuStyles = () => {
       }
       
       // Enhance selection effect
-      item.style.transform = 'translateX(8px)';
-      item.style.transition = 'transform 0.2s ease-out';
+      item.style.backgroundColor = 'rgba(62, 146, 204, 0.15)';
+      item.style.transition = 'background-color 0.2s ease-out';
     });
     
     item.addEventListener('mouseleave', () => {
-      item.style.transform = 'translateX(0)';
+      item.style.backgroundColor = '';
     });
     
     // Channel selection handling
@@ -544,8 +513,6 @@ const resetMenuStyles = () => {
       }
     });
     
-    // Show volume indicator when changing channels
-    showVolumeIndicator();
   };
 
   // --- Animate Channel Number Overlay ---
