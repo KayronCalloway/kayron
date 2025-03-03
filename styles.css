@@ -286,7 +286,7 @@ body {
   align-items: center;
   justify-content: flex-start;
   padding-top: 40px;
-  z-index: 999998; /* Extremely high z-index to ensure visibility */
+  z-index: 100000; /* Higher than both header and menu button */
   box-shadow: inset 0 0 150px rgba(0,30,100,0.3);
   -webkit-overflow-scrolling: touch; /* Improve scrolling on iOS */
   overflow-y: auto; /* Allow scrolling for small screens */
