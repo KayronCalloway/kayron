@@ -92,6 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log(`Module for ${moduleName} loaded successfully, initializing...`);
       await module.init();
       console.log(`Module for ${moduleName} initialized`);
+      
+      // Always ensure menu button visibility and functionality after loading any channel
+      setTimeout(ensureMenuButtonVisibility, 300);
     } else {
       console.warn(`No module definition found for ${moduleName}`);
     }
@@ -344,8 +347,18 @@ const resetMenuStyles = () => {
             currentOverlay.style.display = 'block';
           }
           
-          // ALWAYS ensure menu button is visible when changing channels
+          // ALWAYS ensure menu button and TV guide have the correct visibility and z-index
           ensureMenuButtonVisibility();
+          
+          // Make sure the TV Guide has the right styles even if not visible
+          if (tvGuide) {
+            tvGuide.style.position = 'fixed';
+            tvGuide.style.top = '0';
+            tvGuide.style.left = '0';
+            tvGuide.style.width = '100%';
+            tvGuide.style.height = '100%';
+            tvGuide.style.zIndex = '999998';
+          }
           
           currentChannel = newChannel;
           playRandomChannelSound();
@@ -358,8 +371,16 @@ const resetMenuStyles = () => {
           }
           distortAndWarpContent();
           
-          // Re-check menu button visibility after a slight delay to ensure it's not overridden
-          setTimeout(ensureMenuButtonVisibility, 500);
+          // Re-check menu button and TV guide visibility after channel content has loaded
+          setTimeout(() => {
+            ensureMenuButtonVisibility();
+            
+            // Extra check for button functionality
+            if (menuButton) {
+              menuButton.style.pointerEvents = 'auto';
+              menuButton.style.cursor = 'pointer';
+            }
+          }, 800);
         }
       }
     });
