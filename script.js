@@ -156,21 +156,34 @@ const resetMenuStyles = () => {
         landing.style.display = "none";
         mainContent.style.display = "block";
         document.body.style.overflow = "auto";
-        // Reveal the header after landing completes
-        gsap.to(header, { duration: 0.5, opacity: 1 });
         
-        // Menu button will only be shown when Channel 1 is visible
-        // It's set by the intersection observer
+        // Reveal the header after landing completes
+        gsap.to(header, { 
+          duration: 0.5, 
+          opacity: 1,
+          onComplete: () => {
+            // Only after header is fully visible, check if we should show menu button
+            console.log("Header reveal complete");
+            // Check if we're on Channel 1 and only then show menu button
+            if (currentChannel === 'section1') {
+              setTimeout(() => {
+                ensureMenuButtonVisibility();
+              }, 200); // Small delay to ensure everything is rendered
+            }
+          }
+        });
       }
     });
   };
   
   // Function to ensure menu button is always visible and interactive
   const ensureMenuButtonVisibility = () => {
-    if (menuButton) {
+    // Only make the menu button visible if the header is visible (showing Kayron Calloway in top left)
+    if (menuButton && header && window.getComputedStyle(header).opacity > 0.9) {
+      console.log("Header is fully visible, showing menu button");
       menuButton.style.display = "block";
       menuButton.style.opacity = "1";
-      menuButton.style.zIndex = "999999";
+      menuButton.style.zIndex = "999999"; // Keep extremely high z-index
       menuButton.style.position = "fixed";
       menuButton.style.pointerEvents = "auto";
       
@@ -193,16 +206,21 @@ const resetMenuStyles = () => {
         e.preventDefault(); // Prevent double-tap issues on iOS
         menuClickHandler();
       }, { passive: false });
+    } else if (menuButton) {
+      // If header is not visible yet, keep menu button hidden
+      console.log("Header not fully visible yet, keeping menu button hidden");
+      menuButton.style.display = "none";
     }
     
-    // Also ensure TV Guide has the correct styles when visible
-    if (tvGuide && tvGuide.style.display === 'flex') {
+    // Ensure TV Guide has the correct styles
+    if (tvGuide) {
+      // Make the TV Guide appear on top of everything (higher z-index than header)
       tvGuide.style.position = 'fixed';
       tvGuide.style.top = '0';
       tvGuide.style.left = '0';
       tvGuide.style.width = '100%';
       tvGuide.style.height = '100%';
-      tvGuide.style.zIndex = '999998';
+      tvGuide.style.zIndex = '100000'; // Higher than both header and menu button
       
       // Add -webkit prefixed properties for iOS Safari
       tvGuide.style.webkitOverflowScrolling = 'touch';
@@ -255,11 +273,16 @@ const resetMenuStyles = () => {
 
   // --- TV Guide Menu Toggle ---
   const toggleTVGuide = show => {
-    // Always make sure menu button is visible regardless of channel
-    if (menuButton) {
+    // Check if header is visible before showing menu button
+    const isHeaderVisible = header && window.getComputedStyle(header).opacity > 0.9;
+    
+    // Only show menu button if header is visible (Kayron Calloway name is showing)
+    if (menuButton && isHeaderVisible) {
       menuButton.style.display = 'block';
       menuButton.style.opacity = '1';
       menuButton.style.zIndex = '999999';
+    } else if (menuButton) {
+      menuButton.style.display = 'none';
     }
     
     // Make sure TV Guide exists
@@ -271,8 +294,8 @@ const resetMenuStyles = () => {
     if (show) {
       // Force display to flex regardless of current state
       tvGuide.style.display = 'flex';
-      // Make sure it's above all other elements but below the menu button
-      tvGuide.style.zIndex = '999998';
+      // Make the TV guide appear on top of EVERYTHING
+      tvGuide.style.zIndex = '100000'; // Higher than both header and menu button
       // Ensure TV Guide is fixed at top
       tvGuide.style.position = 'fixed';
       // Ensure it covers the entire viewport
@@ -648,6 +671,30 @@ const resetMenuStyles = () => {
     channel4Observer.observe(channel4);
   }
   
+// Set initial intersection observer to detect when we first see Channel 1
+setTimeout(() => {
+  // Only run observer after the landing sequence
+  if (landingSequenceComplete) {
+    const initialObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.target.id === 'section1') {
+          console.log("Channel 1 initially visible, checking header visibility");
+          // If header is visible, show menu button
+          if (window.getComputedStyle(header).opacity > 0.9) {
+            console.log("Header is visible, showing menu button");
+            ensureMenuButtonVisibility();
+          }
+        }
+      });
+    }, { threshold: 0.7 });
+    
+    const section1 = document.getElementById('section1');
+    if (section1) {
+      initialObserver.observe(section1);
+    }
+  }
+}, 2500);
+
 // Preload Channel 4 ("under the influence") so its video is already playing when scrolled into view.
 setTimeout(() => {
   loadChannelContent('under the influence');
