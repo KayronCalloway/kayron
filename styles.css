@@ -270,53 +270,168 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.95);
+  background-color: #000;
+  background-image: 
+    linear-gradient(0deg, rgba(51, 51, 51, 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(51, 51, 51, 0.5) 1px, transparent 1px),
+    linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9));
+  background-size: 20px 20px, 20px 20px, 100% 100%;
   display: none;
   opacity: 0;
-  transition: opacity 0.5s;
+  transition: opacity 0.4s;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   padding-top: 40px;
   z-index: 999998; /* Extremely high z-index to ensure visibility */
+  box-shadow: inset 0 0 150px rgba(0,30,100,0.3);
 }
+
 .tv-guide-header {
-  font-size: 2rem;
+  font-size: 2.5rem;
   text-align: center;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--primary-color);
-  width: 100%;
-  margin-bottom: 40px;
+  padding: 15px 0 20px;
+  border-bottom: 3px solid #3e92cc;
+  width: 90%;
+  margin-bottom: 20px;
+  color: #f0f0f0;
+  text-shadow: 0 0 8px rgba(62, 146, 204, 0.7);
+  font-weight: bold;
+  letter-spacing: 2px;
 }
+
 .tv-guide-list {
   position: absolute;
   top: 50%;
-  left: 20px;
+  left: 50px;
   transform: translateY(-50%);
   width: auto;
 }
+
 .tv-guide-list nav ul {
   list-style: none;
   text-align: left;
   padding: 0;
   margin: 0;
 }
+
 .tv-guide-list nav ul li {
-  font-size: 2rem;
-  margin: 20px 0;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--primary-color);
+  font-size: 1.8rem;
+  margin: 25px 0;
+  padding: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+  border-radius: 5px;
+  width: 400px;
 }
+
+.tv-guide-list nav ul li:hover, 
+.tv-guide-list nav ul li:focus {
+  border-bottom: 1px solid #3e92cc;
+  background: linear-gradient(90deg, rgba(24,59,124,0.3) 0%, rgba(0,0,0,0) 100%);
+  transform: translateX(5px);
+  box-shadow: -5px 0 20px rgba(62, 146, 204, 0.2);
+}
+
+.tv-guide-list nav ul li .channel-number {
+  display: inline-block;
+  width: 70px;
+  margin-right: 20px;
+  color: #3e92cc;
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(62, 146, 204, 0.5);
+}
+
+.tv-guide-list nav ul li .channel-title {
+  color: #f0f0f0;
+  position: relative;
+}
+
+.tv-guide-list nav ul li .channel-title::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #3e92cc;
+  transition: width 0.3s ease;
+}
+
+.tv-guide-list nav ul li:hover .channel-title::after {
+  width: 100%;
+}
+
 .close-guide {
   position: absolute;
   top: 20px;
-  right: 20px;
-  background: transparent;
-  border: 2px solid var(--primary-color);
-  color: var(--primary-color);
-  padding: 10px 15px;
+  right: 30px;
+  background: rgba(0,0,0,0.5);
+  border: 2px solid #3e92cc;
+  color: #f0f0f0;
+  padding: 10px 20px;
   cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.close-guide:hover {
+  background: rgba(62, 146, 204, 0.2);
+  box-shadow: 0 0 10px rgba(62, 146, 204, 0.5);
+}
+
+.tv-guide-info {
+  position: absolute;
+  bottom: 60px;
+  right: 60px;
+  width: 350px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid #3e92cc;
+  border-radius: 8px;
+  padding: 15px;
+  color: #f0f0f0;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.tv-guide-info h3 {
+  color: #3e92cc;
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  border-bottom: 1px solid rgba(62, 146, 204, 0.3);
+  padding-bottom: 5px;
+}
+
+.tv-guide-info p {
+  margin: 0 0 15px 0;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.time-slot {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9rem;
+}
+
+.time-indicator {
+  color: #3e92cc;
+  font-weight: bold;
+}
+
+.date-display {
+  opacity: 0.7;
 }
 
 /* --- Modal Overlays & Boxes --- */
@@ -457,7 +572,13 @@ body {
     padding: 5px 10px;
   }
   .tv-guide-list nav ul li {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+    width: 280px;
+    margin: 15px 0;
+    padding: 10px;
+  }
+  .tv-guide-list {
+    left: 20px;
   }
   .channel-number-overlay {
     font-size: 3rem;
@@ -477,6 +598,17 @@ body {
   }
   .volume-percentage {
     font-size: 0.7rem;
+  }
+  .tv-guide-info {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    width: 90%;
+    margin: 20px auto;
+  }
+  .tv-guide-header {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
   }
 }
 

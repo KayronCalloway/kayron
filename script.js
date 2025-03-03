@@ -296,14 +296,47 @@ const resetMenuStyles = () => {
   });
   
   closeGuide.addEventListener('click', () => toggleTVGuide(false));
+  // Channel descriptions for TV Guide
+  const channelDescriptions = {
+    'section1': 'Explore Kayron\'s portfolio home, featuring skills and professional background.',
+    'section2': 'Discover creative works and brand strategies in a showcase format.',
+    'section3': 'Interactive games testing your creative problem-solving skills and approach.',
+    'section4': 'Examine influences and inspirations that shape creative direction.'
+  };
+  
   guideItems.forEach(item => {
+    // Highlight effect on hover to show current selection
+    item.addEventListener('mouseenter', () => {
+      const targetId = item.getAttribute('data-target');
+      const currentInfoText = document.getElementById('current-channel-info');
+      if (currentInfoText) {
+        currentInfoText.textContent = channelDescriptions[targetId] || 'Channel information unavailable';
+      }
+      
+      // Enhance selection effect
+      item.style.transform = 'translateX(8px)';
+      item.style.transition = 'transform 0.2s ease-out';
+    });
+    
+    item.addEventListener('mouseleave', () => {
+      item.style.transform = 'translateX(0)';
+    });
+    
+    // Channel selection handling
     item.addEventListener('click', () => {
       // Get the target section before triggering audio cleanup
       const targetId = item.getAttribute('data-target');
       const targetSection = document.getElementById(targetId);
       
+      // Add selection effect
+      gsap.to(item, {
+        backgroundColor: 'rgba(62, 146, 204, 0.3)',
+        boxShadow: '0 0 15px rgba(62, 146, 204, 0.4)',
+        duration: 0.3
+      });
+      
       // Check if we're leaving channel 3 (section3)
-      if (currentChannel === 'section3') {
+      if (currentChannel === 'section3' && targetId !== 'section3') {
         console.log("Leaving Channel 3 from TV guide, doing additional audio cleanup");
         // Explicitly stop any gameshow audio that might be playing
         document.querySelectorAll('audio').forEach(audio => {
@@ -320,15 +353,25 @@ const resetMenuStyles = () => {
         resetMenuStyles();
       }
       
-      // Dispatch channel change event to stop any running audio
-      const channelChangeEvent = new Event('channelChange');
-      document.dispatchEvent(channelChangeEvent);
+      // Dispatch channel change event to stop any running audio (unless navigating to Ch3)
+      if (targetId !== 'section3') {
+        const channelChangeEvent = new Event('channelChange');
+        document.dispatchEvent(channelChangeEvent);
+      }
       
       if (targetSection) {
-        targetSection.scrollIntoView({ behavior: 'smooth' });
-        toggleTVGuide(false);
-        console.log(`Now viewing ${item.querySelector('.channel-title').textContent}`);
-        triggerHaptic();
+        // Create delayed closing effect for more TV-like experience
+        setTimeout(() => {
+          targetSection.scrollIntoView({ behavior: 'smooth' });
+          
+          // Close TV Guide with a slight delay for a more authentic TV experience
+          setTimeout(() => {
+            toggleTVGuide(false);
+          }, 200);
+          
+          console.log(`Now viewing ${item.querySelector('.channel-title').textContent}`);
+          triggerHaptic();
+        }, 500);
       }
     });
   });
