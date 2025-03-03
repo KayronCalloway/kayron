@@ -159,22 +159,11 @@ const resetMenuStyles = () => {
   // Function to ensure menu button is always visible and interactive
   const ensureMenuButtonVisibility = () => {
     if (menuButton) {
-      // Restore to original design from styles.css
       menuButton.style.display = "block";
       menuButton.style.opacity = "1";
       menuButton.style.zIndex = "999999";
       menuButton.style.position = "fixed";
       menuButton.style.pointerEvents = "auto";
-      
-      // Remove custom styles we added that should be inherited from CSS
-      menuButton.style.cursor = "";
-      menuButton.style.backgroundColor = "";
-      menuButton.style.border = "";
-      menuButton.style.padding = "";
-      menuButton.style.top = "";
-      menuButton.style.right = "";
-      menuButton.style.color = "";
-      menuButton.style.font = "";
       
       // Re-attach event listener to ensure it works
       menuButton.onclick = () => {
@@ -245,8 +234,6 @@ const resetMenuStyles = () => {
       menuButton.style.display = 'block';
       menuButton.style.opacity = '1';
       menuButton.style.zIndex = '999999';
-      menuButton.style.position = 'fixed';
-      menuButton.style.pointerEvents = 'auto';
     }
     
     if (show) {
