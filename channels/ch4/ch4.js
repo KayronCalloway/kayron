@@ -133,6 +133,28 @@ export async function init() {
     document.head.appendChild(link);
   }
   
+  // Ensure menu button is visible and interactive
+  const menuButton = document.getElementById('menuButton');
+  if (menuButton) {
+    menuButton.style.zIndex = '999999';
+    menuButton.style.display = 'block';
+    menuButton.style.opacity = '1';
+    menuButton.style.position = 'fixed';
+    menuButton.style.pointerEvents = 'auto';
+    menuButton.style.cursor = 'pointer';
+  }
+  
+  // Ensure TV Guide has correct positioning
+  const tvGuide = document.getElementById('tvGuide');
+  if (tvGuide) {
+    tvGuide.style.position = 'fixed';
+    tvGuide.style.top = '0';
+    tvGuide.style.left = '0';
+    tvGuide.style.width = '100%';
+    tvGuide.style.height = '100%';
+    tvGuide.style.zIndex = '999998';
+  }
+  
   // Create and set up the modal
   createModal();
   setTimeout(setupModalEventListeners, 500);
