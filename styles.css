@@ -252,12 +252,14 @@ body {
   box-shadow: 0 0 10px var(--primary-color);
 }
 .channel-number-overlay {
-  position: absolute;
+  position: fixed;
   bottom: 40px;
   right: 20px;
   font-size: 2rem;
   color: var(--primary-color);
   opacity: 0.8;
+  z-index: 9995;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
   display: none; /* Hide by default, will be shown on specific channel */
 }
 
@@ -376,6 +378,63 @@ body {
   cursor: pointer;
 }
 
+/* --- Volume Control --- */
+.volume-control {
+  position: fixed;
+  bottom: 40px;
+  left: 80px;
+  width: 150px;
+  height: 30px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 15px;
+  z-index: 9995;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.volume-control.active {
+  opacity: 1;
+}
+
+.volume-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.volume-bar {
+  flex: 1;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2.5px;
+  position: relative;
+}
+
+.volume-level {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 70%; /* Default volume level */
+  background: var(--primary-color);
+  border-radius: 2.5px;
+}
+
+.volume-percentage {
+  margin-left: 10px;
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  min-width: 30px;
+  text-align: right;
+}
+
 /* --- Utility Classes --- */
 .hidden {
   display: none;
@@ -409,6 +468,15 @@ body {
     top: 20px;
     font-size: 0.9rem;
     padding: 5px 8px;
+  }
+  .volume-control {
+    width: 120px;
+    height: 25px;
+    bottom: calc(40px + env(safe-area-inset-bottom));
+    left: 20px;
+  }
+  .volume-percentage {
+    font-size: 0.7rem;
   }
 }
 
