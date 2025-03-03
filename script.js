@@ -75,24 +75,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Haptic Feedback ---
   const triggerHaptic = () => {
-    if (navigator.vibrate) {
-      navigator.vibrate([50, 30, 50]);
+    try {
+      if (navigator.vibrate) {
+        navigator.vibrate([50, 30, 50]);
+      }
+    } catch (e) {
+      console.log("Vibration API not supported");
     }
   };
 
   // --- Swipe Navigation ---
   let touchStartX = 0;
+  let touchStartY = 0; // Track vertical position to detect diagonal swipes
+  
   document.addEventListener('touchstart', e => {
     touchStartX = e.changedTouches[0].screenX;
-  });
+    touchStartY = e.changedTouches[0].screenY;
+  }, { passive: true }); // Add passive flag for better performance on iOS
+  
   document.addEventListener('touchend', e => {
     const touchEndX = e.changedTouches[0].screenX;
+    const touchEndY = e.changedTouches[0].screenY;
     const diffX = touchStartX - touchEndX;
-    if (Math.abs(diffX) > 50) {
+    const diffY = Math.abs(touchStartY - touchEndY);
+    
+    // Only trigger horizontal swipe if vertical movement is minimal (prevent accidental swipes)
+    if (Math.abs(diffX) > 70 && diffY < 50) {
       const direction = diffX > 0 ? 'next' : 'prev';
       navigateChannels(direction);
     }
-  });
+  }, { passive: true });
   const navigateChannels = direction => {
     const sections = Array.from(document.querySelectorAll('.channel-section'));
     const currentIndex = sections.findIndex(sec => sec.id === currentChannel);
@@ -194,11 +206,25 @@ const resetMenuStyles = () => {
       menuButton.style.position = "fixed";
       menuButton.style.pointerEvents = "auto";
       
-      // Re-attach event listener to ensure it works
-      menuButton.onclick = () => {
+      // Ensure tap target size is at least 44x44px for iOS Safari
+      menuButton.style.minHeight = "44px";
+      menuButton.style.minWidth = "44px";
+      
+      // Re-attach event listener to ensure it works with proper iOS handling
+      if (menuButton.onclick) {
+        menuButton.removeEventListener('click', menuButton.onclick);
+      }
+      
+      const menuClickHandler = () => {
         const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity) === 1;
         toggleTVGuide(!isCurrentlyVisible);
       };
+      
+      menuButton.onclick = menuClickHandler;
+      menuButton.addEventListener('touchend', (e) => {
+        e.preventDefault(); // Prevent double-tap issues on iOS
+        menuClickHandler();
+      }, { passive: false });
     }
     
     // Also ensure TV Guide has the correct styles when visible
@@ -209,6 +235,9 @@ const resetMenuStyles = () => {
       tvGuide.style.width = '100%';
       tvGuide.style.height = '100%';
       tvGuide.style.zIndex = '999998';
+      
+      // Add -webkit prefixed properties for iOS Safari
+      tvGuide.style.webkitOverflowScrolling = 'touch';
     }
   };
 
@@ -277,6 +306,16 @@ const resetMenuStyles = () => {
       tvGuide.style.left = '0';
       tvGuide.style.width = '100%';
       tvGuide.style.height = '100%';
+      
+      // iOS Safari scroll fix
+      tvGuide.style.webkitOverflowScrolling = 'touch';
+      tvGuide.style.overflowY = 'auto';
+      
+      // Prevent page scrolling when TV guide is open
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      
       // Delay opacity change to allow display change to take effect
       setTimeout(() => {
         tvGuide.style.opacity = 1;
@@ -285,6 +324,12 @@ const resetMenuStyles = () => {
     } else {
       tvGuide.style.opacity = 0;
       tvGuide.setAttribute('aria-hidden', 'true');
+      
+      // Re-enable page scrolling when TV guide is closed
+      document.body.style.overflow = 'auto';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      
       setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
     }
   };
