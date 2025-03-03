@@ -305,71 +305,110 @@ body {
   letter-spacing: 2px;
 }
 
-.tv-guide-list {
-  position: absolute;
-  top: 50%;
-  left: 50px;
-  transform: translateY(-50%);
-  width: auto;
-}
-
-.tv-guide-list nav ul {
-  list-style: none;
-  text-align: left;
-  padding: 0;
-  margin: 0;
-}
-
-.tv-guide-list nav ul li {
-  font-size: 1.8rem;
-  margin: 25px 0;
-  padding: 15px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  cursor: pointer;
-  position: relative;
-  transition: all 0.2s ease-in-out;
-  display: flex;
-  align-items: center;
-  background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+/* Grid Layout for TV Guide */
+.tv-guide-grid {
+  width: 90%;
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(62, 146, 204, 0.5);
   border-radius: 5px;
-  width: 400px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
-.tv-guide-list nav ul li:hover, 
-.tv-guide-list nav ul li:focus {
-  border-bottom: 1px solid #3e92cc;
-  background: linear-gradient(90deg, rgba(24,59,124,0.3) 0%, rgba(0,0,0,0) 100%);
-  transform: translateX(5px);
-  box-shadow: -5px 0 20px rgba(62, 146, 204, 0.2);
+.tv-guide-time-header {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background-color: rgba(20, 40, 80, 0.7);
+  padding: 10px 0;
+  border-bottom: 2px solid #3e92cc;
 }
 
-.tv-guide-list nav ul li .channel-number {
-  display: inline-block;
-  width: 70px;
-  margin-right: 20px;
+.time-slot-header {
+  text-align: center;
+  font-size: 1rem;
   color: #3e92cc;
   font-weight: bold;
+  padding: 5px 0;
+  border-right: 1px dotted rgba(62, 146, 204, 0.3);
+}
+
+.time-slot-header:last-child {
+  border-right: none;
+}
+
+.tv-guide-channels {
+  display: flex;
+  flex-direction: column;
+}
+
+.tv-guide-channel {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid rgba(62, 146, 204, 0.2);
+  padding: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tv-guide-channel:hover {
+  background-color: rgba(62, 146, 204, 0.1);
+}
+
+.tv-guide-channel:last-child {
+  border-bottom: none;
+}
+
+.channel-info {
+  display: flex;
+  align-items: center;
+  padding: 5px 15px;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.1);
+}
+
+.channel-number {
+  color: #3e92cc;
+  font-weight: bold;
+  font-size: 1.2rem;
+  width: 70px;
   text-shadow: 0 0 5px rgba(62, 146, 204, 0.5);
 }
 
-.tv-guide-list nav ul li .channel-title {
+.channel-title {
   color: #f0f0f0;
-  position: relative;
+  font-size: 1.1rem;
+  margin-left: 15px;
 }
 
-.tv-guide-list nav ul li .channel-title::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background-color: #3e92cc;
-  transition: width 0.3s ease;
+.program-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 10px 15px;
 }
 
-.tv-guide-list nav ul li:hover .channel-title::after {
-  width: 100%;
+.program-item {
+  background: linear-gradient(to right, rgba(30, 60, 100, 0.3), rgba(20, 40, 80, 0.1));
+  border-radius: 4px;
+  margin: 0 5px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  border-left: 2px solid #3e92cc;
+  min-height: 60px;
+}
+
+.program-title {
+  font-size: 0.9rem;
+  color: #ffffff;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.program-time {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .close-guide {
@@ -498,62 +537,6 @@ body {
   cursor: pointer;
 }
 
-/* --- Volume Control --- */
-.volume-control {
-  position: fixed;
-  bottom: 40px;
-  left: 80px;
-  width: 150px;
-  height: 30px;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 15px;
-  z-index: 9995;
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  pointer-events: none;
-}
-
-.volume-control.active {
-  opacity: 1;
-}
-
-.volume-icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.volume-bar {
-  flex: 1;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2.5px;
-  position: relative;
-}
-
-.volume-level {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 70%; /* Default volume level */
-  background: var(--primary-color);
-  border-radius: 2.5px;
-}
-
-.volume-percentage {
-  margin-left: 10px;
-  font-size: 0.8rem;
-  color: var(--primary-color);
-  min-width: 30px;
-  text-align: right;
-}
 
 /* --- Utility Classes --- */
 .hidden {
@@ -580,23 +563,50 @@ body {
     padding-bottom: 100px; /* Add extra bottom padding for scrolling on iOS */
     padding-top: 30px;
   }
-  .tv-guide-list {
-    position: relative;
-    top: auto;
-    left: auto;
-    transform: none;
-    width: 90%;
-    margin: 0 auto;
+  /* Mobile TV Guide Grid Adaptations */
+  .tv-guide-grid {
+    width: 95%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
-  .tv-guide-list nav ul li {
-    font-size: 1.2rem;
-    width: 100%;
-    margin: 15px 0;
-    padding: 10px;
-    /* Fix touch targets for better iOS experience */
-    min-height: 44px;
-    display: flex;
-    align-items: center;
+  
+  .tv-guide-time-header {
+    min-width: 600px;
+  }
+  
+  .tv-guide-channels {
+    min-width: 600px;
+  }
+  
+  .channel-info {
+    padding: 5px 10px;
+  }
+  
+  .channel-number {
+    font-size: 1rem;
+    width: 50px;
+  }
+  
+  .channel-title {
+    font-size: 0.9rem;
+    margin-left: 10px;
+  }
+  
+  .program-grid {
+    padding: 5px;
+  }
+  
+  .program-item {
+    min-height: 50px;
+    padding: 5px;
+  }
+  
+  .program-title {
+    font-size: 0.8rem;
+  }
+  
+  .program-time {
+    font-size: 0.7rem;
   }
   .channel-number-overlay {
     font-size: 3rem;
@@ -611,15 +621,6 @@ body {
     z-index: 999999;
     /* Fixed position for iOS */
     position: fixed;
-  }
-  .volume-control {
-    width: 120px;
-    height: 25px;
-    bottom: calc(20px + env(safe-area-inset-bottom));
-    left: 20px;
-  }
-  .volume-percentage {
-    font-size: 0.7rem;
   }
   .tv-guide-info {
     position: relative;
