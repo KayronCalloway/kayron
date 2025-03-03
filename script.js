@@ -168,6 +168,16 @@ const resetMenuStyles = () => {
         toggleTVGuide(!isCurrentlyVisible);
       };
     }
+    
+    // Also ensure TV Guide has the correct styles when visible
+    if (tvGuide && tvGuide.style.display === 'flex') {
+      tvGuide.style.position = 'fixed';
+      tvGuide.style.top = '0';
+      tvGuide.style.left = '0';
+      tvGuide.style.width = '100%';
+      tvGuide.style.height = '100%';
+      tvGuide.style.zIndex = '999998';
+    }
   };
 
   powerButton.addEventListener('click', () => {
@@ -228,6 +238,13 @@ const resetMenuStyles = () => {
       tvGuide.style.display = 'flex';
       // Make sure it's above all other elements but below the menu button
       tvGuide.style.zIndex = '999998';
+      // Ensure TV Guide is fixed at top
+      tvGuide.style.position = 'fixed';
+      // Ensure it covers the entire viewport
+      tvGuide.style.top = '0';
+      tvGuide.style.left = '0';
+      tvGuide.style.width = '100%';
+      tvGuide.style.height = '100%';
       // Delay opacity change to allow display change to take effect
       setTimeout(() => {
         tvGuide.style.opacity = 1;
