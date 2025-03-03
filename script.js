@@ -27,6 +27,40 @@ document.addEventListener('DOMContentLoaded', () => {
   const playRandomChannelSound = () => {
     const randomIndex = Math.floor(Math.random() * channelSounds.length);
     channelSounds[randomIndex].play().catch(error => console.error('Audio playback failed:', error));
+    
+    // Show volume indicator when changing channels
+    showVolumeIndicator();
+  };
+  
+  // --- Volume Control ---
+  const volumeControl = document.getElementById('volumeControl');
+  const volumeLevel = document.getElementById('volumeLevel');
+  const volumePercentage = document.getElementById('volumePercentage');
+  let volumeValue = 70; // Default volume (0-100)
+  let volumeTimeout;
+  
+  // Show volume indicator
+  const showVolumeIndicator = () => {
+    if (volumeControl) {
+      // Clear any existing timeout
+      clearTimeout(volumeTimeout);
+      
+      // Show volume control
+      volumeControl.classList.add('active');
+      
+      // Set timeout to hide volume control after 2 seconds
+      volumeTimeout = setTimeout(() => {
+        volumeControl.classList.remove('active');
+      }, 2000);
+    }
+  };
+  
+  // Update volume display
+  const updateVolumeDisplay = (value) => {
+    if (volumeLevel && volumePercentage) {
+      volumeLevel.style.width = `${value}%`;
+      volumePercentage.textContent = `${value}%`;
+    }
   };
 
   // --- Analytics Reporting using Web Vitals ---
@@ -395,28 +429,80 @@ const resetMenuStyles = () => {
 
   // --- Trigger Static Overlay Effect ---
   const triggerChannelStatic = () => {
+    // Randomize static effect intensity for more TV-like behavior
+    const staticIntensity = 0.3 + (Math.random() * 0.2);
+    
+    // First flash of static
     gsap.to(staticOverlay, {
-      duration: 0.2,
-      opacity: 0.3,
-      onComplete: () => gsap.to(staticOverlay, { duration: 0.2, opacity: 0 })
+      duration: 0.15,
+      opacity: staticIntensity,
+      onComplete: () => {
+        // Brief pause
+        gsap.to(staticOverlay, { 
+          duration: 0.05, 
+          opacity: 0.1,
+          onComplete: () => {
+            // Second flash of static - more TV-like effect
+            gsap.to(staticOverlay, {
+              duration: 0.15,
+              opacity: staticIntensity * 0.8,
+              onComplete: () => gsap.to(staticOverlay, { 
+                duration: 0.2, 
+                opacity: 0 
+              })
+            });
+          }
+        });
+      }
     });
+    
+    // Show volume indicator when changing channels
+    showVolumeIndicator();
   };
 
   // --- Animate Channel Number Overlay ---
   const animateChannelNumber = channelId => {
     const channelOverlay = document.querySelector(`#${channelId} .channel-number-overlay`);
     if (channelOverlay) {
-      gsap.fromTo(channelOverlay, { scale: 1, filter: "brightness(1)" },
-        { scale: 1.2, filter: "brightness(2)", duration: 0.2, yoyo: true, repeat: 1 });
+      // Make sure channel number is visible
+      channelOverlay.style.display = 'block';
+      
+      // More TV-like animation sequence
+      const tl = gsap.timeline();
+      tl.fromTo(channelOverlay, 
+        { scale: 0.8, opacity: 0, filter: "brightness(1)" },
+        { scale: 1, opacity: 1, filter: "brightness(2)", duration: 0.3, ease: "back.out(1.2)" })
+        .to(channelOverlay, { scale: 1.2, duration: 0.2, ease: "power1.inOut" })
+        .to(channelOverlay, { scale: 1, duration: 0.2, ease: "power1.out" })
+        .to(channelOverlay, { filter: "brightness(1)", duration: 0.3 });
     }
   };
 
   // --- Distort/Warp Content on Channel Change ---
   const distortAndWarpContent = () => {
-    gsap.fromTo(
+    // Create more authentic TV channel change distortion effect
+    const tl = gsap.timeline();
+    
+    // First stage: blur and vertical distortion
+    tl.fromTo(
       mainContent,
       { filter: "none", transform: "skewX(0deg)" },
-      { filter: "blur(2px) contrast(1.2)", transform: "skewX(5deg)", duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }
+      { filter: "blur(4px) contrast(1.3)", transform: "skewY(-2deg) skewX(3deg)", duration: 0.15, ease: "power1.in" }
+    )
+    // Second stage: horizontal noise
+    .to(
+      mainContent,
+      { filter: "blur(2px) contrast(1.2) hue-rotate(5deg)", transform: "skewX(7deg)", duration: 0.12 }
+    )
+    // Third stage: color shift and normalize
+    .to(
+      mainContent,
+      { filter: "blur(0px) contrast(1.1) hue-rotate(0deg)", transform: "skewX(0deg)", duration: 0.2, ease: "power2.out" }
+    )
+    // Final stage: back to normal
+    .to(
+      mainContent,
+      { filter: "none", transform: "skewX(0deg)", duration: 0.25, ease: "power2.out" }
     );
   };
 
