@@ -175,16 +175,10 @@ const resetMenuStyles = () => {
           duration: 0.5, 
           opacity: 1,
           onComplete: () => {
-            // After header is fully visible, ensure menu button is visible
+            // After header is fully visible, let MenuManager handle menu button
             console.log("Header reveal complete");
             
-            // Force menu button to be visible for all channels
-            if (menuButton) {
-              menuButton.style.display = 'block';
-              menuButton.style.opacity = '1';
-              menuButton.style.visibility = 'visible';
-              menuButton.style.pointerEvents = 'auto';
-            }
+            // Don't directly modify menu button - let MenuManager sync with header
             
             // Notify channel changed to sync other components
             notifyChannelChanged();
@@ -320,13 +314,10 @@ const resetMenuStyles = () => {
       return;
     }
     
-    // Ensure the menu button remains visible
-    if (menuButton && show) {
-      // Keep menu button visible for all channels
-      menuButton.style.display = 'block';
-      menuButton.style.opacity = '1';
-      menuButton.style.visibility = 'visible';
-      console.log("Ensuring menu button visibility during TV Guide toggle");
+    // Let MenuManager handle menu button visibility based on header
+    if (show) {
+      console.log("Opening TV Guide - menu button should follow header visibility");
+      // Let MenuManager handle menu button visibility
     }
     
     if (show) {
