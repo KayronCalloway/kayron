@@ -110,9 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
       await module.init();
       console.log(`Module for ${moduleName} initialized`);
       
-      // Ensure menu button visibility after loading any channel
-      // Use MenuManager instead of the old function
-      MenuManager.show();
+      // Don't force menu button visibility - let MenuManager sync with header
       
       // Notify that channel has changed to trigger any observers
       notifyChannelChanged();
@@ -133,8 +131,8 @@ const resetMenuStyles = () => {
     menuButton.style.color = 'var(--primary-color)';
     menuButton.style.background = 'transparent';
     
-    // Let MenuManager handle visibility
-    MenuManager.show();
+    // Let MenuManager handle visibility based on header
+    notifyChannelChanged();
   }
 };
 
@@ -149,6 +147,7 @@ const resetMenuStyles = () => {
   }
   
   // Initialize MenuManager for cross-channel menu control
+  // Only initialize after DOM is loaded
   MenuManager.init();
 
   // --- Power Button Touch Glow ---
@@ -173,10 +172,10 @@ const resetMenuStyles = () => {
           duration: 0.5, 
           opacity: 1,
           onComplete: () => {
-            // After header is fully visible, show menu button
+            // After header is fully visible, menu button will appear through MenuManager
             console.log("Header reveal complete");
-            // Use MenuManager for consistent visibility
-            MenuManager.show();
+            // MenuManager will automatically sync menu button with header visibility
+            notifyChannelChanged();
           }
         });
       }
@@ -530,9 +529,7 @@ const resetMenuStyles = () => {
             currentOverlay.style.display = 'block';
           }
           
-          // Always ensure menu button visibility using MenuManager
-          MenuManager.show();
-          
+          // Don't force menu button visibility - let MenuManager sync with header
           // Notify system about channel change for any observers
           notifyChannelChanged();
           
@@ -557,14 +554,13 @@ const resetMenuStyles = () => {
           }
           distortAndWarpContent();
           
-          // Ensure menu button visibility after channel content has loaded
+          // Let MenuManager handle menu button visibility based on header status
           setTimeout(() => {
-            // Use MenuManager for consistent visibility across all channels
-            MenuManager.show();
+            // Don't force menu button visibility - let it sync with header
+            notifyChannelChanged();
               
-            // Extra check for button functionality
+            // Extra check for button functionality if visible
             if (menuButton) {
-              menuButton.style.pointerEvents = 'auto';
               menuButton.style.cursor = 'pointer';
             }
           }, 800);
@@ -726,8 +722,8 @@ setTimeout(() => {
           console.log("Channel 1 initially visible, checking header visibility");
           // If header is visible, show menu button
           if (window.getComputedStyle(header).opacity > 0.9) {
-            console.log("Header is visible, showing menu button");
-            ensureMenuButtonVisibility();
+            console.log("Header is visible, notifying for menu sync");
+            notifyChannelChanged();
           }
         }
       });

@@ -11,9 +11,10 @@ export const MenuManager = {
   init() {
     this.menuButton = document.getElementById('menuButton');
     this.tvGuide = document.getElementById('tvGuide');
+    this.header = document.getElementById('header');
     this.bindEvents();
     console.log('MenuManager initialized');
-    this.show(); // Ensure visibility on initialization
+    // Don't show on initialization - will show based on header visibility
   },
   
   /**
@@ -22,12 +23,15 @@ export const MenuManager = {
   bindEvents() {
     // Listen for channel change events
     document.addEventListener('channelChanged', () => {
-      console.log('Channel changed event detected, ensuring menu visibility');
+      console.log('Channel changed event detected, syncing menu visibility with header');
       this.show();
     });
     
     // Create a mutation observer to detect style changes that might hide the menu
     this.createVisibilityObserver();
+    
+    // Create a mutation observer to detect header visibility changes
+    this.createHeaderObserver();
     
     // Periodically check visibility as a fallback
     setInterval(() => this.ensureVisibility(), 2000);
@@ -57,17 +61,28 @@ export const MenuManager = {
   },
   
   /**
-   * Show the menu button
+   * Show the menu button only if header is visible
    */
   show() {
-    if (this.menuButton) {
+    if (!this.menuButton || !this.header) return;
+    
+    // Get header visibility
+    const headerStyle = window.getComputedStyle(this.header);
+    const isHeaderVisible = headerStyle.display !== 'none' && parseFloat(headerStyle.opacity) > 0.5;
+    
+    if (isHeaderVisible) {
+      // Only show menu if header is visible
       this.menuButton.style.display = 'block';
       this.menuButton.style.opacity = '1';
       this.menuButton.style.visibility = 'visible';
       this.menuButton.style.pointerEvents = 'auto';
-      console.log('Menu button visibility enforced');
+      console.log('Menu button visibility synced with visible header');
     } else {
-      console.warn('Menu button element not found');
+      // Hide menu if header is not visible
+      this.menuButton.style.display = 'none';
+      this.menuButton.style.opacity = '0';
+      this.menuButton.style.visibility = 'hidden';
+      console.log('Menu button hidden because header is not visible');
     }
   },
   
@@ -75,14 +90,27 @@ export const MenuManager = {
    * Check and enforce menu visibility
    */
   ensureVisibility() {
-    const menuButton = document.getElementById('menuButton'); // Refresh reference
-    if (menuButton) {
-      const computedStyle = window.getComputedStyle(menuButton);
-      if (computedStyle.display === 'none' || parseFloat(computedStyle.opacity) < 0.5) {
-        console.log('Periodic check: Menu hidden, restoring visibility');
-        this.show();
-      }
-    }
+    // Refresh references
+    this.menuButton = document.getElementById('menuButton');
+    this.header = document.getElementById('header');
+    
+    // Sync with header visibility
+    this.show();
+  },
+  
+  /**
+   * Add header visibility observer
+   */
+  createHeaderObserver() {
+    if (!this.header) return;
+    
+    const observer = new MutationObserver(() => {
+      // When header style changes, sync menu button visibility
+      this.show();
+    });
+    
+    observer.observe(this.header, { attributes: true });
+    console.log('Header visibility observer started');
   }
 };
 
