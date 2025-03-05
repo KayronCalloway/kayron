@@ -61,23 +61,21 @@ export const MenuManager = {
   },
   
   /**
-   * Show the menu button on all channels after initial loading
+   * Show the menu button only when header is visible - exact header behavior
    */
   show() {
-    if (!this.menuButton) return;
+    if (!this.menuButton || !this.header) return;
     
-    // Get the current channel section that's visible
-    const sections = Array.from(document.querySelectorAll('.channel-section'));
-    const currentSection = sections.find(section => {
-      const rect = section.getBoundingClientRect();
-      return rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2;
-    });
+    // Get header computed style
+    const headerStyle = window.getComputedStyle(this.header);
+    const isHeaderVisible = headerStyle.display !== 'none' && parseFloat(headerStyle.opacity) > 0.5;
     
-    // If any channel section is visible, show the menu
-    if (currentSection || document.body.classList.contains('tv-on')) {
-      this.menuButton.style.display = 'block';
-      this.menuButton.style.opacity = '1';
-      this.menuButton.style.visibility = 'visible';
+    // ONLY show menu button if header is visible (exact header behavior)
+    if (isHeaderVisible) {
+      // EXACTLY match header visibility
+      this.menuButton.style.display = headerStyle.display;
+      this.menuButton.style.opacity = headerStyle.opacity;
+      this.menuButton.style.visibility = headerStyle.visibility;
       this.menuButton.style.pointerEvents = 'auto';
       
       // Ensure proper position
@@ -90,13 +88,13 @@ export const MenuManager = {
       this.menuButton.style.minHeight = "44px";
       this.menuButton.style.minWidth = "44px";
       
-      console.log('Menu button visible for all channels');
+      console.log('Menu button EXACTLY matching header visibility');
     } else {
-      // Only hide during initial load
+      // Hide menu when header is hidden
       this.menuButton.style.display = 'none';
       this.menuButton.style.opacity = '0';
       this.menuButton.style.visibility = 'hidden';
-      console.log('Menu button hidden during initial load');
+      console.log('Menu button hidden because header is not visible');
     }
   },
   
