@@ -22,9 +22,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" defer></script>
   <!-- Load Web Vitals -->
   <script src="https://unpkg.com/web-vitals@2/dist/web-vitals.umd.js" defer></script>
-  <!-- YouTube IFrame API -->
-  <script src="https://www.youtube.com/iframe_api"></script>
-  <!-- External YouTube Setup Script -->
+  <!-- External YouTube Setup Script (handles lazy loading of YouTube API) -->
   <script src="youtube-setup.js" defer></script>
   <!-- Your Custom JavaScript -->
   <script src="script.js" defer></script>
@@ -56,10 +54,12 @@
   <!-- Landing Overlay -->
   <div id="landing">
     <div class="power-button" id="powerButton" role="button" tabindex="0" aria-label="Turn on">
-      <svg class="power-icon" viewBox="0 0 100 100" aria-hidden="true">
-        <path d="M50,10 A40,40 0 1,1 49.9,10"></path>
-        <line x1="50" y1="0" x2="50" y2="40"></line>
+      <svg id="powerSvg" class="power-icon" viewBox="0 0 100 100" aria-hidden="true" style="pointer-events: all;">
+        <path id="powerPath" d="M50,10 A40,40 0 1,1 49.9,10" style="pointer-events: all; cursor: pointer;"></path>
+        <line id="powerLine" x1="50" y1="0" x2="50" y2="40" style="pointer-events: all; cursor: pointer;"></line>
       </svg>
+      <!-- Clickable overlay to ensure power button works -->
+      <div id="powerClickHelper" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer;"></div>
     </div>
     <div class="landing-name" id="landingName">Kayron Calloway</div>
     <div class="landing-subtitle" id="landingSubtitle">
