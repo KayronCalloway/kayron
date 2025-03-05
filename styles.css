@@ -119,13 +119,27 @@ body {
   color: var(--primary-color);
   padding: 10px 15px;
   cursor: pointer;
-  position: fixed; /* Fixed positioning */
-  top: 10px;
-  right: 20px;
-  z-index: 999999; /* Extremely high z-index value to ensure visibility */
-  opacity: 0; /* Initially hidden */
+  position: fixed !important; /* Fixed positioning, enforced */
+  top: 10px !important;
+  right: 20px !important;
+  z-index: 999999 !important; /* Extremely high z-index value to ensure visibility */
+  opacity: 0; /* Initially hidden, will be controlled by MenuManager */
   display: none; /* Hidden until explicitly enabled via JavaScript */
   transition: opacity 0.3s ease; /* Smooth transition when appearing/disappearing */
+}
+
+/* Menu visibility utility classes */
+.menu-visible {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/* Ensure menu is visible when tv-guide is open */
+.tv-guide-active .menu-button {
+  display: block !important;
+  opacity: 1 !important;
 }
 
 /* --- Landing Overlay --- */

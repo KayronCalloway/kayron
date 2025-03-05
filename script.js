@@ -1,3 +1,6 @@
+// Import the MenuManager for centralized menu control
+import { MenuManager, notifyChannelChanged } from './menu-manager.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   // --- DOM Elements ---
   const powerButton = document.getElementById('powerButton');
@@ -107,8 +110,12 @@ document.addEventListener('DOMContentLoaded', () => {
       await module.init();
       console.log(`Module for ${moduleName} initialized`);
       
-      // Always ensure menu button visibility and functionality after loading any channel
-      setTimeout(ensureMenuButtonVisibility, 300);
+      // Ensure menu button visibility after loading any channel
+      // Use MenuManager instead of the old function
+      MenuManager.show();
+      
+      // Notify that channel has changed to trigger any observers
+      notifyChannelChanged();
     } else {
       console.warn(`No module definition found for ${moduleName}`);
     }
@@ -125,8 +132,9 @@ const resetMenuStyles = () => {
     menuButton.style.border = '2px solid var(--primary-color)';
     menuButton.style.color = 'var(--primary-color)';
     menuButton.style.background = 'transparent';
-    menuButton.style.display = 'block'; // Ensure it's visible
-    menuButton.style.opacity = '1';     // Ensure it's fully opaque
+    
+    // Let MenuManager handle visibility
+    MenuManager.show();
   }
 };
 
@@ -139,6 +147,9 @@ const resetMenuStyles = () => {
         .catch(err => console.error('Service Worker registration failed:', err));
     });
   }
+  
+  // Initialize MenuManager for cross-channel menu control
+  MenuManager.init();
 
   // --- Power Button Touch Glow ---
   powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
@@ -164,10 +175,8 @@ const resetMenuStyles = () => {
           onComplete: () => {
             // After header is fully visible, show menu button
             console.log("Header reveal complete");
-            // Show menu button regardless of which channel we're on
-            setTimeout(() => {
-              ensureMenuButtonVisibility();
-            }, 200); // Small delay to ensure everything is rendered
+            // Use MenuManager for consistent visibility
+            MenuManager.show();
           }
         });
       }
@@ -521,9 +530,11 @@ const resetMenuStyles = () => {
             currentOverlay.style.display = 'block';
           }
           
-          // Always ensure menu button visibility, regardless of channel
-          // The menu button should follow the header, not the channel
-          ensureMenuButtonVisibility();
+          // Always ensure menu button visibility using MenuManager
+          MenuManager.show();
+          
+          // Notify system about channel change for any observers
+          notifyChannelChanged();
           
           // Make sure the TV Guide has the right styles even if not visible
           if (tvGuide) {
@@ -546,16 +557,15 @@ const resetMenuStyles = () => {
           }
           distortAndWarpContent();
           
-          // Re-check menu button visibility after channel content has loaded
+          // Ensure menu button visibility after channel content has loaded
           setTimeout(() => {
-            if (newChannel === 'section1') {
-              ensureMenuButtonVisibility();
+            // Use MenuManager for consistent visibility across all channels
+            MenuManager.show();
               
-              // Extra check for button functionality
-              if (menuButton) {
-                menuButton.style.pointerEvents = 'auto';
-                menuButton.style.cursor = 'pointer';
-              }
+            // Extra check for button functionality
+            if (menuButton) {
+              menuButton.style.pointerEvents = 'auto';
+              menuButton.style.cursor = 'pointer';
             }
           }, 800);
         }
@@ -693,19 +703,18 @@ const resetMenuStyles = () => {
     channel4Observer.observe(channel4);
   }
   
-  // Force menu button to stay hidden until manually shown
-  const keepMenuHidden = () => {
+  // Initialize menu as hidden before TV powers on
+  const initMenuHidden = () => {
     if (menuButton) {
       menuButton.style.display = "none";
       menuButton.style.visibility = "hidden";
       menuButton.style.opacity = "0";
     }
   };
-  keepMenuHidden();
-  // Run several times to catch any timing issues
-  setTimeout(keepMenuHidden, 100);
-  setTimeout(keepMenuHidden, 500);
-  setTimeout(keepMenuHidden, 1000);
+  // Only hide initially - MenuManager will take over after power on
+  initMenuHidden();
+  
+  // After TV powers on, MenuManager will control all menu visibility
   
 // Set initial intersection observer to detect when we first see Channel 1
 setTimeout(() => {
