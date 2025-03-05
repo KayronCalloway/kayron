@@ -61,28 +61,42 @@ export const MenuManager = {
   },
   
   /**
-   * Show the menu button only if header is visible
+   * Show the menu button on all channels after initial loading
    */
   show() {
-    if (!this.menuButton || !this.header) return;
+    if (!this.menuButton) return;
     
-    // Get header visibility
-    const headerStyle = window.getComputedStyle(this.header);
-    const isHeaderVisible = headerStyle.display !== 'none' && parseFloat(headerStyle.opacity) > 0.5;
+    // Get the current channel section that's visible
+    const sections = Array.from(document.querySelectorAll('.channel-section'));
+    const currentSection = sections.find(section => {
+      const rect = section.getBoundingClientRect();
+      return rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2;
+    });
     
-    if (isHeaderVisible) {
-      // Only show menu if header is visible
+    // If any channel section is visible, show the menu
+    if (currentSection || document.body.classList.contains('tv-on')) {
       this.menuButton.style.display = 'block';
       this.menuButton.style.opacity = '1';
       this.menuButton.style.visibility = 'visible';
       this.menuButton.style.pointerEvents = 'auto';
-      console.log('Menu button visibility synced with visible header');
+      
+      // Ensure proper position
+      this.menuButton.style.position = "fixed";
+      this.menuButton.style.top = "10px";
+      this.menuButton.style.right = "20px";
+      this.menuButton.style.zIndex = "999999";
+      
+      // Ensure tap target size is at least 44x44px for iOS Safari
+      this.menuButton.style.minHeight = "44px";
+      this.menuButton.style.minWidth = "44px";
+      
+      console.log('Menu button visible for all channels');
     } else {
-      // Hide menu if header is not visible
+      // Only hide during initial load
       this.menuButton.style.display = 'none';
       this.menuButton.style.opacity = '0';
       this.menuButton.style.visibility = 'hidden';
-      console.log('Menu button hidden because header is not visible');
+      console.log('Menu button hidden during initial load');
     }
   },
   

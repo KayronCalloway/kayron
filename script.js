@@ -167,14 +167,26 @@ const resetMenuStyles = () => {
         mainContent.style.display = "block";
         document.body.style.overflow = "auto";
         
+        // Mark TV as fully turned on
+        document.body.classList.add('tv-on');
+        
         // Reveal the header after landing completes
         gsap.to(header, { 
           duration: 0.5, 
           opacity: 1,
           onComplete: () => {
-            // After header is fully visible, menu button will appear through MenuManager
+            // After header is fully visible, ensure menu button is visible
             console.log("Header reveal complete");
-            // MenuManager will automatically sync menu button with header visibility
+            
+            // Force menu button to be visible for all channels
+            if (menuButton) {
+              menuButton.style.display = 'block';
+              menuButton.style.opacity = '1';
+              menuButton.style.visibility = 'visible';
+              menuButton.style.pointerEvents = 'auto';
+            }
+            
+            // Notify channel changed to sync other components
             notifyChannelChanged();
           }
         });
@@ -258,6 +270,9 @@ const resetMenuStyles = () => {
     if (clickSound) {
       clickSound.play().catch(error => console.error('Click sound failed:', error));
     }
+    // Mark TV as turned on
+    document.body.classList.add('tv-on');
+    
     gsap.to(powerButton, {
       duration: 0.3,
       opacity: 0,
@@ -299,17 +314,19 @@ const resetMenuStyles = () => {
 
   // --- TV Guide Menu Toggle ---
   const toggleTVGuide = show => {
-    // Force the menu button to remain hidden until explicitly shown
-    // by the ensureMenuButtonVisibility function under the right conditions
-    if (menuButton) {
-      // Don't automatically show the menu button here
-      console.log("Menu button visibility check in toggleTVGuide");
-    }
-    
     // Make sure TV Guide exists
     if (!tvGuide) {
       console.error("TV Guide element not found");
       return;
+    }
+    
+    // Ensure the menu button remains visible
+    if (menuButton && show) {
+      // Keep menu button visible for all channels
+      menuButton.style.display = 'block';
+      menuButton.style.opacity = '1';
+      menuButton.style.visibility = 'visible';
+      console.log("Ensuring menu button visibility during TV Guide toggle");
     }
     
     if (show) {
