@@ -1,7 +1,11 @@
-// Import the MenuManager for centralized menu control
-import { MenuManager, notifyChannelChanged } from './menu-manager.js';
+// Import the MenuManager for centralized menu control - v1.3
+console.log('script.js loading - v1.3 (power sequence optimization)');
+import { MenuManager } from './menu-manager.js';
+console.log('MenuManager imported, checking state:', MenuManager);
 
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('DOMContentLoaded fired - v1.3 - initializing components');
+  
   // --- DOM Elements ---
   const powerButton = document.getElementById('powerButton');
   const landing = document.getElementById('landing');
@@ -16,6 +20,95 @@ document.addEventListener('DOMContentLoaded', () => {
   const staticOverlay = document.getElementById('staticOverlay');
   const clickSound = document.getElementById('clickSound');
   const backToTop = document.getElementById('backToTop');
+  
+  // Initialize MenuManager after all DOM elements are available
+  try {
+    console.log('About to initialize MenuManager');
+    
+    // Validate all required elements
+    const requiredElements = {
+      menuButton,
+      landing,
+      mainContent,
+      header,
+      powerButton,
+      staticOverlay,
+      landingName,
+      landingSubtitle
+    };
+    
+    // Check each element and log its status
+    const missingElements = Object.entries(requiredElements)
+      .filter(([name, element]) => !element)
+      .map(([name]) => name);
+    
+    if (missingElements.length > 0) {
+      throw new Error(`Required DOM elements missing: ${missingElements.join(', ')}`);
+    }
+    
+    // Initialize MenuManager with menu hidden initially
+    MenuManager.init();
+    MenuManager.hide(); // Ensure menu starts hidden
+    console.log('MenuManager initialized successfully');
+    
+    // Track power sequence state
+    let powerSequenceStarted = false;
+    let powerSequenceComplete = false;
+    
+    // Watch for landing visibility changes
+    const landingObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'style') {
+          const isHidden = landing.style.display === 'none' || getComputedStyle(landing).display === 'none';
+          if (isHidden && powerSequenceStarted && !powerSequenceComplete) {
+            console.log('Landing hidden during power sequence');
+            // Ensure menu stays hidden during transition
+            MenuManager.hide();
+            landingObserver.disconnect();
+          }
+        }
+      });
+    });
+    
+    // Watch for power button state
+    const powerObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          const isPowerOn = powerButton.classList.contains('power-on');
+          if (isPowerOn && !powerSequenceStarted) {
+            console.log('Power button state changed to ON');
+            powerSequenceStarted = true;
+            // Ensure menu is hidden at start of power sequence
+            MenuManager.hide();
+          }
+        }
+      });
+    });
+    
+    // Watch for main content visibility
+    const mainContentObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'style') {
+          const isVisible = mainContent.style.display === 'block' && 
+                           parseFloat(getComputedStyle(mainContent).opacity) > 0;
+          if (isVisible && powerSequenceStarted && !powerSequenceComplete) {
+            console.log('Main content visible, completing power sequence');
+            powerSequenceComplete = true;
+            mainContentObserver.disconnect();
+          }
+        }
+      });
+    });
+    
+    // Start all observers
+    landingObserver.observe(landing, { attributes: true });
+    powerObserver.observe(powerButton, { attributes: true });
+    mainContentObserver.observe(mainContent, { attributes: true });
+    
+    console.log('All observers initialized');
+  } catch (error) {
+    console.error('Error initializing MenuManager:', error);
+  }
 
   let landingSequenceComplete = false;
   let autoScrollTimeout;
@@ -115,7 +208,8 @@ document.addEventListener('DOMContentLoaded', () => {
       MenuManager.show();
       
       // Notify that channel has changed to trigger any observers
-      notifyChannelChanged();
+      // Notify that channel has changed
+      MenuManager.notifyChannelChanged();
     } else {
       console.warn(`No module definition found for ${moduleName}`);
     }
@@ -148,9 +242,6 @@ const resetMenuStyles = () => {
     });
   }
   
-  // Initialize MenuManager for cross-channel menu control
-  MenuManager.init();
-
   // --- Power Button Touch Glow ---
   powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
   powerButton.addEventListener('touchend', () =>
@@ -159,129 +250,365 @@ const resetMenuStyles = () => {
 
   // --- Reveal Main Content & Reveal Header ---
   const revealMainContent = () => {
+    console.log('Revealing main content...');
+    
+    // Validate required elements
+    if (!mainContent || !header) {
+      console.error('Critical: Required elements missing for reveal');
+      return;
+    }
+    
+    // Function to show main content
+    const showMainContent = () => {
+      console.log('Showing main content');
+      mainContent.style.display = "block";
+      document.body.style.overflow = "auto";
+      mainContent.style.opacity = 1;
+      
+      // Show header with animation
+      gsap.to(header, { 
+        duration: 0.5, 
+        opacity: 1,
+        onComplete: () => {
+          console.log('Header reveal complete');
+          // MenuManager will handle menu visibility separately
+        }
+      });
+    };
+    
+    // Check if landing is already hidden
+    if (!landing || landing.style.display === "none" || getComputedStyle(landing).display === "none") {
+      console.log('Landing already hidden, showing content directly');
+      showMainContent();
+      return;
+    }
+    
+    // Normal animation sequence when landing is visible
+    console.log('Starting landing transition');
     window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
+    
     gsap.to(landing, {
       duration: 0.5,
       opacity: 0,
       onComplete: () => {
-        landing.style.display = "none";
-        mainContent.style.display = "block";
-        document.body.style.overflow = "auto";
-        
-        // Reveal the header after landing completes
-        gsap.to(header, { 
-          duration: 0.5, 
-          opacity: 1,
-          onComplete: () => {
-            // After header is fully visible, show menu button
-            console.log("Header reveal complete");
-            // Use MenuManager for consistent visibility
-            MenuManager.show();
-          }
-        });
+        if (landing) landing.style.display = "none";
+        showMainContent();
       }
     });
   };
   
   // Function to make menu button follow header visibility
   const ensureMenuButtonVisibility = () => {
-    // Initially hide menu button
-    if (menuButton) {
-      menuButton.style.display = "none";
-      menuButton.style.opacity = "0";
+    // Let MenuManager handle initial visibility
+    if (MenuManager) {
+      console.log('Deferring to MenuManager for visibility control');
+      return;
     }
     
-    // Simple function to show menu button - follows header visibility
-    const showButton = () => {
-      // Only show menu button when header is visible
-      if (menuButton && header && window.getComputedStyle(header).opacity > 0.5) {
-        console.log("Header is visible, showing menu button");
-        
-        // Make menu button visible
-        menuButton.style.display = "block";
-        menuButton.style.opacity = "1";
-        menuButton.style.visibility = "visible";
-        menuButton.style.pointerEvents = "auto";
-        
-        // Position in top right corner
-        menuButton.style.position = "fixed";
-        menuButton.style.top = "10px";
-        menuButton.style.right = "20px";
-        menuButton.style.zIndex = "999999";
-        
-        // Ensure tap target size is at least 44x44px for iOS Safari
-        menuButton.style.minHeight = "44px";
-        menuButton.style.minWidth = "44px";
-        
-        // Set up click handler
-        if (menuButton.onclick) {
-          menuButton.removeEventListener('click', menuButton.onclick);
-        }
-        
-        const menuClickHandler = () => {
-          const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity || 0) === 1;
-          toggleTVGuide(!isCurrentlyVisible);
-        };
-        
-        menuButton.onclick = menuClickHandler;
-        menuButton.addEventListener('touchend', (e) => {
-          e.preventDefault(); // Prevent double-tap issues on iOS
-          menuClickHandler();
-        }, { passive: false });
-      } else if (menuButton) {
-        // If header is not visible, keep menu button hidden
-        menuButton.style.display = "none";
-        menuButton.style.opacity = "0";
-      }
-    };
-    
-    // Call immediately and also after a delay
-    showButton();
-    setTimeout(showButton, 500);
+    // Fallback visibility control if MenuManager is not available
+    if (menuButton) {
+      console.log('Using fallback visibility control');
+      menuButton.style.display = "none";
+      menuButton.style.opacity = "0";
+      
+      // Set up menu button styles
+      menuButton.style.position = "fixed";
+      menuButton.style.top = "10px";
+      menuButton.style.right = "20px";
+      menuButton.style.zIndex = "999999";
+      
+      // Ensure tap target size is at least 44x44px for iOS Safari
+      menuButton.style.minHeight = "44px";
+      menuButton.style.minWidth = "44px";
+      
+      // Set up click handler
+      const menuClickHandler = () => {
+        const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity || 0) === 1;
+        toggleTVGuide(!isCurrentlyVisible);
+      };
+      
+      menuButton.onclick = menuClickHandler;
+      menuButton.addEventListener('touchend', (e) => {
+        e.preventDefault(); // Prevent double-tap issues on iOS
+        menuClickHandler();
+      }, { passive: false });
+    }
     
     // Ensure TV Guide has the correct styles
     if (tvGuide) {
-      // Make the TV Guide appear on top of everything (higher z-index than header)
       tvGuide.style.position = 'fixed';
       tvGuide.style.top = '0';
       tvGuide.style.left = '0';
       tvGuide.style.width = '100%';
       tvGuide.style.height = '100%';
-      tvGuide.style.zIndex = '100000'; // Higher than both header and menu button
-      
-      // Add -webkit prefixed properties for iOS Safari
+      tvGuide.style.zIndex = '100000';
       tvGuide.style.webkitOverflowScrolling = 'touch';
     }
   };
 
-  powerButton.addEventListener('click', () => {
-    powerButton.style.pointerEvents = 'none';
+  // ---------------------------------------------
+  // POWER BUTTON CLICK HANDLING - ES Module Safe Implementation
+  // ---------------------------------------------
+  
+  // Global click handler for diagnostics (defined before use)
+  const handleGlobalClick = function(e) {
+    console.log('Document received click on:', e.target.tagName, e.target.id || '(no id)');
+  };
+  
+  // Set up power button handlers immediately
+  console.log('Setting up power button handlers');
+  setupPowerButtonHandlers();
+  
+  // Add diagnostic click handler only in debug mode
+  if (window.location.search.includes('debug')) {
+    document.addEventListener('click', handleGlobalClick, true);
+  }
+  
+  function setupPowerButtonHandlers() {
+    console.log('Setting up power button handlers...');
+    
+    // Ensure power button exists
+    if (!powerButton) {
+      console.error('Critical: Power button not found!');
+      return;
+    }
+    
+    // Clear any existing click handlers
+    const clearHandler = (element) => {
+      if (element) {
+        element.onclick = null;
+        const clone = element.cloneNode(true);
+        element.parentNode.replaceChild(clone, element);
+        return clone;
+      }
+      return null;
+    };
+    
+    // Get fresh references after clearing handlers
+    const elements = {
+      powerButton: clearHandler(powerButton),
+      powerClickHelper: clearHandler(document.getElementById('powerClickHelper')),
+      powerPath: clearHandler(document.getElementById('powerPath')),
+      powerLine: clearHandler(document.getElementById('powerLine')),
+      powerSvg: clearHandler(document.getElementById('powerSvg'))
+    };
+    
+    console.log('Power elements refreshed:', {
+      powerButton: !!elements.powerButton,
+      powerClickHelper: !!elements.powerClickHelper,
+      powerPath: !!elements.powerPath,
+      powerLine: !!elements.powerLine,
+      powerSvg: !!elements.powerSvg
+    });
+    
+    // Update global reference
+    if (elements.powerButton) powerButton = elements.powerButton;
+    
+    // Set up click handler function
+    const handlePowerClick = (e) => {
+      console.log('Power click detected on:', e.target.id || e.target.tagName);
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Prevent multiple triggers
+      if (powerButton.classList.contains('power-on')) {
+        console.log('Power already on, ignoring click');
+        return false;
+      }
+      
+      triggerPowerSequence();
+      return false;
+    };
+    
+    // Apply handlers to all power elements
+    Object.values(elements).forEach(element => {
+      if (element) {
+        element.style.cursor = 'pointer';
+        element.addEventListener('click', handlePowerClick, { capture: true });
+      }
+    });
+    
+    // Additional setup for main power button
+    if (elements.powerButton) {
+      elements.powerButton.style.position = 'relative';
+      elements.powerButton.style.overflow = 'visible';
+      elements.powerButton.style.zIndex = '10';
+    }
+    
+    // Additional setup for click helper
+    if (elements.powerClickHelper) {
+      elements.powerClickHelper.style.zIndex = '20';
+      elements.powerClickHelper.style.width = '100%';
+      elements.powerClickHelper.style.height = '100%';
+      
+      if (window.location.search.includes('debug')) {
+        elements.powerClickHelper.style.backgroundColor = 'rgba(255,0,0,0.2)';
+      }
+    }
+    
+    console.log('Power button handlers setup complete');
+  }
+  
+  // Main unified power sequence function that all click handlers point to
+  function triggerPowerSequence() {
+    console.log('🔥 Power sequence triggered!');
+    
+    // Validate all required elements
+    const requiredElements = {
+      powerButton,
+      landing,
+      mainContent,
+      header,
+      staticOverlay,
+      landingName,
+      landingSubtitle,
+      menuButton
+    };
+    
+    // Check each element
+    const missingElements = Object.entries(requiredElements)
+      .filter(([name, element]) => !element)
+      .map(([name]) => name);
+    
+    if (missingElements.length > 0) {
+      console.error('Critical elements missing:', missingElements.join(', '));
+      return;
+    }
+    
+    // Prevent multiple triggers
+    if (powerButton.classList.contains('power-on')) {
+      console.log('Power already on, ignoring trigger');
+      return;
+    }
+    
+    // Ensure menu is hidden before power sequence
+    if (MenuManager) {
+      MenuManager.hide();
+    }
+    
+    // Mark power as on
+    powerButton.classList.add('power-on');
+    
+    // Play click sound if available
     if (clickSound) {
       clickSound.play().catch(error => console.error('Click sound failed:', error));
     }
-    gsap.to(powerButton, {
+    
+    // Disable all power-related click handlers
+    const powerElements = [
+      powerButton,
+      document.getElementById('powerClickHelper'),
+      document.getElementById('powerPath'),
+      document.getElementById('powerLine'),
+      document.getElementById('powerSvg')
+    ];
+    
+    powerElements.forEach(element => {
+      if (element) {
+        element.style.pointerEvents = 'none';
+        element.onclick = null;
+      }
+    });
+    
+    console.log('Starting power animation sequence');
+    startPowerAnimations();
+  }
+  
+  // This duplicate declaration removed - now using the one declared at the top
+  
+  // Separate animation sequence function
+  function startPowerAnimations() {
+    console.log('Power animations starting...');
+    
+    // Ensure required elements exist
+    if (!powerButton || !landing || !mainContent || !staticOverlay || !landingName || !landingSubtitle) {
+      console.error('Required elements missing for power animation');
+      return;
+    }
+    
+    // Create a single timeline for all animations
+    const tl = gsap.timeline({
+      onComplete: () => {
+        console.log('Power animation sequence complete');
+        landingSequenceComplete = true;
+        
+        // Initialize menu visibility after power on
+        if (MenuManager) {
+          console.log('Initializing menu visibility after power on');
+          try {
+            // Notify MenuManager of power on state
+            MenuManager.powerOn();
+            console.log('MenuManager power on complete');
+          } catch (error) {
+            console.error('Error in power sequence:', error);
+          }
+        } else {
+          console.error('MenuManager not available for initialization');
+        }
+      }
+    });
+    
+    // Initial power button fade out
+    tl.to(powerButton, {
       duration: 0.3,
       opacity: 0,
       ease: "power2.out",
-      onComplete: () => powerButton.style.display = "none"
-    });
-    const tl = gsap.timeline({
       onComplete: () => {
-        landingSequenceComplete = true;
-        autoScrollTimeout = setTimeout(() => {
-          if (landing.style.display !== "none") revealMainContent();
-        }, 3000);
+        powerButton.style.display = "none";
+        landing.style.display = "none";
+        
+        // Reveal main content
+        revealMainContent();
       }
     });
+    
+    // Flash sequence
     tl.to(landing, { duration: 0.15, backgroundColor: "#fff", ease: "power2.out" })
       .to(landing, { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" })
-      .to(staticOverlay, { duration: 0.2, opacity: 0.3 })
-      .to(staticOverlay, { duration: 0.2, opacity: 0 })
-      .to(landingName, { duration: 1.2, width: "100%", opacity: 1, ease: "power2.out" })
-      .to(landingSubtitle, { duration: 0.7, opacity: 1, ease: "power2.out" }, "-=0.3")
-      .to("#landingSubtitle .subtitle-item", { duration: 1, opacity: 1, ease: "power2.out", stagger: 0.5 }, "+=0.3");
-  });
-
+      .to(staticOverlay, { 
+        duration: 0.2, 
+        opacity: 0.3,
+        onComplete: () => {
+          console.log('Static overlay effect started');
+          // Ensure menu is hidden during static effect
+          if (MenuManager) MenuManager.hide();
+        }
+      })
+      .to(staticOverlay, { 
+        duration: 0.2, 
+        opacity: 0,
+        onComplete: () => console.log('Static overlay effect complete')
+      })
+      // Landing sequence
+      .to(landingName, { 
+        duration: 1.2, 
+        width: "100%", 
+        opacity: 1, 
+        ease: "power2.out",
+        onStart: () => console.log('Landing name animation started')
+      })
+      .to(landingSubtitle, { 
+        duration: 0.7, 
+        opacity: 1, 
+        ease: "power2.out",
+        onComplete: () => {
+          console.log('Landing subtitle revealed');
+          // Show menu after subtitle animation
+          if (MenuManager) MenuManager.show();
+        }
+      }, "-=0.3")
+      .to("#landingSubtitle .subtitle-item", { 
+        duration: 1, 
+        opacity: 1, 
+        ease: "power2.out", 
+        stagger: 0.5,
+        onComplete: () => console.log('Landing sequence complete')
+      }, "+=0.3");
+  };
+  
+  // Power button is already initialized in setupPowerButtonHandlers
+  
+  // Handle scroll events for revealing content
   window.addEventListener('scroll', () => {
     if (landingSequenceComplete && landing.style.display !== "none") {
       clearTimeout(autoScrollTimeout);
@@ -534,7 +861,8 @@ const resetMenuStyles = () => {
           MenuManager.show();
           
           // Notify system about channel change for any observers
-          notifyChannelChanged();
+          // Notify system about channel change
+          MenuManager.notifyChannelChanged();
           
           // Make sure the TV Guide has the right styles even if not visible
           if (tvGuide) {
@@ -716,34 +1044,34 @@ const resetMenuStyles = () => {
   
   // After TV powers on, MenuManager will control all menu visibility
   
-// Set initial intersection observer to detect when we first see Channel 1
-setTimeout(() => {
-  // Only run observer after the landing sequence
-  if (landingSequenceComplete) {
-    const initialObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && entry.target.id === 'section1') {
-          console.log("Channel 1 initially visible, checking header visibility");
-          // If header is visible, show menu button
-          if (window.getComputedStyle(header).opacity > 0.9) {
-            console.log("Header is visible, showing menu button");
-            ensureMenuButtonVisibility();
+  // Set initial intersection observer to detect when we first see Channel 1
+  setTimeout(() => {
+    // Only run observer after the landing sequence
+    if (landingSequenceComplete) {
+      const initialObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && entry.target.id === 'section1') {
+            console.log("Channel 1 initially visible, checking header visibility");
+            // If header is visible, show menu button
+            if (window.getComputedStyle(header).opacity > 0.9) {
+              console.log("Header is visible, showing menu button");
+              ensureMenuButtonVisibility();
+            }
           }
-        }
-      });
-    }, { threshold: 0.7 });
-    
-    const section1 = document.getElementById('section1');
-    if (section1) {
-      initialObserver.observe(section1);
+        });
+      }, { threshold: 0.7 });
+      
+      const section1 = document.getElementById('section1');
+      if (section1) {
+        initialObserver.observe(section1);
+      }
     }
-  }
-}, 2500);
-
-// Preload Channel 4 ("under the influence") so its video is already playing when scrolled into view.
-setTimeout(() => {
-  loadChannelContent('under the influence');
-}, 2000);
+  }, 2500);
+  
+  // Preload Channel 4 ("under the influence") so its video is ready
+  setTimeout(() => {
+    loadChannelContent('under the influence');
+  }, 2000);
   
   // --- Throttle Utility Function ---
   function throttle(fn, wait) {
@@ -756,4 +1084,4 @@ setTimeout(() => {
       }
     };
   }
-});
+}); // End of DOMContentLoaded event listener

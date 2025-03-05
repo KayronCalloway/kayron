@@ -1,8 +1,62 @@
 // youtube-setup.js
 
 let youtubePlayer;
+let youtubeApiLoaded = false;
+let youtubeApiLoading = false;
 
-// Called by the YouTube IFrame API when it's ready.
+/**
+ * Dynamically load the YouTube IFrame API script
+ * This defers loading the ~300KB API until it's actually needed
+ */
+function loadYouTubeAPI() {
+  if (youtubeApiLoaded || youtubeApiLoading) return;
+  
+  youtubeApiLoading = true;
+  console.log('Lazy loading YouTube IFrame API');
+  
+  const tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  tag.onload = () => {
+    youtubeApiLoaded = true;
+    youtubeApiLoading = false;
+    console.log('YouTube API loaded successfully');
+  };
+  tag.onerror = (error) => {
+    console.error('Failed to load YouTube API:', error);
+    youtubeApiLoading = false;
+  };
+  
+  const firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+}
+
+/**
+ * Observe player visibility and load API when needed
+ */
+function initYouTubePlayerObserver() {
+  const playerContainer = document.getElementById('section1');
+  if (!playerContainer) {
+    console.warn('Channel 1 section not found, loading YouTube API immediately as fallback');
+    loadYouTubeAPI();
+    return;
+  }
+  
+  const playerObserver = new IntersectionObserver((entries) => {
+    // Load YouTube API when player section is about to be visible
+    if (entries[0].isIntersecting) {
+      loadYouTubeAPI();
+      playerObserver.disconnect();
+    }
+  }, { rootMargin: '200px' }); // Load when within 200px of viewport
+  
+  playerObserver.observe(playerContainer);
+  console.log('YouTube player observer initialized');
+}
+
+// Initiate observation on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', initYouTubePlayerObserver);
+
+// Called by the YouTube IFrame API when it's ready
 function onYouTubeIframeAPIReady() {
   console.log('YouTube API ready, initializing player');
   
