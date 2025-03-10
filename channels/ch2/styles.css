@@ -953,6 +953,23 @@
   .product-image img {
     max-height: 200px;
   }
+  
+  .caption {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    padding: 0.5rem;
+  }
+  
+  .slide img {
+    max-width: 95%;
+    max-height: 55vh;
+  }
+  
+  .enter-button {
+    bottom: 3rem;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+  }
 }
 
 /* Responsive Adjustments - Optimized */
@@ -1117,6 +1134,7 @@
   align-items: center;
   background-color: var(--ch2-bg);
   z-index: 5; /* Ensure slides are visible */
+  padding: 0 15px; /* Add padding for mobile */
 }
 
 .slide.active {
@@ -1132,6 +1150,7 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   transform: perspective(1000px) rotateY(5deg);
   transition: transform 0.5s ease;
+  will-change: transform; /* Performance optimization */
 }
 
 .slide img:hover {
@@ -1139,12 +1158,12 @@
 }
 
 .caption {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   font-size: 2rem;
   font-family: var(--ch2-font-heading);
   color: var(--ch2-primary);
   text-align: center;
-  padding: 1rem 2rem;
+  padding: 1rem;
   background: var(--ch2-gradient);
   background-clip: text;
   -webkit-background-clip: text;
@@ -1183,6 +1202,10 @@
   transition: all 0.3s ease;
   box-shadow: 0 5px 20px rgba(255, 0, 110, 0.3);
   animation: float 2s infinite ease-in-out;
+  /* Enhance tap target for mobile */
+  min-width: 200px;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .enter-button:hover {
@@ -1192,6 +1215,17 @@
 
 .enter-button:active {
   transform: translateX(-50%) translateY(-2px);
+}
+
+/* Disable hover effects on touch devices */
+@media (hover: none) {
+  .enter-button:hover {
+    transform: translateX(-50%);
+  }
+  
+  .slide img:hover {
+    transform: perspective(1000px) rotateY(5deg);
+  }
 }
 
 @keyframes float {
@@ -1210,6 +1244,9 @@
   z-index: 9999;
   opacity: 0;
   pointer-events: none;
+  will-change: opacity; /* Hardware acceleration hint for smoother animations */
+  -webkit-backface-visibility: hidden; /* Prevent flickering on iOS */
+  backface-visibility: hidden;
 }
 
 /* Live Ticker Section */

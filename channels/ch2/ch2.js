@@ -27,10 +27,22 @@ export async function init() {
       'visuals/sobe.jpeg'
     ];
     
-    // Start preloading images in the background
+    // Start preloading images in the background with high priority
     imagesToPreload.forEach(src => {
       const img = new Image();
       img.src = src;
+      
+      // Add importance hint for mobile browsers
+      if ('importance' in img) {
+        img.importance = 'high';
+      }
+      
+      // Use fetch with preload hint as a backup preloading method
+      fetch(src, { 
+        method: 'GET',
+        mode: 'no-cors',
+        priority: 'high'
+      }).catch(() => {/* Silently catch errors */});
     });
     
     // Also preload the infomercial HTML to speed up later transition
@@ -116,7 +128,20 @@ export async function init() {
               const image = new Image();
               image.onload = () => resolve();
               image.onerror = () => resolve(); // Resolve even on error to avoid hanging
-              image.src = img.src;
+              
+              // Add importance and fetchpriority for mobile browsers
+              if ('importance' in image) {
+                image.importance = 'high';
+              }
+              image.setAttribute('fetchpriority', 'high');
+              
+              // Optimize for mobile by loading smaller images if needed
+              const isMobile = window.innerWidth < 768;
+              if (isMobile && img.dataset.mobileUrl) {
+                image.src = img.dataset.mobileUrl;
+              } else {
+                image.src = img.src;
+              }
             });
           });
           
