@@ -338,9 +338,12 @@ const resetMenuStyles = () => {
       tvGuide.style.overflowY = 'auto';
       
       // Prevent page scrolling when TV guide is open
+      // Store current scroll position before fixing position
+      const scrollY = window.scrollY;
       document.body.style.overflow = 'hidden';
       document.body.style.position = 'fixed';
       document.body.style.width = '100%';
+      document.body.style.top = `-${scrollY}px`; // Preserve scroll position
       
       // Log visibility state for debugging
       console.log("Opening TV Guide");
@@ -355,9 +358,13 @@ const resetMenuStyles = () => {
       tvGuide.setAttribute('aria-hidden', 'true');
       
       // Re-enable page scrolling when TV guide is closed
+      const scrollY = parseInt((document.body.style.top || '0').replace(/[^-\d]/g, ''));
       document.body.style.overflow = 'auto';
       document.body.style.position = '';
       document.body.style.width = '';
+      document.body.style.top = '';
+      // Restore scroll position
+      window.scrollTo(0, scrollY);
       
       // Log visibility state for debugging
       console.log("Closing TV Guide");
