@@ -235,38 +235,40 @@ body {
 /* --- Channel Sections --- */
 .channel-section {
   height: 100vh;
-  padding: 80px 50px;
+  padding: 0 50px; /* Remove vertical padding to use full height */
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; /* Keep center alignment */
   align-items: center;
   scroll-snap-align: start;
   position: relative;
   background: transparent;
   text-align: center;
-  padding-top: 120px; /* Added padding to raise content higher on the screen */
-  padding-bottom: 160px; /* Balance with extra padding at bottom */
 }
 .channel-buttons {
   position: absolute;
-  top: 42%; /* Moved up from 50% to position content higher */
+  top: 50%; /* Return to center vertically */
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 20px;
+  gap: 30px; /* Increased gap between buttons */
   flex-wrap: wrap;
   z-index: 10;
+  width: 90%; /* Use more horizontal space */
+  max-width: 1200px; /* Limit maximum width */
 }
 .channel-button {
-  padding: 12px 20px;
+  padding: 14px 24px; /* Larger buttons */
   background: transparent;
   border: 2px solid var(--primary-color);
   color: var(--primary-color);
-  font-size: 1.2rem;
+  font-size: 1.4rem; /* Larger text */
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  min-width: 180px; /* Ensure consistent button width */
+  margin: 10px; /* Add margin around buttons */
 }
 .channel-button:hover,
 .channel-button:active {
@@ -695,9 +697,7 @@ body {
   
   /* Channel section content for mobile */
   .channel-section {
-    padding: 60px 20px; /* Reduce horizontal padding */
-    padding-top: 100px; /* Raised content for mobile */
-    padding-bottom: 120px; /* Balance with bottom padding */
+    padding: 0 20px; /* Use full height on mobile */
   }
   
   /* Back to top button for mobile */
@@ -728,9 +728,7 @@ body {
 /* --- Medium Screens (Tablets) --- */
 @media (min-width: 601px) and (max-width: 1024px) {
   .channel-section {
-    padding: 70px 40px;
-    padding-top: 110px; /* Raised content for tablets */
-    padding-bottom: 130px; /* Balance with bottom padding */
+    padding: 0 40px; /* Use full height on tablets */
   }
   .channel-button {
     padding: 12px 18px;
@@ -752,9 +750,7 @@ body {
 /* --- Large Screens --- */
 @media (min-width: 1025px) and (max-width: 1440px) {
   .channel-section {
-    padding: 80px 50px;
-    padding-top: 120px; /* Raised content for larger screens */
-    padding-bottom: 150px; /* Balance with bottom padding */
+    padding: 0 50px; /* Use full height on large screens */
   }
   .channel-button {
     padding: 12px 20px;
@@ -764,9 +760,7 @@ body {
 /* --- Extra Large Screens --- */
 @media (min-width: 1441px) and (max-width: 1920px) {
   .channel-section {
-    padding: 90px 60px;
-    padding-top: 130px; /* Raised content for extra large screens */
-    padding-bottom: 160px; /* Balance with bottom padding */
+    padding: 0 60px; /* Use full height on extra large screens */
   }
   .channel-button {
     padding: 14px 24px;
@@ -777,9 +771,7 @@ body {
 /* --- 4K+ Display Optimization --- */
 @media (min-width: 1921px) {
   .channel-section {
-    padding: 120px 80px;
-    padding-top: 140px; /* Raised content for 4K displays */
-    padding-bottom: 180px; /* Balance with bottom padding */
+    padding: 0 80px; /* Use full height on 4K displays */
   }
   .channel-button {
     font-size: 2rem;
