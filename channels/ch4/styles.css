@@ -1,13 +1,23 @@
 /* channels/ch4/styles.css */
 .video-background {
   position: absolute;
-  top: 60px; /* Space for header */
+  top: 0; /* Match channel 1 - full height, no header space */
   left: 0;
   width: 100%;
-  height: calc(100% - 60px); /* Reduced height to accommodate header */
+  height: 100%; /* Full height like channel 1 */
   overflow: hidden;
-  z-index: 1; /* Updated z-index */
+  z-index: -1; /* Place behind content like channel 1 */
   background: #000; /* fallback background color */
+}
+
+/* Style the player container like channel 1 */
+#youtube-player-4 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Ensure the YouTube iframe fills the container */
@@ -17,6 +27,7 @@
   left: 0;
   width: 100%;
   height: 100%;
+  pointer-events: none; /* Prevent interaction with the video */
 }
 
 /* Channel 4 Buttons */
