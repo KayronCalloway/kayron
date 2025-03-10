@@ -18,7 +18,25 @@ export async function init() {
     // Dynamically load CSS first to prevent FOUC (Flash of Unstyled Content)
     await loadStyles();
     
-    // First, load the intro slideshow
+    // First, start preloading the showcase images
+    const imagesToPreload = [
+      'visuals/VOL 1. FIRST c.001.jpeg',
+      'visuals/bulletproof.jpg',
+      'visuals/dou.jpg',
+      'visuals/mtr.jpg',
+      'visuals/sobe.jpeg'
+    ];
+    
+    // Start preloading images in the background
+    imagesToPreload.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+    
+    // Also preload the infomercial HTML to speed up later transition
+    fetch('./channels/ch2/infomercial.html').catch(err => console.warn('Preloading infomercial failed:', err));
+    
+    // Load the intro slideshow
     const slideResponse = await fetch('./channels/ch2/index.html');
     if (!slideResponse.ok) throw new Error(`HTTP error! Status: ${slideResponse.status}`);
     
@@ -68,6 +86,10 @@ export async function init() {
     
     // Event listener for the enter button
     enterButton.addEventListener('click', async () => {
+      // Disable the button to prevent multiple clicks
+      enterButton.disabled = true;
+      enterButton.textContent = 'Loading...';
+      
       // Play transition sound
       const whoosh = new Audio('./audio/whoosh.mp3');
       whoosh.volume = 0.5;
@@ -78,41 +100,78 @@ export async function init() {
       transition.className = 'slideshow-transition';
       container.appendChild(transition);
       
+      // Start preloading the infomercial images again to ensure they're in cache
+      try {
+        // Preload infomercial content in advance
+        const preloadResponse = await fetch('./channels/ch2/infomercial.html');
+        if (preloadResponse.ok) {
+          const preloadHtml = await preloadResponse.text();
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = preloadHtml;
+          
+          // Find and preload all images in the infomercial
+          const imageElements = tempDiv.querySelectorAll('img');
+          const imagePromises = Array.from(imageElements).map(img => {
+            return new Promise((resolve) => {
+              const image = new Image();
+              image.onload = () => resolve();
+              image.onerror = () => resolve(); // Resolve even on error to avoid hanging
+              image.src = img.src;
+            });
+          });
+          
+          // Wait for a max of 1.5 seconds for images to load
+          await Promise.race([
+            Promise.all(imagePromises),
+            new Promise(resolve => setTimeout(resolve, 1500))
+          ]);
+        }
+      } catch (error) {
+        console.warn("Error preloading infomercial images:", error);
+      }
+      
       // Animate transition
       gsap.to(transition, {
         opacity: 1,
         duration: 0.5,
         onComplete: async () => {
-          // Load the infomercial content
-          const response = await fetch('./channels/ch2/infomercial.html');
-          if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-          
-          const html = await response.text();
-          container.innerHTML = html;
-          
-          // Re-add channel number overlay
-          const channelOverlay = document.createElement('div');
-          channelOverlay.className = 'channel-number-overlay';
-          channelOverlay.textContent = 'CH 02';
-          container.appendChild(channelOverlay);
-          
-          // Setup event listeners and initialize the infomercial experience
-          setupInfomercialEventListeners();
-          
-          // Fade out transition
-          const newTransition = document.createElement('div');
-          newTransition.className = 'slideshow-transition';
-          newTransition.style.opacity = 1;
-          container.appendChild(newTransition);
-          
-          gsap.to(newTransition, {
-            opacity: 0,
-            duration: 0.5,
-            delay: 0.2,
-            onComplete: () => {
-              newTransition.remove();
-            }
-          });
+          try {
+            // Load the infomercial content
+            const response = await fetch('./channels/ch2/infomercial.html');
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            
+            const html = await response.text();
+            container.innerHTML = html;
+            
+            // Re-add channel number overlay
+            const channelOverlay = document.createElement('div');
+            channelOverlay.className = 'channel-number-overlay';
+            channelOverlay.textContent = 'CH 02';
+            container.appendChild(channelOverlay);
+            
+            // Setup event listeners and initialize the infomercial experience
+            setupInfomercialEventListeners();
+            
+            // Fade out transition
+            const newTransition = document.createElement('div');
+            newTransition.className = 'slideshow-transition';
+            newTransition.style.opacity = 1;
+            container.appendChild(newTransition);
+            
+            gsap.to(newTransition, {
+              opacity: 0,
+              duration: 0.5,
+              delay: 0.2,
+              onComplete: () => {
+                newTransition.remove();
+              }
+            });
+          } catch (error) {
+            console.error("Error loading showcase:", error);
+            // Reset button state in case of error
+            enterButton.disabled = false;
+            enterButton.textContent = 'Enter Showcase';
+          }
         }
       });
     });
