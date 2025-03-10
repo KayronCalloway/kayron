@@ -183,6 +183,27 @@ export async function init() {
             event.target.mute();
             event.target.playVideo();
             console.log("Channel 4 YouTube Player ready, starting muted.");
+            
+            // Add event listener for player state change
+            event.target.addEventListener('onStateChange', function(e) {
+              // If video ended (state = 0) or encountered error (state = -1)
+              if (e.data === 0 || e.data === -1) {
+                console.log("Channel 4 video ended or errored, restarting playback");
+                // Restart the video
+                event.target.playVideo();
+              }
+            });
+            
+            // Set up replay check interval as backup
+            setInterval(() => {
+              // Check if player exists and is not playing
+              if (window.channel4Player && 
+                  typeof window.channel4Player.getPlayerState === 'function' && 
+                  window.channel4Player.getPlayerState() !== 1) {
+                console.log("Interval check: Channel 4 video not playing, restarting");
+                window.channel4Player.playVideo();
+              }
+            }, 5000); // Check every 5 seconds
           }
         }
       });

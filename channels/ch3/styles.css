@@ -16,13 +16,12 @@
 #game-show-container {
   position: relative;
   width: 100%;
-  height: calc(100vh - 60px); /* Reduced height to make room for header */
-  margin-top: 60px; /* Add margin to account for fixed header */
+  height: 100vh; /* Use full viewport height */
   background-color: var(--game-bg);
   color: var(--game-primary);
   overflow: hidden;
   font-family: 'Merova', sans-serif;
-  padding: 20px 20px 70px 20px; /* Reduced top padding since we have margin */
+  padding: 40px 20px; /* Adjusted padding */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -651,18 +650,38 @@
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
+  #game-show-container {
+    padding: 20px 15px; /* Reduced padding */
+    height: 100vh; /* Ensure full height on mobile */
+  }
+
+  .host-content {
+    width: 95%;
+    padding: 1.5rem;
+  }
+  
+  .host-content h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  
   .host-speech {
-    font-size: 1.2rem;
+    font-size: 1rem;
+  }
+  
+  .host-speech p {
+    margin-bottom: 0.8rem;
   }
   
   #question-display {
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     padding: 1rem;
   }
   
   .option-button {
-    padding: 1rem;
-    font-size: 1.2rem;
+    padding: 0.8rem;
+    font-size: 1rem;
+    min-height: 60px; /* Ensure proper touch target size */
   }
   
   .option-letter {
@@ -678,6 +697,35 @@
   .points-display {
     font-size: 1.4rem;
     padding: 0.5rem 1rem;
+  }
+  
+  .start-game-button, .play-again-button {
+    min-width: 200px;
+    min-height: 50px; /* Better touch target */
+    padding: 10px 20px;
+  }
+  
+  /* Ensure the TV guide menu button is visible */
+  .menu-button {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
+  /* Improve timer visibility */
+  #timer {
+    font-size: 1rem;
+    right: -30px;
+  }
+  
+  /* Make results more readable */
+  .results-content {
+    padding: 1.5rem;
+    width: 95%;
+  }
+  
+  #performance-details h4 {
+    font-size: 1.5rem;
   }
 }
 
