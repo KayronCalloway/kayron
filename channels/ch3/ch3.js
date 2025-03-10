@@ -77,16 +77,7 @@ export async function init() {
     const html = await response.text();
     container.innerHTML = html;
     
-    // Make sure the menu button is visible and fully interactive
-    const menuButton = document.getElementById('menuButton');
-    if (menuButton) {
-      menuButton.style.zIndex = '999999';
-      menuButton.style.display = 'block';
-      menuButton.style.opacity = '1';
-      menuButton.style.position = 'fixed';
-      menuButton.style.pointerEvents = 'auto';
-      menuButton.style.cursor = 'pointer';
-    }
+    // Let MenuManager handle button visibility
     
     // Ensure TV Guide has correct positioning
     const tvGuide = document.getElementById('tvGuide');
@@ -215,15 +206,7 @@ async function loadStylesheet() {
 
 // Initialize the game show
 async function initializeGameShow() {
-  // Ensure the menu button remains visible
-  const menuButton = document.getElementById('menuButton');
-  if (menuButton) {
-    menuButton.style.zIndex = '999999';
-    menuButton.style.display = 'block';
-    menuButton.style.opacity = '1';
-    menuButton.style.position = 'fixed';
-    menuButton.style.pointerEvents = 'auto';
-  }
+  // Let MenuManager handle button visibility
   
   try {
     // Make sure Font Awesome is loaded for icons
