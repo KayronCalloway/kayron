@@ -44,6 +44,21 @@ export async function init() {
     // Load the slideshow script
     await loadScript('./channels/ch2/script.js');
     
+    // Initialize slideshow if needed
+    setTimeout(() => {
+      // Verify slides exist and initialize them
+      const slides = document.querySelectorAll('.slide');
+      if (slides.length > 0) {
+        // Ensure first slide is active
+        slides.forEach((slide, i) => {
+          slide.classList.toggle('active', i === 0);
+        });
+        console.log(`Initialized slideshow with ${slides.length} slides`);
+      } else {
+        console.error("No slides found in the slideshow");
+      }
+    }, 500);
+    
     // Add an interactive "Enter Showcase" button
     const enterButton = document.createElement('button');
     enterButton.id = 'enter-showcase-button';
