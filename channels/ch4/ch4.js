@@ -135,10 +135,10 @@ export async function init() {
   
   // Force header to be visible by notifying MenuManager
   setTimeout(() => {
-    import('./menu-manager.js').then(({ notifyChannelChanged }) => {
+    import('../../menu-manager.js').then(({ notifyChannelChanged }) => {
       notifyChannelChanged();
       console.log("Notified MenuManager to ensure header and guide button visibility on channel 4");
-    });
+    }).catch(err => console.error("Error importing MenuManager:", err));
   }, 300);
   
   // Ensure TV Guide has correct positioning
