@@ -200,16 +200,8 @@ export async function init() {
     
     // Let MenuManager handle button visibility
     
-    // Ensure TV Guide has correct positioning
-    const tvGuide = document.getElementById('tvGuide');
-    if (tvGuide) {
-      tvGuide.style.position = 'fixed';
-      tvGuide.style.top = '0';
-      tvGuide.style.left = '0';
-      tvGuide.style.width = '100%';
-      tvGuide.style.height = '100%';
-      tvGuide.style.zIndex = '10000000';
-    }
+    // Let the global MenuManager handle TV Guide positioning
+    // This prevents conflicts between channel-specific styles
     
     // Audio preloading removed
     

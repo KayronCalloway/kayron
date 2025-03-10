@@ -1,7 +1,7 @@
 /* channels/ch2/styles.css - Modern Redesign */
 
-/* Modern Theme Variables */
-:root {
+/* Modern Theme Variables - scoped to Channel 2 to prevent leaking */
+#section2 {
   /* New modern color scheme */
   --ch2-bg: #0a0a0a;
   --ch2-primary: #ffffff;

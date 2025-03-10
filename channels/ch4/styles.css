@@ -43,8 +43,8 @@
   z-index: 10;
 }
 
-/* Modal styles */
-.modal-overlay {
+/* Modal styles - scoped to Channel 4 */
+#section4 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -54,15 +54,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999997; /* Reduced z-index to be below menu button (999999) */
+  z-index: 900; /* Lower z-index to not interfere with global elements */
   backdrop-filter: blur(5px);
 }
 
-.modal-overlay.hidden {
+#section4 .modal-overlay.hidden {
   display: none;
 }
 
-.modal-box {
+#section4 .modal-box {
   position: relative;
   width: 90%;
   max-width: 700px;
@@ -76,7 +76,7 @@
   box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
 }
 
-.close-modal {
+#section4 .close-modal {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -88,22 +88,22 @@
   z-index: 2;
 }
 
-.modal-static {
+#section4 .modal-static {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   opacity: 0.08;
-  background-image: url('../visuals/static.gif');
+  background-image: url('../../visuals/static.gif'); /* Fixed path */
   background-size: cover;
   pointer-events: none;
   z-index: 1;
   border-radius: 8px;
 }
 
-/* Role Model Overlay */
-.role-model-overlay {
+/* Role Model Overlay - scoped to Channel 4 */
+#section4 .role-model-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -214,47 +214,45 @@
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Channel Number - fixed in bottom corner */
-.channel-number-overlay {
-  position: fixed;
-  bottom: 40px;
-  right: 20px;
-  font-size: 2rem;
+/* Channel Number - properly scoped to Channel 4 */
+#section4 .channel-number-overlay {
+  font-size: 2.5rem;
   color: var(--primary-color, #fff);
-  opacity: 0.8;
-  z-index: 999998;
+  opacity: 0.9;
+  /* Use the global positioning defined in styles.css */
+  /* This ensures consistent placement across all channels */
   pointer-events: none;
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments - scoped to Channel 4 */
 @media (max-width: 768px) {
-  .role-model-content {
+  #section4 .role-model-content {
     padding: 20px;
     max-width: 90%;
     max-height: 75vh;
   }
   
-  .role-model-content h2 {
+  #section4 .role-model-content h2 {
     font-size: 1.8rem;
   }
   
-  .role-model-content h3 {
+  #section4 .role-model-content h3 {
     font-size: 1.3rem;
   }
   
-  .role-model-quote p {
+  #section4 .role-model-quote p {
     font-size: 1rem;
   }
   
-  .role-model-description {
+  #section4 .role-model-description {
     font-size: 0.95rem;
   }
   
-  .role-model-quotes {
+  #section4 .role-model-quotes {
     gap: 15px;
   }
   
-  .role-model-quote {
+  #section4 .role-model-quote {
     padding: 10px;
   }
 }
