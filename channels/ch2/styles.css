@@ -1094,7 +1094,8 @@
 #slideshow-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 60px); /* Reduced height to make room for header */
+  margin-top: 60px; /* Add margin to account for fixed header */
   overflow: hidden;
   background-color: var(--ch2-bg);
   display: flex;
