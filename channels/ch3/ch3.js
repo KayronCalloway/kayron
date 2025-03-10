@@ -110,37 +110,56 @@ export async function init() {
     
     console.log("Channel 3 game show initialized successfully");
     
-    // Force the game to be visible
+    // First, ensure the game screens behind the curtain are hidden
+    const hostIntro = container.querySelector('#host-intro');
+    if (hostIntro) {
+      // Temporarily hide the host intro until curtains open
+      hostIntro.style.opacity = '0';
+    }
+    
+    // Show the game container but ensure content is initially hidden
     const gameContainer = container.querySelector('#game-show-container');
     if (gameContainer) {
       gameContainer.style.display = 'flex';
       gameContainer.style.visibility = 'visible';
       gameContainer.style.opacity = '1';
       
-      // Trigger curtain animation
+      // Make sure curtains are fully closed before animation
+      const curtainLeft = container.querySelector('.curtain-left');
+      const curtainRight = container.querySelector('.curtain-right');
+      
+      if (curtainLeft && curtainRight) {
+        // Ensure curtains are fully closed
+        curtainLeft.style.transform = 'translateX(0%)';
+        curtainRight.style.transform = 'translateX(0%)';
+        
+        // Remove any existing animations
+        curtainLeft.style.animation = 'none';
+        curtainRight.style.animation = 'none';
+        
+        // Force reflow to ensure the state is applied
+        void curtainLeft.offsetWidth;
+        void curtainRight.offsetWidth;
+      }
+      
+      // Trigger curtain animation after a delay
       setTimeout(() => {
         console.log("Triggering curtain opening animation");
-        const curtainLeft = container.querySelector('.curtain-left');
-        const curtainRight = container.querySelector('.curtain-right');
         
         if (curtainLeft && curtainRight) {
-          // Reset animation states
-          curtainLeft.style.transform = 'translateX(0%)';
-          curtainRight.style.transform = 'translateX(0%)';
-          
-          // Remove any existing animations
-          curtainLeft.style.animation = 'none';
-          curtainRight.style.animation = 'none';
-          
-          // Force reflow to ensure the animation restarts
-          void curtainLeft.offsetWidth;
-          void curtainRight.offsetWidth;
-          
-          // Re-apply the animation
+          // Apply the animation
           curtainLeft.style.animation = 'curtain-left 2s cubic-bezier(0.7, 0, 0.3, 1) forwards';
           curtainRight.style.animation = 'curtain-right 2s cubic-bezier(0.7, 0, 0.3, 1) forwards';
+          
+          // Fade in the content after curtains begin to open
+          setTimeout(() => {
+            if (hostIntro) {
+              hostIntro.style.opacity = '1';
+              hostIntro.style.transition = 'opacity 0.5s ease-in';
+            }
+          }, 800); // Wait until curtains have started moving
         }
-      }, 1000);
+      }, 300); // Shorter initial delay to start the animation
     }
     
   } catch (error) {
