@@ -26,10 +26,11 @@ export async function init() {
     container.innerHTML = slideHtml;
     
     // Force header to be visible by notifying MenuManager
-    import { notifyChannelChanged } from '/menu-manager.js'; 
     setTimeout(() => {
-      notifyChannelChanged();
-      console.log("Notified MenuManager to ensure header and guide button visibility");
+      import('../../menu-manager.js').then(({ notifyChannelChanged }) => {
+        notifyChannelChanged();
+        console.log("Notified MenuManager to ensure header and guide button visibility");
+      }).catch(err => console.error("Error importing MenuManager:", err));
     }, 300);
     
     // Add channel number overlay if it doesn't exist
