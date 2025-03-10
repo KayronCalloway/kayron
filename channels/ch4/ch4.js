@@ -141,15 +141,50 @@ export async function init() {
     }).catch(err => console.error("Error importing MenuManager:", err));
   }, 300);
   
-  // Ensure TV Guide has correct positioning
+  // Ensure TV Guide has correct positioning and accessibility
   const tvGuide = document.getElementById('tvGuide');
   if (tvGuide) {
+    console.log("CH4: Found TV Guide element:", tvGuide);
     tvGuide.style.position = 'fixed';
     tvGuide.style.top = '0';
     tvGuide.style.left = '0';
     tvGuide.style.width = '100%';
     tvGuide.style.height = '100%';
     tvGuide.style.zIndex = '999998';
+    
+    // Ensure the TV Guide is in the right place in the DOM
+    // Moving it to the body to ensure it's accessible globally
+    document.body.appendChild(tvGuide);
+    console.log("CH4: Moved TV Guide to body for global access");
+    
+    // Set up menu button click handler directly
+    const menuButton = document.getElementById('menuButton');
+    if (menuButton) {
+      console.log("CH4: Setting up direct click handler for Guide button");
+      menuButton.addEventListener('click', () => {
+        console.log("CH4: Menu button clicked, checking TV Guide state");
+        const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity || 0) === 1;
+        
+        if (!isCurrentlyVisible) {
+          // Show the guide
+          tvGuide.style.display = 'flex';
+          tvGuide.style.opacity = '1';
+          tvGuide.style.zIndex = '100000';
+          tvGuide.setAttribute('aria-hidden', 'false');
+          console.log("CH4: TV Guide opened directly");
+        } else {
+          // Hide the guide
+          tvGuide.style.opacity = '0';
+          tvGuide.setAttribute('aria-hidden', 'true');
+          setTimeout(() => { 
+            tvGuide.style.display = 'none';
+            console.log("CH4: TV Guide closed directly");
+          }, 500);
+        }
+      });
+    }
+  } else {
+    console.error("CH4: TV Guide element not found!");
   }
   
   // Create and set up the modal
