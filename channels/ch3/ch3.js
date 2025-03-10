@@ -93,7 +93,7 @@ export async function init() {
       tvGuide.style.left = '0';
       tvGuide.style.width = '100%';
       tvGuide.style.height = '100%';
-      tvGuide.style.zIndex = '999998';
+      tvGuide.style.zIndex = '10000000';
     }
     
     // Add channel number overlay with high z-index to ensure visibility
@@ -169,13 +169,16 @@ function ensureChannelNumberVisible(container) {
   channelOverlay.textContent = 'CH 03';
   channelOverlay.style.cssText = `
     position: fixed;
-    bottom: 40px;
-    right: 20px;
+    bottom: 10px;
+    right: 10px;
     z-index: 999998;
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: var(--primary-color, #fff);
-    opacity: 0.8;
+    opacity: 0.9;
     pointer-events: none;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
   `;
   container.appendChild(channelOverlay);
 }
