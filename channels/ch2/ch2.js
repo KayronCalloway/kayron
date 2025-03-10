@@ -102,10 +102,7 @@ export async function init() {
       enterButton.disabled = true;
       enterButton.textContent = 'Loading...';
       
-      // Play transition sound
-      const whoosh = new Audio('./audio/whoosh.mp3');
-      whoosh.volume = 0.5;
-      whoosh.play().catch(err => console.warn('Could not play sound:', err));
+      // Sound effect removed
       
       // Add transition effect
       const transition = document.createElement('div');
@@ -214,10 +211,7 @@ export async function init() {
       tvGuide.style.zIndex = '10000000';
     }
     
-    // Preload audio for better performance
-    preloadAudio('./audio/ka-ching.mp3');
-    preloadAudio('./audio/whoosh.mp3');
-    preloadAudio('./audio/ticker-hum.mp3');
+    // Audio preloading removed
     
     console.log("Channel 2 initialized successfully with slideshow intro");
   } catch (error) {
@@ -263,12 +257,9 @@ function loadScript(src) {
   });
 }
 
-// Preload audio files
+// Audio preload function (removed)
 function preloadAudio(src) {
-  const audio = new Audio();
-  audio.preload = 'auto';
-  audio.src = src;
-  // Don't need to add to DOM, just create the object to cache it
+  // Audio preloading removed
 }
 
 // Clean up resources when leaving channel
@@ -464,10 +455,7 @@ function createRippleEffect(button, event) {
 }
 
 function playButtonSound() {
-  // Reuse audio object for better performance
-  const kaChingSound = new Audio('./audio/ka-ching.mp3');
-  kaChingSound.volume = 0.4;
-  kaChingSound.play().catch(err => console.warn('Could not play sound:', err));
+  // Sound effect removed
 }
 
 function showConfirmationMessage(button) {
@@ -572,27 +560,9 @@ function setupLazyLoading() {
   });
 }
 
-// Play ticker hum sound in the background
+// Ticker sound function (removed)
 function playTickerSound() {
-  const tickerSound = new Audio('./audio/ticker-hum.mp3');
-  tickerSound.volume = 0.2;
-  tickerSound.loop = true;
-  
-  // Store reference for cleanup
-  window.ch2TickerSound = tickerSound;
-  
-  // Only play if user has interacted with the page
-  if (document.documentElement.classList.contains('user-interacted')) {
-    tickerSound.play().catch(err => console.warn('Could not play ticker sound:', err));
-  } else {
-    // Add event listener for first interaction
-    const playOnInteraction = () => {
-      tickerSound.play().catch(err => console.warn('Could not play ticker sound:', err));
-      document.documentElement.classList.add('user-interacted');
-      document.removeEventListener('click', playOnInteraction);
-    };
-    document.addEventListener('click', playOnInteraction);
-  }
+  // Sound effect removed
 }
 
 // Setup back button to return to slideshow
@@ -651,9 +621,7 @@ function setupBackButton() {
           
           // Add the same event listener as before
           enterButton.addEventListener('click', async () => {
-            const whoosh = new Audio('./audio/whoosh.mp3');
-            whoosh.volume = 0.5;
-            whoosh.play().catch(err => console.warn('Could not play sound:', err));
+            // Sound effect removed
             
             const transition = document.createElement('div');
             transition.className = 'slideshow-transition';
