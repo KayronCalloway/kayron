@@ -133,7 +133,13 @@ export async function init() {
     document.head.appendChild(link);
   }
   
-  // Let MenuManager handle button visibility
+  // Force header to be visible by notifying MenuManager
+  setTimeout(() => {
+    import('./menu-manager.js').then(({ notifyChannelChanged }) => {
+      notifyChannelChanged();
+      console.log("Notified MenuManager to ensure header and guide button visibility on channel 4");
+    });
+  }, 300);
   
   // Ensure TV Guide has correct positioning
   const tvGuide = document.getElementById('tvGuide');

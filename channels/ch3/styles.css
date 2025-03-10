@@ -15,12 +15,13 @@
 #game-show-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 60px); /* Reduced height to make room for header */
+  margin-top: 60px; /* Add margin to account for fixed header */
   background-color: var(--game-bg);
   color: var(--game-primary);
   overflow: hidden;
   font-family: 'Merova', sans-serif;
-  padding: 80px 20px 70px 20px; /* Add padding to avoid overlap with header/footer */
+  padding: 20px 20px 70px 20px; /* Reduced top padding since we have margin */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
