@@ -244,10 +244,12 @@ body {
   position: relative;
   background: transparent;
   text-align: center;
+  padding-top: 120px; /* Added padding to raise content higher on the screen */
+  padding-bottom: 160px; /* Balance with extra padding at bottom */
 }
 .channel-buttons {
   position: absolute;
-  top: 50%;
+  top: 42%; /* Moved up from 50% to position content higher */
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
@@ -694,6 +696,8 @@ body {
   /* Channel section content for mobile */
   .channel-section {
     padding: 60px 20px; /* Reduce horizontal padding */
+    padding-top: 100px; /* Raised content for mobile */
+    padding-bottom: 120px; /* Balance with bottom padding */
   }
   
   /* Back to top button for mobile */
@@ -725,6 +729,8 @@ body {
 @media (min-width: 601px) and (max-width: 1024px) {
   .channel-section {
     padding: 70px 40px;
+    padding-top: 110px; /* Raised content for tablets */
+    padding-bottom: 130px; /* Balance with bottom padding */
   }
   .channel-button {
     padding: 12px 18px;
@@ -747,6 +753,8 @@ body {
 @media (min-width: 1025px) and (max-width: 1440px) {
   .channel-section {
     padding: 80px 50px;
+    padding-top: 120px; /* Raised content for larger screens */
+    padding-bottom: 150px; /* Balance with bottom padding */
   }
   .channel-button {
     padding: 12px 20px;
@@ -757,6 +765,8 @@ body {
 @media (min-width: 1441px) and (max-width: 1920px) {
   .channel-section {
     padding: 90px 60px;
+    padding-top: 130px; /* Raised content for extra large screens */
+    padding-bottom: 160px; /* Balance with bottom padding */
   }
   .channel-button {
     padding: 14px 24px;
@@ -768,6 +778,8 @@ body {
 @media (min-width: 1921px) {
   .channel-section {
     padding: 120px 80px;
+    padding-top: 140px; /* Raised content for 4K displays */
+    padding-bottom: 180px; /* Balance with bottom padding */
   }
   .channel-button {
     font-size: 2rem;
