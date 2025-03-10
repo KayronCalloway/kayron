@@ -1,10 +1,10 @@
 /* channels/ch4/styles.css */
 .video-background {
   position: absolute;
-  top: 0;
+  top: 60px; /* Space for header */
   left: 0;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 60px); /* Reduced height to accommodate header */
   overflow: hidden;
   z-index: 1; /* Updated z-index */
   background: #000; /* fallback background color */

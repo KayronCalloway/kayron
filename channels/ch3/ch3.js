@@ -77,7 +77,11 @@ export async function init() {
     const html = await response.text();
     container.innerHTML = html;
     
-    // Let MenuManager handle button visibility
+    // Force header to be visible by notifying MenuManager
+    setTimeout(() => {
+      notifyChannelChanged();
+      console.log("Notified MenuManager to ensure header and guide button visibility on channel 3");
+    }, 300);
     
     // Ensure TV Guide has correct positioning
     const tvGuide = document.getElementById('tvGuide');
