@@ -584,8 +584,10 @@ body {
     font-size: 1rem;
   }
   .menu-button {
-    padding: 5px 15px;
+    padding: 8px 15px; /* Increased padding for better touch target */
     font-size: 0.8rem;
+    min-width: 60px; /* Ensure minimum width for touch */
+    min-height: 44px; /* Apple's recommended touch target size */
   }
   .tv-guide {
     padding-bottom: 100px; /* Add extra bottom padding for scrolling on iOS */
@@ -607,7 +609,8 @@ body {
   }
   
   .channel-info {
-    padding: 5px 10px;
+    padding: 8px 10px; /* Slightly increased vertical padding */
+    min-height: 44px; /* Minimum touch target height */
   }
   
   .channel-number {
@@ -645,7 +648,9 @@ body {
     top: 20px;
     right: 20px;
     font-size: 0.9rem;
-    padding: 10px 15px; /* Larger touch target */
+    padding: 12px 15px; /* Larger touch target */
+    min-height: 44px; /* Apple's recommended minimum touch target size */
+    min-width: 80px; /* Ensure enough width for the text */
     z-index: 999999;
     /* Fixed position for iOS */
     position: fixed;
@@ -671,10 +676,96 @@ body {
     height: auto;
     min-height: -webkit-fill-available;
   }
+  
+  /* Power button enhancement for mobile */
+  .power-button {
+    width: 120px; /* Larger power button */
+    height: 120px;
+  }
+  
+  /* Channel buttons for mobile */
+  .channel-button {
+    padding: 14px 20px; /* Larger padding */
+    min-width: 120px; /* Minimum width */
+    min-height: 44px; /* Apple's recommended minimum touch target size */
+    margin-bottom: 12px; /* Add margin for easier tapping */
+  }
+  
+  /* Channel section content for mobile */
+  .channel-section {
+    padding: 60px 20px; /* Reduce horizontal padding */
+  }
+  
+  /* Back to top button for mobile */
+  .back-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    padding: 10px; /* Ensure adequate touch target */
+  }
+  
+  /* Modal handling for mobile */
+  .modal-box {
+    max-width: 95%;
+    max-height: 80%;
+    padding: 20px;
+  }
+  
+  .close-modal {
+    top: 10px;
+    right: 10px;
+    padding: 10px; /* Ensure touch target */
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* --- Medium Screens (Tablets) --- */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .channel-section {
+    padding: 70px 40px;
+  }
+  .channel-button {
+    padding: 12px 18px;
+    min-width: 100px;
+    min-height: 44px; /* Minimum touch target size for tablets */
+  }
+  .tv-guide-grid {
+    width: 90%;
+  }
+  .channel-number-overlay {
+    font-size: 2.8rem;
+  }
+  .power-button {
+    width: 110px;
+    height: 110px;
+  }
+}
+
+/* --- Large Screens --- */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .channel-section {
+    padding: 80px 50px;
+  }
+  .channel-button {
+    padding: 12px 20px;
+  }
+}
+
+/* --- Extra Large Screens --- */
+@media (min-width: 1441px) and (max-width: 1920px) {
+  .channel-section {
+    padding: 90px 60px;
+  }
+  .channel-button {
+    padding: 14px 24px;
+    font-size: 1.5rem;
+  }
 }
 
 /* --- 4K+ Display Optimization --- */
-@media (min-width: 3840px) {
+@media (min-width: 1921px) {
   .channel-section {
     padding: 120px 80px;
   }

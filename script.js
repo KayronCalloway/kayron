@@ -660,30 +660,50 @@ const resetMenuStyles = () => {
 
   // --- Distort/Warp Content on Channel Change ---
   const distortAndWarpContent = () => {
-    // Create more authentic TV channel change distortion effect
+    // Check if we're on a mobile device to use simpler animations
+    const isMobile = window.innerWidth <= 600;
+    
+    // Create appropriate distortion effect based on device capability
     const tl = gsap.timeline();
     
-    // First stage: blur and vertical distortion
-    tl.fromTo(
-      mainContent,
-      { filter: "none", transform: "skewX(0deg)" },
-      { filter: "blur(4px) contrast(1.3)", transform: "skewY(-2deg) skewX(3deg)", duration: 0.15, ease: "power1.in" }
-    )
-    // Second stage: horizontal noise
-    .to(
-      mainContent,
-      { filter: "blur(2px) contrast(1.2) hue-rotate(5deg)", transform: "skewX(7deg)", duration: 0.12 }
-    )
-    // Third stage: color shift and normalize
-    .to(
-      mainContent,
-      { filter: "blur(0px) contrast(1.1) hue-rotate(0deg)", transform: "skewX(0deg)", duration: 0.2, ease: "power2.out" }
-    )
-    // Final stage: back to normal
-    .to(
-      mainContent,
-      { filter: "none", transform: "skewX(0deg)", duration: 0.25, ease: "power2.out" }
-    );
+    if (isMobile) {
+      // Simplified effect for mobile devices (better performance)
+      tl.fromTo(
+        mainContent,
+        { filter: "none" },
+        { filter: "blur(3px)", duration: 0.1, ease: "power1.in" }
+      )
+      .to(
+        mainContent,
+        { filter: "blur(1px) contrast(1.1)", duration: 0.1 }
+      )
+      .to(
+        mainContent,
+        { filter: "none", duration: 0.15, ease: "power2.out" }
+      );
+    } else {
+      // Full effect for desktop
+      tl.fromTo(
+        mainContent,
+        { filter: "none", transform: "skewX(0deg)" },
+        { filter: "blur(4px) contrast(1.3)", transform: "skewY(-2deg) skewX(3deg)", duration: 0.15, ease: "power1.in" }
+      )
+      // Second stage: horizontal noise
+      .to(
+        mainContent,
+        { filter: "blur(2px) contrast(1.2) hue-rotate(5deg)", transform: "skewX(7deg)", duration: 0.12 }
+      )
+      // Third stage: color shift and normalize
+      .to(
+        mainContent,
+        { filter: "blur(0px) contrast(1.1) hue-rotate(0deg)", transform: "skewX(0deg)", duration: 0.2, ease: "power2.out" }
+      )
+      // Final stage: back to normal
+      .to(
+        mainContent,
+        { filter: "none", transform: "skewX(0deg)", duration: 0.25, ease: "power2.out" }
+      );
+    }
   };
 
   // --- Intersection Observer for YouTube Video Audio Control ---
