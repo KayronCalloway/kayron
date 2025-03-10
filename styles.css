@@ -122,7 +122,7 @@ body {
   position: fixed !important; /* Fixed positioning, enforced */
   top: 10px !important;
   right: 20px !important;
-  z-index: 999999 !important; /* Extremely high z-index value to ensure visibility */
+  z-index: 999999 !important; /* High z-index but lower than TV guide */
   opacity: 0; /* Initially hidden, will be controlled by MenuManager */
   display: none; /* Hidden until explicitly enabled via JavaScript */
   transition: opacity 0.3s ease; /* Smooth transition when appearing/disappearing */
@@ -275,14 +275,17 @@ body {
 }
 .channel-number-overlay {
   position: fixed;
-  bottom: 40px;
-  right: 20px;
-  font-size: 2rem;
+  bottom: 10px; /* Move much closer to bottom */
+  right: 10px; /* Move closer to right edge */
+  font-size: 2.5rem;
   color: var(--primary-color);
-  opacity: 0.8;
+  opacity: 0.9; /* Slightly increased opacity */
   z-index: 9995;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
   display: none; /* Hide by default, will be shown on specific channel */
+  padding: 0; /* Remove any padding */
+  margin: 0; /* Remove any margin */
+  line-height: 1; /* Tighter line height */
 }
 
 /* --- TV Guide Overlay Menu --- */
@@ -305,7 +308,7 @@ body {
   align-items: center !important;
   justify-content: flex-start !important;
   padding-top: 40px !important;
-  z-index: 100000 !important; /* Higher than both header and menu button */
+  z-index: 10000000 !important; /* Extremely high z-index to be above everything */
   box-shadow: inset 0 0 150px rgba(0,30,100,0.3) !important;
   -webkit-overflow-scrolling: touch !important; /* Improve scrolling on iOS */
   overflow-y: auto !important; /* Allow scrolling for small screens */
@@ -448,6 +451,7 @@ body {
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 1px;
+  z-index: 10000001 !important; /* Higher than the TV guide itself */
 }
 
 .close-guide:hover {
@@ -634,8 +638,8 @@ body {
   }
   .channel-number-overlay {
     font-size: 3rem;
-    bottom: calc(40px + env(safe-area-inset-bottom));
-    right: 20px;
+    bottom: calc(10px + env(safe-area-inset-bottom)); /* Adjusted for bottom edge on mobile */
+    right: 10px;
   }
   .close-guide {
     top: 20px;

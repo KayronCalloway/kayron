@@ -150,7 +150,7 @@ export async function init() {
     tvGuide.style.left = '0';
     tvGuide.style.width = '100%';
     tvGuide.style.height = '100%';
-    tvGuide.style.zIndex = '999998';
+    tvGuide.style.zIndex = '10000000';
     
     // Ensure the TV Guide is in the right place in the DOM
     // Moving it to the body to ensure it's accessible globally
@@ -169,7 +169,7 @@ export async function init() {
           // Show the guide
           tvGuide.style.display = 'flex';
           tvGuide.style.opacity = '1';
-          tvGuide.style.zIndex = '100000';
+          tvGuide.style.zIndex = '10000000';
           tvGuide.setAttribute('aria-hidden', 'false');
           console.log("CH4: TV Guide opened directly");
         } else {

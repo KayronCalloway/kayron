@@ -224,8 +224,8 @@ const resetMenuStyles = () => {
         }
         
         const menuClickHandler = () => {
-          const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity || 0) === 1;
-          toggleTVGuide(!isCurrentlyVisible);
+          // Use our tracked state variable instead of checking DOM properties
+          toggleTVGuide(!tvGuideIsVisible);
         };
         
         menuButton.onclick = menuClickHandler;
@@ -307,12 +307,30 @@ const resetMenuStyles = () => {
   });
 
   // --- TV Guide Menu Toggle ---
+  // Keep track of TV Guide state to prevent conflicting operations
+  let tvGuideToggleInProgress = false;
+  let tvGuideIsVisible = false;
+
   const toggleTVGuide = show => {
     // Make sure TV Guide exists
     if (!tvGuide) {
       console.error("TV Guide element not found");
       return;
     }
+    
+    // Prevent conflicting toggle operations
+    if (tvGuideToggleInProgress) {
+      console.log("TV Guide toggle already in progress, ignoring request");
+      return;
+    }
+    
+    // If requested state is already current state, ignore the request
+    if (show === tvGuideIsVisible) {
+      console.log(`TV Guide is already ${show ? 'open' : 'closed'}, ignoring duplicate request`);
+      return;
+    }
+    
+    tvGuideToggleInProgress = true;
     
     // Let MenuManager handle menu button visibility based on header
     if (show) {
@@ -324,7 +342,7 @@ const resetMenuStyles = () => {
       // Force display to flex regardless of current state
       tvGuide.style.display = 'flex';
       // Make the TV guide appear on top of EVERYTHING
-      tvGuide.style.zIndex = '100000'; // Higher than both header and menu button
+      tvGuide.style.zIndex = '10000000'; // Extremely high z-index to be above menu button
       // Ensure TV Guide is fixed at top
       tvGuide.style.position = 'fixed';
       // Ensure it covers the entire viewport
@@ -352,7 +370,9 @@ const resetMenuStyles = () => {
       setTimeout(() => {
         tvGuide.style.opacity = 1;
         tvGuide.setAttribute('aria-hidden', 'false');
-      }, 10);
+        tvGuideIsVisible = true;
+        tvGuideToggleInProgress = false;
+      }, 100);
     } else {
       tvGuide.style.opacity = 0;
       tvGuide.setAttribute('aria-hidden', 'true');
@@ -369,7 +389,11 @@ const resetMenuStyles = () => {
       // Log visibility state for debugging
       console.log("Closing TV Guide");
       
-      setTimeout(() => { tvGuide.style.display = 'none'; }, 500);
+      setTimeout(() => { 
+        tvGuide.style.display = 'none';
+        tvGuideIsVisible = false;
+        tvGuideToggleInProgress = false;
+      }, 500);
     }
   };
   
@@ -389,9 +413,8 @@ const resetMenuStyles = () => {
         console.error("TV Guide element not found when clicking menu button");
         return;
       }
-      const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity || 0) === 1;
-      console.log("TV Guide current visibility state:", isCurrentlyVisible);
-      toggleTVGuide(!isCurrentlyVisible);
+      // Use our tracked state variable instead of checking DOM properties
+      toggleTVGuide(!tvGuideIsVisible);
     });
     
     // Add touchend handler for iOS Safari
@@ -402,8 +425,8 @@ const resetMenuStyles = () => {
         console.error("TV Guide element not found when touching menu button");
         return;
       }
-      const isCurrentlyVisible = tvGuide.style.display === 'flex' && parseFloat(tvGuide.style.opacity || 0) === 1;
-      toggleTVGuide(!isCurrentlyVisible);
+      // Use our tracked state variable instead of checking DOM properties
+      toggleTVGuide(!tvGuideIsVisible);
     }, { passive: false });
     
     console.log("Menu button event listeners properly set up");
@@ -555,7 +578,7 @@ const resetMenuStyles = () => {
             tvGuide.style.left = '0';
             tvGuide.style.width = '100%';
             tvGuide.style.height = '100%';
-            tvGuide.style.zIndex = '999998';
+            tvGuide.style.zIndex = '10000000';
           }
           
           currentChannel = newChannel;

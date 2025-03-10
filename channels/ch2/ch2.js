@@ -127,7 +127,7 @@ export async function init() {
       tvGuide.style.left = '0';
       tvGuide.style.width = '100%';
       tvGuide.style.height = '100%';
-      tvGuide.style.zIndex = '999998';
+      tvGuide.style.zIndex = '10000000';
     }
     
     // Preload audio for better performance
