@@ -133,16 +133,7 @@ export async function init() {
     document.head.appendChild(link);
   }
   
-  // Ensure menu button is visible and interactive
-  const menuButton = document.getElementById('menuButton');
-  if (menuButton) {
-    menuButton.style.zIndex = '999999';
-    menuButton.style.display = 'block';
-    menuButton.style.opacity = '1';
-    menuButton.style.position = 'fixed';
-    menuButton.style.pointerEvents = 'auto';
-    menuButton.style.cursor = 'pointer';
-  }
+  // Let MenuManager handle button visibility
   
   // Ensure TV Guide has correct positioning
   const tvGuide = document.getElementById('tvGuide');
