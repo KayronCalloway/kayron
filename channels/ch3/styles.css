@@ -16,18 +16,18 @@
 #game-show-container {
   position: relative;
   width: 100%;
-  height: calc(100vh - 60px); /* Reduced height to make room for header */
-  margin-top: 60px; /* Add margin to account for fixed header */
+  height: calc(100vh - 40px); /* Further reduced margin for header */
+  margin-top: 40px; /* Reduced margin to get closer to header */
   background-color: var(--game-bg);
   color: var(--game-primary);
   overflow: hidden;
   font-family: 'Merova', sans-serif;
-  padding: 20px 20px 70px 20px; /* Reduced top padding since we have margin */
+  padding: 5px 20px 70px 20px; /* Minimized top padding to stretch content upward */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; /* Start content from the top */
   z-index: 50;
   max-width: 100%;
 }
@@ -140,10 +140,11 @@
   background: var(--game-surface);
   border: 2px solid var(--game-accent);
   border-radius: 10px;
-  padding: 2rem;
+  padding: 1.5rem 2rem;
   text-align: center;
   position: relative;
   animation: fadeIn 1s ease-out;
+  margin-top: 5px; /* Add small top margin */
 }
 
 .host-image {
@@ -203,8 +204,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  margin-bottom: 2rem;
+  padding: 0.7rem 1rem;
+  margin-top: 5px; /* Add small top margin */
+  margin-bottom: 1rem; /* Reduced bottom margin */
   background: var(--game-surface);
   border-bottom: 2px solid var(--game-accent);
 }
