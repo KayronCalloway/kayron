@@ -265,6 +265,9 @@ body {
   font-size: 1.2rem;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  /* Enhanced touch target for mobile */
+  min-width: 44px;
+  min-height: 44px;
 }
 .channel-button:hover,
 .channel-button:active {
@@ -452,6 +455,8 @@ body {
   text-transform: uppercase;
   letter-spacing: 1px;
   z-index: 10000001 !important; /* Higher than the TV guide itself */
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .close-guide:hover {
@@ -586,6 +591,11 @@ body {
   .menu-button {
     padding: 5px 15px;
     font-size: 0.8rem;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .channel-button {
+    padding: 15px 25px; /* Larger touch target on mobile */
   }
   .tv-guide {
     padding-bottom: 100px; /* Add extra bottom padding for scrolling on iOS */
@@ -701,4 +711,18 @@ body {
   pointer-events: none;
   border: 0;
   object-fit: cover;
+}
+/* Battery-saving mode for mobile */
+.video-background.battery-saving {
+  background-size: cover;
+  background-position: center center;
+}
+/* Responsive optimization for mobile */
+@media (max-width: 768px) {
+  .video-background {
+    background-size: cover;
+  }
+  .video-background iframe {
+    height: 100vh !important; /* Use viewport height on mobile */
+  }
 }
