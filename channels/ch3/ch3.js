@@ -791,13 +791,25 @@ class GameShow {
       // Use letter labels (A, B, C, D)
       const letter = String.fromCharCode(65 + index); // A, B, C, D
       
+      // Check if we're on mobile
+      const isMobile = window.innerWidth <= 768;
+      const fontSize = isMobile ? '0.95rem' : '1.1rem';
+      
       button.innerHTML = `
         <span class="option-letter">${letter}</span>
-        <span class="option-text">${option.text}</span>
+        <span class="option-text" style="font-size: ${fontSize}; line-height: 1.4; flex: 1;">${option.text}</span>
       `;
       
       // Add click event to handle answer selection
       button.addEventListener('click', () => this.selectAnswer(option));
+      // Add touchstart event for mobile
+      button.addEventListener('touchstart', (e) => {
+        e.preventDefault(); // Prevent double click issues
+        this.selectAnswer(option);
+      }, { passive: false });
+      
+      // Ensure adequate height
+      button.style.minHeight = '65px';
       
       // Add to container
       optionsContainer.appendChild(button);
@@ -1144,10 +1156,17 @@ class GameShow {
       this.elements.ui.finalScore.textContent = this.state.score;
     }
     
+    // Check if on mobile for font size adjustments
+    const isMobile = window.innerWidth <= 768;
+    
     if (this.elements.ui.performanceDetails) {
+      // Choose font size based on device
+      const titleSize = isMobile ? '1.4rem' : '1.7rem';
+      const textSize = isMobile ? '0.9rem' : '1rem';
+      
       this.elements.ui.performanceDetails.innerHTML = `
-        <h4>${performanceLevel.title}</h4>
-        <p>${performanceLevel.message}</p>
+        <h4 style="font-size: ${titleSize}; line-height: 1.3; margin-bottom: 15px;">${performanceLevel.title}</h4>
+        <p style="font-size: ${textSize}; line-height: 1.4; max-width: 100%;">${performanceLevel.message}</p>
       `;
     }
     
