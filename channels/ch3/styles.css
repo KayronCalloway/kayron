@@ -82,7 +82,7 @@
 /* Channel Information */
 #channel-info {
   position: absolute;
-  top: 20px;
+  top: 5px; /* Raised higher on the page */
   left: 20px;
   display: flex;
   align-items: center;
