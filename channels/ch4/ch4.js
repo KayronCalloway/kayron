@@ -1,22 +1,49 @@
 // channels/ch4/ch4.js
-function createModal() {
-  // Create the modal HTML
-  const modalHTML = `
-    <div id="influenceModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true">
+function createModals() {
+  // Create the Warren Buffett modal
+  const warrenModalHTML = `
+    <div id="warrenModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true">
       <div class="modal-box" tabindex="-1">
-        <button id="closeInfluence" class="close-modal" aria-label="Close Influence">&times;</button>
-        <div class="modal-static" id="influenceStatic"></div>
+        <button id="closeWarren" class="close-modal" aria-label="Close Warren Modal">&times;</button>
+        <div class="modal-static" id="warrenStatic"></div>
         <div class="modal-content">
           <h2>Under The Influence</h2>
-          <h3>Warren Buffett & Charlie Munger</h3>
+          <h3>Warren Buffett</h3>
           <div class="role-model-description">
-            <p>I admire Warren and Charlie not for their extraordinary wealth, but for their unwavering commitment to integrity and ethical principles. Their philosophies transcend business, offering profound wisdom on continuous learning, finding meaningful happiness, and living with purpose. They embody what it means to succeed while remaining principled—a rare quality that inspires me to pursue both excellence and character in everything I do.</p>
+            <p>I admire Warren Buffett not for his extraordinary wealth, but for his unwavering commitment to integrity and ethical principles. His philosophy transcends business, offering profound wisdom on continuous learning, long-term thinking, and living with purpose. He embodies what it means to succeed while remaining principled—a rare quality that inspires me to pursue both excellence and character in everything I do.</p>
           </div>
           <div class="role-model-quotes">
             <div class="role-model-quote">
               <p>"You can't make a good deal with a bad person."</p>
               <p class="quote-author">— Warren Buffett</p>
             </div>
+            <div class="role-model-quote">
+              <p>"It takes 20 years to build a reputation and five minutes to ruin it. If you think about that, you'll do things differently."</p>
+              <p class="quote-author">— Warren Buffett</p>
+            </div>
+            <div class="role-model-quote">
+              <p>"The most important investment you can make is in yourself."</p>
+              <p class="quote-author">— Warren Buffett</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Create the Charlie Munger modal
+  const charlieModalHTML = `
+    <div id="charlieModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal-box" tabindex="-1">
+        <button id="closeCharlie" class="close-modal" aria-label="Close Charlie Modal">&times;</button>
+        <div class="modal-static" id="charlieStatic"></div>
+        <div class="modal-content">
+          <h2>Under The Influence</h2>
+          <h3>Charlie Munger</h3>
+          <div class="role-model-description">
+            <p>Charlie Munger's mental models approach to decision-making has profoundly influenced how I think about problems. His emphasis on multidisciplinary learning and avoiding cognitive biases serves as a north star for my own intellectual development. I strive to emulate his clarity of thought, rigorous rationality, and willingness to admit mistakes - qualities that made him not just a successful investor but a truly wise individual.</p>
+          </div>
+          <div class="role-model-quotes">
             <div class="role-model-quote">
               <p>"The best way to get what you want is to deserve what you want. How could it be otherwise?"</p>
               <p class="quote-author">— Charlie Munger</p>
@@ -25,15 +52,41 @@ function createModal() {
               <p>"Someone will always be getting richer faster than you. This is not a tragedy."</p>
               <p class="quote-author">— Charlie Munger</p>
             </div>
+            <div class="role-model-quote">
+              <p>"Knowing what you don't know is more useful than being brilliant."</p>
+              <p class="quote-author">— Charlie Munger</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   `;
 
-  // Append the modal to the body
+  // Create the Annual Letter modal
+  const annualLetterModalHTML = `
+    <div id="annualLetterModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal-box" tabindex="-1">
+        <button id="closeAnnualLetter" class="close-modal" aria-label="Close Annual Letter Modal">&times;</button>
+        <div class="modal-static" id="letterStatic"></div>
+        <div class="modal-content">
+          <h2>Berkshire Hathaway Annual Letter</h2>
+          <div class="role-model-description">
+            <p>Warren Buffett's annual letter to Berkshire Hathaway shareholders is a masterclass in clear communication, business principles, and investment wisdom. For over 50 years, these letters have provided invaluable insights not just for investors, but for anyone interested in business, leadership, and decision-making.</p>
+            <p>The letters combine financial reports with Buffett's straightforward explanations of complex concepts, all delivered with his characteristic wit and wisdom.</p>
+          </div>
+          <div class="annual-letter-link">
+            <p>Read the latest annual letter:</p>
+            <a href="https://www.berkshirehathaway.com/letters/2023ltr.pdf" target="_blank" rel="noopener noreferrer" class="letter-button">2023 Annual Letter</a>
+            <p>Or visit the <a href="https://www.berkshirehathaway.com/letters/letters.html" target="_blank" rel="noopener noreferrer">complete archive</a> of letters dating back to 1977.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Append all modals to the body
   const container = document.createElement('div');
-  container.innerHTML = modalHTML;
+  container.innerHTML = warrenModalHTML + charlieModalHTML + annualLetterModalHTML;
   document.body.appendChild(container);
 }
 
@@ -75,29 +128,66 @@ function setupModalEventListeners() {
     });
   };
 
-  // Setup modal trigger and close events
-  const triggerButton = document.getElementById('influenceButton');
-  const modal = document.getElementById('influenceModal');
-  const closeButton = document.getElementById('closeInfluence');
+  // Setup Warren Buffett modal
+  const warrenButton = document.getElementById('warrenButton');
+  const warrenModal = document.getElementById('warrenModal');
+  const closeWarrenButton = document.getElementById('closeWarren');
   
-  if (triggerButton && modal && closeButton) {
-    triggerButton.addEventListener('click', () => {
-      modal.classList.remove('hidden');
-      modal.style.display = 'flex';
-      animateModalIn(modal);
+  if (warrenButton && warrenModal && closeWarrenButton) {
+    warrenButton.addEventListener('click', () => {
+      warrenModal.classList.remove('hidden');
+      warrenModal.style.display = 'flex';
+      animateModalIn(warrenModal);
     });
     
-    closeButton.addEventListener('click', () => {
-      animateModalOut(modal);
+    closeWarrenButton.addEventListener('click', () => {
+      animateModalOut(warrenModal);
+    });
+  }
+  
+  // Setup Charlie Munger modal
+  const charlieButton = document.getElementById('charlieButton');
+  const charlieModal = document.getElementById('charlieModal');
+  const closeCharlieButton = document.getElementById('closeCharlie');
+  
+  if (charlieButton && charlieModal && closeCharlieButton) {
+    charlieButton.addEventListener('click', () => {
+      charlieModal.classList.remove('hidden');
+      charlieModal.style.display = 'flex';
+      animateModalIn(charlieModal);
+    });
+    
+    closeCharlieButton.addEventListener('click', () => {
+      animateModalOut(charlieModal);
+    });
+  }
+  
+  // Setup Annual Letter modal
+  const annualLetterButton = document.getElementById('annualLetterButton');
+  const annualLetterModal = document.getElementById('annualLetterModal');
+  const closeAnnualLetterButton = document.getElementById('closeAnnualLetter');
+  
+  if (annualLetterButton && annualLetterModal && closeAnnualLetterButton) {
+    annualLetterButton.addEventListener('click', () => {
+      annualLetterModal.classList.remove('hidden');
+      annualLetterModal.style.display = 'flex';
+      animateModalIn(annualLetterModal);
+    });
+    
+    closeAnnualLetterButton.addEventListener('click', () => {
+      animateModalOut(annualLetterModal);
     });
   }
 
-  // Close the modal on Escape key press
+  // Close all modals on Escape key press
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
-      if (modal && !modal.classList.contains('hidden')) {
-        animateModalOut(modal);
-      }
+      const allModals = [warrenModal, charlieModal, annualLetterModal];
+      allModals.forEach(modal => {
+        if (modal && !modal.classList.contains('hidden')) {
+          animateModalOut(modal);
+        }
+      });
     }
   });
 }
@@ -187,8 +277,8 @@ export async function init() {
     console.error("CH4: TV Guide element not found!");
   }
   
-  // Create and set up the modal
-  createModal();
+  // Create and set up the modals
+  createModals();
   setTimeout(setupModalEventListeners, 500);
   
   // Use the YouTube IFrame API to create a player in Channel 4.
