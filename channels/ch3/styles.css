@@ -82,12 +82,12 @@
 /* Channel Information */
 #channel-info {
   position: absolute;
-  top: -30px; /* Moved much higher, into the header area */
+  top: 5px; /* Positioned just below header */
   left: 20px;
   display: flex;
   align-items: center;
   gap: 10px;
-  z-index: 5100; /* Higher than header to ensure visibility */
+  z-index: 100; /* High z-index but below header */
 }
 
 .channel-number {
@@ -205,7 +205,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.7rem 1rem;
-  margin-top: 5px; /* Add small top margin */
+  margin-top: 30px; /* Increased top margin to make room for CH 3 indicator */
   margin-bottom: 1rem; /* Reduced bottom margin */
   background: var(--game-surface);
   border-bottom: 2px solid var(--game-accent);
