@@ -932,9 +932,22 @@ class GameShow {
       existingInsight.remove();
     }
     
+    // Ensure visibility by scrolling to bottom of options
+    const optionsContainer = document.getElementById('options-container');
+    if (optionsContainer) {
+      // Scroll selected option into center view
+      const selectedOption = document.querySelector('.option-button.selected') || 
+                           document.querySelector('.option-button.correct');
+      if (selectedOption) {
+        selectedOption.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+    
     const insight = document.createElement('div');
     insight.className = 'insight';
     insight.textContent = this.state.currentQuestion.insight;
+    insight.style.position = 'relative';
+    insight.style.zIndex = '100';
     
     questionArea.appendChild(insight);
     

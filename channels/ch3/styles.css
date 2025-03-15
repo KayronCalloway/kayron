@@ -204,9 +204,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.7rem 1rem;
-  margin-top: 30px; /* Increased top margin to make room for CH 3 indicator */
-  margin-bottom: 1rem; /* Reduced bottom margin */
+  padding: 0.6rem 1rem;
+  margin-top: 10px; /* Reduced margin to move content up */
+  margin-bottom: 0.8rem; /* Further reduced bottom margin */
   background: var(--game-surface);
   border-bottom: 2px solid var(--game-accent);
 }
@@ -282,13 +282,14 @@
   font-size: 1.2rem;
   text-align: center;
   background: var(--game-surface);
-  padding: 1rem;
+  padding: 0.9rem;
   border: 2px solid var(--game-accent);
   border-radius: 10px;
   color: var(--game-primary);
   width: 100%;
-  margin-bottom: 1rem;
-  line-height: 1.3;
+  margin-bottom: 0.7rem; /* Reduced margin */
+  line-height: 1.4;
+  max-width: 95%;
 }
 
 /* Answer Options */
@@ -303,21 +304,22 @@
   background: transparent;
   border: 2px solid var(--game-primary);
   border-radius: 8px;
-  padding: 0.8rem;
+  padding: 0.7rem 0.9rem;
   font-size: 0.95rem;
   color: var(--game-primary);
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: left;
   position: relative;
-  overflow: hidden; /* Back to hidden */
+  overflow: hidden;
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.7rem;
   line-height: 1.3;
-  min-height: 60px;
+  min-height: 55px; /* Slightly reduced height */
   width: 100%;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem; /* Reduced bottom margin */
+  max-width: 95%; /* Match question width */
 }
 
 .option-button:hover {
@@ -375,14 +377,16 @@
 
 .insight {
   background: var(--game-surface);
-  padding: 1rem;
+  padding: 0.8rem 1rem;
   border-left: 5px solid var(--game-accent);
   color: var(--game-primary);
   font-style: italic;
   width: 100%;
-  font-size: 0.9rem;
-  margin: 0.8rem 0;
-  line-height: 1.3;
+  font-size: 0.95rem;
+  margin: 0.6rem 0;
+  line-height: 1.4;
+  max-width: 800px; /* Limit width for readability */
+  font-weight: 500; /* Slightly bolder for better visibility */
 }
 
 /* Commercial Break */
