@@ -82,12 +82,12 @@
 /* Channel Information */
 #channel-info {
   position: absolute;
-  top: 5px; /* Raised higher on the page */
+  top: -30px; /* Moved much higher, into the header area */
   left: 20px;
   display: flex;
   align-items: center;
   gap: 10px;
-  z-index: 10;
+  z-index: 5100; /* Higher than header to ensure visibility */
 }
 
 .channel-number {
