@@ -61,9 +61,29 @@ export async function init() {
       return;
     }
     
-    // Prevent duplicate initialization
+    // Resuming sound when returning to Channel 3
+    if (window.GameShowManager && window.GameShowManager.sounds) {
+      // Resume background sound if already initialized
+      if (window.GameShowManager.sounds.background) {
+        console.log("Resuming background sound when returning to Channel 3");
+        window.GameShowManager.sounds.background.play().catch(err => 
+          console.log("Failed to resume background sound:", err)
+        );
+      }
+    }
+    
+    // If already initialized and container exists, just ensure visibility
     if (container.querySelector('#game-show-container') && gameInitialized) {
-      console.log("Game show already loaded; skipping initialization.");
+      console.log("Game show already loaded; ensuring visibility without reinitializing.");
+      
+      // Make sure the container is visible
+      const existingContainer = container.querySelector('#game-show-container');
+      if (existingContainer) {
+        existingContainer.style.display = 'flex';
+        existingContainer.style.visibility = 'visible';
+        existingContainer.style.opacity = '1';
+      }
+      
       return;
     }
     
@@ -920,10 +940,34 @@ class GameShow {
       existingInsight.remove();
     }
     
+    // Scroll up to ensure insight is visible
+    const optionsContainer = document.getElementById('options-container');
+    if (optionsContainer) {
+      // Ensure container is scrolled up to make room for insight
+      setTimeout(() => {
+        questionArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 300);
+    }
+    
     const insight = document.createElement('div');
     insight.className = 'insight';
     insight.textContent = this.state.currentQuestion.insight;
+    
+    // Check if on mobile for font size adjustments
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+      insight.style.fontSize = '1rem';
+      insight.style.padding = '1rem';
+    }
+    
     questionArea.appendChild(insight);
+    
+    // Ensure insight visibility with explicit styles
+    insight.style.position = 'relative';
+    insight.style.zIndex = '20';
+    insight.style.display = 'block';
+    insight.style.visibility = 'visible';
+    insight.style.opacity = '1';
     
     // Animate insight appearance
     try {
