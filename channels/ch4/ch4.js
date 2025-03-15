@@ -76,7 +76,7 @@ function createModals() {
           </div>
           <div class="annual-letter-link">
             <p>Read the latest annual letter:</p>
-            <a href="https://www.berkshirehathaway.com/letters/2023ltr.pdf" target="_blank" rel="noopener noreferrer" class="letter-button">2023 Annual Letter</a>
+            <a href="https://www.berkshirehathaway.com/letters/2024ltr.pdf" target="_blank" rel="noopener noreferrer" class="letter-button">2024 Annual Letter</a>
             <p>Or visit the <a href="https://www.berkshirehathaway.com/letters/letters.html" target="_blank" rel="noopener noreferrer">complete archive</a> of letters dating back to 1977.</p>
           </div>
         </div>
@@ -138,10 +138,16 @@ function setupModalEventListeners() {
       warrenModal.classList.remove('hidden');
       warrenModal.style.display = 'flex';
       animateModalIn(warrenModal);
+      // Prevent double-clicking during animation
+      warrenButton.style.pointerEvents = 'none';
     });
     
     closeWarrenButton.addEventListener('click', () => {
       animateModalOut(warrenModal);
+      // Make button re-clickable after a short delay
+      setTimeout(() => {
+        warrenButton.style.pointerEvents = 'auto';
+      }, 600);
     });
   }
   
@@ -155,10 +161,16 @@ function setupModalEventListeners() {
       charlieModal.classList.remove('hidden');
       charlieModal.style.display = 'flex';
       animateModalIn(charlieModal);
+      // Prevent double-clicking during animation
+      charlieButton.style.pointerEvents = 'none';
     });
     
     closeCharlieButton.addEventListener('click', () => {
       animateModalOut(charlieModal);
+      // Make button re-clickable after a short delay
+      setTimeout(() => {
+        charlieButton.style.pointerEvents = 'auto';
+      }, 600);
     });
   }
   
@@ -172,10 +184,16 @@ function setupModalEventListeners() {
       annualLetterModal.classList.remove('hidden');
       annualLetterModal.style.display = 'flex';
       animateModalIn(annualLetterModal);
+      // Prevent double-clicking during animation
+      annualLetterButton.style.pointerEvents = 'none';
     });
     
     closeAnnualLetterButton.addEventListener('click', () => {
       animateModalOut(annualLetterModal);
+      // Make button re-clickable after a short delay
+      setTimeout(() => {
+        annualLetterButton.style.pointerEvents = 'auto';
+      }, 600);
     });
   }
 
@@ -183,9 +201,17 @@ function setupModalEventListeners() {
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       const allModals = [warrenModal, charlieModal, annualLetterModal];
-      allModals.forEach(modal => {
+      const allButtons = [warrenButton, charlieButton, annualLetterButton];
+      
+      allModals.forEach((modal, index) => {
         if (modal && !modal.classList.contains('hidden')) {
           animateModalOut(modal);
+          // Make corresponding button re-clickable
+          setTimeout(() => {
+            if (allButtons[index]) {
+              allButtons[index].style.pointerEvents = 'auto';
+            }
+          }, 600);
         }
       });
     }
