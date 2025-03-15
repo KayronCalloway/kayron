@@ -811,25 +811,13 @@ class GameShow {
       // Use letter labels (A, B, C, D)
       const letter = String.fromCharCode(65 + index); // A, B, C, D
       
-      // Check if we're on mobile
-      const isMobile = window.innerWidth <= 768;
-      const fontSize = isMobile ? '0.95rem' : '1.1rem';
-      
       button.innerHTML = `
         <span class="option-letter">${letter}</span>
-        <span class="option-text" style="font-size: ${fontSize}; line-height: 1.4; flex: 1;">${option.text}</span>
+        <span class="option-text">${option.text}</span>
       `;
       
       // Add click event to handle answer selection
       button.addEventListener('click', () => this.selectAnswer(option));
-      // Add touchstart event for mobile
-      button.addEventListener('touchstart', (e) => {
-        e.preventDefault(); // Prevent double click issues
-        this.selectAnswer(option);
-      }, { passive: false });
-      
-      // Ensure adequate height
-      button.style.minHeight = '65px';
       
       // Add to container
       optionsContainer.appendChild(button);
@@ -940,34 +928,11 @@ class GameShow {
       existingInsight.remove();
     }
     
-    // Scroll up to ensure insight is visible
-    const optionsContainer = document.getElementById('options-container');
-    if (optionsContainer) {
-      // Ensure container is scrolled up to make room for insight
-      setTimeout(() => {
-        questionArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 300);
-    }
-    
     const insight = document.createElement('div');
     insight.className = 'insight';
     insight.textContent = this.state.currentQuestion.insight;
     
-    // Check if on mobile for font size adjustments
-    const isMobile = window.innerWidth <= 768;
-    if (isMobile) {
-      insight.style.fontSize = '1rem';
-      insight.style.padding = '1rem';
-    }
-    
     questionArea.appendChild(insight);
-    
-    // Ensure insight visibility with explicit styles
-    insight.style.position = 'relative';
-    insight.style.zIndex = '20';
-    insight.style.display = 'block';
-    insight.style.visibility = 'visible';
-    insight.style.opacity = '1';
     
     // Animate insight appearance
     try {
