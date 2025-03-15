@@ -68,10 +68,7 @@ export async function init() {
     
     // Event listener for the enter button
     enterButton.addEventListener('click', async () => {
-      // Play transition sound
-      const whoosh = new Audio('./audio/whoosh.mp3');
-      whoosh.volume = 0.5;
-      whoosh.play().catch(err => console.warn('Could not play sound:', err));
+      // Transition without sound
       
       // Add transition effect
       const transition = document.createElement('div');
@@ -226,8 +223,7 @@ function setupInfomercialEventListeners() {
   // Add lazy loading for images
   setupLazyLoading();
   
-  // Play ticker hum sound subtly in the background
-  playTickerSound();
+  // No background sound
   
   // Setup back to showcase button
   setupBackButton();
@@ -380,10 +376,8 @@ function createRippleEffect(button, event) {
 }
 
 function playButtonSound() {
-  // Reuse audio object for better performance
-  const kaChingSound = new Audio('./audio/ka-ching.mp3');
-  kaChingSound.volume = 0.4;
-  kaChingSound.play().catch(err => console.warn('Could not play sound:', err));
+  // Sound disabled
+  console.log('Button sound is disabled');
 }
 
 function showConfirmationMessage(button) {
@@ -488,27 +482,16 @@ function setupLazyLoading() {
   });
 }
 
-// Play ticker hum sound in the background
+// Background sound function - now disabled
 function playTickerSound() {
-  const tickerSound = new Audio('./audio/ticker-hum.mp3');
-  tickerSound.volume = 0.2;
-  tickerSound.loop = true;
+  // Sound disabled
+  console.log('Ticker sound is disabled');
   
-  // Store reference for cleanup
-  window.ch2TickerSound = tickerSound;
-  
-  // Only play if user has interacted with the page
-  if (document.documentElement.classList.contains('user-interacted')) {
-    tickerSound.play().catch(err => console.warn('Could not play ticker sound:', err));
-  } else {
-    // Add event listener for first interaction
-    const playOnInteraction = () => {
-      tickerSound.play().catch(err => console.warn('Could not play ticker sound:', err));
-      document.documentElement.classList.add('user-interacted');
-      document.removeEventListener('click', playOnInteraction);
-    };
-    document.addEventListener('click', playOnInteraction);
-  }
+  // Set empty audio reference for cleanup consistency
+  window.ch2TickerSound = { 
+    pause: () => {}, 
+    currentTime: 0 
+  };
 }
 
 // Setup back button to return to slideshow
@@ -518,16 +501,7 @@ function setupBackButton() {
   
   if (backButton && container) {
     backButton.addEventListener('click', async () => {
-      // Play transition sound
-      const whoosh = new Audio('./audio/whoosh.mp3');
-      whoosh.volume = 0.5;
-      whoosh.play().catch(err => console.warn('Could not play sound:', err));
-      
-      // Stop ticker sound if playing
-      if (window.ch2TickerSound) {
-        window.ch2TickerSound.pause();
-        window.ch2TickerSound.currentTime = 0;
-      }
+      // Transition without sound
       
       // Add transition effect
       const transition = document.createElement('div');
@@ -567,9 +541,7 @@ function setupBackButton() {
           
           // Add the same event listener as before
           enterButton.addEventListener('click', async () => {
-            const whoosh = new Audio('./audio/whoosh.mp3');
-            whoosh.volume = 0.5;
-            whoosh.play().catch(err => console.warn('Could not play sound:', err));
+            // Transition without sound
             
             const transition = document.createElement('div');
             transition.className = 'slideshow-transition';
