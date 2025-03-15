@@ -1,23 +1,66 @@
 <!-- channels/ch2/index.html -->
-<div id="slideshow-container" role="region" aria-label="Slideshow">
-  <!-- Slide 1 -->
-  <div class="slide active">
-    <img src="visuals/VOL 1. FIRST c.001.jpeg" alt="Vol 1" loading="lazy">
-    <div class="caption">"Experience the Vision"</div>
-  </div>
-  <!-- Slide 2 -->
-  <div class="slide">
-    <img src="visuals/bulletproof.jpg" alt="Bulletproof" loading="lazy">
-    <div class="caption">"Strength in Strategy"</div>
-  </div>
-  <!-- Slide 3 -->
-  <div class="slide">
-    <img src="visuals/dou.jpg" alt="C'est Bon" loading="lazy">
-    <div class="caption">"Luxury in Every Detail"</div>
-  </div>
-  <!-- Slide 4 -->
-  <div class="slide">
-    <img src="visuals/mtr.jpg" alt="MTR" loading="lazy">
-    <div class="caption">"Revolutionizing the Game"</div>
+<div id="studio-container" role="region" aria-label="Interactive Portfolio Studio">
+  <div class="studio-environment">
+    <!-- Virtual desk with projects scattered across it -->
+    <div class="desk-surface">
+      <div class="desk-grid">
+        <!-- Project items appear as interactive objects -->
+        <div class="project-item" data-project="business-strategy" tabindex="0" role="button" aria-label="Business Strategy Project">
+          <div class="project-preview">
+            <img src="visuals/bulletproof.jpg" alt="Business Strategy" loading="lazy">
+          </div>
+          <div class="project-label">Business Strategy</div>
+        </div>
+        
+        <div class="project-item" data-project="luxury-brand" tabindex="0" role="button" aria-label="Luxury Brand Development Project">
+          <div class="project-preview">
+            <img src="visuals/dou.jpg" alt="Luxury Brand Development" loading="lazy">
+          </div>
+          <div class="project-label">Luxury Brand</div>
+        </div>
+        
+        <div class="project-item" data-project="digital-innovation" tabindex="0" role="button" aria-label="Digital Innovation Project">
+          <div class="project-preview">
+            <img src="visuals/mtr.jpg" alt="Digital Innovation" loading="lazy">
+          </div>
+          <div class="project-label">Digital Innovation</div>
+        </div>
+        
+        <div class="project-item" data-project="creative-vision" tabindex="0" role="button" aria-label="Creative Vision Project">
+          <div class="project-preview">
+            <img src="visuals/VOL 1. FIRST c.001.jpeg" alt="Creative Vision" loading="lazy">
+          </div>
+          <div class="project-label">Creative Vision</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Virtual environment elements -->
+    <div class="studio-elements">
+      <div class="desk-lamp"></div>
+      <div class="plant"></div>
+      <div class="coffee-cup"></div>
+      <div class="notebook"></div>
+    </div>
+    
+    <!-- Project detail view (hidden by default) -->
+    <div class="project-detail-view" aria-hidden="true">
+      <button class="close-detail" aria-label="Close project details">&times;</button>
+      <div class="project-content">
+        <!-- Content will be dynamically loaded -->
+      </div>
+      <div class="process-timeline">
+        <!-- Timeline will be dynamically loaded -->
+      </div>
+    </div>
   </div>
 </div>
+
+<!-- Studio Controls -->
+<div class="studio-controls">
+  <button id="perspective-toggle" aria-label="Toggle 3D perspective">3D View</button>
+  <button id="arrange-projects" aria-label="Rearrange projects">Rearrange</button>
+</div>
+
+<!-- Channel number overlay -->
+<div class="channel-number-overlay">CH 02</div>
