@@ -7,13 +7,22 @@ let gameResources = {
   script: null
 };
 
-// Function to stop all game sounds
-function stopAllChannelSounds() {
-  console.log("Channel change detected, stopping all Channel 3 sounds");
+// Function to stop all game sounds when leaving Channel 3
+function stopAllChannelSounds(event) {
+  // Only stop sounds when leaving Channel 3, not when entering it
+  const leavingChannel3 = document.getElementById('section3') && 
+                         !document.getElementById('section3').classList.contains('active');
+  
+  if (!leavingChannel3) {
+    console.log("Not stopping Channel 3 sounds - either we're on Channel 3 or event not relevant");
+    return;
+  }
+  
+  console.log("Leaving Channel 3, stopping sounds");
   
   // First check if the GameShowManager is available globally
   if (window.GameShowManager && window.GameShowManager.sounds) {
-    console.log("Found GameShowManager, stopping sounds");
+    console.log("Found GameShowManager, pausing sounds but keeping loop state");
     
     // Call the stopAllSounds method if it exists
     if (typeof window.GameShowManager.stopAllSounds === 'function') {
@@ -24,13 +33,9 @@ function stopAllChannelSounds() {
     // Otherwise use the direct approach as fallback
     Object.values(window.GameShowManager.sounds).forEach(sound => {
       if (sound && typeof sound.pause === 'function') {
-        console.log("Stopping sound:", sound.src);
+        console.log("Pausing sound:", sound.src);
         sound.pause();
-        if (typeof sound.currentTime !== 'undefined') {
-          sound.currentTime = 0;
-        }
-        // Ensure the sound is no longer looping
-        sound.loop = false;
+        // Don't reset currentTime or loop state to allow resuming
       }
     });
   }
@@ -39,10 +44,9 @@ function stopAllChannelSounds() {
   // This catches any sounds that might not be properly tracked
   document.querySelectorAll('audio').forEach(audio => {
     if (audio.src && audio.src.includes('gameshow.aif')) {
-      console.log("Stopping loose audio element:", audio.src);
+      console.log("Pausing loose audio element:", audio.src);
       audio.pause();
-      audio.currentTime = 0;
-      audio.loop = false;
+      // Don't reset currentTime or loop state to allow resuming
     }
   });
 }
@@ -1130,26 +1134,22 @@ class GameShow {
   
   // Method to stop all sounds owned by this game instance
   stopAllSounds() {
-    // Stop all sounds in the game
+    // Only pause sounds without modifying their looping state
     Object.values(this.sounds).forEach(sound => {
       if (sound && typeof sound.pause === 'function') {
-        console.log("Stopping game sound:", sound.src);
+        console.log("Pausing game sound:", sound.src);
         sound.pause();
-        if (typeof sound.currentTime !== 'undefined') {
-          sound.currentTime = 0;
-        }
-        // Ensure the sound is no longer looping
-        sound.loop = false;
+        // Keep currentTime and loop state to allow resuming
       }
     });
   }
   
   // Show final results screen
   showFinalResults() {
-    // Stop background music
+    // Pause background music but don't stop it completely
     if (this.sounds.background) {
       this.sounds.background.pause();
-      this.sounds.background.currentTime = 0;
+      // Don't reset currentTime or loop state to allow resuming
     }
     
     // Play correct sound for success
