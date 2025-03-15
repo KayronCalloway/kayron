@@ -58,20 +58,31 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Swipe Navigation ---
   let touchStartX = 0;
   let touchStartY = 0; // Track vertical position to detect diagonal swipes
+  let touchStartTime = 0; // Track time for velocity-based gestures
   
   document.addEventListener('touchstart', e => {
     touchStartX = e.changedTouches[0].screenX;
     touchStartY = e.changedTouches[0].screenY;
+    touchStartTime = Date.now();
   }, { passive: true }); // Add passive flag for better performance on iOS
   
   document.addEventListener('touchend', e => {
     const touchEndX = e.changedTouches[0].screenX;
     const touchEndY = e.changedTouches[0].screenY;
+    const touchEndTime = Date.now();
     const diffX = touchStartX - touchEndX;
     const diffY = Math.abs(touchStartY - touchEndY);
+    const elapsedTime = touchEndTime - touchStartTime;
     
-    // Only trigger horizontal swipe if vertical movement is minimal (prevent accidental swipes)
-    if (Math.abs(diffX) > 70 && diffY < 50) {
+    // Calculate velocity (pixels per millisecond)
+    const velocity = Math.abs(diffX) / elapsedTime;
+    
+    // Only trigger horizontal swipe if:
+    // 1. Horizontal movement is significant (>50px) 
+    // 2. Vertical movement is minimal (prevent accidental swipes)
+    // 3. Fast enough swipe (velocity threshold) OR large enough movement
+    if ((Math.abs(diffX) > 50 && diffY < 100) && 
+        (velocity > 0.5 || Math.abs(diffX) > 100)) {
       const direction = diffX > 0 ? 'next' : 'prev';
       navigateChannels(direction);
     }
@@ -699,6 +710,30 @@ const resetMenuStyles = () => {
           if (youtubePlayer && typeof youtubePlayer.unMute === "function") {
             youtubePlayer.unMute();
             console.log("Channel 1 active: Unmuting video.");
+          }
+          
+          // Mobile optimization: If on mobile device, check battery level
+          if (window.navigator.getBattery) {
+            window.navigator.getBattery().then(battery => {
+              // If battery is below 20%, use static image instead of video
+              if (battery.level < 0.2 && !battery.charging) {
+                const videoBackground = document.querySelector('.video-background');
+                if (videoBackground && window.innerWidth < 768) {
+                  console.log("Low battery detected on mobile. Using static background.");
+                  // Only apply if not already applied
+                  if (!videoBackground.classList.contains('battery-saving')) {
+                    // Hide YouTube iframe
+                    const ytFrame = videoBackground.querySelector('iframe');
+                    if (ytFrame) ytFrame.style.display = 'none';
+                    
+                    // Add battery saving mode class and background
+                    videoBackground.classList.add('battery-saving');
+                    videoBackground.style.backgroundImage = 'url("visuals/static.gif")';
+                    videoBackground.style.backgroundSize = 'cover';
+                  }
+                }
+              }
+            }).catch(err => console.log("Battery API not available", err));
           }
         } else {
           if (youtubePlayer && typeof youtubePlayer.mute === "function") {
