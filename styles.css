@@ -105,8 +105,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 20px; /* Reduced padding to make header thinner */
-  height: 40px; /* Explicit height for consistency */
+  padding: 10px 20px;
   opacity: 0; /* Initially hidden */
   transition: opacity 0.5s;
 }
