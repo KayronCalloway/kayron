@@ -932,9 +932,19 @@ class GameShow {
       existingInsight.remove();
     }
     
+    // Ensure visibility by scrolling to options container
+    const optionsContainer = document.getElementById('options-container');
+    if (optionsContainer) {
+      setTimeout(() => {
+        // Scroll to view the bottom part of the options container
+        optionsContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }, 200);
+    }
+    
     const insight = document.createElement('div');
     insight.className = 'insight';
     insight.textContent = this.state.currentQuestion.insight;
+    insight.style.zIndex = '100'; // Ensure high z-index
     
     questionArea.appendChild(insight);
     
