@@ -26,10 +26,13 @@
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
-  flex-direction: column;
+  flex-direction: row; /* Changed from column to row */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 25px;
   z-index: 10;
+  max-width: 90%;
 }
 
 /* Modal styles */
@@ -195,6 +198,44 @@
   font-size: 1.1rem;
   line-height: 1.5;
   opacity: 0.9;
+  text-align: left;
+}
+
+/* Annual Letter Link */
+.annual-letter-link {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.letter-button {
+  display: inline-block;
+  background: #1e90ff;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 10px 0;
+  transition: all 0.3s ease;
+}
+
+.letter-button:hover {
+  background: #0066cc;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.annual-letter-link a {
+  color: #1e90ff;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.annual-letter-link a:hover {
+  color: #4db8ff;
 }
 
 /* Animation */
