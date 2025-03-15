@@ -288,6 +288,8 @@
   margin-bottom: 1rem;
   line-height: 1.5;
   max-width: 1100px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 /* Answer Options */
@@ -309,12 +311,17 @@
   transition: all 0.3s ease;
   text-align: left;
   position: relative;
-  overflow: hidden;
+  overflow: visible; /* Changed from hidden to visible */
   display: flex;
   align-items: center;
   gap: 0.8rem;
   line-height: 1.4;
-  min-height: 65px;
+  min-height: 80px; /* Increased from 65px */
+  max-width: 1100px;
+  width: 100%;
+  margin-bottom: 1rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .option-button:hover {
@@ -372,14 +379,19 @@
 
 .insight {
   background: var(--game-surface);
-  padding: 1rem;
+  padding: 1.5rem;
   border-left: 5px solid var(--game-accent);
   color: var(--game-primary);
   font-style: italic;
   width: 100%;
-  font-size: 1rem;
-  margin: 0.8rem 0;
-  line-height: 1.3;
+  max-width: 1100px;
+  font-size: 1.1rem;
+  margin: 1.5rem 0;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  position: relative;
+  z-index: 10;
 }
 
 /* Commercial Break */
@@ -654,18 +666,32 @@
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
+  .host-content {
+    width: 95%;
+    padding: 1.5rem;
+  }
+
   .host-speech {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    line-height: 1.4;
   }
   
   #question-display {
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     padding: 1rem;
+    width: 95%;
+    max-width: 100%;
+  }
+  
+  .question-area {
+    width: 95%;
+    gap: 1rem;
   }
   
   .option-button {
-    padding: 1rem;
-    font-size: 1.2rem;
+    padding: 0.8rem;
+    font-size: 1rem;
+    min-height: 60px;
   }
   
   .option-letter {
@@ -681,6 +707,34 @@
   .points-display {
     font-size: 1.4rem;
     padding: 0.5rem 1rem;
+  }
+  
+  .host-content h1 {
+    font-size: 1.8rem;
+  }
+  
+  .results-content {
+    width: 95%;
+    padding: 1rem;
+  }
+  
+  #performance-details h4 {
+    font-size: 1.4rem;
+  }
+  
+  .final-score {
+    font-size: 1.3rem;
+  }
+  
+  .results-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  /* Ensure all buttons have minimum touch target sizes */
+  .start-game-button,
+  .play-again-button {
+    min-width: 44px;
+    min-height: 44px;
   }
 }
 
