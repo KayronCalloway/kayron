@@ -16,13 +16,13 @@
 #game-show-container {
   position: relative;
   width: 100%;
-  height: calc(100vh - 40px); /* Further reduced margin for header */
-  margin-top: 40px; /* Reduced margin to get closer to header */
+  height: calc(100vh - 30px); /* Minimum margin for header */
+  margin-top: 30px; /* Reduced margin to position closer to header */
   background-color: var(--game-bg);
   color: var(--game-primary);
   overflow: hidden;
   font-family: 'Merova', sans-serif;
-  padding: 5px 20px 70px 20px; /* Minimized top padding to stretch content upward */
+  padding: 0 20px 70px 20px; /* Removed top padding completely */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -82,7 +82,7 @@
 /* Channel Information */
 #channel-info {
   position: absolute;
-  top: 5px; /* Positioned just below header */
+  top: 0px; /* Positioned at the very top of game container */
   left: 20px;
   display: flex;
   align-items: center;
