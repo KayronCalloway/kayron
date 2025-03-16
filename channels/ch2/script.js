@@ -149,6 +149,7 @@
       portfolioBrowse.style.overflow = 'hidden';
       portfolioBrowse.style.display = 'flex';
       portfolioBrowse.style.flexDirection = 'column';
+      portfolioBrowse.style.paddingTop = '60px'; // Add top padding of about 1 inch
     }
     
     // Set up the project cards

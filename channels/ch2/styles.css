@@ -57,6 +57,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  padding-top: 60px; /* Add top padding of about 1 inch */
 }
 
 /* === Featured Project Hero Section === */
@@ -493,7 +494,7 @@
   border-radius: 4px;
   font-size: var(--ch2-font-xs);
   font-weight: 600;
-  z-index: 5;
+  z-index: 10;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -682,6 +683,10 @@
     --ch2-font-md: 1.1rem;
   }
   
+  #section2 #portfolio-browse {
+    padding-top: 40px; /* Adjust top padding for tablet */
+  }
+  
   .featured-project {
     height: 40vh;
     min-height: 250px;
@@ -714,6 +719,10 @@
     --ch2-font-sm: 0.9rem;
     --ch2-spacing-lg: 1.5rem;
     --ch2-spacing-xl: 2.5rem;
+  }
+  
+  #section2 #portfolio-browse {
+    padding-top: 30px; /* Adjust top padding for mobile */
   }
   
   .featured-project {
