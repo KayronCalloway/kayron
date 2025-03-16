@@ -10,20 +10,20 @@ export async function init() {
     }
     
     // Prevent duplicate initialization
-    if (container.querySelector('#studio-container')) {
-      console.log("Studio already loaded; skipping initialization.");
+    if (container.querySelector('#portfolio-browse')) {
+      console.log("Portfolio browser already loaded; skipping initialization.");
       return;
     }
     
     // Dynamically load CSS first to prevent FOUC (Flash of Unstyled Content)
     await loadStyles();
     
-    // Load the portfolio studio
-    const studioResponse = await fetch('./channels/ch2/index.html');
-    if (!studioResponse.ok) throw new Error(`HTTP error! Status: ${studioResponse.status}`);
+    // Load the Netflix-style portfolio browser
+    const portfolioResponse = await fetch('./channels/ch2/index.html');
+    if (!portfolioResponse.ok) throw new Error(`HTTP error! Status: ${portfolioResponse.status}`);
     
-    const studioHtml = await studioResponse.text();
-    container.innerHTML = studioHtml;
+    const portfolioHtml = await portfolioResponse.text();
+    container.innerHTML = portfolioHtml;
     
     // Force header to be visible by notifying MenuManager
     setTimeout(() => {
@@ -41,17 +41,17 @@ export async function init() {
       container.appendChild(channelOverlay);
     }
     
-    // Load the studio script
+    // Load the portfolio browse script
     await loadScript('./channels/ch2/script.js');
     
-    // Initialize studio controls
+    // Initialize portfolio browse controls
     setTimeout(() => {
-      // Verify studio elements exist
-      const studioContainer = document.getElementById('studio-container');
-      if (studioContainer) {
-        console.log("Portfolio studio initialized successfully");
+      // Verify portfolio browse elements exist
+      const portfolioBrowse = document.getElementById('portfolio-browse');
+      if (portfolioBrowse) {
+        console.log("Portfolio browser initialized successfully");
       } else {
-        console.error("Studio container not found");
+        console.error("Portfolio browser container not found");
       }
     }, 500);
     
