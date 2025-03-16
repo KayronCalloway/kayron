@@ -63,9 +63,9 @@
 #section2 .featured-project {
   position: relative;
   width: 100%;
-  height: 50vh;
-  min-height: 300px;
-  max-height: 500px;
+  height: 55vh;
+  min-height: 320px;
+  max-height: 550px;
   margin-bottom: 0;
   overflow: hidden;
   flex-shrink: 0;
@@ -105,13 +105,20 @@
     rgba(20, 20, 20, 0.8) 30%,
     rgba(20, 20, 20, 0.4) 60%,
     rgba(20, 20, 20, 0.3) 100%
+  ),
+  linear-gradient(
+    to top,
+    rgba(20, 20, 20, 0.9) 0%,
+    rgba(20, 20, 20, 0.7) 20%,
+    rgba(20, 20, 20, 0.4) 40%,
+    rgba(20, 20, 20, 0.1) 80%
   );
   z-index: 2;
 }
 
 .featured-content {
   position: absolute;
-  bottom: 15%;
+  bottom: 5%;
   left: 5%;
   max-width: 550px;
   z-index: 3;
@@ -280,6 +287,7 @@
 .project-card {
   flex: 0 0 auto;
   width: 260px;
+  height: fit-content;
   transition: transform var(--ch2-transition-medium);
   cursor: pointer;
   position: relative;
@@ -295,7 +303,7 @@
 .card-poster {
   position: relative;
   width: 100%;
-  height: 160px;
+  height: 150px;
   overflow: hidden;
   border-radius: 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -681,7 +689,7 @@
   
   .featured-content {
     left: 3%;
-    bottom: 10%;
+    bottom: 5%;
     max-width: 400px;
   }
   
@@ -715,7 +723,7 @@
   
   .featured-content {
     left: 5%;
-    bottom: 5%;
+    bottom: 3%;
     max-width: 85%;
   }
   
