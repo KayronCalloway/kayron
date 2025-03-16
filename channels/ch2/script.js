@@ -375,6 +375,23 @@
     const scrollers = document.querySelectorAll('.project-scroller');
     
     scrollers.forEach(scroller => {
+      const parentRow = scroller.closest('.category-row');
+      const leftArrow = parentRow.querySelector('.scroll-left');
+      const rightArrow = parentRow.querySelector('.scroll-right');
+      
+      // Add arrow click handlers
+      if (leftArrow) {
+        leftArrow.addEventListener('click', () => {
+          scroller.scrollBy({ left: -600, behavior: 'smooth' });
+        });
+      }
+      
+      if (rightArrow) {
+        rightArrow.addEventListener('click', () => {
+          scroller.scrollBy({ left: 600, behavior: 'smooth' });
+        });
+      }
+      
       // Add mousewheel horizontal scrolling
       scroller.addEventListener('wheel', (e) => {
         if (e.deltaY !== 0) {
@@ -398,6 +415,29 @@
         const walk = (x - startX) * 2;
         scroller.scrollLeft = scrollLeft - walk;
       }, { passive: true });
+      
+      // Show/hide arrows based on scroll position
+      function updateArrowVisibility() {
+        // Only show left arrow if there's content to scroll left
+        if (leftArrow) {
+          leftArrow.style.opacity = scroller.scrollLeft > 20 ? 0.7 : 0.2;
+        }
+        
+        // Only show right arrow if there's content to scroll right
+        if (rightArrow) {
+          const maxScrollLeft = scroller.scrollWidth - scroller.clientWidth - 20;
+          rightArrow.style.opacity = scroller.scrollLeft < maxScrollLeft ? 0.7 : 0.2;
+        }
+      }
+      
+      // Initial visibility check
+      updateArrowVisibility();
+      
+      // Update on scroll
+      scroller.addEventListener('scroll', updateArrowVisibility);
+      
+      // Update on window resize
+      window.addEventListener('resize', updateArrowVisibility);
     });
   }
 
