@@ -15,6 +15,11 @@ export async function init() {
       return;
     }
     
+    // Ensure we have full viewport height and no scrolling
+    document.body.style.overflow = "hidden";
+    container.style.height = "100vh";
+    container.style.overflow = "hidden";
+    
     // Dynamically load CSS first to prevent FOUC (Flash of Unstyled Content)
     await loadStyles();
     
@@ -116,6 +121,14 @@ function cleanup() {
   if (window.gsap) {
     gsap.killTweensOf('.project-item');
     gsap.killTweensOf('.studio-environment');
+  }
+  
+  // Remove data attributes to prevent any leaks
+  document.body.removeAttribute('data-active-channel');
+  
+  const container = document.getElementById('section2');
+  if (container) {
+    container.removeAttribute('data-channel');
   }
   
   // Remove any event listeners (handled by removing elements)

@@ -129,6 +129,28 @@
 
   // Initialize the browse experience
   function init() {
+    // Ensure container has proper sizing
+    const container = document.getElementById('section2');
+    if (container) {
+      container.style.height = '100vh';
+      container.style.overflow = 'hidden';
+      
+      // Add data attribute for CSS scoping to prevent leaks
+      container.setAttribute('data-channel', 'ch2');
+      
+      // Add attribute to body to prevent any global leaks from fixed elements
+      document.body.setAttribute('data-active-channel', 'ch2');
+    }
+    
+    // Ensure portfolio browse has proper sizing
+    const portfolioBrowse = document.getElementById('portfolio-browse');
+    if (portfolioBrowse) {
+      portfolioBrowse.style.height = '100%';
+      portfolioBrowse.style.overflow = 'hidden';
+      portfolioBrowse.style.display = 'flex';
+      portfolioBrowse.style.flexDirection = 'column';
+    }
+    
     // Set up the project cards
     const cards = document.querySelectorAll('.project-card');
     cards.forEach(card => {
@@ -218,8 +240,9 @@
     // Generate the modal content
     modalContent.innerHTML = generateModalContent(project);
     
-    // Show the modal
+    // Show the modal and ensure it's scoped to this channel
     modal.setAttribute('aria-hidden', 'false');
+    modal.setAttribute('data-channel', 'ch2');
     
     // Set focus to the close button
     setTimeout(() => {
@@ -230,6 +253,7 @@
   // Close the project modal
   function closeProjectModal() {
     modal.setAttribute('aria-hidden', 'true');
+    modal.removeAttribute('data-channel');
     
     // Remove active states from cards
     if (activeCard) {

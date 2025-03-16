@@ -1,6 +1,10 @@
 /* channels/ch2/styles.css - Netflix-style Portfolio Showcase */
 
 /* Scoping all styles to Ch2 to avoid global leakage */
+/* Nested selector for all elements to prevent global leakage */
+#section2 * {
+  box-sizing: border-box;
+}
 #section2 {
   /* Base styles */
   --ch2-bg-color: #141414;
@@ -39,31 +43,35 @@
   color: var(--ch2-text-color);
   font-family: 'Merova', Arial, sans-serif;
   width: 100%;
-  min-height: 100vh;
-  overflow-x: hidden;
+  height: 100vh;
+  overflow: hidden;
   position: relative;
-  padding: 60px 0 2rem 0;
-  margin-top: 0;
+  padding: 0;
+  margin: 0;
 }
 
 /* Portfolio browse container */
-#portfolio-browse {
+#section2 #portfolio-browse {
   width: 100%;
-  padding-bottom: var(--ch2-spacing-xl);
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 /* === Featured Project Hero Section === */
-.featured-project {
+#section2 .featured-project {
   position: relative;
   width: 100%;
-  height: 70vh;
-  min-height: 500px;
-  max-height: 800px;
-  margin-bottom: var(--ch2-spacing-xl);
+  height: 50vh;
+  min-height: 300px;
+  max-height: 500px;
+  margin-bottom: 0;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
-.featured-backdrop {
+#section2 .featured-backdrop {
   position: absolute;
   top: 0;
   left: 0;
@@ -81,11 +89,11 @@
   transition: transform var(--ch2-transition-slow);
 }
 
-.featured-project:hover .featured-backdrop img {
+#section2 .featured-project:hover .featured-backdrop img {
   transform: scale(1.02);
 }
 
-.backdrop-overlay {
+#section2 .backdrop-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -184,21 +192,25 @@
 /* === Category Rows === */
 .category-row {
   padding: 0 var(--ch2-spacing-md);
-  margin-bottom: var(--ch2-spacing-lg);
   position: relative;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .single-row {
-  margin: var(--ch2-spacing-lg) 0 var(--ch2-spacing-xl);
+  margin: 0;
   padding: 0 var(--ch2-spacing-lg);
 }
 
 .category-title {
   font-size: var(--ch2-font-md);
   font-weight: 600;
-  margin-bottom: var(--ch2-spacing-sm);
+  margin-bottom: var(--ch2-spacing-xs);
   padding-left: var(--ch2-spacing-xs);
   position: relative;
+  flex-shrink: 0;
 }
 
 .category-title::before {
@@ -217,15 +229,16 @@
   display: flex;
   gap: var(--ch2-spacing-md);
   overflow-x: auto;
-  padding: var(--ch2-spacing-xs) 40px var(--ch2-spacing-md);
+  padding: var(--ch2-spacing-xs) 40px;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch; /* Better touch scroll behavior */
+  flex: 1;
 }
 
 .single-row .project-scroller {
-  padding-bottom: var(--ch2-spacing-lg);
+  padding-bottom: var(--ch2-spacing-xs);
 }
 
 .project-scroller::-webkit-scrollbar {
@@ -355,7 +368,7 @@
 }
 
 /* === Project Modal === */
-.project-modal {
+#section2 .project-modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -370,12 +383,12 @@
   transition: opacity var(--ch2-transition-medium), visibility var(--ch2-transition-medium);
 }
 
-.project-modal[aria-hidden="false"] {
+#section2 .project-modal[aria-hidden="false"] {
   opacity: 1;
   visibility: visible;
 }
 
-.modal-backdrop {
+#section2 .modal-backdrop {
   position: absolute;
   top: 0;
   left: 0;
@@ -385,7 +398,7 @@
   backdrop-filter: blur(5px);
 }
 
-.modal-container {
+#section2 .modal-container {
   position: relative;
   width: 90%;
   max-width: 1000px;
@@ -399,7 +412,7 @@
   transition: transform var(--ch2-transition-slow), opacity var(--ch2-transition-slow);
 }
 
-.project-modal[aria-hidden="false"] .modal-container {
+#section2 .project-modal[aria-hidden="false"] .modal-container {
   transform: translateY(0);
   opacity: 1;
 }
@@ -431,7 +444,7 @@
 .modal-content {
   padding: var(--ch2-spacing-lg);
   overflow-y: auto;
-  max-height: calc(90vh - 180px);
+  max-height: calc(90vh - 120px);
 }
 
 .view-controls {
@@ -462,7 +475,7 @@
 /* Note: Browse Controls section removed */
 
 /* === Channel Number === */
-.channel-number-overlay {
+#section2 .channel-number-overlay {
   position: fixed;
   bottom: var(--ch2-spacing-sm);
   right: var(--ch2-spacing-sm);
@@ -662,8 +675,8 @@
   }
   
   .featured-project {
-    height: 60vh;
-    min-height: 400px;
+    height: 40vh;
+    min-height: 250px;
   }
   
   .featured-content {
@@ -696,8 +709,8 @@
   }
   
   .featured-project {
-    height: 50vh;
-    min-height: 350px;
+    height: 35vh;
+    min-height: 200px;
   }
   
   .featured-content {
