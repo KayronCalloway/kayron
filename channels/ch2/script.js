@@ -194,11 +194,7 @@
       });
     });
 
-    // Set up behind the scenes toggle
-    const viewModeToggle = document.getElementById('view-mode-toggle');
-    if (viewModeToggle) {
-      viewModeToggle.addEventListener('click', toggleBehindScenesMode);
-    }
+    // Behind the scenes mode removed
 
     // Set initial active state for first view button
     if (viewButtons.length > 0) {
@@ -290,17 +286,7 @@
     });
   }
 
-  // Toggle behind the scenes mode
-  function toggleBehindScenesMode() {
-    document.body.classList.toggle('behind-scenes-mode');
-    
-    const toggle = document.getElementById('view-mode-toggle');
-    if (document.body.classList.contains('behind-scenes-mode')) {
-      toggle.classList.add('active');
-    } else {
-      toggle.classList.remove('active');
-    }
-  }
+  // Behind the scenes mode function removed
 
   // Generate modal content based on project data
   function generateModalContent(project) {
