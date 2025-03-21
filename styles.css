@@ -111,10 +111,12 @@ body {
   transition: opacity 0.5s;
 }
 .header-name {
-  font-size: 2rem;
+  font-size: 1.8rem;
   text-align: left;
   font-weight: 600;
   letter-spacing: 0.02em;
+  margin-top: 10px; /* Add some space from top of header */
+  font-family: 'Merova', sans-serif;
 }
 .menu-button {
   background: transparent;
@@ -123,16 +125,17 @@ body {
   padding: 8px 20px;
   cursor: pointer;
   position: fixed !important; /* Fixed positioning, enforced */
-  top: 20px !important; /* Adjusted to center vertically in taller header */
+  top: 10px !important; /* Aligned with header name */
   right: 20px !important;
   z-index: 999999 !important; /* High z-index but lower than TV guide */
   opacity: 0; /* Initially hidden, will be controlled by MenuManager */
   display: none; /* Hidden until explicitly enabled via JavaScript */
   transition: opacity 0.3s ease; /* Smooth transition when appearing/disappearing */
-  letter-spacing: 1px;
-  font-weight: 500;
+  letter-spacing: 0.02em; /* Match header name letter spacing */
+  font-weight: 600; /* Match header name font weight */
   text-transform: uppercase;
-  font-size: 0.9rem;
+  font-size: 1.2rem; /* Increased font size to better match header name */
+  font-family: 'Merova', sans-serif; /* Ensure same font as header name */
 }
 
 /* Menu visibility utility classes */
@@ -589,18 +592,20 @@ body {
     overflow: visible;
   }
   .header-name {
-    font-size: 1.5rem; /* Still larger, but more appropriate for mobile */
+    font-size: 1.3rem; /* Adjusted for mobile */
+    margin-top: 8px; /* Keep consistent spacing from top */
   }
   .menu-button {
     padding: 5px 15px;
-    font-size: 0.8rem;
+    font-size: 1rem; /* Increased for better match with header name */
     min-width: 44px;
     min-height: 44px;
-    top: 15px !important; /* Adjusted for mobile header */
+    top: 8px !important; /* Aligned with header name in mobile */
+    right: 10px !important;
   }
   #header {
-    height: 45px; /* Slightly reduced height for mobile but still accommodates larger font */
-    padding: 5px 15px;
+    height: 45px; /* Slightly reduced height for mobile but still accommodates font */
+    padding: 0 15px; /* Remove vertical padding to control alignment */
   }
   .channel-button {
     padding: 15px 25px; /* Larger touch target on mobile */
