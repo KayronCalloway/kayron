@@ -805,3 +805,34 @@
 .project-card.active .card-poster {
   box-shadow: 0 0 0 2px var(--ch2-accent-color), 0 6px 20px rgba(229, 9, 20, 0.4);
 }
+
+/* Project link styling */
+.project-link {
+  margin-top: 25px;
+}
+
+.external-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: var(--ch2-accent-color);
+  color: var(--ch2-text-color);
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+}
+
+.external-link:hover {
+  background-color: var(--ch2-accent-hover);
+  transform: translateY(-2px);
+}
+
+.link-arrow {
+  margin-left: 8px;
+  transition: transform 0.2s ease;
+}
+
+.external-link:hover .link-arrow {
+  transform: translateX(4px);
+}
