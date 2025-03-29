@@ -3,110 +3,137 @@
   // Project data
   const projectData = {
     'business-strategy': {
-      title: 'Business Strategy Solutions',
-      tagline: 'Transform your business with our revolutionary strategic approach',
-      description: `Our comprehensive business strategy solutions help companies identify opportunities for growth, optimize their operations, and develop roadmaps for sustainable success. We combine market analysis with innovative thinking to create customized strategies that deliver measurable results.`,
+      title: 'Upgrade Labs (Bulletproof Labs)',
+      tagline: 'Key contributor to biohacking fitness center startup and growth',
+      description: `Served as a key contributor in the startup and growth of Bulletproof Labs (now Upgrade Labs), a revolutionary biohacking fitness concept created by Dave Asprey of Bulletproof Coffee. Devised strategic business plans and assisted with implementation while mastering operation of up to 15 pieces of cutting-edge fitness equipment. Facilitated sales through prospecting and equipment demonstrations, while analyzing sales data to optimize inventory and maximize profits.`,
+      projectUrl: 'https://upgradelabs.com',
       metaInfo: [
-        { label: 'Client Impact', value: '45+ Businesses' },
-        { label: 'Average ROI', value: '300%' },
-        { label: 'Success Rate', value: '87%' }
+        { label: 'Role', value: 'Business Operations' },
+        { label: 'Skills', value: 'Strategic Planning, Sales, Equipment Operation' },
+        { label: 'Location', value: 'Santa Monica, CA' }
       ],
       galleryImages: [
-        { src: 'visuals/bulletproof.jpg', alt: 'Business Strategy - Framework Overview' },
-        { src: 'visuals/mtr.jpg', alt: 'Business Strategy - Workshop Session' },
-        { src: 'visuals/VOL 1. FIRST c.001.jpeg', alt: 'Business Strategy - Results Graphic' }
+        { src: 'visuals/bulletproof.jpg', alt: 'Upgrade Labs - Facility' },
+        { src: 'visuals/mtr.jpg', alt: 'Upgrade Labs - Tech Equipment' },
+        { src: 'visuals/VOL 1. FIRST c.001.jpeg', alt: 'Upgrade Labs - Brand Experience' }
       ],
       processStages: [
-        { name: 'Research', description: 'In-depth market and competitive analysis to identify opportunities and threats.' },
-        { name: 'Strategy', description: 'Development of custom frameworks tailored to your specific business objectives.' },
-        { name: 'Implementation', description: 'Hands-on guidance to execute strategic initiatives with precision.' },
-        { name: 'Measurement', description: 'Tracking key performance indicators to quantify impact and ROI.' }
+        { name: 'Strategic Planning', description: 'Devised strategic business plans and evaluated business requirements for technical solutions.' },
+        { name: 'Equipment Expertise', description: 'Mastered operation of up to 15 pieces of advanced fitness and recovery equipment.' },
+        { name: 'Sales Development', description: 'Facilitated sales through prospecting, product demonstrations, and customer engagement.' },
+        { name: 'Inventory Management', description: 'Analyzed sales data and forecasts to maintain optimal inventory and maximize profits.' }
       ]
     },
     'market-analysis': {
-      title: 'Market Analysis Framework',
-      tagline: 'Data-driven insights to navigate complex market landscapes',
-      description: `Our market analysis framework provides comprehensive intelligence on industry trends, competitive positioning, and growth opportunities. Using advanced data analytics and expert interpretation, we deliver actionable insights that help businesses make informed strategic decisions.`,
+      title: 'The Modern Tea Room',
+      tagline: 'Director of Development for specialty tea shop in Lancaster',
+      description: `As Director of Development for The Modern Tea Room (MTR), I spearheaded business growth initiatives that propelled this specialty tea shop to success. I designed and implemented four distinct revenue streams, formulated quarterly growth strategies, and championed the brand's development from its inception while mentoring staff to enhance product knowledge and boost sales.`,
+      projectUrl: 'https://www.yelp.com/biz/the-modern-tea-room-lancaster',
       metaInfo: [
-        { label: 'Markets Analyzed', value: '12+' },
-        { label: 'Data Points', value: '10,000+' },
-        { label: 'Accuracy Rate', value: '95%' }
+        { label: 'Role', value: 'Director of Development' },
+        { label: 'Timeline', value: 'March 2015 - March 2016' },
+        { label: 'Location', value: 'Lancaster, CA' }
       ],
       galleryImages: [
-        { src: 'visuals/mtr.jpg', alt: 'Market Analysis - Data Visualization' },
-        { src: 'visuals/bulletproof.jpg', alt: 'Market Analysis - Segment Breakdown' },
-        { src: 'visuals/VOL 1. FIRST c.001.jpeg', alt: 'Market Analysis - Competitive Landscape' }
+        { src: 'visuals/mtr.jpg', alt: 'The Modern Tea Room - Interior' },
+        { src: 'visuals/bulletproof.jpg', alt: 'The Modern Tea Room - Products' },
+        { src: 'visuals/VOL 1. FIRST c.001.jpeg', alt: 'The Modern Tea Room - Customer Experience' }
       ],
       processStages: [
-        { name: 'Data Collection', description: 'Gathering comprehensive industry and competitive intelligence.' },
-        { name: 'Analysis', description: 'Applying advanced analytics to identify patterns and opportunities.' },
-        { name: 'Interpretation', description: 'Translating data into meaningful business insights.' },
-        { name: 'Recommendation', description: 'Developing actionable strategies based on findings.' }
+        { name: 'Revenue Diversification', description: 'Designed and enabled four alternative revenue sources for sustainable growth.' },
+        { name: 'Team Development', description: 'Mentored staff in product knowledge and sales techniques to enhance customer experience.' },
+        { name: 'Strategic Planning', description: 'Formulated comprehensive quarterly strategies to maximize revenue and growth.' },
+        { name: 'Brand Building', description: 'Championed the growth of the brand from inception, establishing market presence.' }
       ]
     },
     'growth-platform': {
-      title: 'Growth Platform',
-      tagline: 'Scalable solutions for sustainable business expansion',
-      description: `Our Growth Platform provides businesses with the strategies, tools, and frameworks needed to scale effectively. We focus on creating sustainable growth engines that can adapt to changing market conditions while maintaining operational excellence.`,
+      title: 'VOL 1 Coffee Concept',
+      tagline: 'Pioneering the 4th Wave Coffee movement',
+      description: `VOL 1 envisions a space that transcends the boundaries of coffee, culture, and craftsmanship—creating a global destination where tranquility and artistry inspire connection and discovery. Our mission is to create an immersive coffee experience that bridges cultures, showcases the world's finest coffees, and celebrates the art of connection while establishing the new 4th wave coffee movement.`,
+      projectUrl: '#',
       metaInfo: [
-        { label: 'Growth Rate', value: '200%' },
-        { label: 'Scalability Index', value: '8.5/10' },
-        { label: 'Implementation Time', value: '90 Days' }
+        { label: 'Status', value: 'In Development' },
+        { label: 'Role', value: 'Founder & Concept Creator' },
+        { label: 'Category', value: 'Hospitality Innovation' }
       ],
       galleryImages: [
-        { src: 'visuals/VOL 1. FIRST c.001.jpeg', alt: 'Growth Platform - Scaling Framework' },
-        { src: 'visuals/bulletproof.jpg', alt: 'Growth Platform - Expansion Planning' },
-        { src: 'visuals/dou.jpg', alt: 'Growth Platform - Market Penetration' }
+        { src: 'visuals/VOL 1. FIRST c.001.jpeg', alt: 'VOL 1 - Coffee Experience Concept' },
+        { src: 'visuals/bulletproof.jpg', alt: 'VOL 1 - Space Design Concept' },
+        { src: 'visuals/dou.jpg', alt: 'VOL 1 - Cultural Integration Elements' }
       ],
       processStages: [
-        { name: 'Assessment', description: 'Identifying current capabilities and growth limitations.' },
-        { name: 'Architecture', description: 'Designing scalable systems and processes.' },
-        { name: 'Activation', description: 'Implementing growth strategies across channels.' },
-        { name: 'Acceleration', description: 'Optimizing for maximum sustainable growth velocity.' }
+        { name: 'Vision Development', description: 'Creating a foundational concept that transcends traditional coffee experiences.' },
+        { name: 'Cultural Integration', description: 'Designing elements that bridge different coffee cultures and traditions.' },
+        { name: 'Experiential Innovation', description: 'Developing immersive customer journeys that balance artistry and tranquility.' },
+        { name: 'Fourth Wave Pioneering', description: 'Establishing frameworks for what defines the new era of coffee culture.' }
       ]
     },
     'luxury-brand': {
-      title: 'Luxury Brand Development',
-      tagline: 'Elevating brands to premium market positioning',
-      description: `Our luxury brand development service helps businesses establish distinctive positioning in premium markets. We craft sophisticated brand identities, design high-end customer experiences, and develop exclusive marketing strategies that resonate with affluent audiences.`,
+      title: 'C'est Bon Paris Fashion Week',
+      tagline: 'Audio design and narration for SS23 runway presentation',
+      description: `Contributed audio design and narration for C'est Bon's Spring/Summer 2023 Collection showcased at Paris Fashion Week. The collection, which received coverage in fashion publications including Vogue, explored themes of nature and architecture. My role involved creating audio elements that complemented the designs while also providing consulting services for the presentation.`,
+      projectUrl: 'https://pausemag.co.uk/2022/06/cest-bon-spring-summer-2023-collection/',
       metaInfo: [
-        { label: 'Brand Value Increase', value: '65%' },
-        { label: 'Industry Awards', value: '12' },
-        { label: 'Premium Perception', value: '9.2/10' }
+        { label: 'Role', value: 'Audio Design & Narration' },
+        { label: 'Season', value: 'Spring/Summer 2023' },
+        { label: 'Coverage', value: 'Vogue, Pause Magazine' }
       ],
       galleryImages: [
-        { src: 'visuals/dou.jpg', alt: 'Luxury Brand - Identity System' },
-        { src: 'visuals/sobe.jpeg', alt: 'Luxury Brand - Customer Experience' },
-        { src: 'visuals/VOL 1. FIRST c.001.jpeg', alt: 'Luxury Brand - Market Positioning' }
+        { src: 'visuals/dou.jpg', alt: 'C'est Bon - Runway Presentation' },
+        { src: 'visuals/sobe.jpeg', alt: 'C'est Bon - Collection Details' },
+        { src: 'visuals/VOL 1. FIRST c.001.jpeg', alt: 'C'est Bon - Show Experience' }
       ],
       processStages: [
-        { name: 'Identity', description: 'Crafting distinctive luxury positioning and visual language.' },
-        { name: 'Experience', description: 'Designing premium touchpoints across all customer interactions.' },
-        { name: 'Exclusivity', description: 'Building scarcity and desirability into brand offerings.' },
-        { name: 'Elevation', description: 'Continuous refinement to maintain premium positioning.' }
+        { name: 'Concept Development', description: 'Understanding the collection's themes to create complementary audio elements.' },
+        { name: 'Audio Design', description: 'Crafting a sonic atmosphere that enhanced the visual and emotional impact of designs.' },
+        { name: 'Narration', description: 'Recording evocative narrative elements that communicated the brand's vision.' },
+        { name: 'Consultation', description: 'Providing strategic input to optimize the overall presentation experience.' }
       ]
     },
     'digital-platform': {
-      title: 'Digital Innovation Platform',
-      tagline: 'Cutting-edge technology solutions for business transformation',
-      description: `Our Digital Innovation Platform helps businesses harness emerging technologies to create competitive advantages. From AI-powered analytics to immersive customer experiences, we build forward-thinking digital solutions that drive engagement and business outcomes.`,
+      title: 'SOBE x Trophies Collaboration',
+      tagline: 'Menu design and concept development for culinary partnership',
+      description: `Assisted in creating the concept, storytelling, and artistic direction for the SOBE x Trophies collaboration burger project. My contributions included menu design and refinement, helping to translate the SOBE brand's ethos into a unique culinary experience that resonated with customers and enhanced both brands' visibility.`,
+      projectUrl: 'https://www.instagram.com/p/C_08KxTyJHB/',
       metaInfo: [
-        { label: 'Engagement Increase', value: '250%' },
-        { label: 'Implementation Speed', value: '40% Faster' },
-        { label: 'Digital Transformation', value: '32 Businesses' }
+        { label: 'Role', value: 'Menu & Concept Design' },
+        { label: 'Collaboration', value: 'SOBE x Trophies' },
+        { label: 'Platform', value: 'Culinary Experience' }
       ],
       galleryImages: [
-        { src: 'visuals/mtr.jpg', alt: 'Digital Platform - Technology Stack' },
-        { src: 'visuals/bulletproof.jpg', alt: 'Digital Platform - User Interface' },
-        { src: 'visuals/VOL 1. FIRST c.001.jpeg', alt: 'Digital Platform - Performance Metrics' }
+        { src: 'visuals/sobe.jpeg', alt: 'SOBE x Trophies - Collaboration Burger' },
+        { src: 'visuals/bulletproof.jpg', alt: 'SOBE x Trophies - Menu Design' },
+        { src: 'visuals/VOL 1. FIRST c.001.jpeg', alt: 'SOBE x Trophies - Concept Art' }
       ],
       processStages: [
-        { name: 'Discovery', description: 'Identifying digital opportunity spaces and technologies.' },
-        { name: 'Architecture', description: 'Designing innovative systems and platforms.' },
-        { name: 'Development', description: 'Building with cutting-edge technologies and methodologies.' },
-        { name: 'Optimization', description: 'Continuously enhancing performance and capabilities.' }
+        { name: 'Concept Development', description: 'Creating a narrative that united the SOBE brand with culinary innovation.' },
+        { name: 'Menu Design', description: 'Crafting a specialized menu that highlighted the partnership elements.' },
+        { name: 'Artistic Direction', description: 'Contributing to the visual storytelling and presentation concepts.' },
+        { name: 'Refinement', description: 'Iterative improvements to ensure the final experience matched the collaborative vision.' }
       ]
-    }
+    },
+    'user-experience': {
+      title: 'Coloring With Gray',
+      tagline: 'Founder & Creative Director of luxury fragrance brand',
+      description: `Established and founded Coloring With Gray, creating immersive sensory experiences that challenge perspectives. Launched "Reflections of You," a bespoke fragrance portfolio leveraging proprietary olfactory technologies that evolve with the wearer. Engineered a brand ecosystem converging consumer psychology with artistic narrative, while overseeing end-to-end product development and sustainability-driven production strategies.`,
+      projectUrl: 'https://coloringwithgray.github.io/coloring-page/',
+      metaInfo: [
+        { label: 'Role', value: 'Founder & Creative Director' },
+        { label: 'Founded', value: '2024' },
+        { label: 'Product', value: 'Luxury Fragrance' }
+      ],
+      galleryImages: [
+        { src: 'visuals/bulletproof.jpg', alt: 'Coloring With Gray - Brand Identity' },
+        { src: 'visuals/mtr.jpg', alt: 'Coloring With Gray - Product Design' },
+        { src: 'visuals/VOL 1. FIRST c.001.jpeg', alt: 'Coloring With Gray - Customer Experience' }
+      ],
+      processStages: [
+        { name: 'Brand Development', description: 'Creating a brand identity that challenges conventional perspectives on fragrance.' },
+        { name: 'Product Innovation', description: 'Developing proprietary olfactory technologies for personalized fragrance experiences.' },
+        { name: 'Experience Design', description: 'Engineering immersive customer experiences that blend artistry with commerce.' },
+        { name: 'Sustainable Production', description: 'Implementing ethical sourcing and environmentally conscious production methods.' }
+      ]
+    },
   };
 
   // Default projects for modal process views
@@ -322,6 +349,15 @@
       </div>
     `).join('') : '';
     
+    // Generate project link HTML if URL exists
+    const projectLinkHTML = project.projectUrl ? `
+      <div class="project-link">
+        <a href="${project.projectUrl}" target="_blank" rel="noopener noreferrer" class="external-link">
+          Visit Project <span class="link-arrow">→</span>
+        </a>
+      </div>
+    ` : '';
+    
     // Generate gallery HTML
     const galleryHTML = project.galleryImages ? `
       <div class="project-gallery">
@@ -367,6 +403,7 @@
           <div class="project-description">
             <h3>Overview</h3>
             <p>${project.description}</p>
+            ${projectLinkHTML}
           </div>
         </div>
         
