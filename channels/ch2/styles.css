@@ -64,10 +64,10 @@
 #section2 .featured-project {
   position: relative;
   width: 100%;
-  height: 55vh;
-  min-height: 320px;
-  max-height: 550px;
-  margin-bottom: 0;
+  height: 60vh;
+  min-height: 350px;
+  max-height: 600px;
+  margin-bottom: 15px;
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -119,11 +119,12 @@
 
 .featured-content {
   position: absolute;
-  bottom: 5%;
-  left: 5%;
+  bottom: 8%;
+  left: 6%;
   max-width: 550px;
   z-index: 3;
   animation: fadeInUp 0.8s ease-out forwards;
+  padding-right: 20px;
 }
 
 .featured-category {
@@ -216,20 +217,24 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  margin-bottom: 30px;
 }
 
 .single-row {
   margin: 0;
   padding: 0 var(--ch2-spacing-lg);
+  margin-top: 10px;
 }
 
 .category-title {
-  font-size: var(--ch2-font-md);
+  font-size: var(--ch2-font-lg);
   font-weight: 600;
-  margin-bottom: var(--ch2-spacing-xs);
-  padding-left: var(--ch2-spacing-xs);
+  margin-bottom: var(--ch2-spacing-sm);
+  padding-left: var(--ch2-spacing-sm);
   position: relative;
   flex-shrink: 0;
+  letter-spacing: 0.05em;
+  color: var(--ch2-highlight);
 }
 
 .category-title::before {
@@ -238,26 +243,29 @@
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  height: 1.2em;
-  width: 3px;
+  height: 1.5em;
+  width: 4px;
   background-color: var(--ch2-accent-color);
   border-radius: 2px;
+  box-shadow: 0 0 8px rgba(62, 146, 204, 0.4);
 }
 
 .project-scroller {
   display: flex;
-  gap: var(--ch2-spacing-md);
+  gap: var(--ch2-spacing-lg);
   overflow-x: auto;
-  padding: var(--ch2-spacing-xs) 40px;
+  padding: var(--ch2-spacing-md) 45px;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch; /* Better touch scroll behavior */
   flex: 1;
+  align-items: center;
 }
 
 .single-row .project-scroller {
-  padding-bottom: var(--ch2-spacing-xs);
+  padding-bottom: var(--ch2-spacing-md);
+  padding-top: var(--ch2-spacing-sm);
 }
 
 .project-scroller::-webkit-scrollbar {
@@ -269,9 +277,9 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
-  background-color: rgba(0, 0, 0, 0.7);
+  width: 46px;
+  height: 46px;
+  background-color: rgba(25, 25, 25, 0.8);
   color: var(--ch2-text-color);
   border-radius: 50%;
   display: flex;
@@ -279,42 +287,49 @@
   justify-content: center;
   cursor: pointer;
   opacity: 0.7;
-  transition: opacity var(--ch2-transition-fast), transform var(--ch2-transition-fast);
+  transition: all var(--ch2-transition-fast);
   z-index: 5;
+  font-size: 18px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .scroll-indicator:hover {
   opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+  background-color: var(--ch2-accent-color);
+  box-shadow: 0 3px 12px rgba(62, 146, 204, 0.5);
 }
 
 .scroll-left {
-  left: 10px;
+  left: 15px;
 }
 
 .scroll-right {
-  right: 10px;
+  right: 15px;
 }
 
 /* === Project Cards === */
 .project-card {
   flex: 0 0 auto;
-  width: 260px;
+  width: 280px;
   height: fit-content;
-  transition: transform var(--ch2-transition-medium);
+  transition: all var(--ch2-transition-medium);
   cursor: pointer;
   position: relative;
-  border-radius: 4px;
+  border-radius: 8px;
   overflow: hidden;
   /* Ensure clicks work, with Safari-specific enhancements */
   pointer-events: auto;
   z-index: 1;
   /* Add subtle visual feedback to make it obvious cards are clickable */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   /* Safari-specific fixes */
   -webkit-appearance: button; /* Make Safari treat it like a button */
   -webkit-transform: translateZ(0); /* Hardware acceleration for Safari */
   -webkit-tap-highlight-color: rgba(62, 146, 204, 0.2); /* Visual feedback in Safari */
   touch-action: manipulation; /* Optimize touch behavior */
+  margin: 10px 0;
 }
 
 .project-card:hover {
@@ -325,9 +340,9 @@
 .card-poster {
   position: relative;
   width: 100%;
-  height: 150px;
+  height: 170px;
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: 8px 8px 0 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -380,17 +395,21 @@
 }
 
 .card-info {
-  padding: var(--ch2-spacing-xs) var(--ch2-spacing-xs) 0;
+  padding: var(--ch2-spacing-sm) var(--ch2-spacing-sm) var(--ch2-spacing-xs);
+  background-color: rgba(20, 20, 20, 0.95);
+  border-top: 1px solid rgba(62, 146, 204, 0.2);
 }
 
 .card-title {
   font-size: var(--ch2-font-sm);
-  font-weight: 500;
+  font-weight: 600;
   margin: 0;
   transition: color var(--ch2-transition-fast);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  letter-spacing: 0.03em;
+  text-align: center;
 }
 
 .project-card:hover .card-title {
