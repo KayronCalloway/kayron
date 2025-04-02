@@ -40,9 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
     navigator.sendBeacon('/analytics', JSON.stringify(body));
     console.log(`Tracked ${metricName}:`, metric.value);
   };
-  webVitals.getCLS(metric => sendToAnalytics('CLS', metric));
-  webVitals.getFID(metric => sendToAnalytics('FID', metric));
-  webVitals.getLCP(metric => sendToAnalytics('LCP', metric));
+  
+  // Check if webVitals is available before using it
+  if (typeof window.webVitals !== 'undefined') {
+    window.webVitals.getCLS(metric => sendToAnalytics('CLS', metric));
+    window.webVitals.getFID(metric => sendToAnalytics('FID', metric));
+    window.webVitals.getLCP(metric => sendToAnalytics('LCP', metric));
+  } else {
+    console.log("Web Vitals not loaded, skipping performance tracking");
+  }
 
   // --- Haptic Feedback ---
   const triggerHaptic = () => {
@@ -174,6 +180,11 @@ const resetMenuStyles = () => {
       duration: 0.5,
       opacity: 0,
       onComplete: () => {
+        // Important: Make sure the power button is completely hidden
+        powerButton.style.display = "none";
+        powerButton.style.opacity = 0;
+        powerButton.style.visibility = "hidden";
+        
         landing.style.display = "none";
         mainContent.style.display = "block";
         document.body.style.overflow = "auto";
@@ -282,7 +293,10 @@ const resetMenuStyles = () => {
       duration: 0.3,
       opacity: 0,
       ease: "power2.out",
-      onComplete: () => powerButton.style.display = "none"
+      onComplete: () => {
+        powerButton.style.display = "none";
+        powerButton.style.visibility = "hidden";
+      }
     });
     const tl = gsap.timeline({
       onComplete: () => {
