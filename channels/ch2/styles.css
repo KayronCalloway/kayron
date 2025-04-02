@@ -186,6 +186,12 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color var(--ch2-transition-fast), transform var(--ch2-transition-fast);
+  /* Ensure button is clickable */
+  position: relative;
+  z-index: 3;
+  pointer-events: auto;
+  /* Add box shadow for better visual feedback */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .featured-cta:hover {
@@ -294,6 +300,11 @@
   position: relative;
   border-radius: 4px;
   overflow: hidden;
+  /* Ensure clicks work */
+  pointer-events: auto;
+  z-index: 1;
+  /* Add subtle visual feedback to make it obvious cards are clickable */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .project-card:hover {
@@ -390,11 +401,14 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity var(--ch2-transition-medium), visibility var(--ch2-transition-medium);
+  /* Ensure modal appears over other content */
+  pointer-events: none;
 }
 
 #section2 .project-modal[aria-hidden="false"] {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
 }
 
 #section2 .modal-backdrop {
