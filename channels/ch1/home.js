@@ -68,6 +68,9 @@ export async function init() {
       // Apply styles to each button for better mobile touch targets
       const buttons = channelButtons.querySelectorAll('.channel-button');
       buttons.forEach(button => {
+        // Apply Merova font to all buttons
+        button.style.fontFamily = "'Merova', sans-serif";
+        
         if (window.innerWidth <= 600) {
           button.style.padding = '16px 30px'; // Larger touch target on mobile
           button.style.fontSize = '1.2rem';   // Slightly larger text
