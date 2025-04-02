@@ -661,60 +661,167 @@
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
+  /* Container optimization */
+  #game-show-container {
+    padding: 0 15px 60px 15px; /* Reduced side padding */
+    height: 100vh; /* Ensure full height on mobile */
+    justify-content: flex-start; /* Start from top */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  }
+  
+  /* Host intro screen */
   .host-content {
     width: 95%;
-    padding: 1.5rem;
+    padding: 1.5rem 1rem; /* Reduced padding */
+    margin-top: 20px; /* Add margin from top */
+  }
+
+  .host-image {
+    width: 100px; /* Slightly smaller */
+    height: 100px;
+    margin-bottom: 1rem; /* Less space */
   }
 
   .host-speech {
-    font-size: 1.1rem;
+    font-size: 1rem; /* Slightly smaller text */
     line-height: 1.4;
   }
   
+  .host-content h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem; /* Less space */
+  }
+  
+  .start-game-button {
+    padding: 15px 30px; /* Larger touch target */
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    min-width: 200px; /* Ensure good width for tapping */
+    min-height: 55px; /* Taller for easier tapping */
+    border-radius: 10px; /* Slightly larger radius */
+    -webkit-tap-highlight-color: rgba(30, 144, 255, 0.4); /* Visual feedback */
+    /* Better visibility */
+    box-shadow: 0 0 25px rgba(30, 144, 255, 0.7);
+  }
+  
+  /* Game area */
+  .game-header {
+    padding: 0.5rem;
+    margin-top: 0; /* Remove top margin */
+    position: sticky; /* Keep header visible */
+    top: 0;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.9); /* More opaque */
+  }
+  
+  #round-number {
+    font-size: 1.2rem; /* Slightly smaller */
+  }
+  
+  #current-score {
+    font-size: 2rem; /* Slightly smaller */
+  }
+  
+  .timer-container {
+    width: 150px; /* Smaller width */
+  }
+  
+  /* Question and options */
   #question-display {
-    font-size: 1.3rem;
+    font-size: 1.1rem; /* Smaller for mobile */
     padding: 1rem;
-    width: 95%;
+    width: 100%;
     max-width: 100%;
+    margin-bottom: 0.5rem; /* Less space */
+    line-height: 1.4;
   }
   
   .question-area {
-    width: 95%;
-    gap: 1rem;
+    width: 100%;
+    gap: 0.5rem; /* Less space between elements */
+    padding: 0 5px; /* Small side padding */
+  }
+  
+  #options-container {
+    gap: 0.6rem; /* Less space between options */
+    width: 100%;
+    padding-bottom: 50px; /* Space at bottom for scrolling */
   }
   
   .option-button {
-    padding: 0.8rem;
-    font-size: 1rem;
-    min-height: 60px;
+    padding: 0.7rem;
+    font-size: 0.95rem;
+    min-height: 64px; /* Taller for easier tapping */
+    border-radius: 10px; /* More rounded */
+    margin-bottom: 0.4rem;
+    width: 100%;
+    max-width: 100%;
+    -webkit-tap-highlight-color: rgba(30, 144, 255, 0.4); /* Visual feedback */
+    /* Better box shadow for depth */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .option-button:active {
+    transform: scale(0.98); /* Visual feedback when tapped */
   }
   
   .option-letter {
     padding: 0.3rem 0.7rem;
     min-width: 2rem;
+    font-size: 1rem;
   }
   
-  .call-to-action {
-    flex-direction: column;
-    align-items: center;
+  .insight {
+    font-size: 0.9rem;
+    padding: 0.7rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0.5rem 0;
   }
   
+  /* Points display */
   .points-display {
     font-size: 1.4rem;
     padding: 0.5rem 1rem;
+    /* Make it more visible */
+    box-shadow: 0 0 20px rgba(30, 144, 255, 0.7);
   }
   
-  .host-content h1 {
-    font-size: 1.8rem;
+  /* Commercial break */
+  .commercial-content {
+    width: 95%;
+    padding: 1.2rem;
   }
   
+  .skill-showcase {
+    gap: 0.8rem;
+  }
+  
+  .skill-item {
+    min-width: 90px; /* Smaller on mobile */
+    padding: 0.8rem;
+    width: 40%; /* Two per row */
+  }
+  
+  /* Results screen */
   .results-content {
     width: 95%;
     padding: 1rem;
+    gap: 1rem; /* Less space */
+  }
+  
+  .results-header {
+    margin-bottom: 1rem; /* Less space */
   }
   
   #performance-details h4 {
     font-size: 1.4rem;
+    line-height: 1.3;
+  }
+  
+  #performance-details p {
+    font-size: 0.9rem;
+    line-height: 1.4;
   }
   
   .final-score {
@@ -722,14 +829,79 @@
   }
   
   .results-header h2 {
-    font-size: 1.8rem;
+    font-size: 1.7rem;
+    margin-bottom: 0.8rem;
   }
   
-  /* Ensure all buttons have minimum touch target sizes */
-  .start-game-button,
+  .call-to-action {
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem 0; /* Less space */
+    gap: 1rem; /* Less space between buttons */
+  }
+  
+  /* Action buttons */
   .play-again-button {
+    padding: 1rem 2rem;
+    min-width: 200px;
+    min-height: 55px;
+    font-size: 1.2rem;
+    -webkit-tap-highlight-color: rgba(30, 144, 255, 0.4); /* Visual feedback */
+  }
+  
+  .cta-button {
+    padding: 0.8rem 1.5rem;
     min-width: 44px;
     min-height: 44px;
+    font-size: 1.1rem;
+  }
+}
+
+/* Smaller mobile phones */
+@media (max-width: 480px) {
+  .host-content h1 {
+    font-size: 1.6rem;
+  }
+  
+  .host-speech {
+    font-size: 0.95rem;
+  }
+  
+  .option-button {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+    min-height: 60px;
+  }
+  
+  .option-letter {
+    padding: 0.3rem 0.6rem;
+    min-width: 1.8rem;
+  }
+  
+  #question-display {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+  
+  .skill-item {
+    min-width: 85px;
+    width: 45%; /* Still two per row but wider */
+  }
+  
+  .skill-item i {
+    font-size: 1.5rem;
+  }
+  
+  .skill-item span {
+    font-size: 0.9rem;
+  }
+  
+  /* Fix for viewport height issues on mobile */
+  @supports (-webkit-touch-callout: none) {
+    /* CSS specific to iOS devices */
+    #game-show-container {
+      height: -webkit-fill-available;
+    }
   }
 }
 
