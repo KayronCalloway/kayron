@@ -192,6 +192,11 @@
   pointer-events: auto;
   /* Add box shadow for better visual feedback */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* Safari-specific fixes */
+  -webkit-appearance: button; /* Ensure Safari treats as button */
+  -webkit-user-select: none; /* Prevent text selection */
+  -webkit-tap-highlight-color: rgba(62, 146, 204, 0.3); /* Visual feedback in Safari */
+  touch-action: manipulation; /* Optimize touch behavior */
 }
 
 .featured-cta:hover {
@@ -300,11 +305,16 @@
   position: relative;
   border-radius: 4px;
   overflow: hidden;
-  /* Ensure clicks work */
+  /* Ensure clicks work, with Safari-specific enhancements */
   pointer-events: auto;
   z-index: 1;
   /* Add subtle visual feedback to make it obvious cards are clickable */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Safari-specific fixes */
+  -webkit-appearance: button; /* Make Safari treat it like a button */
+  -webkit-transform: translateZ(0); /* Hardware acceleration for Safari */
+  -webkit-tap-highlight-color: rgba(62, 146, 204, 0.2); /* Visual feedback in Safari */
+  touch-action: manipulation; /* Optimize touch behavior */
 }
 
 .project-card:hover {

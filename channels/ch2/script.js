@@ -167,6 +167,18 @@
       
       // Add attribute to body to prevent any global leaks from fixed elements
       document.body.setAttribute('data-active-channel', 'ch2');
+      
+      // Safari-specific fix: ensure no click events are being captured/blocked at the container level
+      container.style.pointerEvents = 'auto';
+      container.onclick = null;
+      
+      // Make sure no parent elements are capturing clicks
+      let parent = container.parentNode;
+      while (parent && parent !== document.body) {
+        parent.style.pointerEvents = 'auto';
+        parent.onclick = null;
+        parent = parent.parentNode;
+      }
     }
     
     // Ensure portfolio browse has proper sizing
@@ -318,6 +330,25 @@
     // Generate the modal content
     modalContent.innerHTML = generateModalContent(project);
     
+    // Safari-specific modal fix: ensure elements are clickable
+    setTimeout(() => {
+      // Force all links and buttons in modal to be clickable
+      const clickables = modalContent.querySelectorAll('a, button');
+      clickables.forEach(el => {
+        el.style.cursor = 'pointer';
+        el.style.pointerEvents = 'auto';
+        el.style.position = 'relative';
+        el.style.zIndex = '20';
+        
+        // Safari direct click handler
+        el.onclick = function(e) {
+          e.stopPropagation();
+          console.log(`Clicked element in modal: ${el.tagName}`);
+          return true; // Allow normal link behavior
+        };
+      });
+    }, 50);
+    
     // Show the modal and ensure it's scoped to this channel
     modal.setAttribute('aria-hidden', 'false');
     modal.setAttribute('data-channel', 'ch2');
@@ -331,17 +362,40 @@
     modal.style.zIndex = '9999';
     modal.style.pointerEvents = 'auto';
     
+    // Safari-specific fix: ensure clicks work within the modal
+    document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
+    modal.addEventListener('click', function(e) {
+      e.stopPropagation();
+    }, true);
+    
     // Add debugging class
     modal.classList.add('modal-opened');
     
-    // Set focus to the close button
+    // Set focus to the close button with Safari-specific handling
     setTimeout(() => {
       const closeButton = document.querySelector('.modal-close');
       if (closeButton) {
         closeButton.focus();
-        // Make sure close button is clickable
-        closeButton.style.zIndex = '10000';
-        closeButton.style.pointerEvents = 'auto';
+        
+        // Replace button to clear any conflicting listeners for Safari
+        const newCloseButton = closeButton.cloneNode(true);
+        closeButton.parentNode.replaceChild(newCloseButton, closeButton);
+        
+        // Make sure close button is clickable for Safari
+        newCloseButton.style.cursor = 'pointer';
+        newCloseButton.style.pointerEvents = 'auto';
+        newCloseButton.style.position = 'relative';
+        newCloseButton.style.zIndex = '10000';
+        newCloseButton.style.touchAction = 'manipulation'; // Safari touch optimization
+        
+        // Direct Safari-friendly click handler
+        newCloseButton.onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log("Close button clicked");
+          closeProjectModal();
+          return false;
+        };
       } else {
         console.error("Close button not found in modal");
       }
