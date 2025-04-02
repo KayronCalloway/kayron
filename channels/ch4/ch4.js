@@ -181,6 +181,9 @@ function setupModalEventListeners() {
     
     if (!button || !modal || !closeButton) return;
     
+    // Apply Merova font to the button
+    button.style.fontFamily = "'Merova', sans-serif";
+    
     // Add visual feedback for mobile
     if (isMobile) {
       button.classList.add('mobile-enhanced');
@@ -380,7 +383,15 @@ export async function init() {
   
   // Create and set up the modals
   createModals();
-  setTimeout(setupModalEventListeners, 500);
+  setTimeout(() => {
+    setupModalEventListeners();
+    
+    // Apply Merova font to all CH4 buttons
+    const ch4Buttons = document.querySelectorAll('.channel4-buttons .channel-button');
+    ch4Buttons.forEach(button => {
+      button.style.fontFamily = "'Merova', sans-serif";
+    });
+  }, 500);
   
   // Use the YouTube IFrame API to create a player in Channel 4.
   // We wait a short delay to ensure the HTML is in place.
