@@ -248,80 +248,70 @@
       portfolioBrowse.style.paddingTop = '60px'; // Add top padding of about 1 inch
     }
     
-    // Set up the project cards with more robust click handling
+    // Simplify card interaction by using a single global event listener for all cards
+    // This approach avoids issues with event propagation and Safari's event handling quirks
+    
+    // First ensure cards are visually clickable 
     const cards = document.querySelectorAll('.project-card');
     cards.forEach(card => {
-      // Remove any existing event listeners
-      const newCard = card.cloneNode(true);
-      card.parentNode.replaceChild(newCard, card);
-      
-      // Force card to be clickable
-      newCard.style.cursor = 'pointer';
-      newCard.style.pointerEvents = 'auto';
-      newCard.style.position = 'relative';
-      newCard.style.zIndex = '2';
-      
-      // Add direct click handler
-      newCard.onclick = function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log("Card clicked directly");
-        const projectId = this.getAttribute('data-project');
+      card.style.cursor = 'pointer';
+      card.style.pointerEvents = 'auto';
+      card.style.position = 'relative';
+      card.style.zIndex = '2';
+    });
+    
+    // Global event handler for card clicks through event delegation
+    document.body.addEventListener('click', function(e) {
+      // Check if clicked element is a card or inside a card
+      const card = e.target.closest('.project-card');
+      if (card) {
+        console.log("Card clicked via body listener");
+        const projectId = card.getAttribute('data-project');
         if (projectId) {
           console.log(`Opening project: ${projectId}`);
-          openProjectModal(projectId);
-          setActiveCard(this);
+          // Add small delay to ensure event processing completes
+          setTimeout(() => {
+            openProjectModal(projectId);
+            setActiveCard(card);
+          }, 10);
         } else {
           console.error("No project ID found on card");
         }
-        return false;
-      };
-
-      // Keyboard accessibility
-      newCard.addEventListener('keydown', e => {
+      }
+    });
+    
+    // Still keep keyboard accessibility
+    cards.forEach(card => {
+      card.addEventListener('keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          const projectId = newCard.getAttribute('data-project');
+          const projectId = card.getAttribute('data-project');
           openProjectModal(projectId);
-          setActiveCard(newCard);
+          setActiveCard(card);
         }
-      });
-      
-      // Additional direct event listeners on all child elements
-      const childElements = newCard.querySelectorAll('*');
-      childElements.forEach(element => {
-        element.style.pointerEvents = 'none'; // Let clicks pass through to the card
       });
     });
 
-    // Set up the featured project CTA with more robust click handling
-    const featuredCta = document.querySelector('.featured-cta');
-    if (featuredCta) {
-      // Replace button to clear any potential event listener conflicts
-      const newFeaturedCta = featuredCta.cloneNode(true);
-      featuredCta.parentNode.replaceChild(newFeaturedCta, featuredCta);
-      
-      // Force button to be clickable
-      newFeaturedCta.style.cursor = 'pointer';
-      newFeaturedCta.style.pointerEvents = 'auto';
-      newFeaturedCta.style.position = 'relative';
-      newFeaturedCta.style.zIndex = '10';
-      
-      // Direct onclick handler
-      newFeaturedCta.onclick = function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log("Featured CTA clicked");
-        const projectId = this.getAttribute('data-project');
+    // Direct approach for featured CTA button
+    document.body.addEventListener('click', function(e) {
+      // Check if the clicked element is the featured CTA or inside it
+      if (e.target.classList.contains('featured-cta') || e.target.closest('.featured-cta')) {
+        // Get the button element
+        const button = e.target.classList.contains('featured-cta') ? e.target : e.target.closest('.featured-cta');
+        console.log("Featured CTA clicked via body listener");
+        
+        // Get project ID and open modal
+        const projectId = button.getAttribute('data-project');
         if (projectId) {
           console.log(`Opening featured project: ${projectId}`);
-          openProjectModal(projectId);
+          setTimeout(() => {
+            openProjectModal(projectId);
+          }, 10);
         } else {
           console.error("No project ID found on featured CTA");
         }
-        return false;
-      };
-    }
+      }
+    });
 
     // Get modal elements
     modal = document.getElementById('project-modal');
@@ -635,50 +625,50 @@
       const leftArrow = parentRow.querySelector('.scroll-left');
       const rightArrow = parentRow.querySelector('.scroll-right');
       
-      // Add arrow click handlers with more robust handling
+      // Simply set basic styles for arrows, then rely on global event delegation
       if (leftArrow) {
-        // Replace element to clear any potential event listener conflicts
-        const newLeftArrow = leftArrow.cloneNode(true);
-        leftArrow.parentNode.replaceChild(newLeftArrow, leftArrow);
-        leftArrow = newLeftArrow;
-        
-        // Force element to be clickable
         leftArrow.style.cursor = 'pointer';
         leftArrow.style.pointerEvents = 'auto';
         leftArrow.style.position = 'relative';
         leftArrow.style.zIndex = '5';
-        
-        // Direct onclick handler
-        leftArrow.onclick = function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          console.log("Left arrow clicked");
-          scroller.scrollBy({ left: -600, behavior: 'smooth' });
-          return false;
-        };
+        leftArrow.setAttribute('data-scrolldir', 'left');
       }
       
       if (rightArrow) {
-        // Replace element to clear any potential event listener conflicts
-        const newRightArrow = rightArrow.cloneNode(true);
-        rightArrow.parentNode.replaceChild(newRightArrow, rightArrow);
-        rightArrow = newRightArrow;
-        
-        // Force element to be clickable
         rightArrow.style.cursor = 'pointer';
         rightArrow.style.pointerEvents = 'auto';
         rightArrow.style.position = 'relative';
         rightArrow.style.zIndex = '5';
-        
-        // Direct onclick handler
-        rightArrow.onclick = function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          console.log("Right arrow clicked");
-          scroller.scrollBy({ left: 600, behavior: 'smooth' });
-          return false;
-        };
+        rightArrow.setAttribute('data-scrolldir', 'right');
       }
+      
+      // Add a single global event handler for scroll arrows
+      document.body.addEventListener('click', function(e) {
+        // Check for left arrow
+        if (e.target.classList.contains('scroll-left') || e.target.closest('.scroll-left')) {
+          console.log("Left arrow clicked via global handler");
+          // Find the scroller element
+          const parentRow = e.target.closest('.category-row');
+          if (parentRow) {
+            const scroller = parentRow.querySelector('.project-scroller');
+            if (scroller) {
+              scroller.scrollBy({ left: -600, behavior: 'smooth' });
+            }
+          }
+        }
+        // Check for right arrow
+        else if (e.target.classList.contains('scroll-right') || e.target.closest('.scroll-right')) {
+          console.log("Right arrow clicked via global handler");
+          // Find the scroller element
+          const parentRow = e.target.closest('.category-row');
+          if (parentRow) {
+            const scroller = parentRow.querySelector('.project-scroller');
+            if (scroller) {
+              scroller.scrollBy({ left: 600, behavior: 'smooth' });
+            }
+          }
+        }
+      });
       
       // Add mousewheel horizontal scrolling
       scroller.addEventListener('wheel', (e) => {
