@@ -228,6 +228,7 @@ function setupModalEventListeners() {
       transformOrigin: "top center",
       onComplete: () => {
         modal.style.display = 'none';
+        modal.classList.add('hidden'); // Ensure both display:none and hidden class are applied
       }
     });
   };
@@ -241,16 +242,70 @@ function setupModalEventListeners() {
     console.log(`Setting up ${modalId}: Button=${!!triggerButton}, Modal=${!!modal}, CloseButton=${!!closeButton}`);
     
     if (triggerButton && modal && closeButton) {
-      triggerButton.addEventListener('click', () => {
-        console.log(`Opening modal ${modalId}`);
-        modal.style.display = 'flex';
-        modal.classList.remove('hidden');
-        animateModalIn(modal);
-      });
-      closeButton.addEventListener('click', () => {
-        console.log(`Closing modal ${modalId}`);
-        animateModalOut(modal);
-      });
+      // Check if it's a mobile device
+      const isMobile = window.innerWidth <= 600 || 
+                       typeof window.orientation !== 'undefined' ||
+                       navigator.userAgent.indexOf('Mobile') !== -1;
+      
+      // Function to handle opening modal
+      const openModal = (e) => {
+        // Prevent default behavior for touch events to avoid double firing
+        if (e.type === 'touchstart') {
+          e.preventDefault();
+        }
+        
+        // Provide visual feedback for touch
+        if (isMobile) {
+          triggerButton.style.transform = 'scale(0.96)';
+        }
+        
+        // Delay showing the modal slightly to allow for visual feedback
+        setTimeout(() => {
+          // Reset transformation
+          if (isMobile) {
+            triggerButton.style.transform = '';
+          }
+          
+          console.log(`Opening modal ${modalId}`);
+          modal.style.display = 'flex';
+          modal.classList.remove('hidden');
+          animateModalIn(modal);
+        }, isMobile ? 50 : 0);
+      };
+      
+      // Function to handle closing modal
+      const closeModal = (e) => {
+        // Prevent default behavior for touch events
+        if (e.type === 'touchstart') {
+          e.preventDefault();
+        }
+        
+        // Provide visual feedback for touch
+        if (isMobile) {
+          closeButton.style.transform = 'scale(0.9)';
+        }
+        
+        // Delay closing slightly to allow for visual feedback
+        setTimeout(() => {
+          // Reset transformation
+          if (isMobile) {
+            closeButton.style.transform = '';
+          }
+          
+          console.log(`Closing modal ${modalId}`);
+          animateModalOut(modal);
+        }, isMobile ? 50 : 0);
+      };
+      
+      // Set up event listeners
+      triggerButton.addEventListener('click', openModal);
+      closeButton.addEventListener('click', closeModal);
+      
+      // Add touch events for mobile
+      if (isMobile) {
+        triggerButton.addEventListener('touchstart', openModal, { passive: false });
+        closeButton.addEventListener('touchstart', closeModal, { passive: false });
+      }
     }
   };
 
@@ -264,7 +319,7 @@ function setupModalEventListeners() {
     if (e.key === 'Escape') {
       ['resumeModal', 'aboutModal', 'contactModal'].forEach(modalId => {
         const modal = document.getElementById(modalId);
-        if (modal && modal.style.display === 'flex') {
+        if (modal && (modal.style.display === 'flex' || !modal.classList.contains('hidden'))) {
           animateModalOut(modal);
         }
       });
