@@ -55,6 +55,38 @@ export async function init() {
       const portfolioBrowse = document.getElementById('portfolio-browse');
       if (portfolioBrowse) {
         console.log("Portfolio browser initialized successfully");
+        
+        // Verify cards have click handlers
+        const cards = document.querySelectorAll('.project-card');
+        if (cards.length > 0) {
+          console.log(`Found ${cards.length} project cards`);
+          
+          // Ensure cards have proper CSS for clicking
+          cards.forEach(card => {
+            // Ensure cards can be clicked
+            card.style.pointerEvents = 'auto';
+            card.style.cursor = 'pointer';
+            card.style.position = 'relative';
+            card.style.zIndex = '1';
+            
+            // Log when cards are clicked
+            card.addEventListener('click', () => {
+              const projectId = card.getAttribute('data-project');
+              console.log(`Card clicked: ${projectId}`);
+            });
+          });
+          
+          // Also ensure featured CTA is clickable
+          const featuredCta = document.querySelector('.featured-cta');
+          if (featuredCta) {
+            featuredCta.style.pointerEvents = 'auto';
+            featuredCta.style.cursor = 'pointer';
+            featuredCta.style.position = 'relative';
+            featuredCta.style.zIndex = '3';
+          }
+        } else {
+          console.error("No project cards found in portfolio browser");
+        }
       } else {
         console.error("Portfolio browser container not found");
       }

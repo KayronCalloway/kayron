@@ -257,9 +257,13 @@
 
   // Open the project modal
   function openProjectModal(projectId) {
-    if (!projectData[projectId]) return;
+    if (!projectData[projectId]) {
+      console.error(`Project data not found for ID: ${projectId}`);
+      return;
+    }
     
     const project = projectData[projectId];
+    console.log(`Opening modal for project: ${project.title}`);
     
     // Reset the view to "final" when opening a new project
     activeView = 'final';
@@ -272,16 +276,45 @@
     modal.setAttribute('aria-hidden', 'false');
     modal.setAttribute('data-channel', 'ch2');
     
+    // Make sure modal is visible and positioned correctly
+    modal.style.display = 'flex';
+    modal.style.justifyContent = 'center';
+    modal.style.alignItems = 'center';
+    modal.style.opacity = '1';
+    modal.style.visibility = 'visible';
+    modal.style.zIndex = '9999';
+    modal.style.pointerEvents = 'auto';
+    
+    // Add debugging class
+    modal.classList.add('modal-opened');
+    
     // Set focus to the close button
     setTimeout(() => {
-      document.querySelector('.modal-close').focus();
+      const closeButton = document.querySelector('.modal-close');
+      if (closeButton) {
+        closeButton.focus();
+        // Make sure close button is clickable
+        closeButton.style.zIndex = '10000';
+        closeButton.style.pointerEvents = 'auto';
+      } else {
+        console.error("Close button not found in modal");
+      }
     }, 100);
   }
 
   // Close the project modal
   function closeProjectModal() {
+    console.log("Closing project modal");
     modal.setAttribute('aria-hidden', 'true');
     modal.removeAttribute('data-channel');
+    
+    // Reset modal styles
+    modal.style.opacity = '0';
+    modal.style.visibility = 'hidden';
+    modal.style.pointerEvents = 'none';
+    
+    // Remove debugging class
+    modal.classList.remove('modal-opened');
     
     // Remove active states from cards
     if (activeCard) {
@@ -291,6 +324,13 @@
     
     // Set focus back to document body
     document.body.focus();
+    
+    // Delay hiding the modal to allow for transition
+    setTimeout(() => {
+      if (modal.getAttribute('aria-hidden') === 'true') {
+        modal.style.display = 'none';
+      }
+    }, 500);
   }
 
   // Set active card
@@ -496,4 +536,14 @@
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     init();
   }
+  
+  // Re-initialize if channel is shown after being hidden
+  document.addEventListener('channelChange', () => {
+    setTimeout(() => {
+      if (document.body.getAttribute('data-active-channel') === 'ch2') {
+        console.log("Channel 2 re-initializing after channel change");
+        init();
+      }
+    }, 300);
+  });
 })();
