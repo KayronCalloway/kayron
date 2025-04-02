@@ -251,20 +251,22 @@
 
 .letter-button {
   display: inline-block;
-  background: #1e90ff;
+  background: rgba(0, 0, 0, 0.6);
   color: white;
   padding: 12px 30px;
   border-radius: 6px;
   text-decoration: none;
   font-weight: bold;
   margin: 10px 0;
+  border: 2px solid rgba(255, 255, 255, 0.6);
   transition: all 0.3s ease;
 }
 
 .letter-button:hover {
-  background: #0066cc;
+  background: rgba(30, 30, 30, 0.8);
   transform: translateY(-3px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.8);
 }
 
 .annual-letter-link a {
