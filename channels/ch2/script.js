@@ -123,9 +123,66 @@
         { label: 'Product', value: 'Luxury Fragrance' }
       ],
       galleryImages: [
-        { src: 'visuals/bulletproof.jpg', alt: 'Coloring With Gray - Brand Identity' },
-        { src: 'visuals/mtr.jpg', alt: 'Coloring With Gray - Product Design' },
-        { src: 'visuals/VOL 1. FIRST c.001.jpeg', alt: 'Coloring With Gray - Customer Experience' }
+        // Website-inspired preview
+        { 
+          customHtml: `
+            <div style="width: 100%; height: 100%; background-color: #f7f7f7; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
+              <div style="font-family: 'Merova', serif; font-size: 28px; font-weight: bold; margin-bottom: 25px; color: #333; letter-spacing: 2px;">COLORING WITH GRAY</div>
+              <div style="width: 120px; height: 160px; background: linear-gradient(to bottom, #d1d1d1, #eaeaea); border-radius: 10px 10px 30px 30px; position: relative; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <div style="width: 40px; height: 25px; background-color: #b0b0b0; border-radius: 10px; position: absolute; top: -15px; left: 40px;"></div>
+                <div style="width: 80px; height: 20px; background-color: rgba(255,255,255,0.5); position: absolute; top: 40px; left: 20px; border-radius: 10px;"></div>
+              </div>
+              <div style="font-size: 16px; font-style: italic; color: #666; margin-bottom: 30px; text-align: center;">Experience scents that evolve with you</div>
+              <div style="display: flex; gap: 15px;">
+                <div style="padding: 8px 20px; background-color: #333; color: white; border-radius: 4px; font-size: 14px; cursor: pointer;">SHOP NOW</div>
+                <div style="padding: 8px 20px; background-color: transparent; color: #333; border: 1px solid #333; border-radius: 4px; font-size: 14px; cursor: pointer;">LEARN MORE</div>
+              </div>
+            </div>
+          `,
+          alt: 'Coloring With Gray - Website Preview' 
+        },
+        { 
+          customHtml: `
+            <div style="width: 100%; height: 100%; background-color: #f2f2f2; display: flex; flex-direction: column; padding: 20px;">
+              <div style="font-family: 'Merova', serif; font-size: 20px; font-weight: bold; margin-bottom: 20px; color: #333;">REFLECTIONS OF YOU</div>
+              <div style="display: flex; gap: 15px; flex: 1;">
+                <div style="flex: 1; background: linear-gradient(to bottom, #e5e5e5, #f5f5f5); border-radius: 5px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px;">
+                  <div style="width: 40px; height: 70px; background: linear-gradient(to bottom, #d1d1d1, #e8e8e8); border-radius: 5px 5px 15px 15px; margin-bottom: 10px;"></div>
+                  <div style="font-size: 12px; text-align: center;">MORNING</div>
+                </div>
+                <div style="flex: 1; background: linear-gradient(to bottom, #d5d5d5, #e8e8e8); border-radius: 5px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px;">
+                  <div style="width: 40px; height: 70px; background: linear-gradient(to bottom, #c1c1c1, #d8d8d8); border-radius: 5px 5px 15px 15px; margin-bottom: 10px;"></div>
+                  <div style="font-size: 12px; text-align: center;">AFTERNOON</div>
+                </div>
+                <div style="flex: 1; background: linear-gradient(to bottom, #b5b5b5, #d5d5d5); border-radius: 5px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px;">
+                  <div style="width: 40px; height: 70px; background: linear-gradient(to bottom, #a1a1a1, #c8c8c8); border-radius: 5px 5px 15px 15px; margin-bottom: 10px;"></div>
+                  <div style="font-size: 12px; text-align: center; color: #333;">EVENING</div>
+                </div>
+              </div>
+            </div>
+          `,
+          alt: 'Coloring With Gray - Product Collection' 
+        },
+        { 
+          customHtml: `
+            <div style="width: 100%; height: 100%; background-color: #efefef; display: flex; flex-direction: column; padding: 20px;">
+              <div style="font-size: 14px; text-transform: uppercase; margin-bottom: 15px; color: #555;">Our Technology</div>
+              <div style="font-family: 'Merova', serif; font-size: 24px; font-weight: bold; margin-bottom: 20px; color: #333;">Proprietary Olfactory Evolution</div>
+              <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
+                <div style="flex: 1; height: 100%; background: linear-gradient(45deg, #d0d0d0, #e0e0e0); border-radius: 10px; position: relative; overflow: hidden;">
+                  <div style="position: absolute; width: 80%; height: 80%; top: 10%; left: 10%; background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%); animation: pulse 3s infinite alternate;"></div>
+                </div>
+                <div style="flex: 1;">
+                  <div style="width: 100%; height: 5px; background-color: #ddd; margin-bottom: 15px;"></div>
+                  <div style="width: 100%; height: 5px; background-color: #ccc; margin-bottom: 15px;"></div>
+                  <div style="width: 100%; height: 5px; background-color: #bbb; margin-bottom: 15px;"></div>
+                  <div style="font-size: 12px; color: #666; line-height: 1.4;">Our fragrances adapt to your body chemistry throughout the day, creating a truly personalized experience.</div>
+                </div>
+              </div>
+            </div>
+          `,
+          alt: 'Coloring With Gray - Technology' 
+        }
       ],
       processStages: [
         { name: 'Brand Development', description: 'Creating a brand identity that challenges conventional perspectives on fragrance.' },
@@ -498,14 +555,25 @@
       </div>
     ` : '';
     
-    // Generate gallery HTML
+    // Generate gallery HTML, supporting both regular images and custom HTML
     const galleryHTML = project.galleryImages ? `
       <div class="project-gallery">
-        ${project.galleryImages.map(img => `
-          <div class="gallery-item">
-            <img src="${img.src}" alt="${img.alt}" loading="lazy">
-          </div>
-        `).join('')}
+        ${project.galleryImages.map(img => {
+          // Support custom HTML for website previews
+          if (img.customHtml) {
+            return `
+              <div class="gallery-item">
+                ${img.customHtml}
+              </div>
+            `;
+          } else {
+            return `
+              <div class="gallery-item">
+                <img src="${img.src}" alt="${img.alt}" loading="lazy">
+              </div>
+            `;
+          }
+        }).join('')}
       </div>
     ` : '';
     
