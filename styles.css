@@ -534,7 +534,7 @@ body {
 }
 .modal-box {
   background: rgba(0, 0, 0, 0.9);
-  border: 2px solid #888888;
+  border: 2px solid #3e92cc;
   color: #f0f0f0;
   padding: 30px;
   max-width: 90%;
@@ -544,7 +544,7 @@ body {
   font-family: 'Merova', sans-serif;
   line-height: 1.6;
   border-radius: 5px;
-  box-shadow: 0 0 30px rgba(100, 100, 100, 0.3);
+  box-shadow: 0 0 30px rgba(62, 146, 204, 0.3);
   transition: all 0.2s ease;
 }
 .modal-content {
@@ -557,7 +557,7 @@ body {
   font-weight: 600;
   color: #ffffff;
   letter-spacing: 0.05em;
-  text-shadow: 0 0 5px rgba(150, 150, 150, 0.5);
+  text-shadow: 0 0 5px rgba(62, 146, 204, 0.5);
 }
 .modal-content p,
 .modal-content ul {
@@ -566,20 +566,20 @@ body {
   color: #e0e0e0;
 }
 .modal-content a {
-  color: #aaaaaa;
+  color: #3e92cc;
   text-decoration: none;
-  border-bottom: 1px dotted #aaaaaa;
+  border-bottom: 1px dotted #3e92cc;
   transition: color 0.3s ease;
 }
 .modal-content a:hover {
-  color: #cccccc;
+  color: #5d9edd;
 }
 .close-modal {
   position: absolute;
   top: 10px;
   right: 10px;
   background: rgba(0, 0, 0, 0.5);
-  border: 1px solid #888888;
+  border: 1px solid #3e92cc;
   color: #f0f0f0;
   font-size: 1.5rem;
   cursor: pointer;
@@ -589,8 +589,8 @@ body {
   line-height: 1;
 }
 .close-modal:hover {
-  background: rgba(150, 150, 150, 0.2);
-  box-shadow: 0 0 10px rgba(150, 150, 150, 0.5);
+  background: rgba(62, 146, 204, 0.2);
+  box-shadow: 0 0 10px rgba(62, 146, 204, 0.5);
 }
 
 
