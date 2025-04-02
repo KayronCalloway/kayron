@@ -265,10 +265,8 @@
       // Check if clicked element is a card or inside a card
       const card = e.target.closest('.project-card');
       if (card) {
-        console.log("Card clicked via body listener");
         const projectId = card.getAttribute('data-project');
         if (projectId) {
-          console.log(`Opening project: ${projectId}`);
           // Add small delay to ensure event processing completes
           setTimeout(() => {
             openProjectModal(projectId);
@@ -298,12 +296,10 @@
       if (e.target.classList.contains('featured-cta') || e.target.closest('.featured-cta')) {
         // Get the button element
         const button = e.target.classList.contains('featured-cta') ? e.target : e.target.closest('.featured-cta');
-        console.log("Featured CTA clicked via body listener");
         
         // Get project ID and open modal
         const projectId = button.getAttribute('data-project');
         if (projectId) {
-          console.log(`Opening featured project: ${projectId}`);
           setTimeout(() => {
             openProjectModal(projectId);
           }, 10);
@@ -368,7 +364,6 @@
     }
     
     const project = projectData[projectId];
-    console.log(`Opening modal for project: ${project.title}`);
     
     // Reset the view to "final" when opening a new project
     activeView = 'final';
@@ -390,7 +385,6 @@
         // Safari direct click handler
         el.onclick = function(e) {
           e.stopPropagation();
-          console.log(`Clicked element in modal: ${el.tagName}`);
           return true; // Allow normal link behavior
         };
       });
@@ -439,7 +433,6 @@
         newCloseButton.onclick = function(e) {
           e.preventDefault();
           e.stopPropagation();
-          console.log("Close button clicked");
           closeProjectModal();
           return false;
         };
@@ -451,7 +444,6 @@
 
   // Close the project modal
   function closeProjectModal() {
-    console.log("Closing project modal");
     modal.setAttribute('aria-hidden', 'true');
     modal.removeAttribute('data-channel');
     
@@ -646,7 +638,6 @@
       document.body.addEventListener('click', function(e) {
         // Check for left arrow
         if (e.target.classList.contains('scroll-left') || e.target.closest('.scroll-left')) {
-          console.log("Left arrow clicked via global handler");
           // Find the scroller element
           const parentRow = e.target.closest('.category-row');
           if (parentRow) {
@@ -658,7 +649,6 @@
         }
         // Check for right arrow
         else if (e.target.classList.contains('scroll-right') || e.target.closest('.scroll-right')) {
-          console.log("Right arrow clicked via global handler");
           // Find the scroller element
           const parentRow = e.target.closest('.category-row');
           if (parentRow) {
@@ -731,7 +721,6 @@
   document.addEventListener('channelChange', () => {
     setTimeout(() => {
       if (document.body.getAttribute('data-active-channel') === 'ch2') {
-        console.log("Channel 2 re-initializing after channel change");
         init();
       }
     }, 300);
