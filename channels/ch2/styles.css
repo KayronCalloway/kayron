@@ -766,8 +766,10 @@
   
   #section2 #portfolio-browse {
     padding-top: 30px; /* Adjust top padding for mobile */
+    -webkit-overflow-scrolling: touch; /* Improve iOS scrolling */
   }
   
+  /* Enhanced Featured Project Section */
   .featured-project {
     height: 35vh;
     min-height: 200px;
@@ -775,7 +777,7 @@
   
   .featured-content {
     left: 5%;
-    bottom: 3%;
+    bottom: 8%; /* Move up slightly to avoid device notches */
     max-width: 85%;
   }
   
@@ -783,22 +785,112 @@
     display: none;
   }
   
+  .featured-cta {
+    padding: 12px 24px; /* Larger touch target */
+    min-height: 44px; /* Minimum touch target height */
+    min-width: 120px; /* Minimum touch target width */
+    font-size: var(--ch2-font-sm);
+    margin-top: 15px; /* Add more space */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow for depth */
+  }
+  
+  /* Enhanced Project Cards */
   .project-card {
-    width: 160px;
+    width: 200px; /* Slightly wider for better visibility */
+    margin: 15px 10px; /* More space between cards */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+    touch-action: manipulation; /* Better touch handling */
+    -webkit-tap-highlight-color: rgba(62, 146, 204, 0.3); /* Better tap feedback */
+  }
+  
+  .project-card:active {
+    transform: scale(0.98); /* Add touch feedback */
   }
   
   .card-poster {
-    height: 100px;
+    height: 120px; /* Slightly taller for better visibility */
   }
   
+  .card-info {
+    padding: 12px 10px; /* More vertical padding */
+  }
+  
+  .card-title {
+    font-size: 1rem; /* Slightly larger for readability */
+  }
+  
+  /* Improved Scrolling */
   .category-row {
     padding: 0 var(--ch2-spacing-xs);
+    margin-bottom: 25px; /* More separation between rows */
   }
   
+  .project-scroller {
+    padding: var(--ch2-spacing-md) 50px; /* More padding for scrollers */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    scroll-snap-type: x mandatory; /* Enable snap scrolling */
+  }
+  
+  .project-card {
+    scroll-snap-align: start; /* Cards snap during scrolling */
+  }
+  
+  /* Enhanced Scroll Indicators */
+  .scroll-indicator {
+    width: 50px; /* Larger touch target */
+    height: 50px; /* Larger touch target */
+    font-size: 22px; /* Larger arrow */
+    opacity: 0.9; /* More visible */
+    background-color: rgba(25, 25, 25, 0.9); /* More opaque */
+  }
+  
+  .scroll-left {
+    left: 5px; /* Closer to edge */
+  }
+  
+  .scroll-right {
+    right: 5px; /* Closer to edge */
+  }
+  
+  /* Modal Enhancements */
   .modal-content {
     padding: var(--ch2-spacing-md);
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
   }
   
+  .modal-close {
+    width: 50px; /* Larger touch target */
+    height: 50px; /* Larger touch target */
+    font-size: 2rem; /* Larger close symbol */
+    top: 10px;
+    right: 10px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .project-gallery {
+    grid-template-columns: 1fr; /* Single column layout */
+    gap: 15px; /* More space between items */
+  }
+  
+  .gallery-item {
+    height: 180px; /* Taller for better visibility */
+  }
+  
+  .project-link {
+    margin-top: 20px;
+  }
+  
+  .external-link {
+    display: block; /* Full width */
+    text-align: center;
+    padding: 15px 20px; /* Larger touch target */
+    min-height: 50px; /* Ensure minimum touch size */
+  }
+  
+  /* Optimized timeline view */
   .timeline-stages {
     flex-direction: column;
     gap: var(--ch2-spacing-sm);
@@ -816,17 +908,25 @@
     flex-direction: row;
     align-items: center;
     gap: var(--ch2-spacing-sm);
+    padding: 8px 0; /* Add vertical padding */
+    width: 100%; /* Full width */
   }
   
-  .browse-controls {
-    bottom: var(--ch2-spacing-sm);
-    right: var(--ch2-spacing-sm);
+  .stage-marker {
+    width: 35px; /* Larger touch target */
+    height: 35px; /* Larger touch target */
+    font-size: 1rem; /* Larger text */
   }
   
-  #view-mode-toggle {
-    padding: 6px 12px;
+  /* View toggle buttons */
+  .view-toggle {
+    padding: 10px 20px; /* Larger touch target */
+    min-height: 44px; /* Minimum recommended height */
+    min-width: 80px; /* Minimum recommended width */
+    margin: 0 5px; /* Space between buttons */
   }
   
+  /* Hide less important elements */
   .toggle-label {
     display: none;
   }
