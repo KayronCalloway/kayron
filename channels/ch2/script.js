@@ -211,8 +211,11 @@
   let activeCard = null;
   let activeView = 'final';
 
-  // Initialize the browse experience
+  // Initialize the browse experience with mobile optimizations
   function init() {
+    // Detect mobile device
+    const isMobile = window.innerWidth <= 600 || isMobileDevice();
+    
     // Ensure container has proper sizing
     const container = document.getElementById('section2');
     if (container) {
@@ -222,12 +225,23 @@
       // Add data attribute for CSS scoping to prevent leaks
       container.setAttribute('data-channel', 'ch2');
       
+      // Add mobile-specific attribute if needed
+      if (isMobile) {
+        container.setAttribute('data-mobile', 'true');
+      }
+      
       // Add attribute to body to prevent any global leaks from fixed elements
       document.body.setAttribute('data-active-channel', 'ch2');
       
       // Safari-specific fix: ensure no click events are being captured/blocked at the container level
       container.style.pointerEvents = 'auto';
       container.onclick = null;
+      
+      // Mobile optimization for touch
+      if (isMobile) {
+        container.style.webkitTapHighlightColor = 'transparent';
+        container.style.webkitTouchCallout = 'none';
+      }
       
       // Make sure no parent elements are capturing clicks
       let parent = container.parentNode;
@@ -236,6 +250,18 @@
         parent.onclick = null;
         parent = parent.parentNode;
       }
+    }
+    
+    // Helper function to detect mobile devices
+    function isMobileDevice() {
+      return (
+        typeof window.orientation !== 'undefined' || 
+        navigator.userAgent.indexOf('Mobile') !== -1 ||
+        navigator.userAgent.indexOf('Android') !== -1 ||
+        navigator.userAgent.indexOf('iOS') !== -1 ||
+        navigator.userAgent.indexOf('iPhone') !== -1 ||
+        navigator.userAgent.indexOf('iPad') !== -1
+      );
     }
     
     // Ensure portfolio browse has proper sizing
@@ -356,7 +382,7 @@
     setupSmoothScroll();
   }
 
-  // Open the project modal
+  // Open the project modal with mobile optimizations
   function openProjectModal(projectId) {
     if (!projectData[projectId]) {
       console.error(`Project data not found for ID: ${projectId}`);
@@ -364,6 +390,7 @@
     }
     
     const project = projectData[projectId];
+    const isMobile = window.innerWidth <= 600;
     
     // Reset the view to "final" when opening a new project
     activeView = 'final';
@@ -372,7 +399,39 @@
     // Generate the modal content
     modalContent.innerHTML = generateModalContent(project);
     
-    // Safari-specific modal fix: ensure elements are clickable
+    // Apply mobile-specific optimizations to the modal content
+    if (isMobile) {
+      // Enhance gallery for mobile viewing
+      const gallery = modalContent.querySelector('.project-gallery');
+      if (gallery) {
+        gallery.style.gridTemplateColumns = '1fr'; // Single column on mobile
+        
+        // Make gallery images taller on mobile for better visibility
+        const galleryItems = gallery.querySelectorAll('.gallery-item');
+        galleryItems.forEach(item => {
+          item.style.height = '180px';
+        });
+      }
+      
+      // Make project link more prominent on mobile
+      const projectLink = modalContent.querySelector('.project-link a');
+      if (projectLink) {
+        projectLink.style.display = 'block';
+        projectLink.style.width = '100%';
+        projectLink.style.textAlign = 'center';
+        projectLink.style.padding = '15px 0';
+        projectLink.style.minHeight = '50px';
+      }
+      
+      // Adjust description text for readability on mobile
+      const description = modalContent.querySelector('.project-description p');
+      if (description) {
+        description.style.fontSize = '0.95rem';
+        description.style.lineHeight = '1.5';
+      }
+    }
+    
+    // Safari-specific and mobile modal fix: ensure elements are clickable
     setTimeout(() => {
       // Force all links and buttons in modal to be clickable
       const clickables = modalContent.querySelectorAll('a, button');
@@ -381,6 +440,17 @@
         el.style.pointerEvents = 'auto';
         el.style.position = 'relative';
         el.style.zIndex = '20';
+        
+        // Mobile enhancements for touch targets
+        if (isMobile) {
+          if (el.tagName === 'BUTTON') {
+            el.style.minHeight = '44px';
+            el.style.minWidth = '44px';
+            el.style.padding = '10px 15px';
+          }
+          el.style.webkitTapHighlightColor = 'rgba(62, 146, 204, 0.3)';
+          el.style.touchAction = 'manipulation';
+        }
         
         // Safari direct click handler
         el.onclick = function(e) {
@@ -608,22 +678,55 @@
     `;
   }
 
-  // Setup smooth scroll for project rows
+  // Setup smooth scroll for project rows with mobile optimizations
   function setupSmoothScroll() {
     const scrollers = document.querySelectorAll('.project-scroller');
+    const isMobile = window.innerWidth <= 600;
     
     scrollers.forEach(scroller => {
       const parentRow = scroller.closest('.category-row');
       const leftArrow = parentRow.querySelector('.scroll-left');
       const rightArrow = parentRow.querySelector('.scroll-right');
       
-      // Simply set basic styles for arrows, then rely on global event delegation
+      // Mobile optimizations for scrolling
+      if (isMobile) {
+        // Add smooth scrolling for iOS
+        scroller.style.webkitOverflowScrolling = 'touch';
+        
+        // Add scroll snapping for a more pleasant touch experience
+        scroller.style.scrollSnapType = 'x mandatory';
+        
+        // Set proper styles for cards to support snapping
+        const cards = scroller.querySelectorAll('.project-card');
+        cards.forEach(card => {
+          card.style.scrollSnapAlign = 'start';
+          card.style.minWidth = '200px'; // Ensure consistent width on mobile
+          
+          // Enhance touch feedback
+          card.style.webkitTapHighlightColor = 'rgba(62, 146, 204, 0.3)';
+          card.style.touchAction = 'manipulation';
+        });
+      }
+      
+      // Set enhanced styles for arrows with mobile optimizations
       if (leftArrow) {
         leftArrow.style.cursor = 'pointer';
         leftArrow.style.pointerEvents = 'auto';
         leftArrow.style.position = 'relative';
         leftArrow.style.zIndex = '5';
         leftArrow.setAttribute('data-scrolldir', 'left');
+        
+        if (isMobile) {
+          leftArrow.style.width = '50px';
+          leftArrow.style.height = '50px';
+          leftArrow.style.fontSize = '22px';
+          leftArrow.style.display = 'flex';
+          leftArrow.style.alignItems = 'center';
+          leftArrow.style.justifyContent = 'center';
+          leftArrow.style.opacity = '0.9';
+          leftArrow.style.webkitTapHighlightColor = 'rgba(62, 146, 204, 0.3)';
+          leftArrow.style.touchAction = 'manipulation';
+        }
       }
       
       if (rightArrow) {
@@ -632,6 +735,18 @@
         rightArrow.style.position = 'relative';
         rightArrow.style.zIndex = '5';
         rightArrow.setAttribute('data-scrolldir', 'right');
+        
+        if (isMobile) {
+          rightArrow.style.width = '50px';
+          rightArrow.style.height = '50px';
+          rightArrow.style.fontSize = '22px';
+          rightArrow.style.display = 'flex';
+          rightArrow.style.alignItems = 'center';
+          rightArrow.style.justifyContent = 'center';
+          rightArrow.style.opacity = '0.9';
+          rightArrow.style.webkitTapHighlightColor = 'rgba(62, 146, 204, 0.3)';
+          rightArrow.style.touchAction = 'manipulation';
+        }
       }
       
       // Add a single global event handler for scroll arrows
