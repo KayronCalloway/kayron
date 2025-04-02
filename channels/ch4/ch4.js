@@ -90,110 +90,185 @@ function createModals() {
   document.body.appendChild(container);
 }
 
+// Check if device is mobile
+function isMobileDevice() {
+  return (
+    typeof window.orientation !== 'undefined' || 
+    navigator.userAgent.indexOf('Mobile') !== -1 ||
+    navigator.userAgent.indexOf('Android') !== -1 ||
+    navigator.userAgent.indexOf('iOS') !== -1 ||
+    navigator.userAgent.indexOf('iPhone') !== -1 ||
+    navigator.userAgent.indexOf('iPad') !== -1 ||
+    window.innerWidth <= 768
+  );
+}
+
 function setupModalEventListeners() {
+  const isMobile = isMobileDevice();
+  
   // GSAP Animation: "Coming Out of the Box"
   const animateModalIn = modal => {
-    gsap.fromTo(
-      modal,
-      { 
-        opacity: 0, 
-        scale: 0.8, 
-        y: 20, 
-        rotationX: 5,
-        transformOrigin: "top center" // makes it look like it's emerging from the top edge
-      },
-      { 
-        opacity: 1, 
-        scale: 1, 
-        y: 0, 
-        rotationX: 0, 
-        duration: 0.6, 
-        ease: "power2.out" 
-      }
-    );
+    // Simpler animation for mobile to improve performance
+    if (isMobile) {
+      gsap.fromTo(
+        modal,
+        { 
+          opacity: 0, 
+          scale: 0.9
+        },
+        { 
+          opacity: 1, 
+          scale: 1, 
+          duration: 0.4, 
+          ease: "power2.out" 
+        }
+      );
+    } else {
+      gsap.fromTo(
+        modal,
+        { 
+          opacity: 0, 
+          scale: 0.8, 
+          y: 20, 
+          rotationX: 5,
+          transformOrigin: "top center" // makes it look like it's emerging from the top edge
+        },
+        { 
+          opacity: 1, 
+          scale: 1, 
+          y: 0, 
+          rotationX: 0, 
+          duration: 0.6, 
+          ease: "power2.out" 
+        }
+      );
+    }
   };
 
   const animateModalOut = modal => {
-    gsap.to(modal, {
-      opacity: 0,
-      scale: 0.8,
-      y: 20,
-      rotationX: 5,
-      duration: 0.5,
-      ease: "power2.in",
-      transformOrigin: "top center",
-      onComplete: () => {
-        modal.classList.add('hidden');
-      }
-    });
+    // Simpler animation for mobile to improve performance
+    if (isMobile) {
+      gsap.to(modal, {
+        opacity: 0,
+        scale: 0.9,
+        duration: 0.3,
+        ease: "power2.in",
+        onComplete: () => {
+          modal.classList.add('hidden');
+        }
+      });
+    } else {
+      gsap.to(modal, {
+        opacity: 0,
+        scale: 0.8,
+        y: 20,
+        rotationX: 5,
+        duration: 0.5,
+        ease: "power2.in",
+        transformOrigin: "top center",
+        onComplete: () => {
+          modal.classList.add('hidden');
+        }
+      });
+    }
   };
 
-  // Setup Warren Buffett modal
-  const warrenButton = document.getElementById('warrenButton');
-  const warrenModal = document.getElementById('warrenModal');
-  const closeWarrenButton = document.getElementById('closeWarren');
-  
-  if (warrenButton && warrenModal && closeWarrenButton) {
-    warrenButton.addEventListener('click', () => {
-      warrenModal.classList.remove('hidden');
-      warrenModal.style.display = 'flex';
-      animateModalIn(warrenModal);
-      // Prevent double-clicking during animation
-      warrenButton.style.pointerEvents = 'none';
-    });
+  // Enhanced event handler function for both click and touch events
+  const setupModalButton = (buttonId, modalId, closeButtonId) => {
+    const button = document.getElementById(buttonId);
+    const modal = document.getElementById(modalId);
+    const closeButton = document.getElementById(closeButtonId);
     
-    closeWarrenButton.addEventListener('click', () => {
-      animateModalOut(warrenModal);
-      // Make button re-clickable after a short delay
-      setTimeout(() => {
-        warrenButton.style.pointerEvents = 'auto';
-      }, 600);
-    });
-  }
-  
-  // Setup Charlie Munger modal
-  const charlieButton = document.getElementById('charlieButton');
-  const charlieModal = document.getElementById('charlieModal');
-  const closeCharlieButton = document.getElementById('closeCharlie');
-  
-  if (charlieButton && charlieModal && closeCharlieButton) {
-    charlieButton.addEventListener('click', () => {
-      charlieModal.classList.remove('hidden');
-      charlieModal.style.display = 'flex';
-      animateModalIn(charlieModal);
-      // Prevent double-clicking during animation
-      charlieButton.style.pointerEvents = 'none';
-    });
+    if (!button || !modal || !closeButton) return;
     
-    closeCharlieButton.addEventListener('click', () => {
-      animateModalOut(charlieModal);
-      // Make button re-clickable after a short delay
-      setTimeout(() => {
-        charlieButton.style.pointerEvents = 'auto';
-      }, 600);
-    });
-  }
-  
-  // Setup Annual Letter modal
-  const annualLetterButton = document.getElementById('annualLetterButton');
-  const annualLetterModal = document.getElementById('annualLetterModal');
-  const closeAnnualLetterButton = document.getElementById('closeAnnualLetter');
-  
-  if (annualLetterButton && annualLetterModal && closeAnnualLetterButton) {
-    annualLetterButton.addEventListener('click', () => {
-      annualLetterModal.classList.remove('hidden');
-      annualLetterModal.style.display = 'flex';
-      animateModalIn(annualLetterModal);
-      // Prevent double-clicking during animation
-      annualLetterButton.style.pointerEvents = 'none';
-    });
+    // Add visual feedback for mobile
+    if (isMobile) {
+      button.classList.add('mobile-enhanced');
+    }
     
-    closeAnnualLetterButton.addEventListener('click', () => {
-      animateModalOut(annualLetterModal);
-      // Make button re-clickable after a short delay
+    // Create open handler with touch support
+    const openHandler = (e) => {
+      // Prevent default for touch events to avoid double-firing
+      if (e.type === 'touchstart') {
+        e.preventDefault();
+      }
+      
+      // Avoid multiple rapid taps
+      if (button.dataset.processing === 'true') {
+        return;
+      }
+      button.dataset.processing = 'true';
+      
+      // Apply visual feedback
+      button.style.transform = 'scale(0.96)';
+      
+      // Short delay for visual feedback
       setTimeout(() => {
-        annualLetterButton.style.pointerEvents = 'auto';
-      }, 600);
+        button.style.transform = '';
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+        animateModalIn(modal);
+        
+        // Prevent double-clicking during animation
+        button.style.pointerEvents = 'none';
+        
+        // Reset processing flag
+        setTimeout(() => {
+          button.dataset.processing = 'false';
+        }, 500);
+      }, 50);
+    };
+    
+    // Create close handler with touch support
+    const closeHandler = (e) => {
+      // Prevent default for touch events
+      if (e.type === 'touchstart') {
+        e.preventDefault();
+      }
+      
+      // Visual feedback
+      closeButton.style.transform = 'scale(0.9)';
+      
+      setTimeout(() => {
+        closeButton.style.transform = '';
+        animateModalOut(modal);
+        
+        // Make button re-clickable after animation completes
+        setTimeout(() => {
+          button.style.pointerEvents = 'auto';
+        }, isMobile ? 400 : 600);
+      }, 50);
+    };
+    
+    // Setup click and touch events for the open button
+    button.addEventListener('click', openHandler);
+    if (isMobile) {
+      button.addEventListener('touchstart', openHandler, { passive: false });
+    }
+    
+    // Setup click and touch events for the close button
+    closeButton.addEventListener('click', closeHandler);
+    if (isMobile) {
+      closeButton.addEventListener('touchstart', closeHandler, { passive: false });
+    }
+  };
+
+  // Set up each modal with enhanced touch handling
+  setupModalButton('warrenButton', 'warrenModal', 'closeWarren');
+  setupModalButton('charlieButton', 'charlieModal', 'closeCharlie');
+  setupModalButton('annualLetterButton', 'annualLetterModal', 'closeAnnualLetter');
+  
+  // Handle modal scroll behavior for iOS
+  if (isMobile) {
+    // Fix for iOS momentum scrolling
+    const modalBoxes = document.querySelectorAll('.modal-box');
+    modalBoxes.forEach(box => {
+      box.style.WebkitOverflowScrolling = 'touch';
+      
+      // Prevent body scrolling when modal is scrolled
+      box.addEventListener('touchmove', e => {
+        e.stopPropagation();
+      }, { passive: true });
     });
   }
 
@@ -311,6 +386,24 @@ export async function init() {
   // We wait a short delay to ensure the HTML is in place.
   setTimeout(() => {
     if (typeof YT !== 'undefined' && YT.Player) {
+      // Check for mobile device or low bandwidth
+      const isMobile = isMobileDevice();
+      const connectionSpeed = navigator.connection ? 
+        (navigator.connection.saveData || 
+        navigator.connection.effectiveType === 'slow-2g' || 
+        navigator.connection.effectiveType === '2g' || 
+        navigator.connection.effectiveType === '3g') : false;
+      
+      const optimizeForMobile = isMobile || connectionSpeed;
+      
+      console.log(`Channel 4: Setting up YouTube player with ${optimizeForMobile ? 'optimized' : 'standard'} configuration`);
+      
+      // Video quality settings based on device/connection
+      let suggestedQuality = 'hd720'; // Default quality
+      if (optimizeForMobile) {
+        suggestedQuality = 'small'; // Lower quality for mobile/low bandwidth
+      }
+      
       // Create the player and assign it to a global variable so it can be controlled from main.js.
       window.channel4Player = new YT.Player('youtube-player-4', {
         videoId: 'OFlnSoPm7x4', // New video ID
@@ -321,13 +414,20 @@ export async function init() {
           playlist: 'OFlnSoPm7x4', // Required for looping the same video
           modestbranding: 1,
           rel: 0,
-          playsinline: 1,
+          playsinline: 1, // Essential for iOS
           fs: 0,
           showinfo: 0
           // We start muted by default; the observer in main.js will unmute if the channel is active.
         },
         events: {
           onReady: event => {
+            // Apply mobile-specific settings
+            if (optimizeForMobile) {
+              // Set lower quality to save bandwidth
+              event.target.setPlaybackQuality(suggestedQuality);
+              console.log(`Channel 4: Optimized video quality to ${suggestedQuality} for mobile/low bandwidth`);
+            }
+            
             event.target.mute();
             event.target.playVideo();
             console.log("Channel 4 YouTube Player ready, starting muted.");

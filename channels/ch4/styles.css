@@ -35,6 +35,40 @@
   max-width: 90%;
 }
 
+/* Channel button styling with better touch targets */
+.channel-button {
+  min-height: 50px;
+  min-width: 180px;
+  padding: 12px 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+  border: 2px solid #1e90ff;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* Remove default mobile highlight */
+}
+
+.channel-button:hover {
+  background-color: rgba(30, 144, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.channel-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Additional class added to buttons on mobile */
+.channel-button.mobile-enhanced {
+  box-shadow: 0 4px 12px rgba(30, 144, 255, 0.3);
+  border-width: 2.5px;
+}
+
 /* Modal styles */
 .modal-overlay {
   position: fixed;
@@ -78,6 +112,11 @@
   color: var(--primary-color, #fff);
   cursor: pointer;
   z-index: 2;
+  /* Enhanced touch target */
+  padding: 6px 12px;
+  margin: -6px -12px;
+  /* Visual feedback */
+  transition: transform 0.2s ease;
 }
 
 .modal-static {
@@ -258,9 +297,43 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  /* Buttons optimized for mobile */
+  .channel4-buttons {
+    flex-direction: column;
+    gap: 30px; /* Increased gap for better touch separation */
+  }
+  
+  .channel-button {
+    min-height: 60px; /* Larger touch target */
+    min-width: 220px; /* Wider touch target */
+    padding: 15px 25px; /* More padding */
+    font-size: 1.2rem; /* Larger text */
+    -webkit-tap-highlight-color: rgba(30, 144, 255, 0.4); /* Visual feedback on tap */
+  }
+  
+  .channel-button:active {
+    transform: scale(0.97); /* Visual feedback on press */
+  }
+  
+  /* Modal optimizations */
+  .modal-box {
+    width: 95%; /* Wider on mobile */
+    padding: 25px 18px; /* Adjusted padding */
+    max-height: 80vh;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  }
+  
+  .close-modal {
+    top: 8px;
+    right: 8px;
+    font-size: 32px; /* Larger close button */
+    padding: 8px 12px; /* Larger touch target */
+  }
+  
+  /* Content optimizations */
   .role-model-content {
     padding: 20px;
-    max-width: 90%;
+    max-width: 100%;
     max-height: 75vh;
   }
   
@@ -278,13 +351,28 @@
   
   .role-model-description {
     font-size: 0.95rem;
+    line-height: 1.6; /* Improved readability */
   }
   
   .role-model-quotes {
-    gap: 15px;
+    gap: 20px; /* Increased separation */
   }
   
   .role-model-quote {
-    padding: 10px;
+    padding: 12px;
+    margin: 5px 0;
+  }
+  
+  /* Annual letter link optimizations */
+  .letter-button {
+    padding: 16px 28px; /* Larger touch target */
+    width: 80%; /* Wider button */
+    text-align: center;
+    font-size: 1.1rem;
+  }
+  
+  .annual-letter-link a {
+    padding: 5px; /* Larger touch target for inline links */
+    display: inline-block;
   }
 }
