@@ -30,6 +30,18 @@ function onYouTubeIframeAPIReady() {
   }
   
   console.log('Creating YouTube player with ID: KISNE4qOIBM');
+  
+  // Check for mobile devices or low bandwidth signal set by the Channel 1 module
+  const isMobile = window.innerWidth <= 600;
+  const optimizedMode = window.useLowQualityVideo || document.querySelector('.video-background[data-optimized="true"]');
+  
+  // Determine optimal quality based on device and connection
+  let suggestedQuality = 'hd720'; // Default quality
+  if (isMobile || optimizedMode) {
+    console.log('Loading optimized YouTube video for mobile/low bandwidth');
+    suggestedQuality = 'small'; // Lower quality for mobile/low bandwidth
+  }
+  
   youtubePlayer = new YT.Player('youtube-player', {
     videoId: 'KISNE4qOIBM', // Original video ID
     width: '100%',
@@ -41,9 +53,10 @@ function onYouTubeIframeAPIReady() {
       playlist: 'KISNE4qOIBM', // Required for looping the same video
       modestbranding: 1,
       rel: 0,
-      playsinline: 1,
+      playsinline: 1, // Important for iOS
       fs: 0,
-      showinfo: 0
+      showinfo: 0,
+      vq: suggestedQuality // Suggest initial quality level
     },
     events: {
       onReady: event => {
@@ -51,6 +64,11 @@ function onYouTubeIframeAPIReady() {
         // Mute the video initially to allow autoplay.
         event.target.mute();
         event.target.playVideo();
+        
+        // Set quality level based on device type
+        if (isMobile || optimizedMode) {
+          event.target.setPlaybackQuality('small');
+        }
         
         // Apply styles to containing divs
         const section1 = document.getElementById('section1');
