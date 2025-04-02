@@ -268,12 +268,29 @@ async function initializeGameShow() {
       hostIntro.style.zIndex = '10';
     }
     
-    // Make sure the start button is clickable
+    // Make sure the start button is clickable with enhanced mobile support
     const startButton = document.getElementById('start-game-button');
     if (startButton) {
+      // Check if we're on a mobile device
+      const isMobile = window.innerWidth <= 768 || 
+                      typeof window.orientation !== 'undefined' ||
+                      navigator.userAgent.indexOf('Mobile') !== -1;
+      
+      // Apply basic styles
       startButton.style.zIndex = '20';
       startButton.style.position = 'relative';
-      console.log("Start button initialized");
+      
+      // Apply enhanced mobile styling if needed
+      if (isMobile) {
+        startButton.style.minHeight = '55px';
+        startButton.style.minWidth = '200px';
+        startButton.style.padding = '15px 30px';
+        startButton.style.fontSize = '1.2rem';
+        startButton.style.borderRadius = '10px';
+        startButton.style.webkitTapHighlightColor = 'rgba(30, 144, 255, 0.4)';
+        startButton.style.boxShadow = '0 0 25px rgba(30, 144, 255, 0.7)';
+        startButton.style.touchAction = 'manipulation'; // Optimize touch behavior
+      }
     }
     
     console.log("Game show initialized successfully");
@@ -536,11 +553,69 @@ class GameShow {
       console.error("Start game button not found!");
     }
     
-    // Play again button
+    // Play again button with enhanced mobile support
     if (this.elements.ui.playAgainBtn) {
-      const playAgainHandler = () => this.resetGame();
+      // Check if we're on a mobile device
+      const isMobile = window.innerWidth <= 768 || 
+                      typeof window.orientation !== 'undefined' ||
+                      navigator.userAgent.indexOf('Mobile') !== -1;
+      
+      // Apply mobile-specific enhancements if needed
+      if (isMobile) {
+        const playAgainBtn = this.elements.ui.playAgainBtn;
+        playAgainBtn.style.minHeight = '55px';
+        playAgainBtn.style.minWidth = '200px';
+        playAgainBtn.style.padding = '1rem 2rem';
+        playAgainBtn.style.fontSize = '1.2rem';
+        playAgainBtn.style.borderRadius = '10px';
+        playAgainBtn.style.webkitTapHighlightColor = 'rgba(30, 144, 255, 0.4)';
+        playAgainBtn.style.boxShadow = '0 0 25px rgba(30, 144, 255, 0.7)';
+        playAgainBtn.style.touchAction = 'manipulation'; // Optimize touch behavior
+      }
+    
+      // Enhanced event handler with touch feedback
+      const playAgainHandler = (e) => {
+        // Prevent default for touch events to avoid double-firing
+        if (e.type === 'touchstart') {
+          e.preventDefault();
+        }
+        
+        // Avoid multiple rapid taps
+        const playAgainBtn = this.elements.ui.playAgainBtn;
+        if (playAgainBtn.dataset.processing === 'true') {
+          return;
+        }
+        playAgainBtn.dataset.processing = 'true';
+        
+        // Visual feedback
+        try {
+          gsap.to(playAgainBtn, {
+            scale: 0.95,
+            duration: 0.1,
+            yoyo: true,
+            repeat: 1,
+            onComplete: () => {
+              this.resetGame();
+              // Reset processing flag
+              setTimeout(() => {
+                playAgainBtn.dataset.processing = 'false';
+              }, 500);
+            }
+          });
+        } catch (error) {
+          // Fallback if animation fails
+          playAgainBtn.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            playAgainBtn.style.transform = 'scale(1)';
+            this.resetGame();
+            playAgainBtn.dataset.processing = 'false';
+          }, 100);
+        }
+      };
+      
+      // Add event listeners with better mobile support
       this.elements.ui.playAgainBtn.addEventListener('click', playAgainHandler);
-      this.elements.ui.playAgainBtn.addEventListener('touchstart', playAgainHandler);
+      this.elements.ui.playAgainBtn.addEventListener('touchstart', playAgainHandler, { passive: false });
     }
     
     // Add keyboard control (for accessibility)
@@ -820,8 +895,37 @@ class GameShow {
         <span class="option-text">${option.text}</span>
       `;
       
-      // Add click event to handle answer selection
-      button.addEventListener('click', () => this.selectAnswer(option));
+      // Add click and touch events with better mobile support
+      const selectHandler = (e) => {
+        // Prevent default for touch events to avoid double-firing
+        if (e.type === 'touchstart') {
+          e.preventDefault();
+        }
+        
+        // Visual feedback for touch
+        button.style.transform = 'scale(0.98)';
+        
+        // Avoid multiple rapid taps
+        if (button.dataset.processing === 'true') {
+          return;
+        }
+        button.dataset.processing = 'true';
+        
+        // Short delay to allow visual feedback
+        setTimeout(() => {
+          button.style.transform = 'scale(1)';
+          this.selectAnswer(option);
+          
+          // Reset processing flag after a safe delay
+          setTimeout(() => {
+            button.dataset.processing = 'false';
+          }, 500);
+        }, 50);
+      };
+      
+      // Add both event types
+      button.addEventListener('click', selectHandler);
+      button.addEventListener('touchstart', selectHandler, { passive: false });
       
       // Add to container
       optionsContainer.appendChild(button);
