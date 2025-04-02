@@ -390,6 +390,18 @@ export async function init() {
     const ch4Buttons = document.querySelectorAll('.channel4-buttons .channel-button');
     ch4Buttons.forEach(button => {
       button.style.fontFamily = "'Merova', sans-serif";
+      button.style.letterSpacing = '0.05em';
+      button.style.fontWeight = '500';
+      button.style.fontSize = '1.3rem';
+      
+      if (window.innerWidth <= 768) {
+        button.style.padding = '16px 30px';
+        button.style.minHeight = '60px';
+        button.style.margin = '5px 0';
+      } else {
+        button.style.padding = '14px 25px';
+        button.style.margin = '0 8px';
+      }
     });
   }, 500);
   
