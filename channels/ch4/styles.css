@@ -258,27 +258,27 @@
   text-decoration: none;
   font-weight: bold;
   margin: 10px 0;
-  border: 2px solid #3e92cc;
+  border: 2px solid #888888;
   transition: all 0.2s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
-  box-shadow: 0 0 10px rgba(62, 146, 204, 0.3);
+  box-shadow: 0 0 10px rgba(100, 100, 100, 0.3);
 }
 
 .letter-button:hover {
-  background: rgba(62, 146, 204, 0.2);
+  background: rgba(150, 150, 150, 0.2);
   transform: translateY(-3px);
-  box-shadow: 0 0 10px rgba(62, 146, 204, 0.5);
+  box-shadow: 0 0 10px rgba(150, 150, 150, 0.5);
 }
 
 .annual-letter-link a {
-  color: #1e90ff;
+  color: #aaaaaa;
   text-decoration: underline;
   transition: color 0.3s ease;
 }
 
 .annual-letter-link a:hover {
-  color: #4db8ff;
+  color: #cccccc;
 }
 
 /* Animation */
