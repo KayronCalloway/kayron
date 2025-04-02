@@ -393,6 +393,7 @@ export async function init() {
       button.style.letterSpacing = '0.05em';
       button.style.fontWeight = '500';
       button.style.fontSize = '1.3rem';
+      button.style.borderColor = '#a9a9a9'; // Heather grey border
       
       if (window.innerWidth <= 768) {
         button.style.padding = '16px 30px';
