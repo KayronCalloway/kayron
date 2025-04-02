@@ -251,22 +251,24 @@
 
 .letter-button {
   display: inline-block;
-  background: rgba(0, 0, 0, 0.6);
-  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  color: #f0f0f0;
   padding: 12px 30px;
-  border-radius: 6px;
+  border-radius: 5px;
   text-decoration: none;
   font-weight: bold;
   margin: 10px 0;
-  border: 2px solid rgba(255, 255, 255, 0.6);
-  transition: all 0.3s ease;
+  border: 2px solid #3e92cc;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 0 10px rgba(62, 146, 204, 0.3);
 }
 
 .letter-button:hover {
-  background: rgba(30, 30, 30, 0.8);
+  background: rgba(62, 146, 204, 0.2);
   transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 10px rgba(62, 146, 204, 0.5);
 }
 
 .annual-letter-link a {
