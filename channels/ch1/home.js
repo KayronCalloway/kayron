@@ -43,35 +43,6 @@ export async function init() {
         }
       }, 3000);
     }
-  }
-  
-  // Helper function to detect mobile devices
-  function isMobileDevice() {
-    return (
-      typeof window.orientation !== 'undefined' || 
-      navigator.userAgent.indexOf('Mobile') !== -1 ||
-      navigator.userAgent.indexOf('Android') !== -1 ||
-      navigator.userAgent.indexOf('iOS') !== -1 ||
-      navigator.userAgent.indexOf('iPhone') !== -1 ||
-      navigator.userAgent.indexOf('iPad') !== -1
-    );
-  }
-  
-  // Helper function to detect potential low bandwidth conditions
-  function isLowBandwidth() {
-    // Check if the browser supports the Network Information API
-    if (navigator.connection) {
-      // Check for slow connections
-      if (navigator.connection.saveData ||
-          navigator.connection.effectiveType === 'slow-2g' ||
-          navigator.connection.effectiveType === '2g' ||
-          navigator.connection.effectiveType === '3g') {
-        return true;
-      }
-    }
-    return false;
-  }
-    }
     
     // Ensure buttons are visible and positioned correctly with mobile optimization
     const channelButtons = section1.querySelector('.channel-buttons');
@@ -107,6 +78,33 @@ export async function init() {
       
       console.log('Channel buttons styles applied with mobile optimization');
     }
+  }
+  
+  // Helper function to detect mobile devices
+  function isMobileDevice() {
+    return (
+      typeof window.orientation !== 'undefined' || 
+      navigator.userAgent.indexOf('Mobile') !== -1 ||
+      navigator.userAgent.indexOf('Android') !== -1 ||
+      navigator.userAgent.indexOf('iOS') !== -1 ||
+      navigator.userAgent.indexOf('iPhone') !== -1 ||
+      navigator.userAgent.indexOf('iPad') !== -1
+    );
+  }
+  
+  // Helper function to detect potential low bandwidth conditions
+  function isLowBandwidth() {
+    // Check if the browser supports the Network Information API
+    if (navigator.connection) {
+      // Check for slow connections
+      if (navigator.connection.saveData ||
+          navigator.connection.effectiveType === 'slow-2g' ||
+          navigator.connection.effectiveType === '2g' ||
+          navigator.connection.effectiveType === '3g') {
+        return true;
+      }
+    }
+    return false;
   }
   
   try {
@@ -191,121 +189,177 @@ function applyMobileOptimizations() {
     }
   }
 }
-}
 
 function setupModalEventListeners() {
   console.log('Setting up modal event listeners');
+  
+  // Check if it's a mobile device
+  const isMobile = window.innerWidth <= 600 || 
+                  typeof window.orientation !== 'undefined' ||
+                  navigator.userAgent.indexOf('Mobile') !== -1;
+  
   // GSAP Animation: "Coming Out of the Box"
   const animateModalIn = modal => {
-    gsap.fromTo(
-      modal,
-      { 
-        opacity: 0, 
-        scale: 0.8, 
-        y: 20, 
-        rotationX: 5,
-        transformOrigin: "top center"
-      },
-      { 
-        opacity: 1, 
-        scale: 1, 
-        y: 0, 
-        rotationX: 0, 
-        duration: 0.6, 
-        ease: "power2.out" 
-      }
-    );
+    // Simpler animation for mobile to improve performance
+    if (isMobile) {
+      gsap.fromTo(
+        modal,
+        { 
+          opacity: 0, 
+          scale: 0.9
+        },
+        { 
+          opacity: 1, 
+          scale: 1, 
+          duration: 0.4, 
+          ease: "power2.out" 
+        }
+      );
+    } else {
+      gsap.fromTo(
+        modal,
+        { 
+          opacity: 0, 
+          scale: 0.8, 
+          y: 20, 
+          rotationX: 5,
+          transformOrigin: "top center"
+        },
+        { 
+          opacity: 1, 
+          scale: 1, 
+          y: 0, 
+          rotationX: 0, 
+          duration: 0.6, 
+          ease: "power2.out" 
+        }
+      );
+    }
   };
 
   const animateModalOut = modal => {
-    gsap.to(modal, {
-      opacity: 0,
-      scale: 0.8,
-      y: 20,
-      rotationX: 5,
-      duration: 0.5,
-      ease: "power2.in",
-      transformOrigin: "top center",
-      onComplete: () => {
-        modal.style.display = 'none';
-        modal.classList.add('hidden'); // Ensure both display:none and hidden class are applied
-      }
-    });
+    // Simpler animation for mobile to improve performance
+    if (isMobile) {
+      gsap.to(modal, {
+        opacity: 0,
+        scale: 0.9,
+        duration: 0.3,
+        ease: "power2.in",
+        onComplete: () => {
+          modal.style.display = 'none';
+          modal.classList.add('hidden');
+        }
+      });
+    } else {
+      gsap.to(modal, {
+        opacity: 0,
+        scale: 0.8,
+        y: 20,
+        rotationX: 5,
+        duration: 0.5,
+        ease: "power2.in",
+        transformOrigin: "top center",
+        onComplete: () => {
+          modal.style.display = 'none';
+          modal.classList.add('hidden');
+        }
+      });
+    }
   };
 
   // Helper function to set up modal trigger and close events.
   const setupModal = (buttonId, modalId, closeButtonId) => {
-    const triggerButton = document.getElementById(buttonId);
+    const button = document.getElementById(buttonId);
     const modal = document.getElementById(modalId);
     const closeButton = document.getElementById(closeButtonId);
     
-    console.log(`Setting up ${modalId}: Button=${!!triggerButton}, Modal=${!!modal}, CloseButton=${!!closeButton}`);
+    console.log(`Setting up ${modalId}: Button=${!!button}, Modal=${!!modal}, CloseButton=${!!closeButton}`);
     
-    if (triggerButton && modal && closeButton) {
-      // Check if it's a mobile device
-      const isMobile = window.innerWidth <= 600 || 
-                       typeof window.orientation !== 'undefined' ||
-                       navigator.userAgent.indexOf('Mobile') !== -1;
+    if (!button || !modal || !closeButton) {
+      console.error(`Missing elements for ${modalId}. Cannot setup modal.`);
+      return;
+    }
+    
+    // Add visual feedback for mobile
+    if (isMobile) {
+      button.classList.add('mobile-enhanced');
+    }
+    
+    // Create open handler with touch support
+    const openHandler = (e) => {
+      console.log(`${buttonId} clicked/touched`);
       
-      // Function to handle opening modal
-      const openModal = (e) => {
-        // Prevent default behavior for touch events to avoid double firing
-        if (e.type === 'touchstart') {
-          e.preventDefault();
-        }
-        
-        // Provide visual feedback for touch
-        if (isMobile) {
-          triggerButton.style.transform = 'scale(0.96)';
-        }
-        
-        // Delay showing the modal slightly to allow for visual feedback
-        setTimeout(() => {
-          // Reset transformation
-          if (isMobile) {
-            triggerButton.style.transform = '';
-          }
-          
-          console.log(`Opening modal ${modalId}`);
-          modal.style.display = 'flex';
-          modal.classList.remove('hidden');
-          animateModalIn(modal);
-        }, isMobile ? 50 : 0);
-      };
-      
-      // Function to handle closing modal
-      const closeModal = (e) => {
-        // Prevent default behavior for touch events
-        if (e.type === 'touchstart') {
-          e.preventDefault();
-        }
-        
-        // Provide visual feedback for touch
-        if (isMobile) {
-          closeButton.style.transform = 'scale(0.9)';
-        }
-        
-        // Delay closing slightly to allow for visual feedback
-        setTimeout(() => {
-          // Reset transformation
-          if (isMobile) {
-            closeButton.style.transform = '';
-          }
-          
-          console.log(`Closing modal ${modalId}`);
-          animateModalOut(modal);
-        }, isMobile ? 50 : 0);
-      };
-      
-      // Set up event listeners
-      triggerButton.addEventListener('click', openModal);
-      closeButton.addEventListener('click', closeModal);
-      
-      // Add touch events for mobile
-      if (isMobile) {
-        triggerButton.addEventListener('touchstart', openModal, { passive: false });
-        closeButton.addEventListener('touchstart', closeModal, { passive: false });
+      // Prevent default for touch events to avoid double-firing
+      if (e.type === 'touchstart') {
+        e.preventDefault();
       }
+      
+      // Avoid multiple rapid taps
+      if (button.dataset.processing === 'true') {
+        return;
+      }
+      button.dataset.processing = 'true';
+      
+      // Apply visual feedback
+      button.style.transform = 'scale(0.96)';
+      
+      // Short delay for visual feedback
+      setTimeout(() => {
+        button.style.transform = '';
+        
+        // Force remove hidden class and set display to flex
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+        
+        console.log(`Opening modal ${modalId}, current display: ${modal.style.display}`);
+        
+        animateModalIn(modal);
+        
+        // Prevent double-clicking during animation
+        button.style.pointerEvents = 'none';
+        
+        // Reset processing flag
+        setTimeout(() => {
+          button.dataset.processing = 'false';
+        }, 500);
+      }, 50);
+    };
+    
+    // Create close handler with touch support
+    const closeHandler = (e) => {
+      // Prevent default for touch events
+      if (e.type === 'touchstart') {
+        e.preventDefault();
+      }
+      
+      // Visual feedback
+      closeButton.style.transform = 'scale(0.9)';
+      
+      setTimeout(() => {
+        closeButton.style.transform = '';
+        animateModalOut(modal);
+        
+        // Make button re-clickable after animation completes
+        setTimeout(() => {
+          button.style.pointerEvents = 'auto';
+        }, isMobile ? 400 : 600);
+      }, 50);
+    };
+    
+    // Clear existing listeners to prevent duplicates
+    button.removeEventListener('click', openHandler);
+    closeButton.removeEventListener('click', closeHandler);
+    
+    // Setup click and touch events for the open button
+    button.addEventListener('click', openHandler);
+    if (isMobile) {
+      button.addEventListener('touchstart', openHandler, { passive: false });
+    }
+    
+    // Setup click and touch events for the close button
+    closeButton.addEventListener('click', closeHandler);
+    if (isMobile) {
+      closeButton.addEventListener('touchstart', closeHandler, { passive: false });
     }
   };
 
@@ -314,13 +368,44 @@ function setupModalEventListeners() {
   setupModal('aboutButton', 'aboutModal', 'closeAbout');
   setupModal('contactButton', 'contactModal', 'closeContact');
 
+  // Handle modal scroll behavior for iOS
+  if (isMobile) {
+    // Fix for iOS momentum scrolling
+    const modalBoxes = document.querySelectorAll('.modal-box');
+    modalBoxes.forEach(box => {
+      box.style.WebkitOverflowScrolling = 'touch';
+      
+      // Prevent body scrolling when modal is scrolled
+      box.addEventListener('touchmove', e => {
+        e.stopPropagation();
+      }, { passive: true });
+    });
+  }
+
+  // Get references to the modals and buttons
+  const resumeModal = document.getElementById('resumeModal');
+  const aboutModal = document.getElementById('aboutModal');
+  const contactModal = document.getElementById('contactModal');
+  const resumeButton = document.getElementById('resumeButton');
+  const aboutButton = document.getElementById('aboutButton');
+  const contactButton = document.getElementById('contactButton');
+
   // Close any open modal on Escape key press.
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
-      ['resumeModal', 'aboutModal', 'contactModal'].forEach(modalId => {
-        const modal = document.getElementById(modalId);
-        if (modal && (modal.style.display === 'flex' || !modal.classList.contains('hidden'))) {
+      const allModals = [resumeModal, aboutModal, contactModal];
+      const allButtons = [resumeButton, aboutButton, contactButton];
+      
+      allModals.forEach((modal, index) => {
+        if (modal && !modal.classList.contains('hidden')) {
           animateModalOut(modal);
+          
+          // Make corresponding button re-clickable
+          setTimeout(() => {
+            if (allButtons[index]) {
+              allButtons[index].style.pointerEvents = 'auto';
+            }
+          }, 600);
         }
       });
     }
