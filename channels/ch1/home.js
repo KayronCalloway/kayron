@@ -70,12 +70,18 @@ export async function init() {
       buttons.forEach(button => {
         // Apply Merova font to all buttons
         button.style.fontFamily = "'Merova', sans-serif";
+        button.style.letterSpacing = '0.05em';
+        button.style.fontWeight = '500';
+        button.style.fontSize = '1.3rem';
         
         if (window.innerWidth <= 600) {
           button.style.padding = '16px 30px'; // Larger touch target on mobile
-          button.style.fontSize = '1.2rem';   // Slightly larger text
           button.style.width = '100%';        // Full width of container
-          button.style.minHeight = '55px';    // Minimum height for better tapping
+          button.style.minHeight = '60px';    // Taller for better tapping
+          button.style.margin = '5px 0';      // Add spacing between buttons
+        } else {
+          button.style.padding = '14px 25px'; // Slightly more padding on desktop
+          button.style.margin = '0 8px';      // Add some horizontal spacing
         }
       });
       
