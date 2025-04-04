@@ -70,6 +70,22 @@ function onYouTubeIframeAPIReady() {
           event.target.setPlaybackQuality('small');
         }
         
+        // Force playback on mobile devices
+        if (isMobile) {
+          // Try to force playback on mobile
+          const forcePlay = () => {
+            if (event.target.getPlayerState() !== YT.PlayerState.PLAYING) {
+              console.log('Forcing video playback on mobile');
+              event.target.playVideo();
+            }
+          };
+          
+          // Try multiple times to start playback
+          forcePlay();
+          setTimeout(forcePlay, 1000);
+          setTimeout(forcePlay, 3000);
+        }
+        
         // Apply styles to containing divs
         const section1 = document.getElementById('section1');
         if (section1) {
