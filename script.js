@@ -548,12 +548,20 @@ const resetMenuStyles = () => {
   });
 
   // --- Intersection Observer for Channel Transitions ---
-  const observerOptions = { root: null, threshold: 0.7 };
+  const observerOptions = { root: null, threshold: 0.6 };
   const observerCallback = entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const newChannel = entry.target.id;
-        if (currentChannel !== newChannel) {
+    // Sort entries by intersection ratio to prioritize the most visible section
+    const visibleEntries = entries.filter(e => e.isIntersecting);
+    
+    if (visibleEntries.length > 0) {
+      // Find the entry with the highest intersection ratio
+      const entry = visibleEntries.reduce((highest, current) => 
+        current.intersectionRatio > highest.intersectionRatio ? current : highest, 
+        visibleEntries[0]
+      );
+      
+      const newChannel = entry.target.id;
+      if (currentChannel !== newChannel) {
           // Dispatch channel change event to stop any running audio (only if not entering Channel 3)
           if (newChannel !== 'section3') {
             const channelChangeEvent = new Event('channelChange');

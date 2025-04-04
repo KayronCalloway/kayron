@@ -121,6 +121,8 @@ function onYouTubeIframeAPIReady() {
         console.log(`YouTube player state changed: ${event.data}`);
         // If video ends or pauses unexpectedly, try to restart it
         if (event.data === YT.PlayerState.ENDED || event.data === YT.PlayerState.PAUSED) {
+          console.log('Video ended or paused - restarting');
+          event.target.seekTo(0);
           event.target.playVideo();
         }
       },
