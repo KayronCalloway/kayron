@@ -625,8 +625,42 @@ body {
     height: 45px; /* Slightly reduced height for mobile but still accommodates font */
     padding: 0 15px; /* Remove vertical padding to control alignment */
   }
+  
+  /* Channel section vertical optimization for mobile */
+  .channel-section {
+    padding: 30px 20px;
+    min-height: 100vh;
+    justify-content: center;
+  }
+  
+  /* Optimize video background for vertical mobile */
+  .video-background iframe {
+    width: 100vw !important;
+    height: 100vh !important;
+    object-fit: cover;
+  }
+  
+  /* Button layout for vertical mobile */
+  .channel-buttons {
+    flex-direction: column !important;
+    gap: 25px !important;
+    width: 85%;
+    max-width: 300px;
+  }
+  
   .channel-button {
-    padding: 15px 25px; /* Larger touch target on mobile */
+    padding: 16px 30px; /* Larger touch target on mobile */
+    width: 100%; /* Full width buttons on mobile */
+    min-height: 60px; /* Taller for better tapping */
+    margin: 5px 0; /* Add spacing between buttons */
+  }
+  
+  /* Channel 4 specific vertical layout */
+  .channel4-buttons {
+    flex-direction: column !important;
+    gap: 25px !important;
+    width: 85%;
+    max-width: 300px;
   }
   
   /* Modal adjustments for mobile */

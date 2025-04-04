@@ -386,8 +386,19 @@ export async function init() {
   setTimeout(() => {
     setupModalEventListeners();
     
-    // Apply Merova font to all CH4 buttons
+    // Apply Merova font to all CH4 buttons and handle mobile layout
     const ch4Buttons = document.querySelectorAll('.channel4-buttons .channel-button');
+    const isMobileView = window.innerWidth <= 768;
+    
+    // Adjust the channel4-buttons container for mobile vertical layout
+    const buttonContainer = document.querySelector('.channel4-buttons');
+    if (buttonContainer && isMobileView) {
+      buttonContainer.style.flexDirection = 'column';
+      buttonContainer.style.gap = '25px';
+      buttonContainer.style.width = '85%';
+      buttonContainer.style.maxWidth = '300px';
+    }
+    
     ch4Buttons.forEach(button => {
       button.style.fontFamily = "'Merova', sans-serif";
       button.style.letterSpacing = '0.05em';
@@ -395,10 +406,11 @@ export async function init() {
       button.style.fontSize = '1.3rem';
       button.style.borderColor = '#a9a9a9'; // Heather grey border
       
-      if (window.innerWidth <= 768) {
+      if (isMobileView) {
         button.style.padding = '16px 30px';
         button.style.minHeight = '60px';
         button.style.margin = '5px 0';
+        button.style.width = '100%'; // Full width on mobile
       } else {
         button.style.padding = '14px 25px';
         button.style.margin = '0 8px';
@@ -455,6 +467,22 @@ export async function init() {
             event.target.mute();
             event.target.playVideo();
             console.log("Channel 4 YouTube Player ready, starting muted.");
+            
+            // Force playback on mobile devices
+            if (isMobile) {
+              // Try to force playback on mobile
+              const forcePlay = () => {
+                if (event.target.getPlayerState() !== YT.PlayerState.PLAYING) {
+                  console.log('Channel 4: Forcing video playback on mobile');
+                  event.target.playVideo();
+                }
+              };
+              
+              // Try multiple times to start playback
+              forcePlay();
+              setTimeout(forcePlay, 1000);
+              setTimeout(forcePlay, 3000);
+            }
           }
         }
       });
