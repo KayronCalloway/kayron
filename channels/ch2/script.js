@@ -771,6 +771,45 @@
         }
       }, { passive: false });
       
+      // Prevent channel changes when scrolling horizontally in projects
+      // by stopping horizontal swipe events from propagating to document level
+      scroller.addEventListener('touchstart', (e) => {
+        // Store current X position
+        const startX = e.touches[0].clientX;
+        
+        // Track whether this is a horizontal scroll
+        let isHorizontalScroll = false;
+        
+        // Add a one-time touchmove listener to detect horizontal scrolling
+        const detectDirection = (moveEvent) => {
+          const currentX = moveEvent.touches[0].clientX;
+          const diffX = Math.abs(currentX - startX);
+          const diffY = Math.abs(moveEvent.touches[0].clientY - e.touches[0].clientY);
+          
+          // If mostly horizontal movement and significant movement
+          if (diffX > 10 && diffX > diffY) {
+            isHorizontalScroll = true;
+          }
+        };
+        
+        scroller.addEventListener('touchmove', detectDirection, { passive: true });
+        
+        // Add touchend listener to stop propagation if it was horizontal scrolling
+        const handleTouchEnd = (endEvent) => {
+          if (isHorizontalScroll) {
+            // Stop event from triggering channel change
+            endEvent.stopPropagation();
+            console.log('Prevented channel change from horizontal project scroll');
+          }
+          
+          // Clean up event listeners
+          scroller.removeEventListener('touchmove', detectDirection);
+          scroller.removeEventListener('touchend', handleTouchEnd);
+        };
+        
+        scroller.addEventListener('touchend', handleTouchEnd);
+      }, { passive: true });
+      
       // Add touch scrolling
       let startX;
       let scrollLeft;

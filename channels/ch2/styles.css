@@ -385,9 +385,15 @@
 }
 
 .card-info {
-  padding: var(--ch2-spacing-sm) var(--ch2-spacing-sm) var(--ch2-spacing-xs);
+  padding: var(--ch2-spacing-sm) var(--ch2-spacing-sm) var(--ch2-spacing-sm); /* More bottom padding */
   background-color: rgba(20, 20, 20, 0.95);
   border-top: 1px solid rgba(62, 146, 204, 0.2);
+  /* Ensure minimum height for title visibility */
+  min-height: 60px;
+  /* Center content vertically */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .card-title {
@@ -400,6 +406,9 @@
   text-overflow: ellipsis;
   letter-spacing: 0.03em;
   text-align: center;
+  /* Ensure proper vertical spacing */
+  line-height: 1.3;
+  padding: 5px 0;
 }
 
 .project-card:hover .card-title {
@@ -836,17 +845,35 @@
   }
   
   .card-info {
-    padding: 12px 10px; /* More vertical padding */
+    padding: 15px 10px; /* More vertical padding */
+    min-height: 70px; /* Taller on mobile for better visibility */
+    /* Add subtle background gradient for better visibility */
+    background: linear-gradient(to bottom, rgba(15, 15, 15, 0.95), rgba(25, 25, 25, 0.98));
+    /* Ensure it's not clipped */
+    position: relative;
+    z-index: 5;
+    /* Round bottom corners to match card */
+    border-radius: 0 0 12px 12px;
   }
   
   .card-title {
-    font-size: 1rem; /* Slightly larger for readability */
+    font-size: 1.05rem; /* Larger for better readability */
+    padding: 8px 5px; /* More padding around text */
+    line-height: 1.4; /* More space between lines */
+    /* Add subtle text shadow for better contrast */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   }
   
-  /* Improved Scrolling */
+  /* Improved Scrolling and Layout */
   .category-row {
     padding: 0 var(--ch2-spacing-xs);
-    margin-bottom: 25px; /* More separation between rows */
+    margin-bottom: 35px; /* Much more space below the row to prevent cutoff */
+    padding-bottom: 20px; /* Additional bottom padding */
+    /* Add bottom spacing to ensure cards aren't cut off */
+    position: relative;
+    /* Add subtle bottom edge for visual separation */
+    border-bottom: 1px solid rgba(62, 146, 204, 0.1);
+    z-index: 1;
   }
   
   .project-scroller {
