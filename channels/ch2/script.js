@@ -772,14 +772,56 @@
           e.preventDefault();
           e.stopPropagation();
           console.log('Left arrow clicked, scrolling left');
-          scroller.scrollBy({ left: -300, behavior: 'smooth' });
+          
+          // Force scroll with a more direct approach
+          const scrollAmount = 300;
+          const startPos = scroller.scrollLeft;
+          const targetPos = startPos - scrollAmount;
+          
+          // Use direct scrollLeft setting with animation frames for smoother scrolling
+          const startTime = performance.now();
+          const duration = 400; // ms
+          
+          function scrollStep(timestamp) {
+            const elapsed = timestamp - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            // Ease out function for smoother deceleration
+            const easeOut = 1 - Math.pow(1 - progress, 2);
+            scroller.scrollLeft = startPos - (scrollAmount * easeOut);
+            
+            if (progress < 1) {
+              window.requestAnimationFrame(scrollStep);
+            }
+          }
+          
+          window.requestAnimationFrame(scrollStep);
         });
         
-        // Add touch handler for iOS
+        // Add touch handler for iOS using same scroll function
         leftArrow.addEventListener('touchend', (e) => {
           e.preventDefault();
           console.log('Left arrow touched, scrolling left');
-          scroller.scrollBy({ left: -300, behavior: 'smooth' });
+          
+          // Same direct scroll approach for touch
+          const scrollAmount = 300;
+          const startPos = scroller.scrollLeft;
+          const targetPos = startPos - scrollAmount;
+          
+          const startTime = performance.now();
+          const duration = 400; // ms
+          
+          function scrollStep(timestamp) {
+            const elapsed = timestamp - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeOut = 1 - Math.pow(1 - progress, 2);
+            scroller.scrollLeft = startPos - (scrollAmount * easeOut);
+            
+            if (progress < 1) {
+              window.requestAnimationFrame(scrollStep);
+            }
+          }
+          
+          window.requestAnimationFrame(scrollStep);
         }, { passive: false });
       }
       
@@ -800,14 +842,56 @@
           e.preventDefault();
           e.stopPropagation();
           console.log('Right arrow clicked, scrolling right');
-          scroller.scrollBy({ left: 300, behavior: 'smooth' });
+          
+          // Force scroll with a more direct approach
+          const scrollAmount = 300;
+          const startPos = scroller.scrollLeft;
+          const targetPos = startPos + scrollAmount;
+          
+          // Use direct scrollLeft setting with animation frames for smoother scrolling
+          const startTime = performance.now();
+          const duration = 400; // ms
+          
+          function scrollStep(timestamp) {
+            const elapsed = timestamp - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            // Ease out function for smoother deceleration
+            const easeOut = 1 - Math.pow(1 - progress, 2);
+            scroller.scrollLeft = startPos + (scrollAmount * easeOut);
+            
+            if (progress < 1) {
+              window.requestAnimationFrame(scrollStep);
+            }
+          }
+          
+          window.requestAnimationFrame(scrollStep);
         });
         
-        // Add touch handler for iOS
+        // Add touch handler for iOS using same scroll function
         rightArrow.addEventListener('touchend', (e) => {
           e.preventDefault();
           console.log('Right arrow touched, scrolling right');
-          scroller.scrollBy({ left: 300, behavior: 'smooth' });
+          
+          // Same direct scroll approach for touch
+          const scrollAmount = 300;
+          const startPos = scroller.scrollLeft;
+          const targetPos = startPos + scrollAmount;
+          
+          const startTime = performance.now();
+          const duration = 400; // ms
+          
+          function scrollStep(timestamp) {
+            const elapsed = timestamp - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeOut = 1 - Math.pow(1 - progress, 2);
+            scroller.scrollLeft = startPos + (scrollAmount * easeOut);
+            
+            if (progress < 1) {
+              window.requestAnimationFrame(scrollStep);
+            }
+          }
+          
+          window.requestAnimationFrame(scrollStep);
         }, { passive: false });
       }
       
