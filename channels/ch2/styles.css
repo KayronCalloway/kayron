@@ -252,9 +252,9 @@
 
 .project-scroller {
   display: flex;
-  gap: var(--ch2-spacing-lg);
+  gap: 20px;
   overflow-x: auto;
-  padding: var(--ch2-spacing-md) 45px;
+  padding: var(--ch2-spacing-md) 20px; /* Reduced side padding without arrows */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
   scroll-behavior: smooth;
@@ -263,8 +263,6 @@
   align-items: center;
   /* Ensure scroller has a width to be able to scroll */
   width: 100%;
-  /* Make sure content stretches beyond the width to allow scrolling */
-  white-space: nowrap;
   /* Fix for iOS */
   -webkit-overflow-scrolling: touch;
   /* Hardware acceleration */
@@ -274,6 +272,10 @@
   overflow-x: scroll !important;
   /* Improve appearance */
   touch-action: pan-x;
+  /* Better snap behavior on touch */
+  scroll-snap-type: x mandatory;
+  /* Add momentum scrolling */
+  -webkit-overflow-scrolling: touch;
 }
 
 .single-row .project-scroller {
@@ -285,91 +287,39 @@
   display: none; /* Chrome, Safari, Opera */
 }
 
-/* Scroll indicators */
+/* Scroll indicators - removed completely */
 .scroll-indicator {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 55px;
-  height: 55px;
-  background-color: rgba(25, 25, 25, 0.9);
-  color: var(--ch2-text-color);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  opacity: 0.85;
-  transition: all var(--ch2-transition-fast);
-  z-index: 50; /* Much higher to ensure visibility */
-  font-size: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-  border: 2px solid rgba(62, 146, 204, 0.3);
-  /* Ensure minimum touch target size */
-  min-width: 50px;
-  min-height: 50px;
-  /* Better touch handling */
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: rgba(62, 146, 204, 0.4);
-  /* Make text non-selectable */
-  user-select: none;
-  -webkit-user-select: none;
-  /* Hardware acceleration */
-  transform: translateY(-50%) translateZ(0);
-  /* iOS pointer fix */
-  -webkit-appearance: button;
-}
-
-.scroll-indicator:hover, .scroll-indicator:active {
-  opacity: 1;
-  transform: translateY(-50%) scale(1.1);
-  background-color: var(--ch2-accent-color);
-  box-shadow: 0 5px 15px rgba(62, 146, 204, 0.6);
-  color: #ffffff;
-  border-color: #ffffff;
-}
-
-/* Add active state for better touch feedback */
-.scroll-indicator:active {
-  transform: translateY(-50%) scale(0.95);
-  box-shadow: 0 2px 8px rgba(62, 146, 204, 0.4);
-  transition: all 0.1s ease;
-}
-
-.scroll-left {
-  left: 8px; /* Position closer to edge for better visibility and access */
-}
-
-.scroll-right {
-  right: 8px; /* Position closer to edge for better visibility and access */
+  display: none !important;
 }
 
 /* === Project Cards === */
 .project-card {
   flex: 0 0 auto;
-  width: 280px;
-  min-width: 280px; /* Force minimum width to prevent shrinking */
+  width: 250px; /* Slightly smaller default width */
+  min-width: 225px; /* Smaller minimum width */
   height: fit-content;
   transition: all var(--ch2-transition-medium);
   cursor: pointer;
   position: relative;
-  border-radius: 8px;
+  border-radius: 12px; /* More rounded corners */
   overflow: hidden;
   /* Ensure clicks work, with Safari-specific enhancements */
   pointer-events: auto;
   z-index: 1;
-  /* Add subtle visual feedback to make it obvious cards are clickable */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  /* Add stronger visual feedback to make it obvious cards are clickable */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   /* Safari-specific fixes */
   -webkit-appearance: button; /* Make Safari treat it like a button */
   -webkit-transform: translateZ(0); /* Hardware acceleration for Safari */
-  -webkit-tap-highlight-color: rgba(62, 146, 204, 0.2); /* Visual feedback in Safari */
+  -webkit-tap-highlight-color: rgba(62, 146, 204, 0.3); /* Better visual feedback in Safari */
   touch-action: manipulation; /* Optimize touch behavior */
-  margin: 10px 10px; /* More horizontal margin to separate cards */
+  margin: 10px 5px; /* Less horizontal margin with no arrows */
   /* Cancel nowrap from parent */
   white-space: normal;
   /* Force display */
   display: block;
+  /* Enable snap scrolling */
+  scroll-snap-align: center;
 }
 
 .project-card:hover {
@@ -858,21 +808,31 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow for depth */
   }
   
-  /* Enhanced Project Cards */
+  /* Enhanced Project Cards for Mobile */
   .project-card {
-    width: 200px; /* Slightly wider for better visibility */
-    margin: 15px 10px; /* More space between cards */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+    width: 180px; /* Better size for mobile - fits ~2 cards per screen */
+    min-width: 180px; /* Force consistent card size */
+    margin: 10px 5px; /* Tighter spacing with no arrows */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35); /* Enhanced shadow for visibility */
     touch-action: manipulation; /* Better touch handling */
-    -webkit-tap-highlight-color: rgba(62, 146, 204, 0.3); /* Better tap feedback */
+    -webkit-tap-highlight-color: rgba(62, 146, 204, 0.5); /* More visible tap feedback */
+    scroll-snap-align: center; /* Better snapping */
+    border-radius: 12px; /* More rounded corners for mobile aesthetic */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for definition */
   }
   
   .project-card:active {
-    transform: scale(0.98); /* Add touch feedback */
+    transform: scale(0.96); /* Stronger touch feedback */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Shadow changes on tap */
   }
   
   .card-poster {
-    height: 120px; /* Slightly taller for better visibility */
+    height: 130px; /* Taller for better visibility */
+  }
+
+  /* Make the hover effect work on touch */
+  .project-card:hover, .project-card:active {
+    transform: scale(0.96); /* Only scale down slightly on mobile - no rising up */
   }
   
   .card-info {
