@@ -261,6 +261,19 @@
   -webkit-overflow-scrolling: touch; /* Better touch scroll behavior */
   flex: 1;
   align-items: center;
+  /* Ensure scroller has a width to be able to scroll */
+  width: 100%;
+  /* Make sure content stretches beyond the width to allow scrolling */
+  white-space: nowrap;
+  /* Fix for iOS */
+  -webkit-overflow-scrolling: touch;
+  /* Hardware acceleration */
+  transform: translateZ(0);
+  will-change: scroll-position;
+  /* Fix for WebKit */
+  overflow-x: scroll !important;
+  /* Improve appearance */
+  touch-action: pan-x;
 }
 
 .single-row .project-scroller {
@@ -335,6 +348,7 @@
 .project-card {
   flex: 0 0 auto;
   width: 280px;
+  min-width: 280px; /* Force minimum width to prevent shrinking */
   height: fit-content;
   transition: all var(--ch2-transition-medium);
   cursor: pointer;
@@ -351,7 +365,11 @@
   -webkit-transform: translateZ(0); /* Hardware acceleration for Safari */
   -webkit-tap-highlight-color: rgba(62, 146, 204, 0.2); /* Visual feedback in Safari */
   touch-action: manipulation; /* Optimize touch behavior */
-  margin: 10px 0;
+  margin: 10px 10px; /* More horizontal margin to separate cards */
+  /* Cancel nowrap from parent */
+  white-space: normal;
+  /* Force display */
+  display: block;
 }
 
 .project-card:hover {
