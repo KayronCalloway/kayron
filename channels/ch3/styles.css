@@ -669,6 +669,50 @@
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
   }
   
+  /* iPhone-specific optimizations for vertical mode */
+  @supports (-webkit-touch-callout: none) and (orientation: portrait) {
+    #game-show-container {
+      /* Account for iPhone safe areas */
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+      height: calc(100vh - env(safe-area-inset-top, 0px));
+      /* Better touch handling on iOS */
+      touch-action: manipulation;
+      /* Prevent Safari overscroll */
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Adjust game header for iPhone notch/Dynamic Island */
+    .game-header {
+      padding-top: env(safe-area-inset-top, 0px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(5px);
+    }
+    
+    /* Make answer buttons more thumb-friendly */
+    #options-container {
+      /* Center buttons in lower portion of screen */
+      position: relative;
+      top: 5vh; /* Move down slightly */
+    }
+    
+    .option-button {
+      /* Enhance for iOS touch */
+      min-height: 70px; /* Taller for better tapping */
+      margin-bottom: 15px; /* More separation */
+      border-radius: 12px; /* More iOS-like corner radius */
+      -webkit-tap-highlight-color: rgba(30, 144, 255, 0.4); /* Better visual feedback */
+    }
+    
+    /* Adjust controls positioning for play/again buttons */
+    .start-game-button, .play-again-button {
+      margin-bottom: env(safe-area-inset-bottom, 0px);
+    }
+  }
+  
   /* Host intro screen */
   .host-content {
     width: 95%;

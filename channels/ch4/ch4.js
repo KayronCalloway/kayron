@@ -468,20 +468,72 @@ export async function init() {
             event.target.playVideo();
             console.log("Channel 4 YouTube Player ready, starting muted.");
             
-            // Force playback on mobile devices
+            // Force playback on mobile devices with enhanced iOS support
             if (isMobile) {
-              // Try to force playback on mobile
+              // iOS-specific detection
+              const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+              
+              // More aggressive retry strategy especially for iOS
               const forcePlay = () => {
                 if (event.target.getPlayerState() !== YT.PlayerState.PLAYING) {
                   console.log('Channel 4: Forcing video playback on mobile');
                   event.target.playVideo();
+                  
+                  // Check if video is actually playing after a short delay
+                  if (isiOS) {
+                    setTimeout(() => {
+                      if (event.target.getPlayerState() !== YT.PlayerState.PLAYING) {
+                        console.log("Channel 4: Video still not playing on iOS, retrying...");
+                        event.target.playVideo();
+                      }
+                    }, 300);
+                  }
                 }
               };
               
-              // Try multiple times to start playback
+              // Initial attempt
               forcePlay();
-              setTimeout(forcePlay, 1000);
-              setTimeout(forcePlay, 3000);
+              
+              // More frequent retries for iOS
+              if (isiOS) {
+                console.log("Channel 4: iOS device detected, using enhanced playback strategy");
+                // iOS needs multiple attempts with user interaction context
+                for (let i = 1; i <= 5; i++) {
+                  setTimeout(forcePlay, i * 600); // More frequent retries
+                }
+                
+                // Additional attempts after page stabilizes
+                setTimeout(forcePlay, 3000);
+                setTimeout(forcePlay, 5000);
+                
+                // Handle portrait orientation specifically
+                if (window.matchMedia("(orientation: portrait)").matches) {
+                  // Apply specific fixes for vertical mode
+                  setTimeout(() => {
+                    const iframe = document.querySelector('#youtube-player-4 iframe');
+                    if (iframe) {
+                      // Enhance vertical fit
+                      iframe.style.objectFit = 'cover';
+                      iframe.style.width = '100vw';
+                      iframe.style.height = '100vh';
+                    }
+                  }, 1000);
+                }
+                
+                // Attempt playback on first user interaction
+                const attemptPlayOnInteraction = () => {
+                  event.target.playVideo();
+                  console.log("Channel 4: Attempting play on iOS user interaction");
+                  // Clean up
+                  document.removeEventListener('touchstart', attemptPlayOnInteraction);
+                };
+                
+                document.addEventListener('touchstart', attemptPlayOnInteraction, {once: true, passive: true});
+              } else {
+                // Standard retry for non-iOS
+                setTimeout(forcePlay, 1000);
+                setTimeout(forcePlay, 3000);
+              }
             }
           }
         }

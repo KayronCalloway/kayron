@@ -769,6 +769,30 @@
     -webkit-overflow-scrolling: touch; /* Improve iOS scrolling */
   }
   
+  /* iPhone vertical-specific enhancements */
+  @supports (-webkit-touch-callout: none) and (orientation: portrait) {
+    /* iOS-specific portfolio optimizations */
+    #section2 #portfolio-browse {
+      /* Account for iPhone safe areas */
+      padding-top: calc(30px + env(safe-area-inset-top, 0px));
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    
+    /* Better touch feedback on iOS */
+    .project-card {
+      -webkit-tap-highlight-color: rgba(62, 146, 204, 0.3);
+      transform: translateZ(0); /* Force GPU acceleration */
+    }
+    
+    /* Make scroll indicators more thumb-friendly */
+    .scroll-indicator {
+      bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+      top: auto; /* Place at bottom instead of middle for thumb reach */
+      transform: none; /* Remove vertical centering */
+      opacity: 0.95; /* More visible */
+    }
+  }
+  
   /* Enhanced Featured Project Section */
   .featured-project {
     height: 35vh;
