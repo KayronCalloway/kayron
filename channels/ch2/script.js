@@ -771,44 +771,51 @@
         }
       }, { passive: false });
       
-      // Prevent channel changes when scrolling horizontally in projects
-      // by stopping horizontal swipe events from propagating to document level
-      scroller.addEventListener('touchstart', (e) => {
-        // Store current X position
-        const startX = e.touches[0].clientX;
+      // More robust solution: Create a permanent capture-phase touch handler on the parent row 
+      // This ensures ALL touches on this area are properly handled
+      parentRow.addEventListener('touchstart', function(e) {
+        // Mark this as a "project scroller area" for the global handler to recognize
+        parentRow.dataset.scrollingArea = 'true';
         
-        // Track whether this is a horizontal scroll
-        let isHorizontalScroll = false;
-        
-        // Add a one-time touchmove listener to detect horizontal scrolling
-        const detectDirection = (moveEvent) => {
-          const currentX = moveEvent.touches[0].clientX;
-          const diffX = Math.abs(currentX - startX);
-          const diffY = Math.abs(moveEvent.touches[0].clientY - e.touches[0].clientY);
+        // Let the event continue - we'll handle it at the global level
+      }, {capture: true, passive: true});
+      
+      // Modify the project-scroller for better handling
+      scroller.setAttribute('data-prevent-channel-change', 'true');
+      
+      // Mark the card elements to prevent channel changes
+      const allCards = scroller.querySelectorAll('.project-card');
+      allCards.forEach(card => {
+        card.setAttribute('data-prevent-channel-change', 'true');
+      });
+      
+      // Add a global event handler at document level to capture all touch events FIRST
+      // This will run BEFORE the channel-change handler
+      if (!document.hasChannelChangeProtection) {
+        document.addEventListener('touchend', function(e) {
+          // Check if the touch event is within a scroller area or card
+          const isInScrollArea = e.target.closest('[data-prevent-channel-change="true"]');
+          const isInRow = e.target.closest('.category-row[data-scrolling-area="true"]');
           
-          // If mostly horizontal movement and significant movement
-          if (diffX > 10 && diffX > diffY) {
-            isHorizontalScroll = true;
+          if (isInScrollArea || isInRow) {
+            // This will effectively block the event from reaching any other handlers
+            e.stopPropagation();
+            console.log('Blocked channel change from project scroll area');
+            
+            // Create and dispatch a custom event so we know this was handled
+            const customEvent = new CustomEvent('projectScrollHandled', {
+              bubbles: false,
+              detail: { originalEvent: e }
+            });
+            document.dispatchEvent(customEvent);
+            
+            return false;
           }
-        };
+        }, {capture: true, passive: false}); // Capture phase is crucial here!
         
-        scroller.addEventListener('touchmove', detectDirection, { passive: true });
-        
-        // Add touchend listener to stop propagation if it was horizontal scrolling
-        const handleTouchEnd = (endEvent) => {
-          if (isHorizontalScroll) {
-            // Stop event from triggering channel change
-            endEvent.stopPropagation();
-            console.log('Prevented channel change from horizontal project scroll');
-          }
-          
-          // Clean up event listeners
-          scroller.removeEventListener('touchmove', detectDirection);
-          scroller.removeEventListener('touchend', handleTouchEnd);
-        };
-        
-        scroller.addEventListener('touchend', handleTouchEnd);
-      }, { passive: true });
+        // Mark that we've added the protection
+        document.hasChannelChangeProtection = true;
+      }
       
       // Add touch scrolling
       let startX;

@@ -64,10 +64,10 @@
 #section2 .featured-project {
   position: relative;
   width: 100%;
-  height: 60vh;
-  min-height: 350px;
-  max-height: 600px;
-  margin-bottom: 15px;
+  height: 50vh; /* Reduced from 60vh to give more room to projects below */
+  min-height: 300px; /* Reduced from 350px */
+  max-height: 500px; /* Reduced from 600px */
+  margin-bottom: 10px; /* Reduced margin to move content up */
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -218,6 +218,12 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 30px;
+  /* Add custom touch handling class to prevent channel changes */
+  touch-action: pan-x; /* Only allow horizontal panning */
+  /* Ensure this element has proper z-index for capturing events */
+  z-index: 10;
+  /* Move the entire section up */
+  margin-top: -15px;
 }
 
 .single-row {
@@ -794,8 +800,8 @@
   
   /* Enhanced Featured Project Section */
   .featured-project {
-    height: 35vh;
-    min-height: 200px;
+    height: 30vh; /* Reduced to give more space to projects below */
+    min-height: 170px; /* Smaller minimum height */
   }
   
   .featured-content {
