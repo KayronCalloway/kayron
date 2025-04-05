@@ -32,6 +32,45 @@
     height: 100vh !important;
     object-fit: cover;
   }
+  
+  /* iPhone vertical-specific optimizations */
+  @supports (-webkit-touch-callout: none) and (orientation: portrait) {
+    .video-background {
+      /* Account for iPhone safe areas */
+      top: calc(45px + env(safe-area-inset-top, 0px));
+      height: calc(100% - 45px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    }
+    
+    /* Fix YouTube player positioning for notched phones */
+    #youtube-player-4 {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    #youtube-player-4 iframe {
+      /* Ensure full coverage with safe areas */
+      height: calc(100vh + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px)) !important;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+    
+    /* Fix button positioning for vertical iPhone */
+    .channel4-buttons {
+      /* Place buttons in more thumb-accessible area */
+      top: 60%;
+      gap: 20px !important;
+    }
+    
+    /* Enhance modal for iPhone vertical */
+    .modal-overlay {
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+  }
 }
 
 /* Channel 4 Buttons */

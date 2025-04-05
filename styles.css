@@ -324,6 +324,8 @@ body {
   /* Use !important to override any channel-specific styles */
   color: #f0f0f0 !important;
   font-family: 'Merova', sans-serif !important;
+  padding-bottom: env(safe-area-inset-bottom, 0px) !important; /* Safe area for notched iPhones */
+  padding-top: calc(40px + env(safe-area-inset-top, 0px)) !important; /* Safe area for notched iPhones */
 }
 
 .tv-guide-header {
@@ -593,6 +595,57 @@ body {
   box-shadow: 0 0 10px rgba(62, 146, 204, 0.5);
 }
 
+/* iPhone vertical-specific modal optimizations */
+@supports (-webkit-touch-callout: none) and (max-width: 480px) and (orientation: portrait) {
+  .modal-overlay {
+    align-items: flex-end; /* Position modal from bottom for easier thumb reach */
+    padding: 0; /* Remove padding to utilize full width */
+  }
+  
+  .modal-box {
+    max-width: 100%; /* Full width on iPhone */
+    width: 100%;
+    border-radius: 20px 20px 0 0; /* Rounded top corners only */
+    max-height: 85vh; /* Leave space at top */
+    padding: 25px 20px; /* Adjust padding */
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.5); /* Shadow from top */
+    
+    /* Extra momentum scrolling fixes for iOS */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  
+  .close-modal {
+    top: 8px;
+    right: 8px;
+    background: rgba(40, 40, 40, 0.6);
+    padding: 10px 15px;
+    font-size: 1.8rem; /* Larger X for easier tapping */
+    border-radius: 50%; /* Round close button */
+    height: 44px; /* iOS standard touch target */
+    width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10; /* Ensure it's above other content */
+  }
+  
+  /* Make content slightly larger for better readability */
+  .modal-content p,
+  .modal-content ul {
+    font-size: 1.05rem;
+    line-height: 1.5;
+  }
+  
+  /* Add bottom padding for notched phones */
+  .modal-content {
+    padding-bottom: env(safe-area-inset-bottom, 20px);
+  }
+}
+
 
 /* --- Utility Classes --- */
 .hidden {
@@ -644,15 +697,46 @@ body {
   .channel-buttons {
     flex-direction: column !important;
     gap: 25px !important;
-    width: 85%;
-    max-width: 300px;
+    width: 90%; /* Wider buttons for easier tapping */
+    max-width: 330px; /* Slightly wider for better usage of screen width */
   }
   
   .channel-button {
     padding: 16px 30px; /* Larger touch target on mobile */
     width: 100%; /* Full width buttons on mobile */
-    min-height: 60px; /* Taller for better tapping */
-    margin: 5px 0; /* Add spacing between buttons */
+    min-height: 65px; /* Taller for better tapping */
+    margin: 8px 0; /* Increase spacing between buttons */
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.2); /* Better tap feedback */
+    font-size: 1.3rem; /* Larger text for better visibility */
+    letter-spacing: 0.05em; /* Better text spacing */
+  }
+  
+  /* iPhone vertical-specific button optimizations */
+  @supports (-webkit-touch-callout: none) and (max-width: 480px) and (orientation: portrait) {
+    .channel-buttons {
+      /* Place buttons in bottom half of screen for better thumb reach */
+      top: 55% !important;
+      gap: 20px !important;
+    }
+    
+    .channel-button {
+      min-height: 70px; /* Even taller for better tapping */
+      border-radius: 12px; /* More rounded corners for iOS feel */
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Enhanced shadow for depth */
+      border-width: 2px; /* Slightly thicker border */
+      transition: transform 0.2s, background-color 0.2s; /* Faster transitions */
+      background-color: rgba(0, 0, 0, 0.5); /* Slightly more visible background */
+    }
+    
+    .channel-button:active {
+      transform: scale(0.97); /* Visual feedback on tap */
+      background-color: rgba(255, 255, 255, 0.15); /* Subtle highlight when pressed */
+    }
+    
+    /* Channel 4 specific button optimizations */
+    .channel4-buttons {
+      top: 55% !important;
+    }
   }
   
   /* Channel 4 specific vertical layout */
@@ -707,6 +791,95 @@ body {
     -webkit-overflow-scrolling: touch;
   }
   
+  /* Vertical-specific guide adaptations for iPhone */
+  @media (max-width: 480px) and (orientation: portrait) {
+    /* Convert to vertical scrolling layout */
+    .tv-guide-grid {
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      margin-bottom: 70px; /* Space for bottom controls */
+    }
+    
+    .tv-guide-time-header {
+      display: none; /* Hide horizontal time headers */
+    }
+    
+    .tv-guide-channels {
+      width: 100%;
+      min-width: unset;
+    }
+    
+    /* Adapt channel rows to vertical layout */
+    .tv-guide-channel {
+      margin-bottom: 15px;
+      border: 1px solid rgba(62, 146, 204, 0.3);
+      border-radius: 10px;
+      background: rgba(10, 20, 40, 0.3);
+    }
+    
+    /* Enhance channel header */
+    .channel-info {
+      padding: 12px 15px;
+      background: rgba(30, 60, 100, 0.4);
+      border-radius: 10px 10px 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    /* Convert horizontal program grid to vertical list */
+    .program-grid {
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      gap: 10px;
+    }
+    
+    /* Style program items for vertical layout */
+    .program-item {
+      width: 100%;
+      min-height: 60px;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      border-radius: 6px;
+      background: rgba(40, 70, 110, 0.2);
+    }
+    
+    /* Enhanced touch feedback */
+    .tv-guide-channel {
+      -webkit-tap-highlight-color: rgba(62, 146, 204, 0.3);
+    }
+    
+    /* Reposition close button to bottom */
+    .close-guide {
+      position: fixed;
+      bottom: env(safe-area-inset-bottom, 15px);
+      top: auto;
+      right: auto;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      max-width: 250px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 25px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      background: rgba(62, 146, 204, 0.9);
+      font-size: 1.1rem;
+      z-index: 10000010 !important;
+    }
+    
+    /* Hide guide info box on vertical layout */
+    .tv-guide-info {
+      display: none;
+    }
+  }
+  
+  /* Standard mobile adaptations (shared between portrait and landscape) */
   .tv-guide-time-header {
     min-width: 600px;
   }
@@ -780,11 +953,58 @@ body {
   /* Fix for iOS Safari */
   html, body {
     height: -webkit-fill-available;
+    height: 100%;
+    /* Prevent overscroll bounce effect in iOS */
+    position: fixed;
+    width: 100%;
+    overflow: hidden;
   }
   
   #mainContent {
     height: auto;
     min-height: -webkit-fill-available;
+    min-height: 100%;
+    height: 100%;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    overflow-y: auto; /* Allow scrolling within mainContent instead of body */
+    /* Ensure proper safe area handling */
+    padding-top: calc(60px + env(safe-area-inset-top, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  
+  /* Fix for notched iPhones */
+  .channel-number-overlay {
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px)); /* Adjusted for bottom notch */
+    right: calc(10px + env(safe-area-inset-right, 0px)); /* Adjusted for right notch */
+  }
+  
+  /* Improve iOS modal behavior */
+  .modal-box {
+    -webkit-overflow-scrolling: touch;
+    max-height: calc(85vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    /* Better touch targets for iOS */
+    padding: env(safe-area-inset-top, 20px) env(safe-area-inset-right, 20px) env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 20px);
+  }
+  
+  /* iOS specific enhancements */
+  @supports (-webkit-touch-callout: none) {
+    /* iOS-specific rules */
+    body {
+      /* Prevent pull-to-refresh */
+      overscroll-behavior-y: none;
+    }
+    
+    /* Fix header positioning for iOS */
+    #header {
+      padding-top: env(safe-area-inset-top, 0px);
+      height: calc(50px + env(safe-area-inset-top, 0px));
+    }
+    
+    /* Fix menu button positioning */
+    .menu-button {
+      top: calc(10px + env(safe-area-inset-top, 0px)) !important;
+      right: calc(20px + env(safe-area-inset-right, 0px)) !important;
+    }
   }
 }
 
