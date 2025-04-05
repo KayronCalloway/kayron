@@ -391,6 +391,31 @@ function setupModalEventListeners() {
       }, { passive: true });
     });
   }
+  
+  // Add ability to close modals by clicking outside modal content for all devices
+  const allModalOverlays = document.querySelectorAll('.modal-overlay');
+  allModalOverlays.forEach(overlay => {
+    overlay.addEventListener('click', (e) => {
+      // Only close if the click is directly on the overlay (not its children)
+      if (e.target === overlay) {
+        // Find the corresponding modal box and button
+        const modal = overlay;
+        const modalId = modal.id;
+        const buttonId = modalId.replace('Modal', 'Button');
+        const button = document.getElementById(buttonId);
+        
+        // Animate the modal out
+        animateModalOut(modal);
+        
+        // Make the button clickable again after animation completes
+        if (button) {
+          setTimeout(() => {
+            button.style.pointerEvents = 'auto';
+          }, isMobile ? 400 : 600);
+        }
+      }
+    });
+  });
 
   // Get references to the modals and buttons
   const resumeModal = document.getElementById('resumeModal');

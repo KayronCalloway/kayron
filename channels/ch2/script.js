@@ -348,7 +348,12 @@
     
     // Close on backdrop click
     if (modalBackdrop) {
-      modalBackdrop.addEventListener('click', closeProjectModal);
+      modalBackdrop.addEventListener('click', (e) => {
+        // Only close if the click is directly on the backdrop (not on modal container)
+        if (e.target === modalBackdrop) {
+          closeProjectModal();
+        }
+      });
     }
     
     // Close on Escape key
