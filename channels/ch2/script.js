@@ -713,187 +713,55 @@
         });
       }
       
-      // Set enhanced styles for arrows with mobile optimizations
-      if (leftArrow) {
-        leftArrow.style.cursor = 'pointer';
-        leftArrow.style.pointerEvents = 'auto';
-        leftArrow.style.position = 'relative';
-        leftArrow.style.zIndex = '5';
-        leftArrow.setAttribute('data-scrolldir', 'left');
-        
-        if (isMobile) {
-          leftArrow.style.width = '50px';
-          leftArrow.style.height = '50px';
-          leftArrow.style.fontSize = '22px';
-          leftArrow.style.display = 'flex';
-          leftArrow.style.alignItems = 'center';
-          leftArrow.style.justifyContent = 'center';
-          leftArrow.style.opacity = '0.9';
-          leftArrow.style.webkitTapHighlightColor = 'rgba(62, 146, 204, 0.3)';
-          leftArrow.style.touchAction = 'manipulation';
-        }
-      }
+      // Remove arrows completely - hide them with CSS
+    if (leftArrow) {
+      leftArrow.style.display = 'none';
+    }
+    
+    if (rightArrow) {
+      rightArrow.style.display = 'none';
+    }
+    
+    // Enable momentum scrolling for touch devices
+    scroller.style.webkitOverflowScrolling = 'touch';
+    scroller.style.scrollSnapType = 'x mandatory';
+    
+    // Add visual indicator for scrollable content on mobile
+    if (isMobile) {
+      // Create a subtle pulsing animation to show users they can scroll
+      const scrollHint = document.createElement('div');
+      scrollHint.className = 'scroll-hint';
+      scrollHint.style.position = 'absolute';
+      scrollHint.style.bottom = '10px';
+      scrollHint.style.right = '10px';
+      scrollHint.style.color = 'rgba(255, 255, 255, 0.7)';
+      scrollHint.style.fontSize = '12px';
+      scrollHint.style.padding = '5px 10px';
+      scrollHint.style.borderRadius = '10px';
+      scrollHint.style.background = 'rgba(0, 0, 0, 0.5)';
+      scrollHint.style.zIndex = '50';
+      scrollHint.style.pointerEvents = 'none';
+      scrollHint.style.opacity = '0';
+      scrollHint.innerText = 'Swipe to see more';
       
-      if (rightArrow) {
-        rightArrow.style.cursor = 'pointer';
-        rightArrow.style.pointerEvents = 'auto';
-        rightArrow.style.position = 'relative';
-        rightArrow.style.zIndex = '5';
-        rightArrow.setAttribute('data-scrolldir', 'right');
-        
-        if (isMobile) {
-          rightArrow.style.width = '50px';
-          rightArrow.style.height = '50px';
-          rightArrow.style.fontSize = '22px';
-          rightArrow.style.display = 'flex';
-          rightArrow.style.alignItems = 'center';
-          rightArrow.style.justifyContent = 'center';
-          rightArrow.style.opacity = '0.9';
-          rightArrow.style.webkitTapHighlightColor = 'rgba(62, 146, 204, 0.3)';
-          rightArrow.style.touchAction = 'manipulation';
-        }
-      }
+      // Add the hint to the container
+      parentRow.appendChild(scrollHint);
       
-      // Add direct click handlers to the scroll arrows themselves
-      if (leftArrow) {
-        // Remove any existing event listeners to prevent duplicates
-        const newLeftArrow = leftArrow.cloneNode(true);
-        leftArrow.parentNode.replaceChild(newLeftArrow, leftArrow);
-        leftArrow = newLeftArrow;
+      // Show the hint briefly
+      setTimeout(() => {
+        scrollHint.style.transition = 'opacity 0.5s';
+        scrollHint.style.opacity = '1';
         
-        // Make arrow more prominent
-        leftArrow.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
-        leftArrow.style.border = '1px solid rgba(255, 255, 255, 0.2)';
-        leftArrow.style.borderRadius = '50%';
-        leftArrow.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
-        
-        // Add click handler directly to the left arrow
-        leftArrow.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          console.log('Left arrow clicked, scrolling left');
-          
-          // Force scroll with a more direct approach
-          const scrollAmount = 300;
-          const startPos = scroller.scrollLeft;
-          const targetPos = startPos - scrollAmount;
-          
-          // Use direct scrollLeft setting with animation frames for smoother scrolling
-          const startTime = performance.now();
-          const duration = 400; // ms
-          
-          function scrollStep(timestamp) {
-            const elapsed = timestamp - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            // Ease out function for smoother deceleration
-            const easeOut = 1 - Math.pow(1 - progress, 2);
-            scroller.scrollLeft = startPos - (scrollAmount * easeOut);
-            
-            if (progress < 1) {
-              window.requestAnimationFrame(scrollStep);
-            }
-          }
-          
-          window.requestAnimationFrame(scrollStep);
-        });
-        
-        // Add touch handler for iOS using same scroll function
-        leftArrow.addEventListener('touchend', (e) => {
-          e.preventDefault();
-          console.log('Left arrow touched, scrolling left');
-          
-          // Same direct scroll approach for touch
-          const scrollAmount = 300;
-          const startPos = scroller.scrollLeft;
-          const targetPos = startPos - scrollAmount;
-          
-          const startTime = performance.now();
-          const duration = 400; // ms
-          
-          function scrollStep(timestamp) {
-            const elapsed = timestamp - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const easeOut = 1 - Math.pow(1 - progress, 2);
-            scroller.scrollLeft = startPos - (scrollAmount * easeOut);
-            
-            if (progress < 1) {
-              window.requestAnimationFrame(scrollStep);
-            }
-          }
-          
-          window.requestAnimationFrame(scrollStep);
-        }, { passive: false });
-      }
-      
-      if (rightArrow) {
-        // Remove any existing event listeners to prevent duplicates
-        const newRightArrow = rightArrow.cloneNode(true);
-        rightArrow.parentNode.replaceChild(newRightArrow, rightArrow);
-        rightArrow = newRightArrow;
-        
-        // Make arrow more prominent
-        rightArrow.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
-        rightArrow.style.border = '1px solid rgba(255, 255, 255, 0.2)';
-        rightArrow.style.borderRadius = '50%';
-        rightArrow.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
-        
-        // Add click handler directly to the right arrow
-        rightArrow.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          console.log('Right arrow clicked, scrolling right');
-          
-          // Force scroll with a more direct approach
-          const scrollAmount = 300;
-          const startPos = scroller.scrollLeft;
-          const targetPos = startPos + scrollAmount;
-          
-          // Use direct scrollLeft setting with animation frames for smoother scrolling
-          const startTime = performance.now();
-          const duration = 400; // ms
-          
-          function scrollStep(timestamp) {
-            const elapsed = timestamp - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            // Ease out function for smoother deceleration
-            const easeOut = 1 - Math.pow(1 - progress, 2);
-            scroller.scrollLeft = startPos + (scrollAmount * easeOut);
-            
-            if (progress < 1) {
-              window.requestAnimationFrame(scrollStep);
-            }
-          }
-          
-          window.requestAnimationFrame(scrollStep);
-        });
-        
-        // Add touch handler for iOS using same scroll function
-        rightArrow.addEventListener('touchend', (e) => {
-          e.preventDefault();
-          console.log('Right arrow touched, scrolling right');
-          
-          // Same direct scroll approach for touch
-          const scrollAmount = 300;
-          const startPos = scroller.scrollLeft;
-          const targetPos = startPos + scrollAmount;
-          
-          const startTime = performance.now();
-          const duration = 400; // ms
-          
-          function scrollStep(timestamp) {
-            const elapsed = timestamp - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const easeOut = 1 - Math.pow(1 - progress, 2);
-            scroller.scrollLeft = startPos + (scrollAmount * easeOut);
-            
-            if (progress < 1) {
-              window.requestAnimationFrame(scrollStep);
-            }
-          }
-          
-          window.requestAnimationFrame(scrollStep);
-        }, { passive: false });
-      }
+        // Hide it after a few seconds
+        setTimeout(() => {
+          scrollHint.style.opacity = '0';
+          // Remove it completely after fade-out
+          setTimeout(() => {
+            scrollHint.remove();
+          }, 500);
+        }, 3000);
+      }, 1000);
+    }
       
       // Add mousewheel horizontal scrolling
       scroller.addEventListener('wheel', (e) => {
@@ -919,28 +787,13 @@
         scroller.scrollLeft = scrollLeft - walk;
       }, { passive: true });
       
-      // Show/hide arrows based on scroll position
-      function updateArrowVisibility() {
-        // Only show left arrow if there's content to scroll left
-        if (leftArrow) {
-          leftArrow.style.opacity = scroller.scrollLeft > 20 ? 0.7 : 0.2;
-        }
-        
-        // Only show right arrow if there's content to scroll right
-        if (rightArrow) {
-          const maxScrollLeft = scroller.scrollWidth - scroller.clientWidth - 20;
-          rightArrow.style.opacity = scroller.scrollLeft < maxScrollLeft ? 0.7 : 0.2;
-        }
-      }
+      // We've removed arrows, no need to update visibility
+      // Just add scroll event for momentum effect
+      scroller.addEventListener('scroll', () => {
+        // Add any future scroll-based behaviors here if needed
+      });
       
-      // Initial visibility check
-      updateArrowVisibility();
-      
-      // Update on scroll
-      scroller.addEventListener('scroll', updateArrowVisibility);
-      
-      // Update on window resize
-      window.addEventListener('resize', updateArrowVisibility);
+      // No need to update arrow visibility on resize
     });
   }
 
