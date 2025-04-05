@@ -754,31 +754,62 @@
         }
       }
       
-      // Add a single global event handler for scroll arrows
-      document.body.addEventListener('click', function(e) {
-        // Check for left arrow
-        if (e.target.classList.contains('scroll-left') || e.target.closest('.scroll-left')) {
-          // Find the scroller element
-          const parentRow = e.target.closest('.category-row');
-          if (parentRow) {
-            const scroller = parentRow.querySelector('.project-scroller');
-            if (scroller) {
-              scroller.scrollBy({ left: -600, behavior: 'smooth' });
-            }
-          }
-        }
-        // Check for right arrow
-        else if (e.target.classList.contains('scroll-right') || e.target.closest('.scroll-right')) {
-          // Find the scroller element
-          const parentRow = e.target.closest('.category-row');
-          if (parentRow) {
-            const scroller = parentRow.querySelector('.project-scroller');
-            if (scroller) {
-              scroller.scrollBy({ left: 600, behavior: 'smooth' });
-            }
-          }
-        }
-      });
+      // Add direct click handlers to the scroll arrows themselves
+      if (leftArrow) {
+        // Remove any existing event listeners to prevent duplicates
+        const newLeftArrow = leftArrow.cloneNode(true);
+        leftArrow.parentNode.replaceChild(newLeftArrow, leftArrow);
+        leftArrow = newLeftArrow;
+        
+        // Make arrow more prominent
+        leftArrow.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+        leftArrow.style.border = '1px solid rgba(255, 255, 255, 0.2)';
+        leftArrow.style.borderRadius = '50%';
+        leftArrow.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
+        
+        // Add click handler directly to the left arrow
+        leftArrow.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('Left arrow clicked, scrolling left');
+          scroller.scrollBy({ left: -300, behavior: 'smooth' });
+        });
+        
+        // Add touch handler for iOS
+        leftArrow.addEventListener('touchend', (e) => {
+          e.preventDefault();
+          console.log('Left arrow touched, scrolling left');
+          scroller.scrollBy({ left: -300, behavior: 'smooth' });
+        }, { passive: false });
+      }
+      
+      if (rightArrow) {
+        // Remove any existing event listeners to prevent duplicates
+        const newRightArrow = rightArrow.cloneNode(true);
+        rightArrow.parentNode.replaceChild(newRightArrow, rightArrow);
+        rightArrow = newRightArrow;
+        
+        // Make arrow more prominent
+        rightArrow.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+        rightArrow.style.border = '1px solid rgba(255, 255, 255, 0.2)';
+        rightArrow.style.borderRadius = '50%';
+        rightArrow.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
+        
+        // Add click handler directly to the right arrow
+        rightArrow.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('Right arrow clicked, scrolling right');
+          scroller.scrollBy({ left: 300, behavior: 'smooth' });
+        });
+        
+        // Add touch handler for iOS
+        rightArrow.addEventListener('touchend', (e) => {
+          e.preventDefault();
+          console.log('Right arrow touched, scrolling right');
+          scroller.scrollBy({ left: 300, behavior: 'smooth' });
+        }, { passive: false });
+      }
       
       // Add mousewheel horizontal scrolling
       scroller.addEventListener('wheel', (e) => {
