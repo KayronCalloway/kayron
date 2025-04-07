@@ -74,6 +74,8 @@
 
 #section2 .gray-featured .featured-backdrop img {
   filter: grayscale(1);
+  object-fit: contain;
+  background-color: rgba(20, 20, 20, 0.95);
 }
 
 #section2 .featured-backdrop {
