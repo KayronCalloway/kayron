@@ -72,6 +72,10 @@
   flex-shrink: 0;
 }
 
+#section2 .gray-featured .featured-backdrop img {
+  filter: grayscale(1);
+}
+
 #section2 .featured-backdrop {
   position: absolute;
   top: 0;
