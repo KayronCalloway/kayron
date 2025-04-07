@@ -145,6 +145,18 @@
   margin-bottom: var(--ch2-spacing-xs);
 }
 
+.featured-brand {
+  display: inline-block;
+  font-size: var(--ch2-font-xs);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #aaaaaa;
+  margin-bottom: var(--ch2-spacing-md);
+  border-bottom: 1px solid #555555;
+  padding-bottom: 5px;
+}
+
 .featured-title {
   font-size: var(--ch2-font-xl);
   font-weight: 700;
