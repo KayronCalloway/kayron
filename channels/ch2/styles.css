@@ -74,7 +74,7 @@
 
 #section2 .gray-featured .featured-backdrop img {
   object-fit: contain;
-  object-position: right center;
+  object-position: 60% center;
   background-color: rgba(20, 20, 20, 0.95);
 }
 
