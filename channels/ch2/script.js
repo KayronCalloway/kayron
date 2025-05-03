@@ -285,25 +285,24 @@
         const videoObserver = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             // Get the iframe's content window
-            try {
+            // Using a simpler approach without the YouTube API
+            if (videoPlayer.src) {
+              const currentSrc = videoPlayer.src;
               if (entry.isIntersecting) {
-                // Video is visible, unmute it
-                // Use postMessage to control YouTube player
-                videoPlayer.contentWindow.postMessage(JSON.stringify({
-                  event: 'command',
-                  func: 'unMute'
-                }), '*');
-                console.log('Video in view - unmuting');
+                // Video is visible - ensure it's not muted
+                if (currentSrc.includes('mute=1')) {
+                  // Replace mute=1 with mute=0
+                  videoPlayer.src = currentSrc.replace('mute=1', 'mute=0');
+                  console.log('Video in view - unmuting');
+                }
               } else {
-                // Video is not visible, mute it
-                videoPlayer.contentWindow.postMessage(JSON.stringify({
-                  event: 'command',
-                  func: 'mute'
-                }), '*');
-                console.log('Video out of view - muting');
+                // Video is not visible - mute it
+                if (currentSrc.includes('mute=0')) {
+                  // Replace mute=0 with mute=1
+                  videoPlayer.src = currentSrc.replace('mute=0', 'mute=1');
+                  console.log('Video out of view - muting');
+                }
               }
-            } catch(e) {
-              console.log('YouTube iframe API not ready yet');
             }
           });
         }, { threshold: 0.5 }); // Trigger when 50% of the video is visible
