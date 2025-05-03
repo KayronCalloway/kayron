@@ -369,6 +369,63 @@
   transition: transform var(--ch2-transition-medium);
 }
 
+/* Video thumbnail styles */
+.video-thumbnail {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* More subtle pattern that matches the Netflix aesthetic */
+  background-image: linear-gradient(45deg, rgba(30,30,30,0.7) 25%, rgba(40,40,40,0.7) 25%, rgba(40,40,40,0.7) 50%, rgba(30,30,30,0.7) 50%, rgba(30,30,30,0.7) 75%, rgba(40,40,40,0.7) 75%, rgba(40,40,40,0.7) 100%);
+  background-size: 8px 8px;
+  /* Add a hint of the accent color to tie it together */
+  border-bottom: 2px solid var(--ch2-accent-color);
+}
+
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* More Netflix-like gradient overlay */
+  background: linear-gradient(to bottom, 
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.4) 60%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  transition: background-color var(--ch2-transition-medium);
+}
+
+.play-icon {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  transition: transform var(--ch2-transition-medium), background-color var(--ch2-transition-fast);
+  /* Add subtle text shadow for better visibility */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.project-card:hover .play-icon {
+  transform: scale(1.1);
+  background-color: var(--ch2-accent-color);
+  border-color: white;
+}
+
 .project-card:hover .card-poster img {
   transform: scale(1.08);
 }

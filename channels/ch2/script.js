@@ -2,6 +2,40 @@
 (() => {
   // Project data
   const projectData = {
+    'featured-video': {
+      title: 'Featured Reel',
+      tagline: 'Video showcase of recent work and highlights',
+      description: `A compilation of selected projects and creative work showcasing various aspects of design, strategy, and creative direction. This reel provides a visual overview of the style and approach applied across different client engagements and personal projects.`,
+      projectUrl: 'https://vimeo.com/1078880939/43345ed787',
+      metaInfo: [
+        { label: 'Type', value: 'Video Reel' },
+        { label: 'Duration', value: '3:12' },
+        { label: 'Platform', value: 'Vimeo' }
+      ],
+      // Using custom HTML to embed the video in the gallery
+      galleryImages: [
+        { 
+          customHtml: `
+            <div style="width: 100%; height: 100%; position: relative; overflow: hidden;">
+              <iframe 
+                src="https://player.vimeo.com/video/1078880939?h=43345ed787&autoplay=0&loop=1&title=0&byline=0&portrait=0" 
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+                frameborder="0" 
+                allow="autoplay; fullscreen; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
+            </div>
+          `,
+          alt: 'Featured Video Reel' 
+        }
+      ],
+      processStages: [
+        { name: 'Concept', description: 'Initial planning and conceptualization of the visual narrative.' },
+        { name: 'Production', description: 'Recording and capturing footage across various projects and locations.' },
+        { name: 'Editing', description: 'Selecting and arranging clips to create a cohesive visual story.' },
+        { name: 'Post-Production', description: 'Color grading, sound design, and final touches to enhance the viewing experience.' }
+      ]
+    },
     'business-strategy': {
       title: 'Upgrade Labs (Bulletproof Labs)',
       tagline: 'Key contributor to biohacking fitness center startup and growth',
@@ -709,7 +743,7 @@
           
           // Enhance touch feedback
           card.style.webkitTapHighlightColor = 'rgba(62, 146, 204, 0.3)';
-          card.style.touchAction = 'manipulation';
+          card.style.touchAction = 'manipulation'; // Safari touch optimization
         });
       }
       
@@ -769,7 +803,7 @@
           e.preventDefault();
           scroller.scrollLeft += e.deltaY;
         }
-      }, { passive: false });
+      }, { passive: false }); // Set passive: false to allow preventDefault
       
       // More robust solution: Create a permanent capture-phase touch handler on the parent row 
       // This ensures ALL touches on this area are properly handled
@@ -829,9 +863,9 @@
       scroller.addEventListener('touchmove', (e) => {
         if (!startX) return;
         const x = e.touches[0].pageX - scroller.offsetLeft;
-        const walk = (x - startX) * 2;
+        const walk = (x - startX) * 2; // Adjust multiplier for scroll speed if needed
         scroller.scrollLeft = scrollLeft - walk;
-      }, { passive: true });
+      }, { passive: true }); // Reverted passive: true
       
       // We've removed arrows, no need to update visibility
       // Just add scroll event for momentum effect
