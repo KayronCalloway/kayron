@@ -277,6 +277,18 @@
         container.style.webkitTouchCallout = 'none';
       }
       
+      // Set up video placeholder click to open Vimeo in a new tab
+      const videoPlaceholder = document.querySelector('.video-placeholder');
+      if (videoPlaceholder) {
+        videoPlaceholder.addEventListener('click', function(e) {
+          // If the click was directly on the placeholder (not on a link), open the modal
+          if (e.target.closest('.play-button-overlay')) {
+            const videoUrl = e.target.closest('a').href;
+            window.open(videoUrl, '_blank');
+          }
+        });
+      }
+      
       // Make sure no parent elements are capturing clicks
       let parent = container.parentNode;
       while (parent && parent !== document.body) {
