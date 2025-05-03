@@ -1,17 +1,22 @@
 <!-- channels/ch2/index.html -->
 <div id="portfolio-browse" role="region" aria-label="Portfolio Showcase">
-  <!-- Featured project hero section - REPLACED WITH VIMEO -->
-  <div class="featured-project vimeo-featured"> 
-    <div style="padding:56.25% 0 0 0;position:relative;">
-      <iframe 
-        src="https://player.vimeo.com/video/1078880939?h=43345ed787&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1" 
-        frameborder="0" 
-        allow="autoplay; fullscreen; picture-in-picture; clipboard-write" 
-        style="position:absolute;top:0;left:0;width:100%;height:100%;" 
-        title="Coloring with Gray: A Short Film">
-      </iframe>
+  <!-- Featured project hero section - Using native HTML5 video -->
+  <div class="featured-project video-featured"> 
+    <div class="video-container">
+      <!-- Adding a temporary placeholder image with link -->
+      <div class="video-placeholder">
+        <a href="https://vimeo.com/1078880939/43345ed787" target="_blank" rel="noopener">
+          <img src="../../visuals/reflections.png" alt="Coloring with Gray: A Short Film" style="width:100%; height:100%; object-fit:cover;">
+          <div class="play-button-overlay">
+            <div class="play-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+        </a>
+      </div>
     </div>
-    <script src="https://player.vimeo.com/api/player.js"></script>
   </div>
 
   <!-- Single horizontal scrollable row of all projects -->
