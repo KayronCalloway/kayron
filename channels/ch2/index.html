@@ -1,34 +1,57 @@
 <!-- channels/ch2/index.html -->
 <div id="portfolio-browse" role="region" aria-label="Portfolio Showcase">
-  <!-- Featured project hero section -->
-  <div class="featured-project gray-featured">
-    <div class="featured-content">
-      <div class="featured-category">FEATURED PROJECT</div>
-      <h2 class="featured-title">Reflections of You</h2>
-      <div class="featured-brand">A COLORING WITH GRAY COLLECTION</div>
-      <p class="featured-description">An elegant fragrance that captures the essence of individuality and self-expression—revealing unique notes that adapt to each wearer's personal chemistry for a truly personalized scent experience.</p>
-      <div class="featured-stats">
-        <div class="stat">
-          <span class="stat-value">New</span>
-          <span class="stat-label">Launch</span>
-        </div>
-        <div class="stat">
-          <span class="stat-value">Premium</span>
-          <span class="stat-label">Collection</span>
-        </div>
-      </div>
-      <!-- View Project button removed -->
-    </div>
-    <div class="featured-backdrop">
-      <img src="visuals/reflections.png" alt="Reflections of You Fragrance" loading="eager">
-      <div class="backdrop-overlay"></div>
-    </div>
+  <!-- Featured project hero section - REPLACED WITH VIMEO -->
+  <div class="featured-project vimeo-featured"> 
+    <iframe 
+      src="https://player.vimeo.com/video/1078880939?h=43345ed787&autoplay=1&loop=1&muted=1&background=1&autopause=0&quality=1080p" 
+      frameborder="0" 
+      allow="autoplay; fullscreen; picture-in-picture" 
+      allowfullscreen
+      style="position:absolute;top:0;left:0;width:100%;height:100%;" 
+      title="Featured Project Video">
+    </iframe>
   </div>
 
   <!-- Single horizontal scrollable row of all projects -->
   <div class="category-row single-row">
     <h3 class="category-title">Projects</h3>
     <div class="project-scroller">
+      <!-- Video card for the featured Vimeo video -->
+      <div class="project-card" data-project="featured-video">
+        <div class="card-poster">
+          <div class="video-thumbnail">
+            <div class="video-overlay">
+              <div class="play-icon">▶</div>
+            </div>
+          </div>
+          <div class="card-overlay">
+            <div class="quick-stats">
+              <div class="quick-stat">Video</div> 
+              <div class="quick-stat">Reel</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-info">
+          <h4 class="card-title">Featured Reel</h4>
+        </div>
+      </div>
+      
+      <!-- Original featured project -->
+      <div class="project-card" data-project="reflections-of-you">
+        <div class="card-poster">
+          <img src="visuals/reflections.png" alt="Reflections of You Fragrance" loading="lazy">
+          <div class="card-overlay">
+            <div class="quick-stats">
+              <div class="quick-stat">Concept</div> 
+              <div class="quick-stat">Ad</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-info">
+          <h4 class="card-title">Reflections of You</h4>
+        </div>
+      </div>
+
       <div class="project-card" data-project="business-strategy">
         <div class="card-poster">
           <img src="visuals/bulletproof.jpg" alt="Upgrade Labs Fitness Facility" loading="lazy">
