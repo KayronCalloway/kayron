@@ -306,6 +306,28 @@
             }
           });
         }, { threshold: 0.5 }); // Trigger when 50% of the video is visible
+        
+        // Handle channel changes - pause/stop video when leaving ch2
+        document.addEventListener('channelChange', () => {
+          // Check if we're still in channel 2
+          const sections = Array.from(document.querySelectorAll('.channel-section'));
+          const currentIndex = sections.findIndex(sec => sec.id === 'section2');
+          const isVisible = document.getElementById('section2').getBoundingClientRect().top >= 0 &&
+                            document.getElementById('section2').getBoundingClientRect().bottom <= window.innerHeight;
+          
+          if (!isVisible) {
+            console.log('Channel changed - stopping video in ch2');
+            // Stop the video by loading a blank version
+            if (videoPlayer.src) {
+              const currentSrc = videoPlayer.src;
+              // Force mute and pause by reloading with autoplay=0 and mute=1
+              if (currentSrc.includes('autoplay=1')) {
+                videoPlayer.src = currentSrc.replace('autoplay=1', 'autoplay=0')
+                                          .replace('mute=0', 'mute=1');
+              }
+            }
+          }
+        });
 
         // Start observing the video player
         videoObserver.observe(videoPlayer);
