@@ -15,6 +15,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&display=swap"></noscript>
+  <!-- Include html2pdf.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!-- Structured data for better SEO and social sharing -->
   <script type="application/ld+json">
   {
@@ -616,12 +618,54 @@
       }
     });
 
-    // If the user came directly to this page, suggest printing to PDF
-    if (window.top === window.self && document.referrer === '') {
-      // Auto-trigger print dialog after a short delay
-      setTimeout(() => {
-        window.print();
-      }, 500);
+    // Handle PDF saving
+    if (window.top === window.self) {
+      // Create a simple download button
+      const downloadButton = document.createElement('button');
+      downloadButton.textContent = 'Save as PDF';
+      downloadButton.style.cssText = 'position: fixed; top: 20px; right: 20px; padding: 10px 18px; background: #f8f8f8; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-family: var(--font-primary); z-index: 1000; font-size: 14px; letter-spacing: 0.02em; color: #333; box-shadow: 0 1px 3px rgba(0,0,0,0.1);';
+      document.body.appendChild(downloadButton);
+      
+      // Configure PDF settings
+      const pdfOptions = {
+        margin: [10, 15, 10, 15], // [top, right, bottom, left] in mm
+        filename: 'KayronCalloway_Resume.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { 
+          scale: 2,
+          useCORS: true,
+          letterRendering: true,
+          dpi: 300 
+        },
+        jsPDF: { 
+          unit: 'mm', 
+          format: 'letter', 
+          orientation: 'portrait' 
+        }
+      };
+      
+      // Automatically download after a delay if direct navigation
+      if (document.referrer === '') {
+        setTimeout(() => {
+          const resumeContainer = document.querySelector('.resume-container');
+          html2pdf().from(resumeContainer).set(pdfOptions).save();
+        }, 1500);
+      }
+      
+      // Download when button is clicked
+      downloadButton.addEventListener('click', () => {
+        const resumeContainer = document.querySelector('.resume-container');
+        // Hide the button temporarily for the PDF capture
+        downloadButton.style.display = 'none';
+        
+        // Generate PDF
+        html2pdf().from(resumeContainer).set(pdfOptions).save().then(() => {
+          // Show button again after generation starts
+          setTimeout(() => {
+            downloadButton.style.display = 'block';
+          }, 500);
+        });
+      });
     }
   </script>
 </body>
