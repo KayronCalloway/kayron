@@ -464,57 +464,14 @@
               // Remove the destroyed marker
               videoPlayer.removeAttribute('data-destroyed');
               
-              // Update the UI to match the sound state
-              updateSoundButtonUI();
               
               console.log('Video restored with sound ' + (soundEnabled ? 'enabled' : 'disabled'));
             }
           }
         }
         
-        // Get sound control elements
-        const soundControl = document.getElementById('video-sound-control');
-        const soundIconMuted = document.getElementById('sound-icon-muted');
-        const soundIconUnmuted = document.getElementById('sound-icon-unmuted');
-        
-        // Track sound state - default to enabled for auto-play
+        // Always keep sound enabled since we've removed manual controls
         let soundEnabled = true;
-        
-        // Function to manually toggle sound when user clicks the sound button
-        function setupSoundToggle() {
-          if (soundControl) {
-            soundControl.addEventListener('click', () => {
-              if (soundEnabled) {
-                // Mute the video
-                muteVideo();
-                soundEnabled = false;
-              } else {
-                // Unmute the video
-                unmuteVideo();
-                soundEnabled = true;
-              }
-              
-              // Update the UI
-              updateSoundButtonUI();
-            });
-          }
-        }
-        
-        // Function to update the sound button UI
-        function updateSoundButtonUI() {
-          if (soundIconMuted && soundIconUnmuted) {
-            if (soundEnabled) {
-              soundIconMuted.style.display = 'none';
-              soundIconUnmuted.style.display = 'block';
-            } else {
-              soundIconMuted.style.display = 'block';
-              soundIconUnmuted.style.display = 'none';
-            }
-          }
-        }
-        
-        // Set up the sound toggle
-        setupSoundToggle();
         
         // Function to unmute the video when requested
         function unmuteVideo() {
@@ -524,7 +481,6 @@
             // Replace mute=1 with mute=0 to enable sound
             videoPlayer.src = videoPlayer.src.replace('mute=1', 'mute=0');
             soundEnabled = true;
-            updateSoundButtonUI();
             
             console.log('Video unmuted');
           }
@@ -538,7 +494,6 @@
             // Replace mute=0 with mute=1 to disable sound
             videoPlayer.src = videoPlayer.src.replace('mute=0', 'mute=1');
             soundEnabled = false;
-            updateSoundButtonUI();
             
             console.log('Video muted');
           }
@@ -572,8 +527,6 @@
               }
             }
             
-            // Update UI to match current state
-            updateSoundButtonUI();
             
             console.log('Video activated, sound state: ' + (soundEnabled ? 'enabled' : 'disabled'));
           }
