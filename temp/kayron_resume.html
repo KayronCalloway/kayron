@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kayron E. Calloway - Executive Resume</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px; /* Slightly smaller font size */
+      line-height: 1.5; /* Tighter line height */
+      color: #333;
+      max-width: 8.5in;
+      margin: 0 auto;
+      padding: 0.5in;
+      background: #fff;
+    }
+    
+    .resume-container {
+      border: 1px solid #eee;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 0.8in; /* Reduce padding to fit more content */
+      background: #fff;
+    }
+    
+    header {
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 1.5rem;
+    }
+    
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.05em;
+    }
+    
+    .contact-info {
+      font-size: 0.9rem;
+      color: #666;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+    
+    .contact-info a {
+      color: #444;
+      text-decoration: none;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 1px;
+      transition: border-color 0.2s;
+    }
+    
+    .contact-info a:hover {
+      border-color: #666;
+    }
+    
+    section {
+      margin-bottom: 1.2rem; /* Reduce section spacing */
+    }
+    
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 0.75rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+    
+    h2::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 2.5rem;
+      height: 2px;
+      background: #333;
+    }
+    
+    .summary {
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+      color: #444;
+      line-height: 1.6;
+    }
+    
+    .experience-item {
+      margin-bottom: 1rem; /* Reduce spacing between experience items */
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .experience-item:last-child {
+      border-bottom: none;
+    }
+    
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+      color: #222;
+    }
+    
+    .position-details {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+      color: #555;
+    }
+    
+    .company {
+      font-weight: 500;
+    }
+    
+    .date {
+      color: #777;
+    }
+    
+    ul {
+      padding-left: 1.25rem;
+      margin: 0.3rem 0; /* Tighter list margins */
+    }
+    
+    li {
+      margin-bottom: 0.3rem; /* Tighter list item spacing */
+      position: relative;
+    }
+    
+    /* Use solid bullet points instead of default markers */
+    ul {
+      list-style-type: none;
+    }
+    
+    li:before {
+      content: "•"; /* Solid bullet point */
+      position: absolute;
+      left: -1em;
+      color: #555;
+    }
+    
+    .key-achievements {
+      background: #f9f9f9;
+      padding: 0.4rem 0.8rem; /* Reduce padding */
+      border-left: 2px solid #ddd;
+      margin: 0.5rem 0; /* Reduce margins */
+    }
+    
+    .key-achievements h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #444;
+    }
+    
+    .key-achievements ul {
+      margin: 0;
+    }
+    
+    .skills {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    
+    .skill-category {
+      margin-bottom: 0.75rem;
+    }
+    
+    .skill-category h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      color: #444;
+    }
+    
+    .skill-list {
+      font-size: 0.85rem;
+      color: #555;
+    }
+    
+    .education-item {
+      margin-bottom: 0.75rem;
+    }
+    
+    .education-item .degree {
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+    }
+    
+    .education-item .institution {
+      font-size: 0.85rem;
+      color: #555;
+    }
+
+    .education-item .details {
+      font-size: 0.85rem;
+      color: #666;
+    }
+    
+    .certifications ul {
+      columns: 2;
+    }
+    
+    @media print {
+      body {
+        padding: 0;
+        font-size: 12px; /* Even smaller font for print */
+      }
+      
+      .resume-container {
+        border: none;
+        box-shadow: none;
+        padding: 0.25in;
+        max-height: 10.5in; /* Ensure content fits on one page */
+      }
+      
+      h2 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      section {
+        margin-bottom: 0.8rem;
+      }
+      
+      .experience-item {
+        margin-bottom: 0.8rem;
+        padding-bottom: 0.8rem;
+      }
+      
+      .key-achievements {
+        background: #f9f9f9 !important;
+        -webkit-print-color-adjust: exact;
+        padding: 0.3rem 0.5rem;
+        margin: 0.3rem 0;
+      }
+      
+      li {
+        margin-bottom: 0.2rem;
+        line-height: 1.4;
+      }
+      
+      /* Ensure last section stays on page */
+      section:last-child {
+        page-break-inside: avoid;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        padding: 0.25in;
+      }
+      
+      .resume-container {
+        padding: 0.5in;
+      }
+      
+      .skills {
+        grid-template-columns: 1fr;
+      }
+      
+      .certifications ul {
+        columns: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="resume-container">
+    <header>
+      <h1>KAYRON E. CALLOWAY</h1>
+      <div class="contact-info">
+        <span>Los Angeles, CA</span>
+        <span>310.498.8059</span>
+        <span><a href="mailto:KayronCalloway@gmail.com">KayronCalloway@gmail.com</a></span>
+      </div>
+    </header>
+    
+    <section class="summary">
+      <p>Strategic business leader with diverse expertise spanning finance, brand development, and experiential design. Experienced in launching innovative ventures, optimizing operational frameworks, and creating transformative customer experiences. Combines analytical acumen with creative vision to drive measurable growth and establish disruptive market positions.</p>
+    </section>
+    
+    <section>
+      <h2>PROFESSIONAL EXPERIENCE</h2>
+      
+      <div class="experience-item">
+        <h3>Founder & Creative Director</h3>
+        <div class="position-details">
+          <span class="company">Coloring With Gray</span>
+          <span class="date">2024 - Present</span>
+        </div>
+        <p>Founded a multidisciplinary house based on philosophy, spanning film, photography, fragrance, technology, and product development.</p>
+        <ul>
+          <li>Created "Reflections of You," a multidimensional project combining fragrance, film, and product design to tell a cohesive story across multiple mediums.</li>
+          <li>Engineered a brand ecosystem converging philosophical principles with artistic narrative, pioneering innovative creative approaches.</li>
+          <li>Oversaw end-to-end project development, creative direction, and sustainability-driven production strategies across various disciplines.</li>
+        </ul>
+        <div class="key-achievements">
+          <h4>Key Project: VOL 1 Coffee Concept</h4>
+          <ul>
+            <li>Developing a revolutionary 4th wave coffee experience that transcends traditional boundaries of coffee, culture, and craftsmanship.</li>
+            <li>Creating a global destination concept where tranquility and artistry inspire connection and discovery.</li>
+            <li>Integrating multiple cultural influences with innovative brewing methodologies to establish a new standard in coffee experiences.</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="experience-item">
+        <h3>Financial Analyst (Residuals)</h3>
+        <div class="position-details">
+          <span class="company">Cast and Crew</span>
+          <span class="date">April 2019 - Present</span>
+        </div>
+        <p>Providing sophisticated financial analysis and reporting for major entertainment industry clients.</p>
+        <ul>
+          <li>Administer and validate residual payment infrastructures across multifaceted entertainment platforms.</li>
+          <li>Employ advanced econometric modeling, pivot analytics, and data visualization methodologies.</li>
+          <li>Conduct rigorous contractual analyses ensuring full adherence to collective bargaining frameworks.</li>
+          <li>Liaise with executive-level stakeholders at HBO, Netflix, Starz, and Amazon, delivering high-impact financial insights.</li>
+          <li>Spearheaded automation initiatives, optimizing reporting systems to reduce processing duration by 30%.</li>
+          <li>Led systemic workflow enhancements, augmenting operational precision and bolstering institutional efficiency.</li>
+        </ul>
+      </div>
+      
+      <div class="experience-item">
+        <h3>Freelance Consultant</h3>
+        <div class="position-details">
+          <span class="company">Business Strategy & Development</span>
+          <span class="date">March 2016 - Present</span>
+        </div>
+        <p>Strategic advisor for businesses across multiple industries, focusing on growth strategy, operational efficiency, and consumer experience.</p>
+        <ul>
+          <li>Deliver high-caliber consultancy services focusing on corporate structuring, operational streamlining, and strategic growth.</li>
+          <li>Architect and execute holistic project frameworks, integrating advanced financial modeling and legal constructs.</li>
+          <li>Negotiated pivotal acquisitions and formulated dynamic compensation paradigms that reduced capital expenditure.</li>
+          <li>Facilitate executive strategy workshops, fostering sustainable growth trajectories and innovative market expansion.</li>
+        </ul>
+        <div class="key-achievements">
+          <h4>Selected Projects</h4>
+          <ul>
+            <li><strong>C'est Bon Paris Fashion Week:</strong> Contributed audio design and narration for runway presentation, featured in Vogue and Pause Magazine.</li>
+            <li><strong>SOBE x Trophies Collaboration:</strong> Designed menu concepts and provided artistic direction for culinary partnership.</li>
+            <li><strong>Upgrade Labs (Bulletproof Labs):</strong> Helped establish operations for biohacking fitness center, devised strategic business plans, and trained on 15+ equipment pieces.</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="experience-item">
+        <h3>Director of Development</h3>
+        <div class="position-details">
+          <span class="company">The Modern Tea Room</span>
+          <span class="date">March 2015 - March 2016</span>
+        </div>
+        <p>Spearheaded business growth initiatives and strategic planning for specialty tea retail concept.</p>
+        <ul>
+          <li>Designed and enabled four distinct revenue streams, creating a diversified business model.</li>
+          <li>Formulated comprehensive quarterly strategies to maximize revenue and customer engagement.</li>
+          <li>Mentored and coached staff in product knowledge to enhance customer experience and boost sales.</li>
+          <li>Championed growth of brand from inception, establishing a distinctive market presence.</li>
+        </ul>
+      </div>
+      
+      <div class="experience-item">
+        <h3>Business Development and Distribution</h3>
+        <div class="position-details">
+          <span class="company">Purespores</span>
+          <span class="date">December 2016 - March 2018</span>
+        </div>
+        <p>Led business growth initiatives through strategic sales expansion and client relationship management.</p>
+        <ul>
+          <li>Increased account volume by developing strong alliances with key vendors.</li>
+          <li>Generated sales through extensive prospecting, networking, and referral development.</li>
+          <li>Designed business development campaigns to attract and retain a strong client base.</li>
+          <li>Established strategic customized plans and solutions to achieve target goals utilizing data and CRM tools.</li>
+          <li>Maintained strategic ongoing relationships with C-level executives.</li>
+        </ul>
+      </div>
+    </section>
+    
+    <section>
+      <h2>SKILLS & EXPERTISE</h2>
+      <div class="skills">
+        <div>
+          <div class="skill-category">
+            <h4>Financial & Business Analytics</h4>
+            <p class="skill-list">Predictive modeling, financial forecasting, strategic planning, business valuation, ROI optimization</p>
+          </div>
+          <div class="skill-category">
+            <h4>Brand & Market Development</h4>
+            <p class="skill-list">Concept creation, experience design, luxury market positioning, multi-channel strategy</p>
+          </div>
+          <div class="skill-category">
+            <h4>Leadership & Advisory</h4>
+            <p class="skill-list">Strategic consulting, executive mentorship, stakeholder engagement, team development</p>
+          </div>
+        </div>
+        <div>
+          <div class="skill-category">
+            <h4>Product Development</h4>
+            <p class="skill-list">Concept-to-market implementation, sourcing, sustainability planning, sensory innovation</p>
+          </div>
+          <div class="skill-category">
+            <h4>Marketing & Digital Ecosystem</h4>
+            <p class="skill-list">Brand storytelling, consumer psychology, experience design, multi-platform integration</p>
+          </div>
+          <div class="skill-category">
+            <h4>Industry Knowledge</h4>
+            <p class="skill-list">Luxury retail, hospitality, entertainment, fragrance, fitness, food & beverage</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section>
+      <h2>EDUCATION</h2>
+      <div class="education-item">
+        <div class="degree">Bachelor of Arts (B.A.), Philosophy</div>
+        <div class="institution">California State University, Fullerton</div>
+        <div class="details">2014</div>
+        <div class="details">Relevant Coursework: Business Administration, Financial Analysis, Managerial Economics, Strategic Leadership</div>
+      </div>
+    </section>
+    
+    <section class="certifications">
+      <h2>CERTIFICATIONS & PROFESSIONAL DEVELOPMENT</h2>
+      <ul>
+        <li>AI Policy & Ethics Certification (Expected Completion: Q3 2025)</li>
+        <li>Financial Modeling & Valuation (Expected Completion: Q3 2025)</li>
+        <li>Advanced Brand Strategy (Expected Completion: Q3 2025)</li>
+      </ul>
+    </section>
+    
+    <section>
+      <h2>VOLUNTEER ENGAGEMENT</h2>
+      <ul>
+        <li>Lead Basketball Camp Instructor - Los Angeles Sparks Leadership Initiative</li>
+        <li>Academic Mentor & Research Facilitator - Elevate Your Game Institute</li>
+        <li>Urban Sustainability Initiatives - Run 4 Fun, Coastal Cleanup</li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

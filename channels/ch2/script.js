@@ -148,13 +148,13 @@
     },
     'user-experience': {
       title: 'Coloring With Gray',
-      tagline: 'Founder & Creative Director of luxury fragrance brand',
-      description: `Established and founded Coloring With Gray, creating immersive sensory experiences that challenge perspectives. Launched "Reflections of You," a bespoke fragrance portfolio leveraging proprietary olfactory technologies that evolve with the wearer. Engineered a brand ecosystem converging consumer psychology with artistic narrative, while overseeing end-to-end product development and sustainability-driven production strategies.`,
+      tagline: 'Founder & Creative Director of multidisciplinary house based on philosophy',
+      description: `Established and founded Coloring With Gray, a multidisciplinary house based on philosophy that creates experiences across film, photography, fragrance, and technology that challenge perspectives. Created "Reflections of You," a multidimensional project combining fragrance, film, and product design to tell a cohesive story. Engineered a brand ecosystem converging consumer psychology with artistic narrative, while overseeing end-to-end product development and sustainability-driven production strategies.`,
       projectUrl: 'https://coloringwithgray.github.io/coloring-page/',
       metaInfo: [
         { label: 'Role', value: 'Founder & Creative Director' },
         { label: 'Founded', value: '2024' },
-        { label: 'Product', value: 'Luxury Fragrance' }
+        { label: 'Focus', value: 'Multidisciplinary Projects' }
       ],
       galleryImages: [
         // Website-inspired preview
@@ -219,10 +219,10 @@
         }
       ],
       processStages: [
-        { name: 'Brand Development', description: 'Creating a brand identity that challenges conventional perspectives on fragrance.' },
-        { name: 'Product Innovation', description: 'Developing proprietary olfactory technologies for personalized fragrance experiences.' },
-        { name: 'Experience Design', description: 'Engineering immersive customer experiences that blend artistry with commerce.' },
-        { name: 'Sustainable Production', description: 'Implementing ethical sourcing and environmentally conscious production methods.' }
+        { name: 'Philosophical Foundation', description: 'Developing the philosophical principles that guide all creative output across different mediums.' },
+        { name: 'Multidimensional Storytelling', description: 'Crafting cohesive narratives that span film, photography, fragrance, and product design.' },
+        { name: 'Experience Design', description: 'Engineering immersive experiences that challenge perspectives and create meaningful connections.' },
+        { name: 'Sustainable Innovation', description: 'Implementing ethical approaches and environmentally conscious production methods across all projects.' }
       ]
     },
   };
