@@ -18,7 +18,9 @@ const CACHE_ASSETS = [
   './audio/channel-click9.aif',
   './audio/channel-click10.aif',
   './audio/channel-click11.aif',
-  './resume.pdf'
+  './resume.pdf',
+  './temp/kayron_resume.html',
+  './temp/kayron_resume_print.html'
 ];
 
 // Installation: Cache all necessary assets
