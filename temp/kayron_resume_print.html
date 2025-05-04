@@ -609,6 +609,28 @@
         alert("Meaning mode unlocked.");
       }
     });
+
+    // Check if this page is opened directly (not in an iframe)
+    if (window.top === window.self) {
+      // Add print button for easy PDF conversion
+      const printButton = document.createElement('button');
+      printButton.textContent = 'Save as PDF';
+      printButton.style.cssText = 'position: fixed; top: 20px; right: 20px; padding: 8px 16px; background: #eee; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-family: var(--font-primary); z-index: 1000;';
+      document.body.appendChild(printButton);
+      
+      printButton.addEventListener('click', () => {
+        window.print();
+      });
+      
+      // Auto-print when this page is loaded directly (since it's specifically meant for printing)
+      if (document.referrer === '') {
+        setTimeout(() => {
+          if (confirm('This page is optimized for printing. Would you like to save as PDF now?')) {
+            window.print();
+          }
+        }, 1000);
+      }
+    }
   </script>
 </body>
 </html>
