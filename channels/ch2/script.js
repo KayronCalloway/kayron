@@ -2,6 +2,130 @@
 (() => {
   // Project data
   const projectData = {
+    'reflections-of-you': {
+      title: 'Reflections of You',
+      tagline: 'Multidimensional project combining fragrance, film, and product design',
+      description: `A multidimensional narrative expressed through fragrance, film, and product design to tell a unified story — demonstrating how different mediums can converge to create a single, cohesive experience. This flagship project from Coloring With Gray explores the intersection of sensory perception, memory, and identity through a luxury fragrance that evolves with the wearer, accompanied by visual storytelling and custom-designed physical artifacts.`,
+      projectUrl: 'https://coloringwithgray.github.io/coloring-page/',
+      metaInfo: [
+        { label: 'Type', value: 'Multidimensional Experience' },
+        { label: 'Medium', value: 'Fragrance, Film, Design' },
+        { label: 'Status', value: 'Pre-launch Phase' }
+      ],
+      galleryImages: [
+        { src: 'visuals/reflections.png', alt: 'Reflections of You Concept Visual' },
+        { 
+          customHtml: `
+            <div style="width: 100%; height: 100%; background-color: #f2f2f2; display: flex; flex-direction: column; padding: 20px;">
+              <div style="font-family: 'Merova', serif; font-size: 20px; font-weight: bold; margin-bottom: 20px; color: #333;">REFLECTIONS OF YOU</div>
+              <div style="display: flex; gap: 15px; flex: 1;">
+                <div style="flex: 1; background: linear-gradient(to bottom, #e5e5e5, #f5f5f5); border-radius: 5px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px;">
+                  <div style="width: 40px; height: 70px; background: linear-gradient(to bottom, #d1d1d1, #e8e8e8); border-radius: 5px 5px 15px 15px; margin-bottom: 10px;"></div>
+                  <div style="font-size: 12px; text-align: center;">MORNING</div>
+                </div>
+                <div style="flex: 1; background: linear-gradient(to bottom, #d5d5d5, #e8e8e8); border-radius: 5px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px;">
+                  <div style="width: 40px; height: 70px; background: linear-gradient(to bottom, #c1c1c1, #d8d8d8); border-radius: 5px 5px 15px 15px; margin-bottom: 10px;"></div>
+                  <div style="font-size: 12px; text-align: center;">AFTERNOON</div>
+                </div>
+                <div style="flex: 1; background: linear-gradient(to bottom, #b5b5b5, #d5d5d5); border-radius: 5px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px;">
+                  <div style="width: 40px; height: 70px; background: linear-gradient(to bottom, #a1a1a1, #c8c8c8); border-radius: 5px 5px 15px 15px; margin-bottom: 10px;"></div>
+                  <div style="font-size: 12px; text-align: center; color: #333;">EVENING</div>
+                </div>
+              </div>
+            </div>
+          `,
+          alt: 'Reflections of You - Product Collection' 
+        },
+        { 
+          customHtml: `
+            <div style="width: 100%; height: 100%; background-color: #efefef; display: flex; flex-direction: column; padding: 20px;">
+              <div style="font-size: 14px; text-transform: uppercase; margin-bottom: 15px; color: #555;">Experience Design</div>
+              <div style="font-family: 'Merova', serif; font-size: 24px; font-weight: bold; margin-bottom: 20px; color: #333;">Film × Fragrance × Design</div>
+              <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
+                <div style="flex: 1; height: 100%; background: linear-gradient(45deg, #d0d0d0, #e0e0e0); border-radius: 10px; position: relative; overflow: hidden;">
+                  <div style="position: absolute; width: 80%; height: 80%; top: 10%; left: 10%; background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);"></div>
+                </div>
+                <div style="flex: 1;">
+                  <div style="width: 100%; height: 5px; background-color: #ddd; margin-bottom: 15px;"></div>
+                  <div style="width: 100%; height: 5px; background-color: #ccc; margin-bottom: 15px;"></div>
+                  <div style="width: 100%; height: 5px; background-color: #bbb; margin-bottom: 15px;"></div>
+                  <div style="font-size: 12px; color: #666; line-height: 1.4;">A single cohesive story told through multiple mediums, creating a holistic sensory experience.</div>
+                </div>
+              </div>
+            </div>
+          `,
+          alt: 'Reflections of You - Multidimensional Approach' 
+        }
+      ],
+      processStages: [
+        { name: 'Concept Development', description: 'Establishing philosophical foundation and conceptual frameworks for the multidimensional narrative.' },
+        { name: 'Olfactory Design', description: 'Developing proprietary fragrance formulations that evolve with the wearer's body chemistry throughout the day.' },
+        { name: 'Visual Storytelling', description: 'Creating film and photography elements that complement and extend the fragrance experience.' },
+        { name: 'Product Engineering', description: 'Designing physical artifacts and packaging to create a complete sensory journey.' }
+      ]
+    },
+    'the-state-within': {
+      title: 'The State Within',
+      tagline: 'AI governance simulation exploring emotional consequence',
+      description: `An in-development project exploring the intersection of artificial intelligence, governance structures, and emotional consequence. The State Within aims to create a simulation environment where users can explore the ethical dimensions and emotional impacts of AI governance decisions, promoting deeper understanding of the human elements in technological systems.`,
+      projectUrl: '#',
+      metaInfo: [
+        { label: 'Type', value: 'Interactive Experience' },
+        { label: 'Category', value: 'AI Ethics & Governance' },
+        { label: 'Status', value: 'In Development' }
+      ],
+      galleryImages: [
+        { 
+          customHtml: `
+            <div style="width: 100%; height: 100%; background-color: #0a0a0a; display: flex; flex-direction: column; padding: 20px; color: #e0e0e0;">
+              <div style="font-family: 'Space Grotesk', monospace; font-size: 20px; margin-bottom: 20px; letter-spacing: 2px;">THE STATE WITHIN</div>
+              <div style="display: flex; flex-direction: column; gap: 15px; flex: 1; justify-content: center;">
+                <div style="width: 100%; height: 5px; background: linear-gradient(90deg, #333 0%, #666 100%); margin-bottom: 5px;"></div>
+                <div style="font-size: 14px; letter-spacing: 1px;">GOVERNANCE · ETHICS · EMOTION</div>
+                <div style="margin-top: 15px; font-size: 12px; opacity: 0.7; line-height: 1.4;">
+                  Exploring the human consequences of artificial decision systems.
+                </div>
+              </div>
+            </div>
+          `,
+          alt: 'The State Within - Concept Preview' 
+        },
+        { 
+          customHtml: `
+            <div style="width: 100%; height: 100%; background-color: #111; display: flex; flex-direction: column; padding: 20px; color: #ddd;">
+              <div style="font-family: 'Space Grotesk', monospace; font-size: 16px; margin-bottom: 15px; letter-spacing: 1px; opacity: 0.6;">SIMULATION PARAMETERS</div>
+              <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>Ethics Framework:</span>
+                    <span style="color: #7d9eff;">Consequentialist</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>Decision Priority:</span>
+                    <span style="color: #7d9eff;">Emotional Impact</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>Transparency Level:</span>
+                    <span style="color: #7d9eff;">Dynamic</span>
+                  </div>
+                </div>
+                <div style="width: 100%; height: 1px; background: linear-gradient(90deg, #222, #444, #222); margin: 15px 0;"></div>
+                <div style="font-size: 11px; opacity: 0.7; font-style: italic;">
+                  "The consequences of our governance systems extend beyond metrics into the realm of human emotion."
+                </div>
+              </div>
+            </div>
+          `,
+          alt: 'The State Within - Simulation Parameters' 
+        }
+      ],
+      processStages: [
+        { name: 'Philosophical Framework', description: 'Establishing the ethical and philosophical foundations for exploring AI governance.' },
+        { name: 'Experience Design', description: 'Creating the structure of the simulation and defining interaction paradigms.' },
+        { name: 'Narrative Development', description: 'Building the scenarios and emotional dimensions that drive the experience.' },
+        { name: 'Technical Implementation', description: 'Translating concepts into functional interactive experiences.' }
+      ]
+    },
     'featured-video': {
       title: 'Featured Reel',
       tagline: 'Video showcase of recent work and highlights',
