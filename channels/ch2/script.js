@@ -438,12 +438,25 @@
             
             // Only proceed if we have a valid source
             if (storedSrc && storedSrc.length > 10) {
-              console.log('Restoring video with muted and paused state...');
+              console.log('Restoring video with appropriate state...');
               
-              // Create a restoration source with sound muted
-              const restorationSrc = storedSrc
-                .replace(/mute=\d/, 'mute=1')  // Ensure it's muted
-                .replace(/autoplay=\d/, 'autoplay=0'); // Ensure autoplay is off
+              // Create a restoration source with proper settings
+              let restorationSrc = storedSrc;
+              
+              // Apply mute state based on user preference
+              if (soundEnabled) {
+                restorationSrc = restorationSrc.replace(/mute=\d/, 'mute=0');
+              } else {
+                restorationSrc = restorationSrc.replace(/mute=\d/, 'mute=1');
+              }
+              
+              // Ensure autoplay is on if we're visible
+              const isVisible = isElementInViewport(videoPlayer);
+              if (isVisible) {
+                restorationSrc = restorationSrc.replace(/autoplay=\d/, 'autoplay=1');
+              } else {
+                restorationSrc = restorationSrc.replace(/autoplay=\d/, 'autoplay=0');
+              }
                 
               // Apply the source
               videoPlayer.src = restorationSrc;
@@ -451,34 +464,121 @@
               // Remove the destroyed marker
               videoPlayer.removeAttribute('data-destroyed');
               
-              console.log('Video restored in inactive state');
+              // Update the UI to match the sound state
+              updateSoundButtonUI();
+              
+              console.log('Video restored with sound ' + (soundEnabled ? 'enabled' : 'disabled'));
             }
           }
         }
         
-        // Function to fully activate video with sound when channel 2 is visible
-        function activateVideo() {
-          if (videoPlayer.src && videoPlayer.src.includes('mute=1')) {
-            console.log('Activating video with sound...');
-            
-            // Replace mute=1 with mute=0 to enable sound
-            videoPlayer.src = videoPlayer.src.replace('mute=1', 'mute=0')
-                                           .replace('autoplay=0', 'autoplay=1')
-                                           .replace('loop=0', 'loop=1');
-                                           
-            console.log('Video activated with sound');
+        // Get sound control elements
+        const soundControl = document.getElementById('video-sound-control');
+        const soundIconMuted = document.getElementById('sound-icon-muted');
+        const soundIconUnmuted = document.getElementById('sound-icon-unmuted');
+        
+        // Track sound state
+        let soundEnabled = false;
+        
+        // Function to manually toggle sound when user clicks the sound button
+        function setupSoundToggle() {
+          if (soundControl) {
+            soundControl.addEventListener('click', () => {
+              if (soundEnabled) {
+                // Mute the video
+                muteVideo();
+                soundEnabled = false;
+              } else {
+                // Unmute the video
+                unmuteVideo();
+                soundEnabled = true;
+              }
+              
+              // Update the UI
+              updateSoundButtonUI();
+            });
           }
         }
         
-        // Function to deactivate video sound when channel 2 is not in focus
+        // Function to update the sound button UI
+        function updateSoundButtonUI() {
+          if (soundIconMuted && soundIconUnmuted) {
+            if (soundEnabled) {
+              soundIconMuted.style.display = 'none';
+              soundIconUnmuted.style.display = 'block';
+            } else {
+              soundIconMuted.style.display = 'block';
+              soundIconUnmuted.style.display = 'none';
+            }
+          }
+        }
+        
+        // Set up the sound toggle
+        setupSoundToggle();
+        
+        // Function to unmute the video when requested
+        function unmuteVideo() {
+          if (videoPlayer.src && videoPlayer.src.includes('mute=1')) {
+            console.log('Unmuting video...');
+            
+            // Replace mute=1 with mute=0 to enable sound
+            videoPlayer.src = videoPlayer.src.replace('mute=1', 'mute=0');
+            soundEnabled = true;
+            updateSoundButtonUI();
+            
+            console.log('Video unmuted');
+          }
+        }
+        
+        // Function to mute the video 
+        function muteVideo() {
+          if (videoPlayer.src && videoPlayer.src.includes('mute=0')) {
+            console.log('Muting video...');
+            
+            // Replace mute=0 with mute=1 to disable sound
+            videoPlayer.src = videoPlayer.src.replace('mute=0', 'mute=1');
+            soundEnabled = false;
+            updateSoundButtonUI();
+            
+            console.log('Video muted');
+          }
+        }
+        
+        // Function to prepare video for visibility but respect sound preference
+        function activateVideo() {
+          if (videoPlayer.src) {
+            console.log('Activating video...');
+            
+            // Ensure autoplay and loop are enabled
+            if (videoPlayer.src.includes('autoplay=0')) {
+              videoPlayer.src = videoPlayer.src.replace('autoplay=0', 'autoplay=1');
+            }
+            
+            if (videoPlayer.src.includes('loop=0')) {
+              videoPlayer.src = videoPlayer.src.replace('loop=0', 'loop=1');
+            }
+            
+            // Only unmute if sound was previously enabled by user
+            if (soundEnabled && videoPlayer.src.includes('mute=1')) {
+              videoPlayer.src = videoPlayer.src.replace('mute=1', 'mute=0');
+            }
+            
+            console.log('Video activated, sound state: ' + (soundEnabled ? 'enabled' : 'disabled'));
+          }
+        }
+        
+        // Function to deactivate video when not in focus
         function deactivateVideoSound() {
           if (videoPlayer.src && videoPlayer.src.includes('mute=0')) {
-            console.log('Deactivating video sound...');
+            console.log('Temporarily muting video since not in focus...');
+            
+            // Remember that sound was enabled
+            soundEnabled = true;
             
             // Replace mute=0 with mute=1 to disable sound
             videoPlayer.src = videoPlayer.src.replace('mute=0', 'mute=1');
             
-            console.log('Video sound deactivated');
+            console.log('Video temporarily muted');
           }
         }
         
