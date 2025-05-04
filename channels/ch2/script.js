@@ -401,72 +401,147 @@
         container.style.webkitTouchCallout = 'none';
       }
       
-      // Set up YouTube video to only play sound when visible
-      // This follows the behavior of the rest of the page
+      // Set up YouTube video with more comprehensive control
       const videoPlayer = document.getElementById('featured-video-player');
       if (videoPlayer) {
+        let originalVideoSrc = null;
+        
+        // Store the original src for later use
+        if (videoPlayer.src) {
+          originalVideoSrc = videoPlayer.src;
+        }
+        
+        // Function to fully destroy and remove the video
+        function destroyVideo() {
+          console.log('Completely destroying video...');
+          
+          // First set src to empty to stop all activity
+          videoPlayer.src = '';
+          
+          // Mark as destroyed for future reference
+          videoPlayer.setAttribute('data-destroyed', 'true');
+          
+          // Add a placeholder for future restoration if channel 2 is revisited
+          videoPlayer.setAttribute('data-original-src', originalVideoSrc || '');
+          
+          console.log('Video element destroyed and marked');
+        }
+        
+        // Function to reload and reset the video when coming back to channel 2
+        function restoreVideo() {
+          // Only restore if it was previously destroyed
+          if (videoPlayer.getAttribute('data-destroyed') === 'true') {
+            console.log('Preparing to restore video...');
+            
+            // Get the original source
+            const storedSrc = videoPlayer.getAttribute('data-original-src');
+            
+            // Only proceed if we have a valid source
+            if (storedSrc && storedSrc.length > 10) {
+              console.log('Restoring video with muted and paused state...');
+              
+              // Create a restoration source with sound muted
+              const restorationSrc = storedSrc
+                .replace(/mute=\d/, 'mute=1')  // Ensure it's muted
+                .replace(/autoplay=\d/, 'autoplay=0'); // Ensure autoplay is off
+                
+              // Apply the source
+              videoPlayer.src = restorationSrc;
+              
+              // Remove the destroyed marker
+              videoPlayer.removeAttribute('data-destroyed');
+              
+              console.log('Video restored in inactive state');
+            }
+          }
+        }
+        
+        // Function to fully activate video with sound when channel 2 is visible
+        function activateVideo() {
+          if (videoPlayer.src && videoPlayer.src.includes('mute=1')) {
+            console.log('Activating video with sound...');
+            
+            // Replace mute=1 with mute=0 to enable sound
+            videoPlayer.src = videoPlayer.src.replace('mute=1', 'mute=0')
+                                           .replace('autoplay=0', 'autoplay=1')
+                                           .replace('loop=0', 'loop=1');
+                                           
+            console.log('Video activated with sound');
+          }
+        }
+        
+        // Function to deactivate video sound when channel 2 is not in focus
+        function deactivateVideoSound() {
+          if (videoPlayer.src && videoPlayer.src.includes('mute=0')) {
+            console.log('Deactivating video sound...');
+            
+            // Replace mute=0 with mute=1 to disable sound
+            videoPlayer.src = videoPlayer.src.replace('mute=0', 'mute=1');
+            
+            console.log('Video sound deactivated');
+          }
+        }
+        
         // Set up Intersection Observer to detect when video is visible
         const videoObserver = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
-            // Get the iframe's content window
-            // Using a simpler approach without the YouTube API
-            if (videoPlayer.src) {
-              const currentSrc = videoPlayer.src;
-              if (entry.isIntersecting) {
-                // Video is visible - ensure it's not muted
-                if (currentSrc.includes('mute=1')) {
-                  // Replace mute=1 with mute=0
-                  videoPlayer.src = currentSrc.replace('mute=1', 'mute=0');
-                  console.log('Video in view - unmuting');
-                }
-              } else {
-                // Video is not visible - mute it
-                if (currentSrc.includes('mute=0')) {
-                  // Replace mute=0 with mute=1
-                  videoPlayer.src = currentSrc.replace('mute=0', 'mute=1');
-                  console.log('Video out of view - muting');
-                }
-              }
+            // Only proceed if we are in channel 2
+            const activeChannel = document.body.getAttribute('data-active-channel');
+            if (activeChannel !== 'ch2') {
+              destroyVideo();
+              return;
+            }
+            
+            // Handle visibility changes
+            if (entry.isIntersecting) {
+              activateVideo();
+            } else {
+              deactivateVideoSound();
             }
           });
-        }, { threshold: 0.5 }); // Trigger when 50% of the video is visible
+        }, { threshold: 0.3 }); // Trigger when 30% of the video is visible
         
-        // Handle channel changes - completely stop video when leaving ch2
+        // Handle channel changes
         document.addEventListener('channelChange', () => {
-          // Get the currently active channel
           const activeChannel = document.body.getAttribute('data-active-channel');
           
-          // If we're not in channel 2 anymore, stop the video completely
-          if (activeChannel !== 'ch2') {
-            console.log('Channel changed - completely stopping video in ch2');
-            // Completely stop the video by setting src to empty and then reload
-            if (videoPlayer) {
-              // Save the original source to restore later if needed
-              const originalSrc = videoPlayer.src;
-              // First remove the src attribute to stop all activity
-              videoPlayer.src = '';
-              
-              // Add a temporary loading state attribute
-              videoPlayer.setAttribute('data-loading', 'true');
-              
-              // Create a modified source that starts paused and muted
-              const modifiedSrc = originalSrc
-                .replace('autoplay=1', 'autoplay=0')
-                .replace('mute=0', 'mute=1')
-                .replace('loop=1', 'loop=0');
-              
-              // After a short delay, restore the src but with autoplay disabled
+          // If changing to channel 2, restore the video
+          if (activeChannel === 'ch2') {
+            restoreVideo();
+            
+            // Check if the video element is currently visible
+            const isVisible = isElementInViewport(videoPlayer);
+            if (isVisible) {
+              // Short delay to allow browser to process the change
               setTimeout(() => {
-                videoPlayer.src = modifiedSrc;
-                videoPlayer.removeAttribute('data-loading');
-                console.log('Video completely stopped and reset');
-              }, 50);
+                activateVideo();
+              }, 100);
             }
+          } else {
+            // If changing away from channel 2, destroy the video
+            destroyVideo();
           }
         });
+        
+        // Utility function to check if an element is in the viewport
+        function isElementInViewport(el) {
+          const rect = el.getBoundingClientRect();
+          return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+          );
+        }
 
         // Start observing the video player
         videoObserver.observe(videoPlayer);
+        
+        // Initial state setup based on current channel
+        const activeChannel = document.body.getAttribute('data-active-channel');
+        if (activeChannel !== 'ch2') {
+          destroyVideo();
+        }
 
         // Add YouTube iframe API to control the player
         const tag = document.createElement('script');
@@ -1076,7 +1151,24 @@
   }
 
   // Initialize when DOM is loaded
-  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('DOMContentLoaded', () => {
+    init();
+    
+    // Check if we're starting on a channel other than 2
+    // If so, preemptively destroy the video
+    setTimeout(() => {
+      const activeChannel = document.body.getAttribute('data-active-channel');
+      const videoPlayer = document.getElementById('featured-video-player');
+      
+      if (activeChannel !== 'ch2' && videoPlayer && videoPlayer.src) {
+        console.log('Site loaded on a channel other than 2, preemptively disabling video');
+        videoPlayer.src = '';
+        
+        // Set a flag to indicate video was never properly initialized
+        videoPlayer.setAttribute('data-never-initialized', 'true');
+      }
+    }, 100);
+  });
   
   // If document is already loaded, initialize immediately
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
@@ -1088,6 +1180,15 @@
     setTimeout(() => {
       if (document.body.getAttribute('data-active-channel') === 'ch2') {
         init();
+        
+        // Special handling for video that was never properly initialized
+        const videoPlayer = document.getElementById('featured-video-player');
+        if (videoPlayer && videoPlayer.getAttribute('data-never-initialized') === 'true') {
+          // Reset the video with proper settings - muted by default
+          const originalSrc = "https://www.youtube.com/embed/94ZjeYGSpuk?si=q2auscOoiacOOu_5&autoplay=1&mute=1&loop=1&playlist=94ZjeYGSpuk&controls=0&showinfo=0&rel=0&enablejsapi=1";
+          videoPlayer.src = originalSrc;
+          videoPlayer.removeAttribute('data-never-initialized');
+        }
       }
     }, 300);
   });
