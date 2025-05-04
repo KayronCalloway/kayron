@@ -17,8 +17,8 @@ const CACHE_ASSETS = [
   './audio/channel-click8.aif',
   './audio/channel-click9.aif',
   './audio/channel-click10.aif',
-  './audio/channel-click11.aif'
-  // './static-resume.pdf' - commented until file exists
+  './audio/channel-click11.aif',
+  './resume.pdf'
 ];
 
 // Installation: Cache all necessary assets
