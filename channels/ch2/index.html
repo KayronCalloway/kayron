@@ -8,7 +8,7 @@
         id="featured-video-player"
         width="100%" 
         height="100%" 
-        src="https://www.youtube.com/embed/94ZjeYGSpuk?si=q2auscOoiacOOu_5&autoplay=1&mute=1&loop=1&playlist=94ZjeYGSpuk&controls=0&showinfo=0&rel=0&enablejsapi=1" 
+        src="https://www.youtube.com/embed/94ZjeYGSpuk?si=q2auscOoiacOOu_5&autoplay=1&mute=0&loop=1&playlist=94ZjeYGSpuk&controls=0&showinfo=0&rel=0&enablejsapi=1" 
         title="YouTube video player" 
         frameborder="0" 
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
@@ -16,10 +16,10 @@
         allowfullscreen>
       </iframe>
       
-      <!-- Sound control overlay -->
+      <!-- Sound control overlay - start with unmuted icon since we're auto-playing -->
       <div id="video-sound-control" style="position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.6); padding: 8px; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 100;">
-        <div id="sound-icon-muted" style="display: block;">🔇</div>
-        <div id="sound-icon-unmuted" style="display: none;">🔊</div>
+        <div id="sound-icon-muted" style="display: none;">🔇</div>
+        <div id="sound-icon-unmuted" style="display: block;">🔊</div>
       </div>
     </div>
   </div>
