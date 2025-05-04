@@ -477,8 +477,8 @@
         const soundIconMuted = document.getElementById('sound-icon-muted');
         const soundIconUnmuted = document.getElementById('sound-icon-unmuted');
         
-        // Track sound state
-        let soundEnabled = false;
+        // Track sound state - default to enabled for auto-play
+        let soundEnabled = true;
         
         // Function to manually toggle sound when user clicks the sound button
         function setupSoundToggle() {
@@ -544,7 +544,7 @@
           }
         }
         
-        // Function to prepare video for visibility but respect sound preference
+        // Function to prepare video for visibility and auto-play with sound
         function activateVideo() {
           if (videoPlayer.src) {
             console.log('Activating video...');
@@ -558,10 +558,22 @@
               videoPlayer.src = videoPlayer.src.replace('loop=0', 'loop=1');
             }
             
-            // Only unmute if sound was previously enabled by user
-            if (soundEnabled && videoPlayer.src.includes('mute=1')) {
-              videoPlayer.src = videoPlayer.src.replace('mute=1', 'mute=0');
+            // Apply sound state based on user preference
+            // Default to unmuted unless user has explicitly muted
+            if (soundEnabled) {
+              // Ensure sound is enabled
+              if (videoPlayer.src.includes('mute=1')) {
+                videoPlayer.src = videoPlayer.src.replace('mute=1', 'mute=0');
+              }
+            } else {
+              // User has explicitly muted
+              if (videoPlayer.src.includes('mute=0')) {
+                videoPlayer.src = videoPlayer.src.replace('mute=0', 'mute=1');
+              }
             }
+            
+            // Update UI to match current state
+            updateSoundButtonUI();
             
             console.log('Video activated, sound state: ' + (soundEnabled ? 'enabled' : 'disabled'));
           }
@@ -1284,8 +1296,8 @@
         // Special handling for video that was never properly initialized
         const videoPlayer = document.getElementById('featured-video-player');
         if (videoPlayer && videoPlayer.getAttribute('data-never-initialized') === 'true') {
-          // Reset the video with proper settings - muted by default
-          const originalSrc = "https://www.youtube.com/embed/94ZjeYGSpuk?si=q2auscOoiacOOu_5&autoplay=1&mute=1&loop=1&playlist=94ZjeYGSpuk&controls=0&showinfo=0&rel=0&enablejsapi=1";
+          // Reset the video with proper settings - unmuted by default
+          const originalSrc = "https://www.youtube.com/embed/94ZjeYGSpuk?si=q2auscOoiacOOu_5&autoplay=1&mute=0&loop=1&playlist=94ZjeYGSpuk&controls=0&showinfo=0&rel=0&enablejsapi=1";
           videoPlayer.src = originalSrc;
           videoPlayer.removeAttribute('data-never-initialized');
         }
