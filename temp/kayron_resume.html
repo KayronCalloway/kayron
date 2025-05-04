@@ -3,9 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kayron E. Calloway - Executive Resume</title>
+  <title>Kayron E. Calloway</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+    
+    :root {
+      --color-black: #222222;
+      --color-darkgrey: #333333;
+      --color-midgrey: #777777;
+      --color-lightgrey: #c0c0c0;
+      --color-offwhite: #f5f5f5;
+      --color-white: #ffffff;
+      
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 1.5rem;
+      --space-lg: 2.5rem;
+      --space-xl: 4rem;
+      
+      --font-xs: 0.75rem;
+      --font-sm: 0.85rem;
+      --font-base: 0.95rem;
+      --font-md: 1.05rem;
+      --font-lg: 1.25rem;
+      --font-xl: 1.75rem;
+      --font-xxl: 2.5rem;
+      
+      --weight-light: 300;
+      --weight-normal: 400;
+      --weight-medium: 500;
+      --weight-semibold: 600;
+      --weight-bold: 700;
+    }
     
     * {
       margin: 0;
@@ -14,268 +43,348 @@
     }
     
     body {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 13px; /* Slightly smaller font size */
-      line-height: 1.5; /* Tighter line height */
-      color: #333;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: var(--font-base);
+      line-height: 1.5;
+      color: var(--color-darkgrey);
+      background-color: var(--color-white);
       max-width: 8.5in;
       margin: 0 auto;
-      padding: 0.5in;
-      background: #fff;
+      padding: 0.6in;
+    }
+    
+    /* Fingerprint watermark */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 80%;
+      right: 2%;
+      width: 110px;
+      height: 110px;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEwIiBoZWlnaHQ9IjExMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNTUgMTFjLTUuNSAwLTEwIDQuNS0xMCAxMHM0LjUgMTAgMTAgMTAgMTAtNC41IDEwLTEwLTQuNS0xMC0xMC0xMHptMCA2NXYtMzBjLTUuNSAwLTEwLTQuNS0xMC0xMHM0LjUtMTAgMTAtMTBjLTUuNSAwLTEwIDQuNS0xMCAxMHM0LjUgMTAgMTAgMTB2NWMtOC4zIDAtMTUtNi43LTE1LTE1czYuNy0xNSAxNS0xNWMtOC4zIDAtMTUgNi43LTE1IDE1czYuNyAxNSAxNSAxNXYxMGMtMTEgMC0yMC05LTIwLTIwczktMjAgMjAtMjBjLTExIDAtMjAgOS0yMCAyMHM5IDIwIDIwIDIwdjVjLTEzLjggMC0yNS0xMS4yLTI1LTI1czExLjItMjUgMjUtMjVjLTEzLjggMC0yNSAxMS4yLTI1IDI1czExLjIgMjUgMjUgMjV2MTBjLTE2LjUgMC0zMC0xMy41LTMwLTMwczEzLjUtMzAgMzAtMzBjMTYuNSAwIDMwIDEzLjUgMzAgMzBzLTEzLjUgMzAtMzAgMzB6bTI1LTMwYzAgMTMuOC0xMS4yIDI1LTI1IDI1di01YzExIDAgMjAtOSAyMC0yMHMtOS0yMC0yMC0yMGMxMSAwIDIwIDkgMjAgMjBzLTkgMjAtMjAgMjB2MTVjMTYuNSAwIDMwLTEzLjUgMzAtMzBzLTEzLjUtMzAtMzAtMzBjMTYuNSAwIDMwIDEzLjUgMzAgMzBzLTEzLjUgMzAtMzAgMzB2LTEwYzEzLjggMCAyNS0xMS4yIDI1LTI1em0tNS01YzAgOC4zLTYuNyAxNS0xNSAxNXYtNWM1LjUgMCAxMC00LjUgMTAtMTBzLTQuNS0xMC0xMC0xMGM1LjUgMCAxMCA0LjUgMTAgMTBzLTQuNSAxMC0xMCAxMHYxMGMxMSAwIDIwLTkgMjAtMjBzLTktMjAtMjAtMjBjMTEgMCAyMCA5IDIwIDIweiIgZmlsbD0icmdiYSgwLDAsMCwwLjAzKSIvPjwvc3ZnPg==');
+      background-size: contain;
+      background-repeat: no-repeat;
+      opacity: 0.1;
+      z-index: -1;
+      pointer-events: none;
     }
     
     .resume-container {
-      border: 1px solid #eee;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      padding: 0.8in; /* Reduce padding to fit more content */
-      background: #fff;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-column-gap: var(--space-md);
+      position: relative;
     }
     
+    /* Header Section */
     header {
-      margin-bottom: 1.5rem;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 1.5rem;
+      grid-column: 1 / 13;
+      margin-bottom: var(--space-xl);
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-column-gap: var(--space-md);
     }
     
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: #222;
-      margin-bottom: 0.5rem;
-      letter-spacing: 0.05em;
+    header h1 {
+      grid-column: 1 / 9;
+      font-size: var(--font-xxl);
+      font-weight: var(--weight-normal);
+      letter-spacing: -0.01em;
+      color: var(--color-black);
+      margin-bottom: var(--space-xs);
     }
     
     .contact-info {
-      font-size: 0.9rem;
-      color: #666;
+      grid-column: 1 / 9;
       display: flex;
       flex-wrap: wrap;
-      gap: 1rem;
-      margin-top: 0.75rem;
+      gap: var(--space-md);
+      margin-top: var(--space-sm);
+      font-size: var(--font-sm);
+      color: var(--color-midgrey);
+      letter-spacing: 0.02em;
     }
     
     .contact-info a {
-      color: #444;
+      color: var(--color-darkgrey);
       text-decoration: none;
-      border-bottom: 1px solid #ccc;
       padding-bottom: 1px;
+      border-bottom: 1px solid var(--color-lightgrey);
       transition: border-color 0.2s;
     }
     
     .contact-info a:hover {
-      border-color: #666;
+      border-color: var(--color-darkgrey);
     }
     
-    section {
-      margin-bottom: 1.2rem; /* Reduce section spacing */
+    /* Main Content Layout */
+    .main-content {
+      grid-column: 1 / 13;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-column-gap: var(--space-md);
     }
     
-    h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #333;
-      margin-bottom: 0.75rem;
-      position: relative;
-      padding-bottom: 0.5rem;
+    .left-column {
+      grid-column: 1 / 9;
     }
     
-    h2::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 2.5rem;
-      height: 2px;
-      background: #333;
+    .right-column {
+      grid-column: 9 / 13;
     }
     
+    /* Summary Section */
     .summary {
-      margin-bottom: 1.5rem;
-      font-size: 1rem;
-      color: #444;
+      grid-column: 1 / 9;
+      margin-bottom: var(--space-xl);
+      position: relative;
+    }
+    
+    .summary p {
+      color: var(--color-darkgrey);
       line-height: 1.6;
     }
     
+    .summary .quote {
+      margin-top: var(--space-md);
+      font-size: var(--font-sm);
+      color: var(--color-midgrey);
+      font-style: italic;
+      padding-left: var(--space-md);
+      border-left: 1px solid var(--color-lightgrey);
+    }
+    
+    /* Section Styling */
+    section {
+      margin-bottom: var(--space-xl);
+    }
+    
+    h2 {
+      font-size: var(--font-lg);
+      font-weight: var(--weight-medium);
+      color: var(--color-black);
+      letter-spacing: 0.03em;
+      margin-bottom: var(--space-md);
+      position: relative;
+    }
+    
+    h2::before {
+      content: "(";
+      margin-right: var(--space-xs);
+      opacity: 0.4;
+    }
+    
+    h2::after {
+      content: ")";
+      margin-left: var(--space-xs);
+      opacity: 0.4;
+    }
+    
+    /* Experience Items */
     .experience-item {
-      margin-bottom: 1rem; /* Reduce spacing between experience items */
-      padding-bottom: 1rem;
-      border-bottom: 1px solid #eee;
+      margin-bottom: var(--space-lg);
+      position: relative;
     }
     
     .experience-item:last-child {
-      border-bottom: none;
+      margin-bottom: 0;
     }
     
     h3 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 0.2rem;
-      color: #222;
+      font-size: var(--font-md);
+      font-weight: var(--weight-medium);
+      margin-bottom: var(--space-xs);
+      color: var(--color-black);
     }
     
     .position-details {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 0.5rem;
-      font-size: 0.85rem;
-      color: #555;
+      margin-bottom: var(--space-sm);
+      font-size: var(--font-sm);
+      color: var(--color-midgrey);
     }
     
     .company {
-      font-weight: 500;
+      font-weight: var(--weight-medium);
     }
     
     .date {
-      color: #777;
+      color: var(--color-midgrey);
     }
     
+    .experience-item p {
+      margin-bottom: var(--space-sm);
+      color: var(--color-darkgrey);
+    }
+    
+    /* Lists */
     ul {
-      padding-left: 1.25rem;
-      margin: 0.3rem 0; /* Tighter list margins */
-    }
-    
-    li {
-      margin-bottom: 0.3rem; /* Tighter list item spacing */
-      position: relative;
-    }
-    
-    /* Use solid bullet points instead of default markers */
-    ul {
+      padding-left: var(--space-sm);
+      margin: var(--space-sm) 0;
       list-style-type: none;
     }
     
-    li:before {
-      content: "•"; /* Solid bullet point */
-      position: absolute;
-      left: -1em;
-      color: #555;
+    li {
+      margin-bottom: var(--space-sm);
+      position: relative;
+      padding-left: var(--space-sm);
+      font-size: var(--font-base);
+      color: var(--color-darkgrey);
     }
     
+    li::before {
+      content: "—";
+      position: absolute;
+      left: -var(--space-sm);
+      color: var(--color-midgrey);
+    }
+    
+    /* Key Achievements */
     .key-achievements {
-      background: #f9f9f9;
-      padding: 0.4rem 0.8rem; /* Reduce padding */
-      border-left: 2px solid #ddd;
-      margin: 0.5rem 0; /* Reduce margins */
+      margin: var(--space-md) 0;
+      padding-left: var(--space-md);
+      border-left: 1px solid var(--color-lightgrey);
     }
     
     .key-achievements h4 {
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      color: #444;
+      font-size: var(--font-sm);
+      font-weight: var(--weight-medium);
+      margin-bottom: var(--space-xs);
+      color: var(--color-black);
     }
     
     .key-achievements ul {
-      margin: 0;
+      margin-top: var(--space-xs);
     }
     
+    .key-achievements li {
+      color: var(--color-darkgrey);
+      font-size: var(--font-sm);
+    }
+    
+    /* Skills Grid */
     .skills {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
+      grid-template-columns: repeat(1, 1fr);
+      gap: var(--space-md);
     }
     
     .skill-category {
-      margin-bottom: 0.75rem;
+      margin-bottom: var(--space-md);
     }
     
     .skill-category h4 {
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-      color: #444;
+      font-size: var(--font-sm);
+      font-weight: var(--weight-medium);
+      margin-bottom: var(--space-xs);
+      color: var(--color-black);
+      letter-spacing: 0.02em;
     }
     
     .skill-list {
-      font-size: 0.85rem;
-      color: #555;
+      font-size: var(--font-sm);
+      color: var(--color-darkgrey);
+      line-height: 1.6;
     }
     
+    /* Education */
     .education-item {
-      margin-bottom: 0.75rem;
+      margin-bottom: var(--space-md);
     }
     
     .education-item .degree {
-      font-weight: 500;
-      margin-bottom: 0.2rem;
+      font-weight: var(--weight-medium);
+      margin-bottom: var(--space-xs);
+      color: var(--color-black);
     }
     
     .education-item .institution {
-      font-size: 0.85rem;
-      color: #555;
+      font-size: var(--font-sm);
+      color: var(--color-midgrey);
     }
-
+    
     .education-item .details {
-      font-size: 0.85rem;
-      color: #666;
+      font-size: var(--font-sm);
+      color: var(--color-darkgrey);
+      margin-top: var(--space-xs);
     }
     
+    /* Certifications */
     .certifications ul {
-      columns: 2;
+      margin-top: var(--space-xs);
     }
     
+    .certifications li {
+      margin-bottom: var(--space-xs);
+    }
+    
+    /* Projects */
+    .projects ul {
+      margin-top: var(--space-xs);
+    }
+    
+    .projects li {
+      margin-bottom: var(--space-md);
+    }
+    
+    .projects li strong {
+      color: var(--color-black);
+      display: block;
+      margin-bottom: 2px;
+    }
+    
+    /* Print Styles */
     @media print {
       body {
-        padding: 0;
-        font-size: 12px; /* Even smaller font for print */
-      }
-      
-      .resume-container {
-        border: none;
-        box-shadow: none;
-        padding: 0.25in;
-        max-height: 10.5in; /* Ensure content fits on one page */
+        padding: 0.4in;
+        font-size: var(--font-xs);
       }
       
       h2 {
-        font-size: 1.1rem;
-        margin-bottom: 0.5rem;
+        font-size: var(--font-md);
+        margin-bottom: var(--space-sm);
       }
       
       section {
-        margin-bottom: 0.8rem;
+        margin-bottom: var(--space-lg);
       }
       
       .experience-item {
-        margin-bottom: 0.8rem;
-        padding-bottom: 0.8rem;
-      }
-      
-      .key-achievements {
-        background: #f9f9f9 !important;
-        -webkit-print-color-adjust: exact;
-        padding: 0.3rem 0.5rem;
-        margin: 0.3rem 0;
+        margin-bottom: var(--space-md);
+        page-break-inside: avoid;
       }
       
       li {
-        margin-bottom: 0.2rem;
-        line-height: 1.4;
+        margin-bottom: var(--space-xs);
       }
       
-      /* Ensure last section stays on page */
+      /* Ensure last sections stay on page */
       section:last-child {
         page-break-inside: avoid;
       }
     }
     
+    /* Mobile Styles */
     @media (max-width: 768px) {
       body {
-        padding: 0.25in;
+        padding: 0.3in;
       }
       
       .resume-container {
-        padding: 0.5in;
-      }
-      
-      .skills {
         grid-template-columns: 1fr;
       }
       
-      .certifications ul {
-        columns: 1;
+      header, .left-column, .right-column, .main-content, .summary {
+        grid-column: 1 / -1;
+      }
+      
+      header h1 {
+        grid-column: 1 / -1;
+      }
+      
+      .contact-info {
+        grid-column: 1 / -1;
       }
     }
   </style>
@@ -291,168 +400,144 @@
       </div>
     </header>
     
-    <section class="summary">
-      <p>Strategic business leader with diverse expertise spanning finance, brand development, and experiential design. Experienced in launching innovative ventures, optimizing operational frameworks, and creating transformative customer experiences. Combines analytical acumen with creative vision to drive measurable growth and establish disruptive market positions.</p>
-    </section>
-    
-    <section>
-      <h2>PROFESSIONAL EXPERIENCE</h2>
+    <div class="main-content">
+      <div class="left-column">
+        <section class="summary">
+          <p>Creative Director with 7+ years of experience leading cross-functional creative work across branding, campaign development, product innovation, and user experience. Proven ability to build and scale brands across luxury, wellness, and tech. Strength in visual storytelling, design systems, content strategy, and experiential marketing.</p>
+          <p class="quote">"I build brands that feel inevitable. I don't just design—I shape how things are remembered."</p>
+        </section>
+        
+        <section>
+          <h2>EXPERIENCE</h2>
+          <div class="experience-item">
+            <h3>Founder & Creative Director</h3>
+            <div class="position-details">
+              <span class="company">Coloring With Gray</span>
+              <span class="date">2024 — Present</span>
+            </div>
+            <p>Founded a multidisciplinary house based on philosophy, spanning film, photography, fragrance, technology, and product development.</p>
+            <ul>
+              <li>Created Reflections of You, a multidimensional experience spanning fragrance, film, and product design - using multiple mediums to tell a single cohesive story.</li>
+              <li>Led full GTM strategy, including digital assets, storytelling, packaging engineering, and customer experience.</li>
+              <li>Developed sustainable supply chain and negotiated international vendor partnerships.</li>
+            </ul>
+            <div class="key-achievements">
+              <h4>Key Project: Reflections of You</h4>
+              <ul>
+                <li>Created a multidimensional narrative expressed through fragrance, film, and design to tell a unified story — demonstrating how different mediums can converge to create a single, cohesive experience.</li>
+              </ul>
+            </div>
+            <div class="key-achievements">
+              <h4>Key Project: The State Within</h4>
+              <ul>
+                <li>Developing an AI governance simulation that explores the emotional consequences of decision-making systems, examining the intersection of technology, ethics, and human experience.</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="experience-item">
+            <h3>Financial Analyst</h3>
+            <div class="position-details">
+              <span class="company">Cast & Crew</span>
+              <span class="date">2019 — Present</span>
+            </div>
+            <p>Managing high-volume financial reporting for major entertainment industry clients.</p>
+            <ul>
+              <li>Manage high-volume residual reporting for clients including Netflix, HBO, and Amazon.</li>
+              <li>Built automated reporting workflows, reducing process time by 30%.</li>
+              <li>Interpret complex legal contracts into actionable reporting frameworks.</li>
+              <li>Liaise with internal teams and external executives to ensure compliance and accuracy.</li>
+            </ul>
+          </div>
+          
+          <div class="experience-item">
+            <h3>Creative Consultant</h3>
+            <div class="position-details">
+              <span class="company">Brand & Product Strategy</span>
+              <span class="date">2016 — Present</span>
+            </div>
+            <p>Creative consultant for clients including C'est Bon, Upgrade Labs, SOBE x Trophies, and early-stage brands.</p>
+            <ul>
+              <li>Delivered campaign development, brand identity, naming, copy, and creative strategy across fashion, tech, and wellness.</li>
+              <li>Created and performed sound design and runway VO for C'est Bon Paris Fashion Week; covered in Vogue and Pause Magazine.</li>
+              <li>Developed training systems and brand positioning for Upgrade Labs wellness concept.</li>
+              <li>Led menu concept, campaign visuals, and launch strategy for SOBE x Trophies food collaboration.</li>
+            </ul>
+            <div class="key-achievements">
+              <h4>Industry Expertise</h4>
+              <ul>
+                <li><strong>Entertainment & Media:</strong> Developed immersive branded experiences and content for entertainment clients.</li>
+                <li><strong>Luxury & Consumer Goods:</strong> Created cohesive brand systems balancing premium positioning with accessibility.</li>
+                <li><strong>Technology & Digital:</strong> Applied UX principles to enhance digital brand experiences across platforms.</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="experience-item">
+            <h3>Director of Development</h3>
+            <div class="position-details">
+              <span class="company">The Modern Tea Room</span>
+              <span class="date">2015 — 2016</span>
+            </div>
+            <p>Spearheaded business growth initiatives and strategic planning for specialty tea retail concept.</p>
+            <ul>
+              <li>Designed and enabled four distinct revenue streams, creating a diversified business model.</li>
+              <li>Formulated comprehensive quarterly strategies to maximize revenue and customer engagement.</li>
+              <li>Championed growth of brand from inception, establishing a distinctive market presence.</li>
+            </ul>
+          </div>
+        </section>
+      </div>
       
-      <div class="experience-item">
-        <h3>Founder & Creative Director</h3>
-        <div class="position-details">
-          <span class="company">Coloring With Gray</span>
-          <span class="date">2024 - Present</span>
-        </div>
-        <p>Founded a multidisciplinary house based on philosophy, spanning film, photography, fragrance, technology, and product development.</p>
-        <ul>
-          <li>Created "Reflections of You," a multidimensional project combining fragrance, film, and product design to tell a cohesive story across multiple mediums.</li>
-          <li>Engineered a brand ecosystem converging philosophical principles with artistic narrative, pioneering innovative creative approaches.</li>
-          <li>Oversaw end-to-end project development, creative direction, and sustainability-driven production strategies across various disciplines.</li>
-        </ul>
-        <div class="key-achievements">
-          <h4>Key Project: VOL 1 Coffee Concept</h4>
+      <div class="right-column">
+        <section class="projects">
+          <h2>PROJECTS</h2>
           <ul>
-            <li>Developing a revolutionary 4th wave coffee experience that transcends traditional boundaries of coffee, culture, and craftsmanship.</li>
-            <li>Creating a global destination concept where tranquility and artistry inspire connection and discovery.</li>
-            <li>Integrating multiple cultural influences with innovative brewing methodologies to establish a new standard in coffee experiences.</li>
+            <li><strong>Reflections of You</strong> Multidimensional project combining fragrance, film, and product design to tell a cohesive story</li>
+            <li><strong>Coloring with Gray</strong> Multidisciplinary creative house based on philosophical principles</li>
+            <li><strong>VOL 1 Coffee</strong> Experiential hospitality concept centered on ritual and cultural storytelling</li>
+            <li><strong>The State Within</strong> In-development AI governance simulation exploring emotional consequence</li>
+            <li><strong>Paris Fashion Week</strong> Live performance integrating original voiceover and soundscape design</li>
           </ul>
-        </div>
-      </div>
-      
-      <div class="experience-item">
-        <h3>Financial Analyst (Residuals)</h3>
-        <div class="position-details">
-          <span class="company">Cast and Crew</span>
-          <span class="date">April 2019 - Present</span>
-        </div>
-        <p>Providing sophisticated financial analysis and reporting for major entertainment industry clients.</p>
-        <ul>
-          <li>Administer and validate residual payment infrastructures across multifaceted entertainment platforms.</li>
-          <li>Employ advanced econometric modeling, pivot analytics, and data visualization methodologies.</li>
-          <li>Conduct rigorous contractual analyses ensuring full adherence to collective bargaining frameworks.</li>
-          <li>Liaise with executive-level stakeholders at HBO, Netflix, Starz, and Amazon, delivering high-impact financial insights.</li>
-          <li>Spearheaded automation initiatives, optimizing reporting systems to reduce processing duration by 30%.</li>
-          <li>Led systemic workflow enhancements, augmenting operational precision and bolstering institutional efficiency.</li>
-        </ul>
-      </div>
-      
-      <div class="experience-item">
-        <h3>Freelance Consultant</h3>
-        <div class="position-details">
-          <span class="company">Business Strategy & Development</span>
-          <span class="date">March 2016 - Present</span>
-        </div>
-        <p>Strategic advisor for businesses across multiple industries, focusing on growth strategy, operational efficiency, and consumer experience.</p>
-        <ul>
-          <li>Deliver high-caliber consultancy services focusing on corporate structuring, operational streamlining, and strategic growth.</li>
-          <li>Architect and execute holistic project frameworks, integrating advanced financial modeling and legal constructs.</li>
-          <li>Negotiated pivotal acquisitions and formulated dynamic compensation paradigms that reduced capital expenditure.</li>
-          <li>Facilitate executive strategy workshops, fostering sustainable growth trajectories and innovative market expansion.</li>
-        </ul>
-        <div class="key-achievements">
-          <h4>Selected Projects</h4>
+        </section>
+        
+        <section>
+          <h2>COMPETENCIES</h2>
+          <div class="skills">
+            <div class="skill-category">
+              <h4>Design & Creative</h4>
+              <p class="skill-list">Creative Direction, Brand Strategy, Campaign Development, Experiential Design, Art Direction, Multisensory Storytelling</p>
+            </div>
+            <div class="skill-category">
+              <h4>Technical Skills</h4>
+              <p class="skill-list">Adobe Creative Suite, Figma, Final Cut Pro, Notion, Airtable, Brand Architecture</p>
+            </div>
+            <div class="skill-category">
+              <h4>Product Development</h4>
+              <p class="skill-list">Concept-to-market implementation, sourcing, sustainability planning, sensory innovation</p>
+            </div>
+          </div>
+        </section>
+        
+        <section>
+          <h2>EDUCATION</h2>
+          <div class="education-item">
+            <div class="degree">Bachelor of Arts, Philosophy</div>
+            <div class="institution">California State University, Fullerton</div>
+            <div class="details">Relevant Studies: Aesthetics, Ethics, Strategic Thinking, Systems Analysis</div>
+          </div>
+        </section>
+        
+        <section class="certifications">
+          <h2>CERTIFICATIONS</h2>
           <ul>
-            <li><strong>C'est Bon Paris Fashion Week:</strong> Contributed audio design and narration for runway presentation, featured in Vogue and Pause Magazine.</li>
-            <li><strong>SOBE x Trophies Collaboration:</strong> Designed menu concepts and provided artistic direction for culinary partnership.</li>
-            <li><strong>Upgrade Labs (Bulletproof Labs):</strong> Helped establish operations for biohacking fitness center, devised strategic business plans, and trained on 15+ equipment pieces.</li>
+            <li>AI Policy & Ethics – Stanford Online (2025)</li>
+            <li>Advanced Brand Strategy – IDEO (2025)</li>
+            <li>Financial Modeling – Wall Street Prep (2025)</li>
           </ul>
-        </div>
+        </section>
       </div>
-      
-      <div class="experience-item">
-        <h3>Director of Development</h3>
-        <div class="position-details">
-          <span class="company">The Modern Tea Room</span>
-          <span class="date">March 2015 - March 2016</span>
-        </div>
-        <p>Spearheaded business growth initiatives and strategic planning for specialty tea retail concept.</p>
-        <ul>
-          <li>Designed and enabled four distinct revenue streams, creating a diversified business model.</li>
-          <li>Formulated comprehensive quarterly strategies to maximize revenue and customer engagement.</li>
-          <li>Mentored and coached staff in product knowledge to enhance customer experience and boost sales.</li>
-          <li>Championed growth of brand from inception, establishing a distinctive market presence.</li>
-        </ul>
-      </div>
-      
-      <div class="experience-item">
-        <h3>Business Development and Distribution</h3>
-        <div class="position-details">
-          <span class="company">Purespores</span>
-          <span class="date">December 2016 - March 2018</span>
-        </div>
-        <p>Led business growth initiatives through strategic sales expansion and client relationship management.</p>
-        <ul>
-          <li>Increased account volume by developing strong alliances with key vendors.</li>
-          <li>Generated sales through extensive prospecting, networking, and referral development.</li>
-          <li>Designed business development campaigns to attract and retain a strong client base.</li>
-          <li>Established strategic customized plans and solutions to achieve target goals utilizing data and CRM tools.</li>
-          <li>Maintained strategic ongoing relationships with C-level executives.</li>
-        </ul>
-      </div>
-    </section>
-    
-    <section>
-      <h2>SKILLS & EXPERTISE</h2>
-      <div class="skills">
-        <div>
-          <div class="skill-category">
-            <h4>Financial & Business Analytics</h4>
-            <p class="skill-list">Predictive modeling, financial forecasting, strategic planning, business valuation, ROI optimization</p>
-          </div>
-          <div class="skill-category">
-            <h4>Brand & Market Development</h4>
-            <p class="skill-list">Concept creation, experience design, luxury market positioning, multi-channel strategy</p>
-          </div>
-          <div class="skill-category">
-            <h4>Leadership & Advisory</h4>
-            <p class="skill-list">Strategic consulting, executive mentorship, stakeholder engagement, team development</p>
-          </div>
-        </div>
-        <div>
-          <div class="skill-category">
-            <h4>Product Development</h4>
-            <p class="skill-list">Concept-to-market implementation, sourcing, sustainability planning, sensory innovation</p>
-          </div>
-          <div class="skill-category">
-            <h4>Marketing & Digital Ecosystem</h4>
-            <p class="skill-list">Brand storytelling, consumer psychology, experience design, multi-platform integration</p>
-          </div>
-          <div class="skill-category">
-            <h4>Industry Knowledge</h4>
-            <p class="skill-list">Luxury retail, hospitality, entertainment, fragrance, fitness, food & beverage</p>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <section>
-      <h2>EDUCATION</h2>
-      <div class="education-item">
-        <div class="degree">Bachelor of Arts (B.A.), Philosophy</div>
-        <div class="institution">California State University, Fullerton</div>
-        <div class="details">2014</div>
-        <div class="details">Relevant Coursework: Business Administration, Financial Analysis, Managerial Economics, Strategic Leadership</div>
-      </div>
-    </section>
-    
-    <section class="certifications">
-      <h2>CERTIFICATIONS & PROFESSIONAL DEVELOPMENT</h2>
-      <ul>
-        <li>AI Policy & Ethics Certification (Expected Completion: Q3 2025)</li>
-        <li>Financial Modeling & Valuation (Expected Completion: Q3 2025)</li>
-        <li>Advanced Brand Strategy (Expected Completion: Q3 2025)</li>
-      </ul>
-    </section>
-    
-    <section>
-      <h2>VOLUNTEER ENGAGEMENT</h2>
-      <ul>
-        <li>Lead Basketball Camp Instructor - Los Angeles Sparks Leadership Initiative</li>
-        <li>Academic Mentor & Research Facilitator - Elevate Your Game Institute</li>
-        <li>Urban Sustainability Initiatives - Run 4 Fun, Coastal Cleanup</li>
-      </ul>
-    </section>
+    </div>
   </div>
 </body>
 </html>

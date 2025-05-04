@@ -1,379 +1,543 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kayron Calloway | Resume</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400&display=swap');
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            font-size: 10pt;
-            line-height: 1.4;
-            color: #111;
-            background-color: #fff;
-            max-width: 8.5in;
-            margin: 0 auto;
-            padding: 0.75in;
-        }
-        
-        .resume-container {
-            display: grid;
-            grid-template-columns: 30% 70%;
-            gap: 30px;
-        }
-        
-        header {
-            grid-column: 1 / -1;
-            margin-bottom: 30px;
-            position: relative;
-        }
-        
-        h1 {
-            font-weight: 500;
-            font-size: 18pt;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            margin-bottom: 2px;
-        }
-        
-        h2 {
-            font-size: 11pt;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            margin-bottom: 16px;
-            padding-bottom: 6px;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        h3 {
-            font-size: 10pt;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        
-        p {
-            margin-bottom: 8px;
-        }
-        
-        .tagline {
-            font-size: 9pt;
-            font-weight: 400;
-            color: #444;
-            margin-bottom: 15px;
-        }
-        
-        .philosophy {
-            font-family: 'Space Grotesk', monospace;
-            font-size: 9pt;
-            font-style: italic;
-            color: #555;
-            margin-top: 15px;
-            margin-bottom: 25px;
-        }
-        
-        .left-column section {
-            margin-bottom: 25px;
-        }
-        
-        .contact-item {
-            font-family: 'Space Grotesk', monospace;
-            margin-bottom: 3px;
-            font-size: 9pt;
-        }
-        
-        .experience-item {
-            margin-bottom: 20px;
-        }
-        
-        .job-title {
-            font-weight: 600;
-            margin-bottom: 2px;
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .company-period {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 9pt;
-        }
-        
-        .company {
-            font-weight: 500;
-        }
-        
-        .period {
-            color: #555;
-        }
-        
-        ul {
-            margin-left: 18px;
-            margin-bottom: 8px;
-        }
-        
-        li {
-            margin-bottom: 4px;
-            position: relative;
-        }
-        
-        .client-line {
-            font-size: 9pt;
-            color: #555;
-            font-style: italic;
-            margin-bottom: 8px;
-        }
-        
-        .proficiency-list {
-            list-style-type: none;
-            margin-left: 0;
-        }
-        
-        .proficiency-list li {
-            margin-bottom: 5px;
-            font-family: 'Space Grotesk', monospace;
-            font-size: 9pt;
-        }
-        
-        .cert-date {
-            color: #666;
-            font-size: 9pt;
-        }
-        
-        .project-item {
-            margin-bottom: 7px;
-            font-size: 9pt;
-        }
-        
-        .project-name {
-            font-weight: 600;
-        }
-        
-        /* Subtle watermark/logo styling */
-        .watermark {
-            position: absolute;
-            top: 50%;
-            right: 10px;
-            transform: translateY(-50%);
-            font-size: 40pt;
-            color: #f7f7f7;
-            z-index: -1;
-            font-family: 'Space Grotesk', monospace;
-            font-weight: 300;
-        }
-        
-        /* Print instructions */
-        .print-instructions {
-            background-color: #f6f6f6;
-            border: 1px solid #eee;
-            padding: 12px 15px;
-            margin-bottom: 20px;
-            font-size: 11pt;
-            line-height: 1.5;
-            border-radius: 4px;
-        }
-        
-        .print-instructions h3 {
-            margin-bottom: 10px;
-            font-size: 13pt;
-        }
-        
-        .print-instructions ol {
-            padding-left: 25px;
-        }
-        
-        .print-instructions li {
-            margin-bottom: 5px;
-        }
-        
-        /* Print styles */
-        @media print {
-            .print-instructions {
-                display: none;
-            }
-            
-            body {
-                padding: 0.5in;
-                margin: 0;
-                width: 100%;
-                max-width: 100%;
-                font-size: 10pt;
-            }
-            
-            .resume-container {
-                gap: 25px;
-            }
-            
-            @page {
-                size: letter;
-                margin: 0.5in;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kayron E. Calloway</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+    
+    :root {
+      --color-black: #222222;
+      --color-darkgrey: #333333;
+      --color-midgrey: #777777;
+      --color-lightgrey: #c0c0c0;
+      --color-offwhite: #f5f5f5;
+      --color-white: #ffffff;
+      
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 1.5rem;
+      --space-lg: 2.5rem;
+      --space-xl: 4rem;
+      
+      --font-xs: 0.75rem;
+      --font-sm: 0.85rem;
+      --font-base: 0.95rem;
+      --font-md: 1.05rem;
+      --font-lg: 1.25rem;
+      --font-xl: 1.75rem;
+      --font-xxl: 2.5rem;
+      
+      --weight-light: 300;
+      --weight-normal: 400;
+      --weight-medium: 500;
+      --weight-semibold: 600;
+      --weight-bold: 700;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: var(--font-base);
+      line-height: 1.5;
+      color: var(--color-darkgrey);
+      background-color: var(--color-white);
+      max-width: 8.5in;
+      margin: 0 auto;
+      padding: 0.6in;
+    }
+    
+    /* Fingerprint watermark */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 80%;
+      right: 2%;
+      width: 110px;
+      height: 110px;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEwIiBoZWlnaHQ9IjExMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNTUgMTFjLTUuNSAwLTEwIDQuNS0xMCAxMHM0LjUgMTAgMTAgMTAgMTAtNC41IDEwLTEwLTQuNS0xMC0xMC0xMHptMCA2NXYtMzBjLTUuNSAwLTEwLTQuNS0xMC0xMHM0LjUtMTAgMTAtMTBjLTUuNSAwLTEwIDQuNS0xMCAxMHM0LjUgMTAgMTAgMTB2NWMtOC4zIDAtMTUtNi43LTE1LTE1czYuNy0xNSAxNS0xNWMtOC4zIDAtMTUgNi43LTE1IDE1czYuNyAxNSAxNSAxNXYxMGMtMTEgMC0yMC05LTIwLTIwczktMjAgMjAtMjBjLTExIDAtMjAgOS0yMCAyMHM5IDIwIDIwIDIwdjVjLTEzLjggMC0yNS0xMS4yLTI1LTI1czExLjItMjUgMjUtMjVjLTEzLjggMC0yNSAxMS4yLTI1IDI1czExLjIgMjUgMjUgMjV2MTBjLTE2LjUgMC0zMC0xMy41LTMwLTMwczEzLjUtMzAgMzAtMzBjMTYuNSAwIDMwIDEzLjUgMzAgMzBzLTEzLjUgMzAtMzAgMzB6bTI1LTMwYzAgMTMuOC0xMS4yIDI1LTI1IDI1di01YzExIDAgMjAtOSAyMC0yMHMtOS0yMC0yMC0yMGMxMSAwIDIwIDkgMjAgMjBzLTkgMjAtMjAgMjB2MTVjMTYuNSAwIDMwLTEzLjUgMzAtMzBzLTEzLjUtMzAtMzAtMzBjMTYuNSAwIDMwIDEzLjUgMzAgMzBzLTEzLjUgMzAtMzAgMzB2LTEwYzEzLjggMCAyNS0xMS4yIDI1LTI1em0tNS01YzAgOC4zLTYuNyAxNS0xNSAxNXYtNWM1LjUgMCAxMC00LjUgMTAtMTBzLTQuNS0xMC0xMC0xMGM1LjUgMCAxMCA0LjUgMTAgMTBzLTQuNSAxMC0xMCAxMHYxMGMxMSAwIDIwLTkgMjAtMjBzLTktMjAtMjAtMjBjMTEgMCAyMCA5IDIwIDIweiIgZmlsbD0icmdiYSgwLDAsMCwwLjAzKSIvPjwvc3ZnPg==');
+      background-size: contain;
+      background-repeat: no-repeat;
+      opacity: 0.1;
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    .resume-container {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-column-gap: var(--space-md);
+      position: relative;
+    }
+    
+    /* Header Section */
+    header {
+      grid-column: 1 / 13;
+      margin-bottom: var(--space-xl);
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-column-gap: var(--space-md);
+    }
+    
+    header h1 {
+      grid-column: 1 / 9;
+      font-size: var(--font-xxl);
+      font-weight: var(--weight-normal);
+      letter-spacing: -0.01em;
+      color: var(--color-black);
+      margin-bottom: var(--space-xs);
+    }
+    
+    .contact-info {
+      grid-column: 1 / 9;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+      margin-top: var(--space-sm);
+      font-size: var(--font-sm);
+      color: var(--color-midgrey);
+      letter-spacing: 0.02em;
+    }
+    
+    .contact-info a {
+      color: var(--color-darkgrey);
+      text-decoration: none;
+      padding-bottom: 1px;
+      border-bottom: 1px solid var(--color-lightgrey);
+      transition: border-color 0.2s;
+    }
+    
+    .contact-info a:hover {
+      border-color: var(--color-darkgrey);
+    }
+    
+    /* Main Content Layout */
+    .main-content {
+      grid-column: 1 / 13;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-column-gap: var(--space-md);
+    }
+    
+    .left-column {
+      grid-column: 1 / 9;
+    }
+    
+    .right-column {
+      grid-column: 9 / 13;
+    }
+    
+    /* Summary Section */
+    .summary {
+      grid-column: 1 / 9;
+      margin-bottom: var(--space-xl);
+      position: relative;
+    }
+    
+    .summary p {
+      color: var(--color-darkgrey);
+      line-height: 1.6;
+    }
+    
+    .summary .quote {
+      margin-top: var(--space-md);
+      font-size: var(--font-sm);
+      color: var(--color-midgrey);
+      font-style: italic;
+      padding-left: var(--space-md);
+      border-left: 1px solid var(--color-lightgrey);
+    }
+    
+    /* Section Styling */
+    section {
+      margin-bottom: var(--space-xl);
+    }
+    
+    h2 {
+      font-size: var(--font-lg);
+      font-weight: var(--weight-medium);
+      color: var(--color-black);
+      letter-spacing: 0.03em;
+      margin-bottom: var(--space-md);
+      position: relative;
+    }
+    
+    h2::before {
+      content: "(";
+      margin-right: var(--space-xs);
+      opacity: 0.4;
+    }
+    
+    h2::after {
+      content: ")";
+      margin-left: var(--space-xs);
+      opacity: 0.4;
+    }
+    
+    /* Experience Items */
+    .experience-item {
+      margin-bottom: var(--space-lg);
+      position: relative;
+    }
+    
+    .experience-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    h3 {
+      font-size: var(--font-md);
+      font-weight: var(--weight-medium);
+      margin-bottom: var(--space-xs);
+      color: var(--color-black);
+    }
+    
+    .position-details {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--space-sm);
+      font-size: var(--font-sm);
+      color: var(--color-midgrey);
+    }
+    
+    .company {
+      font-weight: var(--weight-medium);
+    }
+    
+    .date {
+      color: var(--color-midgrey);
+    }
+    
+    .experience-item p {
+      margin-bottom: var(--space-sm);
+      color: var(--color-darkgrey);
+    }
+    
+    /* Lists */
+    ul {
+      padding-left: var(--space-sm);
+      margin: var(--space-sm) 0;
+      list-style-type: none;
+    }
+    
+    li {
+      margin-bottom: var(--space-sm);
+      position: relative;
+      padding-left: var(--space-sm);
+      font-size: var(--font-base);
+      color: var(--color-darkgrey);
+    }
+    
+    li::before {
+      content: "—";
+      position: absolute;
+      left: -var(--space-sm);
+      color: var(--color-midgrey);
+    }
+    
+    /* Key Achievements */
+    .key-achievements {
+      margin: var(--space-md) 0;
+      padding-left: var(--space-md);
+      border-left: 1px solid var(--color-lightgrey);
+    }
+    
+    .key-achievements h4 {
+      font-size: var(--font-sm);
+      font-weight: var(--weight-medium);
+      margin-bottom: var(--space-xs);
+      color: var(--color-black);
+    }
+    
+    .key-achievements ul {
+      margin-top: var(--space-xs);
+    }
+    
+    .key-achievements li {
+      color: var(--color-darkgrey);
+      font-size: var(--font-sm);
+    }
+    
+    /* Skills Grid */
+    .skills {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: var(--space-md);
+    }
+    
+    .skill-category {
+      margin-bottom: var(--space-md);
+    }
+    
+    .skill-category h4 {
+      font-size: var(--font-sm);
+      font-weight: var(--weight-medium);
+      margin-bottom: var(--space-xs);
+      color: var(--color-black);
+      letter-spacing: 0.02em;
+    }
+    
+    .skill-list {
+      font-size: var(--font-sm);
+      color: var(--color-darkgrey);
+      line-height: 1.6;
+    }
+    
+    /* Education */
+    .education-item {
+      margin-bottom: var(--space-md);
+    }
+    
+    .education-item .degree {
+      font-weight: var(--weight-medium);
+      margin-bottom: var(--space-xs);
+      color: var(--color-black);
+    }
+    
+    .education-item .institution {
+      font-size: var(--font-sm);
+      color: var(--color-midgrey);
+    }
+    
+    .education-item .details {
+      font-size: var(--font-sm);
+      color: var(--color-darkgrey);
+      margin-top: var(--space-xs);
+    }
+    
+    /* Certifications */
+    .certifications ul {
+      margin-top: var(--space-xs);
+    }
+    
+    .certifications li {
+      margin-bottom: var(--space-xs);
+    }
+    
+    /* Projects */
+    .projects ul {
+      margin-top: var(--space-xs);
+    }
+    
+    .projects li {
+      margin-bottom: var(--space-md);
+    }
+    
+    .projects li strong {
+      color: var(--color-black);
+      display: block;
+      margin-bottom: 2px;
+    }
+    
+    /* Print Styles */
+    @media print {
+      body {
+        padding: 0.4in;
+        font-size: var(--font-xs);
+      }
+      
+      h2 {
+        font-size: var(--font-md);
+        margin-bottom: var(--space-sm);
+      }
+      
+      section {
+        margin-bottom: var(--space-lg);
+      }
+      
+      .experience-item {
+        margin-bottom: var(--space-md);
+        page-break-inside: avoid;
+      }
+      
+      li {
+        margin-bottom: var(--space-xs);
+      }
+      
+      /* Ensure last sections stay on page */
+      section:last-child {
+        page-break-inside: avoid;
+      }
+    }
+    
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      body {
+        padding: 0.3in;
+      }
+      
+      .resume-container {
+        grid-template-columns: 1fr;
+      }
+      
+      header, .left-column, .right-column, .main-content, .summary {
+        grid-column: 1 / -1;
+      }
+      
+      header h1 {
+        grid-column: 1 / -1;
+      }
+      
+      .contact-info {
+        grid-column: 1 / -1;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="print-instructions">
-        <h3>Print Instructions</h3>
-        <ol>
-            <li>Press Ctrl+P (Windows) or Cmd+P (Mac) to open print settings</li>
-            <li>Choose "Save as PDF" as the destination</li>
-            <li>Make sure "Background Graphics" is enabled</li>
-            <li>Set margins to "None" or "Minimum"</li>
-            <li>Disable headers and footers</li>
-            <li>Click "Save" to generate your PDF</li>
-        </ol>
-        <p>These instructions will not appear in the printed document.</p>
-    </div>
-
-    <div class="resume-container">
-        <header>
-            <h1>Kayron Calloway</h1>
-            <div class="tagline">Creative Director | Brand Strategist | Multisensory Designer</div>
-            <div class="philosophy">"I build brands that feel inevitable. I don't just design—I shape how things are remembered."</div>
-            <div class="watermark">( )</div>
-        </header>
+  <div class="resume-container">
+    <header>
+      <h1>KAYRON E. CALLOWAY</h1>
+      <div class="contact-info">
+        <span>Los Angeles, CA</span>
+        <span>310.498.8059</span>
+        <span><a href="mailto:KayronCalloway@gmail.com">KayronCalloway@gmail.com</a></span>
+      </div>
+    </header>
+    
+    <div class="main-content">
+      <div class="left-column">
+        <section class="summary">
+          <p>Creative Director with 7+ years of experience leading cross-functional creative work across branding, campaign development, product innovation, and user experience. Proven ability to build and scale brands across luxury, wellness, and tech. Strength in visual storytelling, design systems, content strategy, and experiential marketing.</p>
+          <p class="quote">"I build brands that feel inevitable. I don't just design—I shape how things are remembered."</p>
+        </section>
         
-        <div class="left-column">
-            <section>
-                <h2>Contact</h2>
-                <div class="contact-item">Los Angeles, CA</div>
-                <div class="contact-item">kayroncalloway@gmail.com</div>
-                <div class="contact-item">310.498.8059</div>
-                <div class="contact-item">kayroncalloway.github.io/kayron</div>
-            </section>
-            
-            <section>
-                <h2>Proficiencies</h2>
-                <ul class="proficiency-list">
-                    <li>Creative Direction</li>
-                    <li>Brand Strategy</li>
-                    <li>Campaign Development</li>
-                    <li>Experiential Design</li>
-                    <li>Art Direction</li>
-                    <li>Multisensory Storytelling</li>
-                    <li>Adobe Creative Suite</li>
-                    <li>Figma</li>
-                    <li>Final Cut Pro</li>
-                    <li>Notion</li>
-                    <li>Airtable</li>
-                    <li>Brand Architecture</li>
-                </ul>
-            </section>
-            
-            <section>
-                <h2>Education</h2>
-                <h3>B.A. in Philosophy</h3>
-                <p>California State University, Fullerton</p>
-                <p style="font-size: 9pt; color: #555; margin-bottom: 15px;">Relevant Studies: Aesthetics, Ethics, Strategic Thinking, Systems Analysis</p>
-                
-                <h3>Certifications <span class="cert-date">(2025 Expected)</span></h3>
-                <ul>
-                    <li>AI Policy & Ethics – Stanford Online</li>
-                    <li>Advanced Brand Strategy – IDEO</li>
-                    <li>Financial Modeling & Valuation – Wall Street Prep</li>
-                </ul>
-            </section>
-        </div>
+        <section>
+          <h2>EXPERIENCE</h2>
+          <div class="experience-item">
+            <h3>Founder & Creative Director</h3>
+            <div class="position-details">
+              <span class="company">Coloring With Gray</span>
+              <span class="date">2024 — Present</span>
+            </div>
+            <p>Founded a multidisciplinary house based on philosophy, spanning film, photography, fragrance, technology, and product development.</p>
+            <ul>
+              <li>Created Reflections of You, a multidimensional experience spanning fragrance, film, and product design - using multiple mediums to tell a single cohesive story.</li>
+              <li>Led full GTM strategy, including digital assets, storytelling, packaging engineering, and customer experience.</li>
+              <li>Developed sustainable supply chain and negotiated international vendor partnerships.</li>
+            </ul>
+            <div class="key-achievements">
+              <h4>Key Project: Reflections of You</h4>
+              <ul>
+                <li>Created a multidimensional narrative expressed through fragrance, film, and design to tell a unified story — demonstrating how different mediums can converge to create a single, cohesive experience.</li>
+              </ul>
+            </div>
+            <div class="key-achievements">
+              <h4>Key Project: The State Within</h4>
+              <ul>
+                <li>Developing an AI governance simulation that explores the emotional consequences of decision-making systems, examining the intersection of technology, ethics, and human experience.</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="experience-item">
+            <h3>Financial Analyst</h3>
+            <div class="position-details">
+              <span class="company">Cast & Crew</span>
+              <span class="date">2019 — Present</span>
+            </div>
+            <p>Managing high-volume financial reporting for major entertainment industry clients.</p>
+            <ul>
+              <li>Manage high-volume residual reporting for clients including Netflix, HBO, and Amazon.</li>
+              <li>Built automated reporting workflows, reducing process time by 30%.</li>
+              <li>Interpret complex legal contracts into actionable reporting frameworks.</li>
+              <li>Liaise with internal teams and external executives to ensure compliance and accuracy.</li>
+            </ul>
+          </div>
+          
+          <div class="experience-item">
+            <h3>Creative Consultant</h3>
+            <div class="position-details">
+              <span class="company">Brand & Product Strategy</span>
+              <span class="date">2016 — Present</span>
+            </div>
+            <p>Creative consultant for clients including C'est Bon, Upgrade Labs, SOBE x Trophies, and early-stage brands.</p>
+            <ul>
+              <li>Delivered campaign development, brand identity, naming, copy, and creative strategy across fashion, tech, and wellness.</li>
+              <li>Created and performed sound design and runway VO for C'est Bon Paris Fashion Week; covered in Vogue and Pause Magazine.</li>
+              <li>Developed training systems and brand positioning for Upgrade Labs wellness concept.</li>
+              <li>Led menu concept, campaign visuals, and launch strategy for SOBE x Trophies food collaboration.</li>
+            </ul>
+            <div class="key-achievements">
+              <h4>Industry Expertise</h4>
+              <ul>
+                <li><strong>Entertainment & Media:</strong> Developed immersive branded experiences and content for entertainment clients.</li>
+                <li><strong>Luxury & Consumer Goods:</strong> Created cohesive brand systems balancing premium positioning with accessibility.</li>
+                <li><strong>Technology & Digital:</strong> Applied UX principles to enhance digital brand experiences across platforms.</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="experience-item">
+            <h3>Director of Development</h3>
+            <div class="position-details">
+              <span class="company">The Modern Tea Room</span>
+              <span class="date">2015 — 2016</span>
+            </div>
+            <p>Spearheaded business growth initiatives and strategic planning for specialty tea retail concept.</p>
+            <ul>
+              <li>Designed and enabled four distinct revenue streams, creating a diversified business model.</li>
+              <li>Formulated comprehensive quarterly strategies to maximize revenue and customer engagement.</li>
+              <li>Championed growth of brand from inception, establishing a distinctive market presence.</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+      
+      <div class="right-column">
+        <section class="projects">
+          <h2>PROJECTS</h2>
+          <ul>
+            <li><strong>Reflections of You</strong> Multidimensional project combining fragrance, film, and product design to tell a cohesive story</li>
+            <li><strong>Coloring with Gray</strong> Multidisciplinary creative house based on philosophical principles</li>
+            <li><strong>VOL 1 Coffee</strong> Experiential hospitality concept centered on ritual and cultural storytelling</li>
+            <li><strong>The State Within</strong> In-development AI governance simulation exploring emotional consequence</li>
+            <li><strong>Paris Fashion Week</strong> Live performance integrating original voiceover and soundscape design</li>
+          </ul>
+        </section>
         
-        <div class="right-column">
-            <section>
-                <h2>Experience</h2>
-                
-                <div class="experience-item">
-                    <div class="job-title">
-                        <span>Founder & Creative Director</span>
-                    </div>
-                    <div class="company-period">
-                        <span class="company">Coloring With Gray</span>
-                        <span class="period">2024–Present</span>
-                    </div>
-                    <ul>
-                        <li>Founded a multidisciplinary house based on philosophy, spanning film, photography, fragrance, technology, and product development</li>
-                        <li>Created Reflections of You, a multidimensional experience spanning fragrance, film, and product design - using multiple mediums to tell a single cohesive story</li>
-                        <li>Led full GTM strategy, including digital assets, storytelling, packaging engineering, and customer experience</li>
-                        <li>Designed VOL 1 Coffee, an experiential café concept integrating spatial storytelling, brand development, and product design</li>
-                        <li>Developed sustainable supply chain and negotiated international vendor partnerships</li>
-                    </ul>
-                </div>
-                
-                <div class="experience-item">
-                    <div class="job-title">
-                        <span>Creative Consultant</span>
-                    </div>
-                    <div class="company-period">
-                        <span class="company">Brand & Product Strategy</span>
-                        <span class="period">2016–Present</span>
-                    </div>
-                    <div class="client-line">Clients include C'est Bon, Upgrade Labs, SOBE x Trophies, and early-stage brands</div>
-                    <ul>
-                        <li>Delivered campaign development, brand identity, naming, copy, and creative strategy across fashion, tech, and wellness</li>
-                        <li>Created and performed sound design and runway VO for C'est Bon Paris Fashion Week; covered in Vogue and Pause Magazine</li>
-                        <li>Developed training systems and brand positioning for Upgrade Labs wellness concept</li>
-                        <li>Led menu concept, campaign visuals, and launch strategy for SOBE x Trophies food collaboration</li>
-                    </ul>
-                </div>
-                
-                <div class="experience-item">
-                    <div class="job-title">
-                        <span>Financial Analyst, Residuals</span>
-                    </div>
-                    <div class="company-period">
-                        <span class="company">Cast & Crew</span>
-                        <span class="period">2019–Present</span>
-                    </div>
-                    <ul>
-                        <li>Manage high-volume residual reporting for clients including Netflix, HBO, and Amazon</li>
-                        <li>Built automated reporting workflows, reducing process time by 30%</li>
-                        <li>Interpret complex legal contracts into actionable reporting frameworks</li>
-                        <li>Liaise with internal teams and external executives to ensure compliance and accuracy</li>
-                    </ul>
-                </div>
-            </section>
-            
-            <section>
-                <h2>Notable Projects</h2>
-                <div class="project-item">
-                    <span class="project-name">Reflections of You</span> – Multidimensional project combining fragrance, film, and product design to tell a cohesive story
-                </div>
-                <div class="project-item">
-                    <span class="project-name">Coloring with Gray</span> – Multidisciplinary creative house based on philosophical principles
-                </div>
-                <div class="project-item">
-                    <span class="project-name">VOL 1 Coffee</span> – Experiential hospitality concept centered on ritual and cultural storytelling
-                </div>
-                <div class="project-item">
-                    <span class="project-name">The State Within</span> – In-development AI governance simulation exploring emotional consequence
-                </div>
-                <div class="project-item">
-                    <span class="project-name">Paris Fashion Week – C'est Bon</span> – Live performance integrating original voiceover and soundscape design
-                </div>
-            </section>
-            
-            <section>
-                <h2>Industry Expertise</h2>
-                <div class="project-item">
-                    <span class="project-name">Entertainment & Media:</span> Developed immersive branded experiences and content for entertainment clients
-                </div>
-                <div class="project-item">
-                    <span class="project-name">Luxury & Consumer Goods:</span> Created cohesive brand systems balancing premium positioning with accessibility
-                </div>
-                <div class="project-item">
-                    <span class="project-name">Technology & Digital:</span> Applied UX principles to enhance digital brand experiences across platforms
-                </div>
-                <div class="project-item">
-                    <span class="project-name">Wellness & Lifestyle:</span> Translated complex wellness concepts into approachable brand communications
-                </div>
-            </section>
-        </div>
+        <section>
+          <h2>COMPETENCIES</h2>
+          <div class="skills">
+            <div class="skill-category">
+              <h4>Design & Creative</h4>
+              <p class="skill-list">Creative Direction, Brand Strategy, Campaign Development, Experiential Design, Art Direction, Multisensory Storytelling</p>
+            </div>
+            <div class="skill-category">
+              <h4>Technical Skills</h4>
+              <p class="skill-list">Adobe Creative Suite, Figma, Final Cut Pro, Notion, Airtable, Brand Architecture</p>
+            </div>
+            <div class="skill-category">
+              <h4>Product Development</h4>
+              <p class="skill-list">Concept-to-market implementation, sourcing, sustainability planning, sensory innovation</p>
+            </div>
+          </div>
+        </section>
+        
+        <section>
+          <h2>EDUCATION</h2>
+          <div class="education-item">
+            <div class="degree">Bachelor of Arts, Philosophy</div>
+            <div class="institution">California State University, Fullerton</div>
+            <div class="details">Relevant Studies: Aesthetics, Ethics, Strategic Thinking, Systems Analysis</div>
+          </div>
+        </section>
+        
+        <section class="certifications">
+          <h2>CERTIFICATIONS</h2>
+          <ul>
+            <li>AI Policy & Ethics – Stanford Online (2025)</li>
+            <li>Advanced Brand Strategy – IDEO (2025)</li>
+            <li>Financial Modeling – Wall Street Prep (2025)</li>
+          </ul>
+        </section>
+      </div>
     </div>
+  </div>
 </body>
 </html>
