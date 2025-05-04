@@ -412,6 +412,8 @@
       
       section {
         margin-bottom: 20px;
+        page-break-inside: avoid;
+        break-inside: avoid;
       }
       
       .main-content {
@@ -424,6 +426,37 @@
         margin-bottom: 16px;
         page-break-inside: avoid;
         break-inside: avoid;
+      }
+      
+      /* Ensure sections don't break across pages */
+      .skills, .projects, .education-item {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      
+      /* Philosophy section layout for third page */
+      .philosophy-full-width {
+        grid-column: 1 / -1; /* Span all columns */
+        margin-top: 2cm;
+        page-break-before: always;
+        break-before: always;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+      
+      .philosophy-full-width h2 {
+        border-bottom: none;
+        margin-bottom: 0;
+        margin-right: 20px;
+        white-space: nowrap;
+        min-width: 120px;
+      }
+      
+      .philosophy-full-width .philosophy-statement {
+        margin: 0;
+        max-width: none;
+        flex: 1;
       }
       
       ul, li {
@@ -599,7 +632,7 @@
           </div>
         </section>
         
-        <section class="philosophy">
+        <section class="philosophy philosophy-full-width">
           <h2>Philosophy</h2>
           <p class="philosophy-statement">
             "I don't create for attention—I build memory environments. Every product, scent, or site I make is meant to live in someone else's life, subtly shifting how they see themselves. Art becomes art only when it's consumed."
@@ -635,12 +668,17 @@
           scale: 2,
           useCORS: true,
           letterRendering: true,
-          dpi: 300 
+          dpi: 300
         },
         jsPDF: { 
           unit: 'mm', 
           format: 'letter', 
-          orientation: 'portrait' 
+          orientation: 'portrait'
+        },
+        pagebreak: {
+          mode: ['avoid-all', 'css', 'legacy'],
+          before: '.philosophy-full-width',
+          avoid: ['h2', 'h3', '.experience-item', '.skill-category', '.projects li', '.education-item']
         }
       };
       
