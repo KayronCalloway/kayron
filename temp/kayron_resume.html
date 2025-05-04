@@ -671,43 +671,12 @@
       }
     });
 
-    // Check if this page is opened directly (not in an iframe)
-    if (window.top === window.self) {
-      // Create button container for better styling
-      const buttonContainer = document.createElement('div');
-      buttonContainer.style.cssText = 'position: fixed; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 1000;';
-      document.body.appendChild(buttonContainer);
-      
-      // Add print button for easy PDF conversion
-      const printButton = document.createElement('button');
-      printButton.textContent = 'Save as PDF';
-      printButton.style.cssText = 'padding: 8px 16px; background: #f5f5f5; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-family: var(--font-primary); box-shadow: 0 1px 3px rgba(0,0,0,0.1);';
-      buttonContainer.appendChild(printButton);
-      
-      printButton.addEventListener('click', () => {
+    // If the user came directly to this page, suggest printing to PDF
+    if (window.top === window.self && document.referrer === '') {
+      // Auto-trigger print dialog after a short delay
+      setTimeout(() => {
         window.print();
-      });
-      
-      // Add direct download link to existing PDF (as fallback)
-      const downloadButton = document.createElement('a');
-      downloadButton.textContent = 'Download PDF';
-      downloadButton.href = '/kayron/resume.pdf'; // GitHub Pages URL format
-      downloadButton.style.cssText = 'padding: 8px 16px; background: #e6e6e6; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-family: var(--font-primary); box-shadow: 0 1px 3px rgba(0,0,0,0.1); text-decoration: none; color: #333; display: inline-block; text-align: center;';
-      buttonContainer.appendChild(downloadButton);
-      
-      // Auto-print when this page is loaded directly
-      if (document.referrer === '') {
-        setTimeout(() => {
-          const message = 'This page is designed for printing to PDF.\n\n' +
-                         'Choose:\n' +
-                         '• "Save as PDF" for the most up-to-date version\n' +
-                         '• "Download PDF" for the pre-generated version';
-                         
-          if (confirm(message)) {
-            window.print();
-          }
-        }, 800);
-      }
+      }, 500);
     }
   </script>
 </body>
