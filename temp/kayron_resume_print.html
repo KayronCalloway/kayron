@@ -37,6 +37,16 @@
   </script>
   <meta name="theme-color" content="#ffffff">
   <style>
+    :root {
+      --color-text-primary: #212121;
+      --color-text-secondary: #424242;
+      --color-text-tertiary: #757575;
+      --color-border: #e0e0e0;
+      --color-background: #ffffff;
+      --spacing-unit: 8px;
+      --font-primary: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    }
+    
     * {
       margin: 0;
       padding: 0;
@@ -44,15 +54,15 @@
     }
     
     body {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: var(--font-primary);
       font-size: 16px;
-      line-height: 1.6;
+      line-height: 1.5;
       letter-spacing: -0.01em;
-      color: #111;
-      background: #fff;
-      max-width: 720px;
-      margin: 80px auto;
-      padding: 0 24px;
+      color: var(--color-text-primary);
+      background: var(--color-background);
+      max-width: 8.5in;
+      margin: 60px auto;
+      padding: 0 var(--spacing-unit);
     }
     
     /* Fingerprint watermark - optimized SVG */
