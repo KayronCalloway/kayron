@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayron Calloway | Resume</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 10pt;
+            line-height: 1.4;
+            color: #111;
+            background-color: #fff;
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.75in;
+        }
+        
+        .resume-container {
+            display: grid;
+            grid-template-columns: 30% 70%;
+            gap: 30px;
+        }
+        
+        header {
+            grid-column: 1 / -1;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        h1 {
+            font-weight: 500;
+            font-size: 18pt;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+        
+        h2 {
+            font-size: 11pt;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        h3 {
+            font-size: 10pt;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        p {
+            margin-bottom: 8px;
+        }
+        
+        .tagline {
+            font-size: 9pt;
+            font-weight: 400;
+            color: #444;
+            margin-bottom: 15px;
+        }
+        
+        .philosophy {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 9pt;
+            font-style: italic;
+            color: #555;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .left-column section {
+            margin-bottom: 25px;
+        }
+        
+        .contact-item {
+            font-family: 'Space Grotesk', monospace;
+            margin-bottom: 3px;
+            font-size: 9pt;
+        }
+        
+        .experience-item {
+            margin-bottom: 20px;
+        }
+        
+        .job-title {
+            font-weight: 600;
+            margin-bottom: 2px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .company-period {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 9pt;
+        }
+        
+        .company {
+            font-weight: 500;
+        }
+        
+        .period {
+            color: #555;
+        }
+        
+        ul {
+            margin-left: 18px;
+            margin-bottom: 8px;
+        }
+        
+        li {
+            margin-bottom: 4px;
+            position: relative;
+        }
+        
+        .client-line {
+            font-size: 9pt;
+            color: #555;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+        
+        .proficiency-list {
+            list-style-type: none;
+            margin-left: 0;
+        }
+        
+        .proficiency-list li {
+            margin-bottom: 5px;
+            font-family: 'Space Grotesk', monospace;
+            font-size: 9pt;
+        }
+        
+        .cert-date {
+            color: #666;
+            font-size: 9pt;
+        }
+        
+        .project-item {
+            margin-bottom: 7px;
+            font-size: 9pt;
+        }
+        
+        .project-name {
+            font-weight: 600;
+        }
+        
+        /* Subtle watermark/logo styling */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            font-size: 40pt;
+            color: #f7f7f7;
+            z-index: -1;
+            font-family: 'Space Grotesk', monospace;
+            font-weight: 300;
+        }
+        
+        /* Print instructions */
+        .print-instructions {
+            background-color: #f6f6f6;
+            border: 1px solid #eee;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            font-size: 11pt;
+            line-height: 1.5;
+            border-radius: 4px;
+        }
+        
+        .print-instructions h3 {
+            margin-bottom: 10px;
+            font-size: 13pt;
+        }
+        
+        .print-instructions ol {
+            padding-left: 25px;
+        }
+        
+        .print-instructions li {
+            margin-bottom: 5px;
+        }
+        
+        /* Print styles */
+        @media print {
+            .print-instructions {
+                display: none;
+            }
+            
+            body {
+                padding: 0.5in;
+                margin: 0;
+                width: 100%;
+                max-width: 100%;
+                font-size: 10pt;
+            }
+            
+            .resume-container {
+                gap: 25px;
+            }
+            
+            @page {
+                size: letter;
+                margin: 0.5in;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="print-instructions">
+        <h3>Print Instructions</h3>
+        <ol>
+            <li>Press Ctrl+P (Windows) or Cmd+P (Mac) to open print settings</li>
+            <li>Choose "Save as PDF" as the destination</li>
+            <li>Make sure "Background Graphics" is enabled</li>
+            <li>Set margins to "None" or "Minimum"</li>
+            <li>Disable headers and footers</li>
+            <li>Click "Save" to generate your PDF</li>
+        </ol>
+        <p>These instructions will not appear in the printed document.</p>
+    </div>
+
+    <div class="resume-container">
+        <header>
+            <h1>Kayron Calloway</h1>
+            <div class="tagline">Creative Director | Brand Strategist | Multisensory Designer</div>
+            <div class="philosophy">"I build brands that feel inevitable. I don't just design—I shape how things are remembered."</div>
+            <div class="watermark">( )</div>
+        </header>
+        
+        <div class="left-column">
+            <section>
+                <h2>Contact</h2>
+                <div class="contact-item">Los Angeles, CA</div>
+                <div class="contact-item">kayroncalloway@gmail.com</div>
+                <div class="contact-item">310.498.8059</div>
+                <div class="contact-item">kayroncalloway.github.io/kayron</div>
+            </section>
+            
+            <section>
+                <h2>Proficiencies</h2>
+                <ul class="proficiency-list">
+                    <li>Creative Direction</li>
+                    <li>Brand Strategy</li>
+                    <li>Campaign Development</li>
+                    <li>Experiential Design</li>
+                    <li>Art Direction</li>
+                    <li>Multisensory Storytelling</li>
+                    <li>Adobe Creative Suite</li>
+                    <li>Figma</li>
+                    <li>Final Cut Pro</li>
+                    <li>Notion</li>
+                    <li>Airtable</li>
+                    <li>Brand Architecture</li>
+                </ul>
+            </section>
+            
+            <section>
+                <h2>Education</h2>
+                <h3>B.A. in Philosophy</h3>
+                <p>California State University, Fullerton</p>
+                <p style="font-size: 9pt; color: #555; margin-bottom: 15px;">Relevant Studies: Aesthetics, Ethics, Strategic Thinking, Systems Analysis</p>
+                
+                <h3>Certifications <span class="cert-date">(2025 Expected)</span></h3>
+                <ul>
+                    <li>AI Policy & Ethics – Stanford Online</li>
+                    <li>Advanced Brand Strategy – IDEO</li>
+                    <li>Financial Modeling & Valuation – Wall Street Prep</li>
+                </ul>
+            </section>
+        </div>
+        
+        <div class="right-column">
+            <section>
+                <h2>Experience</h2>
+                
+                <div class="experience-item">
+                    <div class="job-title">
+                        <span>Founder & Creative Director</span>
+                    </div>
+                    <div class="company-period">
+                        <span class="company">Coloring With Gray</span>
+                        <span class="period">2024–Present</span>
+                    </div>
+                    <ul>
+                        <li>Founded a multidisciplinary house based on philosophy, spanning film, photography, fragrance, technology, and product development</li>
+                        <li>Created Reflections of You, a multidimensional experience spanning fragrance, film, and product design - using multiple mediums to tell a single cohesive story</li>
+                        <li>Led full GTM strategy, including digital assets, storytelling, packaging engineering, and customer experience</li>
+                        <li>Designed VOL 1 Coffee, an experiential café concept integrating spatial storytelling, brand development, and product design</li>
+                        <li>Developed sustainable supply chain and negotiated international vendor partnerships</li>
+                    </ul>
+                </div>
+                
+                <div class="experience-item">
+                    <div class="job-title">
+                        <span>Creative Consultant</span>
+                    </div>
+                    <div class="company-period">
+                        <span class="company">Brand & Product Strategy</span>
+                        <span class="period">2016–Present</span>
+                    </div>
+                    <div class="client-line">Clients include C'est Bon, Upgrade Labs, SOBE x Trophies, and early-stage brands</div>
+                    <ul>
+                        <li>Delivered campaign development, brand identity, naming, copy, and creative strategy across fashion, tech, and wellness</li>
+                        <li>Created and performed sound design and runway VO for C'est Bon Paris Fashion Week; covered in Vogue and Pause Magazine</li>
+                        <li>Developed training systems and brand positioning for Upgrade Labs wellness concept</li>
+                        <li>Led menu concept, campaign visuals, and launch strategy for SOBE x Trophies food collaboration</li>
+                    </ul>
+                </div>
+                
+                <div class="experience-item">
+                    <div class="job-title">
+                        <span>Financial Analyst, Residuals</span>
+                    </div>
+                    <div class="company-period">
+                        <span class="company">Cast & Crew</span>
+                        <span class="period">2019–Present</span>
+                    </div>
+                    <ul>
+                        <li>Manage high-volume residual reporting for clients including Netflix, HBO, and Amazon</li>
+                        <li>Built automated reporting workflows, reducing process time by 30%</li>
+                        <li>Interpret complex legal contracts into actionable reporting frameworks</li>
+                        <li>Liaise with internal teams and external executives to ensure compliance and accuracy</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section>
+                <h2>Notable Projects</h2>
+                <div class="project-item">
+                    <span class="project-name">Reflections of You</span> – Multidimensional project combining fragrance, film, and product design to tell a cohesive story
+                </div>
+                <div class="project-item">
+                    <span class="project-name">Coloring with Gray</span> – Multidisciplinary creative house based on philosophical principles
+                </div>
+                <div class="project-item">
+                    <span class="project-name">VOL 1 Coffee</span> – Experiential hospitality concept centered on ritual and cultural storytelling
+                </div>
+                <div class="project-item">
+                    <span class="project-name">The State Within</span> – In-development AI governance simulation exploring emotional consequence
+                </div>
+                <div class="project-item">
+                    <span class="project-name">Paris Fashion Week – C'est Bon</span> – Live performance integrating original voiceover and soundscape design
+                </div>
+            </section>
+            
+            <section>
+                <h2>Industry Expertise</h2>
+                <div class="project-item">
+                    <span class="project-name">Entertainment & Media:</span> Developed immersive branded experiences and content for entertainment clients
+                </div>
+                <div class="project-item">
+                    <span class="project-name">Luxury & Consumer Goods:</span> Created cohesive brand systems balancing premium positioning with accessibility
+                </div>
+                <div class="project-item">
+                    <span class="project-name">Technology & Digital:</span> Applied UX principles to enhance digital brand experiences across platforms
+                </div>
+                <div class="project-item">
+                    <span class="project-name">Wellness & Lifestyle:</span> Translated complex wellness concepts into approachable brand communications
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
