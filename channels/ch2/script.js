@@ -431,24 +431,36 @@
           });
         }, { threshold: 0.5 }); // Trigger when 50% of the video is visible
         
-        // Handle channel changes - pause/stop video when leaving ch2
+        // Handle channel changes - completely stop video when leaving ch2
         document.addEventListener('channelChange', () => {
-          // Check if we're still in channel 2
-          const sections = Array.from(document.querySelectorAll('.channel-section'));
-          const currentIndex = sections.findIndex(sec => sec.id === 'section2');
-          const isVisible = document.getElementById('section2').getBoundingClientRect().top >= 0 &&
-                            document.getElementById('section2').getBoundingClientRect().bottom <= window.innerHeight;
+          // Get the currently active channel
+          const activeChannel = document.body.getAttribute('data-active-channel');
           
-          if (!isVisible) {
-            console.log('Channel changed - stopping video in ch2');
-            // Stop the video by loading a blank version
-            if (videoPlayer.src) {
-              const currentSrc = videoPlayer.src;
-              // Force mute and pause by reloading with autoplay=0 and mute=1
-              if (currentSrc.includes('autoplay=1')) {
-                videoPlayer.src = currentSrc.replace('autoplay=1', 'autoplay=0')
-                                          .replace('mute=0', 'mute=1');
-              }
+          // If we're not in channel 2 anymore, stop the video completely
+          if (activeChannel !== 'ch2') {
+            console.log('Channel changed - completely stopping video in ch2');
+            // Completely stop the video by setting src to empty and then reload
+            if (videoPlayer) {
+              // Save the original source to restore later if needed
+              const originalSrc = videoPlayer.src;
+              // First remove the src attribute to stop all activity
+              videoPlayer.src = '';
+              
+              // Add a temporary loading state attribute
+              videoPlayer.setAttribute('data-loading', 'true');
+              
+              // Create a modified source that starts paused and muted
+              const modifiedSrc = originalSrc
+                .replace('autoplay=1', 'autoplay=0')
+                .replace('mute=0', 'mute=1')
+                .replace('loop=1', 'loop=0');
+              
+              // After a short delay, restore the src but with autoplay disabled
+              setTimeout(() => {
+                videoPlayer.src = modifiedSrc;
+                videoPlayer.removeAttribute('data-loading');
+                console.log('Video completely stopped and reset');
+              }, 50);
             }
           }
         });
