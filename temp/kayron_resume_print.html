@@ -357,10 +357,30 @@
     /* Footer */
     .signature {
       text-align: center;
-      margin-top: 48px;
-      color: #ccc;
+      margin-top: calc(var(--spacing-unit) * 7);
+      color: #ddd;
       font-weight: 300;
       font-size: 28px;
+      letter-spacing: 0.05em;
+      padding-top: calc(var(--spacing-unit) * 3);
+      border-top: 1px solid var(--color-border);
+    }
+    
+    @media print {
+      .signature {
+        display: none; /* Hide default signature */
+      }
+      
+      .philosophy-full-width::after {
+        content: "( )";
+        display: block;
+        text-align: center;
+        margin-top: 3cm;
+        color: #aaa;
+        font-weight: 300;
+        font-size: 24px;
+        letter-spacing: 0.15em;
+      }
     }
     
     /* Enhanced Print Styles */
@@ -434,29 +454,63 @@
         break-inside: avoid;
       }
       
-      /* Philosophy section layout for third page */
+      /* Philosophy section layout for third page - Conclusion style */
       .philosophy-full-width {
         grid-column: 1 / -1; /* Span all columns */
-        margin-top: 2cm;
+        margin-top: 0;
         page-break-before: always;
         break-before: always;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
+        justify-content: center;
+        min-height: 80vh;
+        padding: 2cm;
+        text-align: center;
       }
       
       .philosophy-full-width h2 {
         border-bottom: none;
-        margin-bottom: 0;
-        margin-right: 20px;
-        white-space: nowrap;
-        min-width: 120px;
+        margin-bottom: 1.5cm;
+        width: 100%;
+        text-align: center;
+        font-size: 18px;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+      }
+      
+      .philosophy-full-width h2::before,
+      .philosophy-full-width h2::after {
+        content: "— ";
+        opacity: 0.4;
+        font-weight: 300;
+        display: inline-block;
+        transform: scaleX(2);
+        margin: 0 10px;
+      }
+      
+      .philosophy-full-width h2::after {
+        content: " —";
       }
       
       .philosophy-full-width .philosophy-statement {
-        margin: 0;
-        max-width: none;
+        margin: 0 auto;
+        max-width: 80%;
         flex: 1;
+        font-size: 14px;
+        line-height: 1.8;
+        color: #000;
+        font-weight: 300;
+      }
+      
+      .philosophy-full-width .philosophy-statement::before,
+      .philosophy-full-width .philosophy-statement::after {
+        content: '"';
+        font-size: 24px;
+        color: #555;
+        font-weight: 400;
+        display: inline-block;
+        vertical-align: -5px;
       }
       
       ul, li {
@@ -633,9 +687,9 @@
         </section>
         
         <section class="philosophy philosophy-full-width">
-          <h2>Philosophy</h2>
+          <h2>Creative Philosophy</h2>
           <p class="philosophy-statement">
-            "I don't create for attention—I build memory environments. Every product, scent, or site I make is meant to live in someone else's life, subtly shifting how they see themselves. Art becomes art only when it's consumed."
+            I don't create for attention—I build memory environments. Every product, scent, or site I make is meant to live in someone else's life, subtly shifting how they see themselves. Art becomes art only when it's consumed.
           </p>
         </section>
       </div>
