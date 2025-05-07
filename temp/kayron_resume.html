@@ -15,6 +15,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&display=swap"></noscript>
+  <!-- Custom font for parentheses -->
+  <style>
+    @font-face {
+      font-family: 'Lvvvdy';
+      src: url('Lvvvdy.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
   <!-- Include html2pdf.js library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!-- Structured data for better SEO and social sharing -->
@@ -198,15 +208,25 @@
     h2::before {
       content: "(";
       margin-right: 4px;
-      opacity: 0.5;
+      opacity: 0.7;
       font-weight: 300;
+      font-family: 'Lvvvdy', sans-serif;
+      font-size: 120%;
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
     }
     
     h2::after {
       content: ")";
       margin-left: 4px;
-      opacity: 0.5;
+      opacity: 0.7;
       font-weight: 300;
+      font-family: 'Lvvvdy', sans-serif;
+      font-size: 120%;
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
     }
     
     /* Experience Items - Fortune 100 Style */
@@ -414,10 +434,11 @@
       margin-top: calc(var(--spacing-unit) * 7);
       color: #ddd;
       font-weight: 300;
-      font-size: 28px;
+      font-size: 32px;
       letter-spacing: 0.05em;
       padding-top: calc(var(--spacing-unit) * 3);
       border-top: 1px solid var(--color-border);
+      font-family: 'Lvvvdy', sans-serif;
     }
     
     @media print {
@@ -799,7 +820,8 @@
           allowTaint: true,
           backgroundColor: null,
           imageTimeout: 0,
-          removeContainer: true
+          removeContainer: true,
+          foreignObjectRendering: true
         },
         jsPDF: { 
           unit: 'mm', 
