@@ -1,0 +1,12 @@
+{
+  "name": "resume-pdf-generator",
+  "version": "1.0.0",
+  "description": "PDF generation for Kayron's resume",
+  "main": "simple-pdf-generator.js",
+  "scripts": {
+    "generate": "node simple-pdf-generator.js"
+  },
+  "dependencies": {
+    "html-pdf": "^3.0.1"
+  }
+}
