@@ -213,13 +213,13 @@
     }
     
     li {
-      margin-bottom: calc(var(--spacing-unit) * 1.25);
+      margin-bottom: calc(var(--spacing-unit) * 1);
       position: relative;
       padding-left: calc(var(--spacing-unit) * 2);
-      font-size: 14.5px;
+      font-size: 14px;
       color: var(--color-text-secondary);
       font-weight: 300;
-      line-height: 1.5;
+      line-height: 1.4;
     }
     
     li::before {
@@ -671,7 +671,7 @@
           
           /* Summary section spacing */
           .summary {
-            margin-bottom: 0.15cm !important;
+            margin-bottom: 0.1cm !important; /* Reduced bottom margin */
           }
           
           .summary p {
@@ -682,26 +682,47 @@
           /* Section headings */
           h2 {
             font-size: 10px !important;
-            margin-bottom: 0.1cm !important;
+            margin-bottom: 0.07cm !important; /* Reduced to tighten spacing */
+            margin-top: 0.1cm !important; /* Add top margin for better spacing */
           }
           
-          /* Fine-tuned spacing to make page 1 end perfectly */
+          /* Raise columns to align with summary */
+          .right-column {
+            margin-top: -0.2cm !important; /* Pull the right column up */
+          }
+          
+          /* Ensure Experience section starts on page 1 */
+          section {
+            margin-bottom: 0.15cm !important; /* Tighter section spacing */
+          }
+          
+          /* Experience section special handling */
+          section h2 {
+            padding-bottom: 0.05cm !important; /* Tighter heading spacing */
+          }
+          
+          /* Fine-tuned spacing for first experience item */
+          .experience-item:first-of-type {
+            margin-bottom: 0.1cm !important; /* Tighter margin after first experience */
+            padding-bottom: 0 !important; /* Remove bottom padding */
+          }
+          
           .experience-item:first-of-type ul {
-            margin-bottom: 0;
-            margin-top: 0.1cm;
+            margin-bottom: 0 !important;
+            margin-top: 0.05cm !important; /* Tighter spacing before list */
           }
           
           /* Tighter spacing for bullet points on first page */
           .experience-item:first-of-type li {
-            margin-bottom: 1px;
-            line-height: 1.15;
-            font-size: 8.7px;
+            margin-bottom: 0px !important; /* No margin between list items */
+            line-height: 1.15 !important;
+            font-size: 8.5px !important; /* Slightly smaller text */
           }
           
           /* More compact description text */
           .experience-item:first-of-type p {
-            margin-bottom: 0.08cm;
-            font-size: 8.7px;
+            margin-bottom: 0.05cm !important; /* Less space after description */
+            font-size: 8.5px !important; 
           }
           
           /* Experience headings */
@@ -716,10 +737,16 @@
             font-size: 8.2px !important;
           }
           
+          /* Force page break precisely before the Tension section */
           .key-achievements {
             page-break-before: always !important;
             break-before: always !important;
             padding-top: 0.3cm !important;
+          }
+          
+          /* Ensure Tension section aligns properly at top of page 2 */
+          .key-achievements h4:first-of-type {
+            margin-top: 0.1cm !important;
           }
         }
       `;
