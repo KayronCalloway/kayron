@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kayron Calloway | Creative Director (PDF Optimized)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Embed the Lvvvdy font directly -->
+  <style>
+    @font-face {
+      font-family: 'Lvvvdy';
+      src: url('data:application/font-woff;charset=utf-8;base64,BASE64_FONT_DATA_HERE') format('woff');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    /* Essential base styles */
+    :root {
+      --color-text-primary: #212121;
+      --color-text-secondary: #424242;
+      --color-text-tertiary: #757575;
+      --color-border: #e0e0e0;
+      --color-background: #ffffff;
+      --spacing-unit: 8px;
+      --font-primary: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+      color: var(--color-text-primary);
+      background: var(--color-background);
+      max-width: 8.5in;
+      margin: 60px auto;
+      padding: 0 var(--spacing-unit);
+    }
+    
+    .resume-container {
+      position: relative;
+    }
+    
+    header {
+      margin-bottom: calc(var(--spacing-unit) * 6);
+      padding-bottom: calc(var(--spacing-unit) * 2);
+      border-bottom: 1px solid var(--color-border);
+    }
+    
+    header h1 {
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--color-text-primary);
+      margin-bottom: calc(var(--spacing-unit) * 1.5);
+      text-transform: uppercase;
+    }
+    
+    .title-line {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      font-weight: 400;
+      margin-bottom: calc(var(--spacing-unit) * 2.5);
+      letter-spacing: 0.02em;
+    }
+    
+    .philosophy-statement {
+      font-style: italic;
+      color: var(--color-text-tertiary);
+      margin-top: calc(var(--spacing-unit) * 3);
+      font-weight: 300;
+      margin-bottom: calc(var(--spacing-unit) * 3);
+      max-width: 90%;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    
+    .contact-info {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: calc(var(--spacing-unit) * 2);
+      margin-top: calc(var(--spacing-unit) * 2);
+      font-size: 13px;
+      color: var(--color-text-tertiary);
+      letter-spacing: 0.01em;
+      font-weight: 400;
+    }
+    
+    .contact-info a {
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      padding-bottom: 1px;
+      border-bottom: 1px solid var(--color-border);
+      transition: all 0.2s;
+    }
+    
+    .main-content {
+      display: grid;
+      grid-template-columns: 68fr 32fr;
+      grid-gap: calc(var(--spacing-unit) * 6);
+    }
+    
+    .summary {
+      margin-bottom: calc(var(--spacing-unit) * 6);
+      position: relative;
+      max-width: 95%;
+    }
+    
+    .summary p {
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      font-weight: 300;
+      font-size: 15px;
+    }
+    
+    section {
+      margin-bottom: calc(var(--spacing-unit) * 6);
+    }
+    
+    h2 {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      letter-spacing: 0.03em;
+      margin-bottom: calc(var(--spacing-unit) * 2.5);
+      position: relative;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: calc(var(--spacing-unit) * 0.75);
+    }
+    
+    h2::before {
+      content: "(";
+      margin-right: 4px;
+      opacity: 0.7;
+      font-weight: 300;
+      font-family: 'Lvvvdy', sans-serif;
+      font-size: 120%;
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
+    }
+    
+    h2::after {
+      content: ")";
+      margin-left: 4px;
+      opacity: 0.7;
+      font-weight: 300;
+      font-family: 'Lvvvdy', sans-serif;
+      font-size: 120%;
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
+    }
+    
+    .experience-item {
+      margin-bottom: calc(var(--spacing-unit) * 5);
+      position: relative;
+      padding-bottom: calc(var(--spacing-unit) * 2);
+    }
+    
+    .experience-item:not(:last-child) {
+      border-bottom: 1px dotted var(--color-border);
+    }
+    
+    h3 {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: calc(var(--spacing-unit) * 0.5);
+      color: var(--color-text-primary);
+      letter-spacing: 0.01em;
+    }
+    
+    .position-details {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: calc(var(--spacing-unit) * 1.5);
+      font-size: 14px;
+      color: var(--color-text-secondary);
+    }
+    
+    .company {
+      font-weight: 500;
+    }
+    
+    .date {
+      color: var(--color-text-tertiary);
+      font-weight: 400;
+    }
+    
+    .experience-item p {
+      margin-bottom: calc(var(--spacing-unit) * 1.5);
+      color: var(--color-text-secondary);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+    
+    ul {
+      padding-left: calc(var(--spacing-unit) * 1);
+      margin: calc(var(--spacing-unit) * 1) 0;
+      list-style-type: none;
+    }
+    
+    li {
+      margin-bottom: calc(var(--spacing-unit) * 1.25);
+      position: relative;
+      padding-left: calc(var(--spacing-unit) * 2);
+      font-size: 14.5px;
+      color: var(--color-text-secondary);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+    
+    li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--color-text-tertiary);
+      font-size: 12px;
+    }
+    
+    .key-achievements {
+      margin: 16px 0;
+      padding-left: 16px;
+      border-left: 1px solid #ddd;
+    }
+    
+    .key-achievements h4 {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 4px;
+      color: #111;
+    }
+    
+    .key-achievements ul {
+      margin-top: 4px;
+    }
+    
+    .key-achievements li {
+      color: #333;
+      font-size: 14px;
+    }
+    
+    .skills {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: calc(var(--spacing-unit) * 2.5);
+      background-color: rgba(250, 250, 250, 0.5);
+      padding: calc(var(--spacing-unit) * 2.5);
+      border-radius: 4px;
+      border: 1px solid var(--color-border);
+    }
+    
+    .skill-category {
+      margin-bottom: calc(var(--spacing-unit) * 2);
+    }
+    
+    .skill-category h4 {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: calc(var(--spacing-unit) * 0.75);
+      color: var(--color-text-primary);
+      letter-spacing: 0.01em;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: calc(var(--spacing-unit) * 0.5);
+      display: inline-block;
+    }
+    
+    .skill-list {
+      font-size: 13.5px;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+    
+    .education-item {
+      margin-bottom: calc(var(--spacing-unit) * 3);
+      padding-bottom: calc(var(--spacing-unit) * 1.5);
+    }
+    
+    .education-item .degree {
+      font-weight: 500;
+      margin-bottom: calc(var(--spacing-unit) * 0.5);
+      color: var(--color-text-primary);
+      font-size: 14px;
+    }
+    
+    .education-item .institution {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      font-weight: 400;
+    }
+    
+    .projects ul {
+      margin-top: calc(var(--spacing-unit) * 1.5);
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--spacing-unit) * 1.5);
+    }
+    
+    .projects li {
+      margin-bottom: calc(var(--spacing-unit) * 1);
+      background: linear-gradient(to right, rgba(245, 245, 245, 0.5), transparent);
+      padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 1.5);
+      border-radius: 3px;
+      border-left: 2px solid var(--color-border);
+    }
+    
+    .projects li strong {
+      color: var(--color-text-primary);
+      display: block;
+      margin-bottom: calc(var(--spacing-unit) * 0.5);
+      font-weight: 500;
+      font-size: 14px;
+    }
+    
+    /* Add watermark element that will appear in print */
+    .watermark {
+      display: none;
+      position: fixed;
+      bottom: 25mm;
+      right: 15mm;
+      width: 25mm;
+      height: 25mm;
+      background-image: url('./fingerprint.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      transform: rotate(-37deg);
+      opacity: 0.13;
+      z-index: 9999;
+      pointer-events: none;
+    }
+    
+    /* Print button styling */
+    .print-button {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 20px;
+      background: #4285f4;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: var(--font-primary);
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+    
+    .print-instructions {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      right: 0;
+      background: #f8f8f8;
+      padding: 20px;
+      border-bottom: 1px solid #ddd;
+      z-index: 999;
+    }
+    
+    .print-instructions h2 {
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 15px;
+      border-bottom: none;
+    }
+    
+    .print-instructions h2::before,
+    .print-instructions h2::after {
+      content: none;
+    }
+    
+    .print-instructions ol {
+      max-width: 600px;
+      margin: 0 auto;
+      font-size: 14px;
+      line-height: 1.5;
+      padding-left: 20px;
+    }
+    
+    .print-instructions li {
+      margin-bottom: 8px;
+      color: #333;
+    }
+    
+    .print-instructions p {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 13px;
+      color: #666;
+    }
+    
+    /* Include print-specific styles */
+    @import url('../assets/print.css') print;
+  </style>
+</head>
+<body>
+  <!-- Watermark element that will appear in print -->
+  <div class="watermark"></div>
+  
+  <!-- Print button and instructions -->
+  <button class="print-button" onclick="window.print()">Print to PDF</button>
+  
+  <div class="print-instructions">
+    <h2>Print Instructions</h2>
+    <ol>
+      <li>Click the "Print to PDF" button above</li>
+      <li>In the print dialog, select "Save as PDF" or "Microsoft Print to PDF"</li>
+      <li><strong>IMPORTANT:</strong> Make sure "Background graphics" or "Background images" is checked</li>
+      <li>Set margins to "Minimum" or "None"</li>
+      <li>Disable headers and footers</li>
+      <li>Set scale to 100%</li>
+      <li>For Chrome/Edge: Click "More settings" and enable "Background graphics"</li>
+      <li>For Safari: In Safari menu > Settings > Advanced and check "Print backgrounds"</li>
+    </ol>
+    <p>If the fingerprint watermark doesn't appear in your PDF, please make sure to enable background printing in your browser settings.</p>
+  </div>
+  
+  <main class="resume-container">
+    <header>
+      <h1>KAYRON CALLOWAY</h1>
+      <div class="title-line">Creative Director | Systems Thinker | Emotional Architect</div>
+      <div class="contact-info">
+        <span>Los Angeles, CA</span>
+        <span><a href="https://kayroncalloway.github.io/kayron/">kayroncalloway.github.io/kayron</a></span>
+        <span>@coolwithakay</span>
+        <span><a href="mailto:KayronCalloway@gmail.com">KayronCalloway@gmail.com</a></span>
+        <span>310.498.8059</span>
+      </div>
+      <div class="philosophy-statement">
+        I believe the most powerful design doesn't declare itself—it invites you in.
+        My work exists between creation and consumption, where meaning isn't made but met.
+        Reflection isn't the outcome; it's the medium. Ritual becomes interface. Silence becomes authorship.
+        I lead like I create: collaboratively, with clarity, and without control. That has cost me time, certainty, and pride.
+        I've clung too tightly to elegance. I've chased clarity until the work lost its edge.
+        I've stayed quiet when I should have pushed, and pushed when I should have listened.
+        I'll delete my best work to protect coherence. But I won't let a clever idea replace an honest one.
+        That's the line I don't cross.
+      </div>
+    </header>
+    
+    <div class="main-content">
+      <div class="left-column">
+        <section class="summary">
+          <h2>SUMMARY</h2>
+          <p>I don't make products. I build emotional systems people live inside. Whether scent, site, or sequence, I design for resonance, not reaction. I've led six full product drops through fracture, restart, and real pressure. I've lost momentum doing it my way. But I've never regretted protecting the soul of the work.</p>
+        </section>
+        
+        <section>
+          <h2>EXPERIENCE</h2>
+          <div class="experience-item">
+            <h3>Founder & Creative Director</h3>
+            <div class="position-details">
+              <span class="company">Coloring With Gray</span>
+              <span class="date">2024 — Present | Los Angeles, CA</span>
+            </div>
+            <p>A memory design house. Each product is its own world. The user <span class="spaced">completes</span> the art.</p>
+            <ul>
+              <li>Built CG as a system-first brand where fragrance, footwear, ritual objects, and interaction act as emotional portals.</li>
+              <li>Directed scent formulation, packaging systems, story sequencing, site logic, and all campaign structure.</li>
+              <li>Led a decentralized team of perfumers, coders, editors, 3D artists, and makers.</li>
+              <li>Developed symbolic packaging: fingerprinted glass, dipped book-safes, refillable crayons.</li>
+              <li>Built a gated site mechanic where access unlocks only after the user draws with intention.</li>
+            </ul>
+            <div class="key-achievements">
+              <h4>TENSION</h4>
+              <p>One launch collapsed after I overstructured the logic. I rebuilt it with fewer assumptions and more space. Another drop moved too fast. A creative peer slowed me down. Their restraint saved the rhythm. Later, I held the structure when the team asked me to loosen it. It didn't test as well, but it meant something deeper. One feature never clicked—but I kept it. Not everything needs to be understood to be felt.</p>
+              <h4>SELECTED DROPS</h4>
+              <ul>
+                <li>Reflections of You: A scent designed to smell like presence.</li>
+                <li>The Fingerprint: A shoe built around absence and imprint.</li>
+                <li>Crayon Candle: Wax as memory. Refillable. Relearnable.</li>
+                <li>Coloring With Gray (Film): On global circuit (status pending).</li>
+                <li>The State Within: Governance simulator with emotional consequence.</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="experience-item">
+            <h3>Creative Consultant</h3>
+            <div class="position-details">
+              <span class="company">Brand & Product Strategy</span>
+              <span class="date">2016 — Present</span>
+            </div>
+            <ul>
+              <li>Collaborated with C'est Bon on campaign development, tone structure, and story logic.</li>
+              <li>Consulted during C'est Bon x Jordan to support narrative cohesion.</li>
+              <li>Voiced and scored Paris Fashion Week performance featured in Vogue and Pause Magazine.</li>
+              <li>Built onboarding systems for Upgrade Labs and wellness brands.</li>
+              <li>Learned that silence often builds more than pitch.</li>
+            </ul>
+          </div>
+          
+          <div class="experience-item">
+            <h3>Financial Analyst (Residuals)</h3>
+            <div class="position-details">
+              <span class="company">Cast & Crew</span>
+              <span class="date">2019 — Present</span>
+            </div>
+            <ul>
+              <li>Reduced report cycles by 30% across Netflix, HBO, Amazon.</li>
+              <li>Translated legal complexity into actionable system output.</li>
+              <li>Gave creativity a structured foundation.</li>
+            </ul>
+          </div>
+          
+          <div class="experience-item">
+            <h3>Director of Development</h3>
+            <div class="position-details">
+              <span class="company">The Modern Tea Room</span>
+              <span class="date">2015 — 2016</span>
+            </div>
+            <ul>
+              <li>Built four revenue streams and designed full guest experience.</li>
+              <li>First memory product—before I called it that.</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+      
+      <div class="right-column">
+        <section class="skills">
+          <h2>TOOLS & SYSTEMS</h2>
+          <div class="skill-category">
+            <h4>APPROACH</h4>
+            <p class="skill-list">I critique rhythm, tension, and consequence. I let others lead when I'm too close. I defend flawed ideas that move people. I kill polished ones that don't. When alignment breaks, I return to structure. When structure breaks, I listen for the fracture. I've paid in time and velocity, but I never betray clarity to protect myself.</p>
+          </div>
+          <div class="skill-category">
+            <h4>Creative Execution</h4>
+            <p class="skill-list">Figma, Adobe Creative Suite, Final Cut Pro, HTML/CSS, GitHub, Notion, Airtable</p>
+          </div>
+          <div class="skill-category">
+            <h4>AI + Generative Tools</h4>
+            <p class="skill-list">Runway Gen-4, 11 Labs, OpenAI API (/ask product agent)</p>
+          </div>
+          <div class="skill-category">
+            <h4>Physical Systems</h4>
+            <p class="skill-list">Fragrance Formulation, Footwear Tech Packs, Packaging Architecture, Vendor Coordination (LA, Tokyo)</p>
+          </div>
+        </section>
+        
+        <section class="projects">
+          <h2>RESONANCE & CONSEQUENCE</h2>
+          <ul>
+            <li><strong>Reflections of You:</strong> 200+ testers, 20% resample rate, 100+ testimonials</li>
+            <li><strong>Coloring With Gray film:</strong> On global circuit (selection status pending)</li>
+            <li><strong>C'est Bon x Jordan:</strong> Consulted on tone and cohesion</li>
+            <li><strong>Vogue + Pause:</strong> Featured for sonic authorship at Paris Fashion Week</li>
+            <li><strong>/ask:</strong> OpenAI-powered product dialogue live on site</li>
+            <li><strong>Crayon unlock:</strong> 87% completion rate—ritual drives interaction</li>
+            <li>A user told me the third drop made the first one click. That's the point. The system rewards memory.</li>
+            <li>Twelve staged drops. Not seasonal—sequential. Each reframes the last. The site is live. The story's still becoming.</li>
+          </ul>
+        </section>
+        
+        <section>
+          <h2>EDUCATION</h2>
+          <div class="education-item">
+            <div class="degree">Bachelor of Arts, Philosophy</div>
+            <div class="institution">California State University, Fullerton</div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+  
+  <script>
+    // Handle print events to hide UI elements during printing
+    window.addEventListener('beforeprint', function() {
+      document.querySelector('.print-button').style.display = 'none';
+      document.querySelector('.print-instructions').style.display = 'none';
+      
+      // Show watermark during print
+      document.querySelector('.watermark').style.display = 'block';
+      
+      // Inject the fingerprint directly as an element for maximum printer compatibility
+      injectWatermark();
+    });
+    
+    window.addEventListener('afterprint', function() {
+      document.querySelector('.print-button').style.display = 'block';
+      document.querySelector('.print-instructions').style.display = 'block';
+      document.querySelector('.watermark').style.display = 'none';
+      
+      // Remove the injected watermarks
+      document.querySelectorAll('.injected-watermark').forEach(el => el.remove());
+    });
+    
+    // Function to inject watermark as actual HTML elements
+    function injectWatermark() {
+      // Create an image element for the watermark
+      const img = document.createElement('img');
+      img.src = './fingerprint.png';
+      img.className = 'injected-watermark';
+      img.style.cssText = 'position: fixed; bottom: 25mm; right: 15mm; width: 25mm; height: 25mm; transform: rotate(-37deg); opacity: 0.13; z-index: 9999; pointer-events: none;';
+      document.body.appendChild(img);
+      
+      // Also add an SVG watermark as a fallback
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("width", "25mm");
+      svg.setAttribute("height", "25mm");
+      svg.setAttribute("viewBox", "0 0 100 100");
+      svg.style.cssText = 'position: fixed; bottom: 25mm; left: 15mm; width: 25mm; height: 25mm; transform: rotate(-37deg); opacity: 0.13; z-index: 9999; pointer-events: none;';
+      svg.classList.add('injected-watermark');
+      
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", "M50 10c-22.1 0-40 17.9-40 40s17.9 40 40 40 40-17.9 40-40-17.9-40-40-40zm0 75v-10c-13.8 0-25-11.2-25-25s11.2-25 25-25-25 11.2-25 25 11.2 25 25 25v-35c0-2.8 2.2-5 5-5s5 2.2 5 5v35c13.8 0 25-11.2 25-25s-11.2-25-25-25 25 11.2 25 25-11.2 25-25 25v10c22.1 0 40-17.9 40-40s-17.9-40-40-40-40 17.9-40 40 17.9 40 40 40z");
+      path.setAttribute("fill", "#000");
+      
+      svg.appendChild(path);
+      document.body.appendChild(svg);
+    }
+    
+    // Guarantee background printing is enabled
+    function enforceBackgroundPrinting() {
+      // Add a print-only stylesheet that duplicates the watermark
+      const style = document.createElement('style');
+      style.textContent = `
+        @media print {
+          /* Force watermark to display */
+          .watermark {
+            display: block !important;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          
+          /* Create additional watermarks on each page */
+          @page {
+            margin: 0.5cm;
+            size: letter portrait;
+          }
+          
+          /* Ensure the rest of the document prints well */
+          body {
+            margin: 0;
+            padding: 0;
+            font-size: 9.2px;
+            line-height: 1.2;
+            color: #000 !important;
+            background: #fff !important;
+          }
+          
+          /* Force first experience item to end at bottom of page 1 */
+          .experience-item:first-of-type ul {
+            margin-bottom: 0;
+          }
+          
+          .key-achievements {
+            page-break-before: always !important;
+            break-before: always !important;
+            padding-top: 0.3cm !important;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+      
+      // Warning for users
+      const warning = document.createElement('div');
+      warning.style.cssText = 'position: fixed; bottom: 10px; left: 0; right: 0; background: #fff3cd; color: #856404; padding: 12px; text-align: center; z-index: 9999; font-size: 14px; border-top: 1px solid #ffeeba;';
+      warning.innerHTML = '<strong>Important:</strong> Make sure to check "Background graphics" or "Print backgrounds" in your browser\'s print settings!';
+      document.body.appendChild(warning);
+    }
+    
+    // Run when page loads
+    window.addEventListener('load', function() {
+      enforceBackgroundPrinting();
+      
+      // Show watermark on screen for preview
+      setTimeout(() => {
+        document.querySelector('.watermark').style.display = 'block';
+      }, 500);
+    });
+  </script>
+</body>
+</html>

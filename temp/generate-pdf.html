@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Generator Tool</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    
+    h2 {
+      font-size: 18px;
+      margin-top: 30px;
+    }
+    
+    .method {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    
+    .method h3 {
+      margin-top: 0;
+      font-size: 18px;
+    }
+    
+    ol {
+      padding-left: 20px;
+    }
+    
+    li {
+      margin-bottom: 10px;
+    }
+    
+    .button {
+      display: inline-block;
+      background: #4285f4;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 4px;
+      text-decoration: none;
+      margin: 10px 0;
+      font-weight: 500;
+    }
+    
+    .button:hover {
+      background: #3367d6;
+    }
+    
+    .warning {
+      background: #fff3cd;
+      color: #856404;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 20px 0;
+      border-left: 5px solid #ffeeba;
+    }
+    
+    .preview {
+      border: 1px solid #ddd;
+      padding: 15px;
+      background: #f5f5f5;
+      margin: 20px 0;
+      border-radius: 5px;
+      text-align: center;
+    }
+    
+    .preview img {
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>Resume PDF Generation</h1>
+  
+  <p>This page provides optimized methods to generate a PDF version of your resume with the fingerprint watermark properly displayed.</p>
+  
+  <div class="warning">
+    <strong>Note:</strong> The fingerprint watermark requires special browser settings to display correctly in the PDF. Use one of the methods below for best results.
+  </div>
+  
+  <h2>Method 1: Print-Optimized Version</h2>
+  
+  <div class="method">
+    <h3>Using browser's print function with optimized settings</h3>
+    <ol>
+      <li>Open the <a href="kayron_resume_pdf.html" target="_blank">print-optimized resume</a></li>
+      <li>Click the "Print to PDF" button at the top of the page</li>
+      <li>In the print dialog, make sure to check "Background graphics" or "Background images"</li>
+      <li>Set margins to Minimum or None</li>
+      <li>Disable headers and footers</li>
+      <li>Set scale to 100%</li>
+      <li>Complete the print/save process</li>
+    </ol>
+    <a href="kayron_resume_pdf.html" class="button" target="_blank">Open Print-Optimized Version</a>
+  </div>
+  
+  <h2>Method 2: Direct PDF Link</h2>
+  
+  <div class="method">
+    <h3>Download pre-generated PDF</h3>
+    <p>This is a directly downloadable PDF with the correct formatting and watermark:</p>
+    <a href="KayronCalloway_Resume.pdf" class="button" download>Download Resume PDF</a>
+    <p><em>Note: This is a pre-generated file that may not include your most recent updates.</em></p>
+  </div>
+  
+  <h2>Alternative Method: Standard Resume with Browser Print</h2>
+  
+  <div class="method">
+    <h3>Using regular resume with browser print settings</h3>
+    <ol>
+      <li>Open the <a href="kayron_resume.html" target="_blank">standard resume</a></li>
+      <li>Use your browser's print function (Ctrl+P or Cmd+P)</li>
+      <li>Select "Save as PDF" as the destination</li>
+      <li>In print settings, enable "Background graphics"</li>
+      <li>Set margins to Minimum</li>
+      <li>Turn off headers and footers</li>
+      <li>Complete the print/save process</li>
+    </ol>
+    <p><strong>Browser-specific settings:</strong></p>
+    <ul>
+      <li><strong>Chrome/Edge:</strong> Click "More settings" and enable "Background graphics"</li>
+      <li><strong>Safari:</strong> In Safari menu > Settings > Advanced and check "Print backgrounds"</li>
+      <li><strong>Firefox:</strong> In Print dialog, check "Print backgrounds (colors & images)"</li>
+    </ul>
+    <a href="kayron_resume.html" class="button" target="_blank">Open Standard Resume</a>
+  </div>
+  
+  <div class="preview">
+    <h3>Preview</h3>
+    <p>How your resume should look with the watermark:</p>
+    <img src="../assets/preview.png" alt="Resume Preview" />
+  </div>
+</body>
+</html>
