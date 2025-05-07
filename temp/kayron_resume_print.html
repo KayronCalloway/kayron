@@ -618,22 +618,23 @@
       body::after {
         content: "" !important;
         display: block !important;
-        position: absolute !important;
-        bottom: 20mm !important;
+        position: fixed !important;
+        bottom: 25mm !important;
         right: 15mm !important;
         width: 25mm !important;
         height: 25mm !important;
-        background-image: url('fingerprint.png') !important;
+        background-image: url('./fingerprint.png') !important;
         background-size: contain !important;
         background-repeat: no-repeat !important;
         opacity: 0.13 !important;
-        z-index: 99 !important;
+        z-index: 999 !important;
         transform: rotate(-37deg) !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
+        pointer-events: none !important;
       }
       
-      /* Create balanced layout */
+      /* Create balanced layout with explicit page breaks */
       header {
         margin-bottom: 0.3cm;
         padding-bottom: 0.2cm;
@@ -645,6 +646,12 @@
         margin-bottom: 0.3cm;
         page-break-after: avoid;
         break-after: avoid;
+      }
+      
+      /* Force Tension section to start on page 2 */
+      .key-achievements {
+        page-break-before: always !important;
+        break-before: always !important;
       }
       
       section:last-child {
@@ -685,6 +692,19 @@
   </style>
 </head>
 <body>
+  <!-- Inline Fingerprint Watermark for each page that will appear in print -->
+  <div class="print-fingerprint-watermark" style="position: fixed; bottom: 25mm; right: 15mm; width: 25mm; height: 25mm; background-image: url('./fingerprint.png'); background-size: contain; background-repeat: no-repeat; opacity: 0.13; z-index: 9999; transform: rotate(-37deg); pointer-events: none; display: none;">
+  </div>
+  <style>
+    @media print {
+      .print-fingerprint-watermark {
+        display: block !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+  </style>
+  
   <main class="resume-container" itemscope itemtype="https://schema.org/Person">
     <header>
       <h1 itemprop="name">KAYRON CALLOWAY</h1>
