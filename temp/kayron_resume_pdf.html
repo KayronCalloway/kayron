@@ -413,24 +413,6 @@
   <!-- Watermark element that will appear in print -->
   <div class="watermark"></div>
   
-  <!-- Print button and instructions -->
-  <button class="print-button" onclick="window.print()">Print to PDF</button>
-  
-  <div class="print-instructions">
-    <h2>Print Instructions</h2>
-    <ol>
-      <li>Click the "Print to PDF" button above</li>
-      <li>In the print dialog, select "Save as PDF" or "Microsoft Print to PDF"</li>
-      <li><strong>IMPORTANT:</strong> Make sure "Background graphics" or "Background images" is checked</li>
-      <li>Set margins to "Minimum" or "None"</li>
-      <li>Disable headers and footers</li>
-      <li>Set scale to 100%</li>
-      <li>For Chrome/Edge: Click "More settings" and enable "Background graphics"</li>
-      <li>For Safari: In Safari menu > Settings > Advanced and check "Print backgrounds"</li>
-    </ol>
-    <p>If the fingerprint watermark doesn't appear in your PDF, please make sure to enable background printing in your browser settings.</p>
-  </div>
-  
   <main class="resume-container">
     <header>
       <h1>KAYRON CALLOWAY</h1>
@@ -580,11 +562,8 @@
   </main>
   
   <script>
-    // Handle print events to hide UI elements during printing
+    // Handle print events for watermarking
     window.addEventListener('beforeprint', function() {
-      document.querySelector('.print-button').style.display = 'none';
-      document.querySelector('.print-instructions').style.display = 'none';
-      
       // Show watermark during print
       document.querySelector('.watermark').style.display = 'block';
       
@@ -593,8 +572,6 @@
     });
     
     window.addEventListener('afterprint', function() {
-      document.querySelector('.print-button').style.display = 'block';
-      document.querySelector('.print-instructions').style.display = 'block';
       document.querySelector('.watermark').style.display = 'none';
       
       // Remove the injected watermarks
@@ -751,12 +728,6 @@
         }
       `;
       document.head.appendChild(style);
-      
-      // Warning for users
-      const warning = document.createElement('div');
-      warning.style.cssText = 'position: fixed; bottom: 10px; left: 0; right: 0; background: #fff3cd; color: #856404; padding: 12px; text-align: center; z-index: 9999; font-size: 14px; border-top: 1px solid #ffeeba;';
-      warning.innerHTML = '<strong>Important:</strong> Make sure to check "Background graphics" or "Print backgrounds" in your browser\'s print settings!';
-      document.body.appendChild(warning);
     }
     
     // Run when page loads
