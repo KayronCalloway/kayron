@@ -180,44 +180,66 @@
       margin-bottom: calc(var(--spacing-unit) * 4);
     }
     
-    /* Section headings: From decorative to conceptual */
+    /* Section headings: From typographic to architectural */
     h2 {
-      font-size: 15px;
-      font-weight: 400;  /* Reduced weight creates deliberate tension with the uppercase */
+      font-size: 14.5px; /* Calibrated size creates precise typographic system */
+      font-weight: 450;  /* Custom weight creates material tension between light and medium */
       color: var(--color-text-primary);
-      letter-spacing: 0.09em;  /* Expanded tracking creates authoritative rhythm */
-      margin-bottom: calc(var(--spacing-unit) * 1.8);  /* Precise asymmetrical spacing */
+      letter-spacing: 0.105em;  /* Expanded tracking creates ceremonial authority */
+      margin-bottom: calc(var(--spacing-unit) * 1.7);  /* Calibrated negative space */
       position: relative;
       text-transform: uppercase;
-      border-bottom: 1px solid var(--color-border);
-      padding-bottom: calc(var(--spacing-unit) * 0.65);  /* Calibrated to optical balance */
-      /* Structural intervention */
-      display: inline-block;  /* Contains the border to text width only */
-      margin-right: auto;  /* Creates asymmetrical placement */
+      /* Reduced weight creates threshold border */
+      border-bottom: 0.5px solid rgba(224, 224, 224, 0.85);
+      padding-bottom: calc(var(--spacing-unit) * 0.7);  /* Optical balance with x-height */
+      
+      /* Structural system - transforms line from decoration to architecture */
+      display: inline-block;  /* Containment creates tension with text block */
+      margin-right: auto;  /* Creates asymmetrical spatial field */
+      
+      /* Precise optical alignment */
+      transform: translateX(-0.04em) translateY(-0.02em);
+      
+      /* Subtle material distinction */
+      font-feature-settings: "case", "ss02"; /* Optical caps, alternate glyphs if available */
     }
     
+    /* Parentheses: From character to symbolic field */
     h2::before {
       content: "(";
-      margin-right: 4px;
-      opacity: 0.45;  /* Reduced presence - parentheses as whisper not declaration */
-      font-weight: 300;
+      margin-right: 5px; /* Asymmetrical spacing creates deliberate tension */
+      opacity: 0.35;  /* Reduced presence transforms character to atmospheric element */
+      font-weight: 200; /* Lighter weight creates perceptual thinning */
       font-family: 'Lvvvdy', sans-serif;
-      font-size: 116%;
+      font-size: 115%; /* Calibrated scale creates subtle material contrast */
       vertical-align: middle;
       position: relative;
-      top: -1px;
+      top: -0.5px; /* Optical alignment with cap height */
+      
+      /* Create perceptual system through visual distinction */
+      letter-spacing: 0.02em;
+      font-feature-settings: "salt"; /* Stylistic alternates if available */
+      
+      /* Transform from decorative to conceptual through placement */
+      transform: translateX(-0.07em) scale(1.05, 0.95); /* Subtle distortion creates visual tension */
     }
     
+    /* Closing parenthesis reconceived as response to opening */
     h2::after {
       content: ")";
-      margin-left: 4px;
-      opacity: 0.45;  /* Matched opacity creates system coherence */
-      font-weight: 300;
+      margin-left: 5px;
+      opacity: 0.35;  /* Matched opacity preserves system coherence */
+      font-weight: 200;
       font-family: 'Lvvvdy', sans-serif;
-      font-size: 116%;
+      font-size: 115%;
       vertical-align: middle;
       position: relative;
-      top: -1px;
+      top: -0.5px;
+      
+      /* Mirror of opening parenthesis creates structured balance */
+      letter-spacing: 0.02em;
+      font-feature-settings: "salt";
+      transform: translateX(0.07em) scale(1.05, 0.95); /* Mirrored distortion creates visual resonance */
     }
     
     .experience-item {
@@ -283,27 +305,36 @@
       list-style-type: none;
     }
     
-    /* List items reconceived as a system of deliberate asymmetries */
+    /* List items: From informational to experiential through calibrated restraint */
     li {
-      margin-bottom: calc(var(--spacing-unit) * 0.95); /* Slight compression creates forward momentum */
+      margin-bottom: calc(var(--spacing-unit) * 1.05); /* Calibrated spacing creates deliberate tempo */
       position: relative;
-      padding-left: calc(var(--spacing-unit) * 1.8); /* Calibrated to optical alignment with heading structure */
-      font-size: 13.5px; /* Reduced size increases information density while maintaining white space */
+      padding-left: calc(var(--spacing-unit) * 1.7); /* Asymmetrical offset creates perceptual tension */
+      font-size: 13.2px; /* Precise reduction creates deliberate material contrast with headings */
       color: var(--color-text-secondary);
       font-weight: 300;
-      line-height: 1.38; /* Precise line-height creates measured breathing space */
-      letter-spacing: -0.008em; /* Subtly tightened tracking creates horizontal tension */
-      max-width: 98%; /* Limits line length for increased readability */
+      line-height: 1.35; /* Tightened line height creates taut composition */
+      letter-spacing: -0.011em; /* Compressed tracking creates horizontal tension */
+      max-width: 96%; /* Limits line length for increased readability */
+      
+      /* Creates subtle distinction between information and concept */
+      text-align: justify; /* Typographic grid creates systematic tension */
+      hyphens: auto; /* Enables hyphenation for refined text blocks */
+      
+      /* Creates intentional rhythm */
+      transition: opacity 0.3s ease-out; /* Optional: animates focus states */
     }
     
     li::before {
-      content: "•"; /* Consider alt: "–" for hierarchy differentiation */
+      content: "–"; /* Em dash creates typographic system distinction */
       position: absolute;
-      left: 0;
+      left: 0.1em; /* Optical alignment */
       color: var(--color-text-tertiary);
-      font-size: 10px; /* Reduced from default creates perceptual tension */
-      opacity: 0.7; /* Reduced presence - bullet as guide not anchor */
-      top: 0.4em; /* Optical vertical alignment with text */
+      font-size: 9px; /* Reduced presence transforms from decoration to system */
+      opacity: 0.58; /* Calibrated visibility threshold */
+      top: 0.52em; /* Precise optical alignment with baseline */
+      font-weight: 300; /* Reduced weight creates subtle distinction */
+      transform: scaleX(0.9); /* Subtly compressed for materiality */
     }
     
     .key-achievements {
@@ -328,23 +359,31 @@
       font-size: 14px;
     }
     
-    /* Skills container reconceived as negative space architecture */
+    /* Skills container: From container to field through calibrated presence */
     .skills {
       display: grid;
       grid-template-columns: 1fr;
-      gap: calc(var(--spacing-unit) * 2.2); /* Calibrated compression creates density */
-      background-color: rgba(249, 249, 249, 0.4); /* Reduced contrast creates depth through subtlety */
-      padding: calc(var(--spacing-unit) * 2.4) calc(var(--spacing-unit) * 2.6); /* Asymmetrical padding creates perceptual tension */
-      border-radius: 3px; /* Reduced radius creates subtler frame */
-      border: 1px solid rgba(224, 224, 224, 0.8); /* Reduced border opacity creates layered depth */
+      gap: calc(var(--spacing-unit) * 2.4); /* Calibrated negative space creates structured breathing */
       
-      /* Create optical margins through slight inset */
+      /* Container exists as perceptual field rather than visual box */
+      background-color: rgba(250, 250, 250, 0.25); /* Threshold of perceptibility */
+      padding: calc(var(--spacing-unit) * 2.3) calc(var(--spacing-unit) * 2.7); /* Asymmetrical padding induces subtle directional tension */
+      border-radius: 2px; /* Minimal radius creates architectural precision */
+      
+      /* Border exists as optical threshold rather than visual boundary */
+      border: 0.5px solid rgba(222, 222, 222, 0.65); /* Calibrated to perceptual threshold */
+      
+      /* Transform from decorative to conceptual through precise placement */
       position: relative;
-      left: calc(var(--spacing-unit) * 0.2);
-      width: calc(100% - var(--spacing-unit) * 0.4);
+      /* Golden ratio-based offset creates structured imbalance */
+      left: calc(var(--spacing-unit) * 0.15);
+      width: calc(100% - var(--spacing-unit) * 0.3);
       
-      /* Create vertical rhythm distinction */
-      margin-bottom: calc(var(--spacing-unit) * 2.8);
+      /* Vertical rhythm creates systemic distinction */
+      margin-bottom: calc(var(--spacing-unit) * 2.7);
+      
+      /* Optional material system intervention */
+      box-shadow: 0 0.5px 1.5px rgba(0, 0, 0, 0.02); /* Threshold shadow creates perceptual depth */
     }
     
     .skill-category {
@@ -742,22 +781,48 @@
           }
           
           /* 
-          Museum-grade print treatment for philosophy statement
-          - Scale reduced to threshold of visibility/invisibility
-          - Creates tension between content and form
-          - Transforms from language to visual texture at print scale
-          - Becomes a field rather than a statement
+          Museum-grade print treatment for philosophy statement:
+          The typography here functions as material presence rather than 
+          linguistic content - calibrated precisely at the threshold where
+          text transforms into texture, meaning into atmosphere.
           */
           .philosophy-statement {
-            font-size: 4.2px !important;  /* Calibrated to perceptual threshold */
-            line-height: 0.9 !important;  /* Compresses vertical space while preserving field impression */
-            margin: 0.02cm !important;    /* Minimalist edge treatment */
-            max-width: 75% !important;    /* Asymmetrical weighting */
-            letter-spacing: -0.02em !important; /* Optical kerning adjustment */
-            opacity: 0.65 !important;     /* Recedes while remaining present */
-            font-weight: 200 !important;  /* Reduced visual weight */
-            transform: scale(0.98) !important; /* Subtle scale distinction */
+            /* Size recalibrated to exact perceptual threshold */
+            font-size: 3.9px !important;
+            
+            /* Line height compressed to visual field threshold */
+            line-height: 0.85 !important;
+            
+            /* Precise edge calibration creates containment tension */
+            margin: 0.018cm 0.022cm 0.018cm 0 !important;
+            
+            /* Asymmetrical constraint creates visual tension */
+            max-width: 72% !important;
+            
+            /* Kerning compressed to threshold of legibility */
+            letter-spacing: -0.025em !important;
+            word-spacing: -0.035em !important;
+            
+            /* Opacity calibrated to threshold of visibility */
+            opacity: 0.58 !important;
+            
+            /* Weight reduced to threshold of materiality */
+            font-weight: 180 !important;
+            
+            /* Subtle distortion creates material tension */
+            transform: scale(0.96, 0.97) translateX(-0.02em) !important;
             transform-origin: top left !important;
+            
+            /* Optional: font features create typographic distinction */
+            font-feature-settings: "onum", "salt" !important;
+            
+            /* Text rendered as field rather than content */
+            text-align: justify !important;
+            hyphens: auto !important;
+            font-synthesis: none !important;
+            
+            /* Color shifted toward colder tone */
+            color: rgba(118, 118, 118, 0.85) !important;
           }
           
           /* Summary section spacing */
