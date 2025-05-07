@@ -52,8 +52,8 @@
     }
     
     header {
-      margin-bottom: calc(var(--spacing-unit) * 4);
-      padding-bottom: calc(var(--spacing-unit) * 1.5);
+      margin-bottom: calc(var(--spacing-unit) * 2);
+      padding-bottom: calc(var(--spacing-unit) * 1);
       border-bottom: 1px solid var(--color-border);
     }
     
@@ -77,12 +77,12 @@
     .philosophy-statement {
       font-style: italic;
       color: var(--color-text-tertiary);
-      margin-top: calc(var(--spacing-unit) * 1.5);
+      margin-top: calc(var(--spacing-unit) * 1);
       font-weight: 300;
-      margin-bottom: calc(var(--spacing-unit) * 1.5);
-      max-width: 95%;
-      font-size: 12px;
-      line-height: 1.4;
+      margin-bottom: calc(var(--spacing-unit) * 1);
+      max-width: 90%;
+      font-size: 10px;
+      line-height: 1.3;
     }
     
     .contact-info {
@@ -112,7 +112,7 @@
     }
     
     .summary {
-      margin-bottom: calc(var(--spacing-unit) * 6);
+      margin-bottom: calc(var(--spacing-unit) * 3);
       position: relative;
       max-width: 95%;
     }
@@ -125,7 +125,7 @@
     }
     
     section {
-      margin-bottom: calc(var(--spacing-unit) * 6);
+      margin-bottom: calc(var(--spacing-unit) * 4);
     }
     
     h2 {
@@ -635,26 +635,34 @@
           
           /* Fine-tuned header section for print */
           header {
-            margin-bottom: 0.2cm !important;
-            padding-bottom: 0.1cm !important;
+            margin-bottom: 0.1cm !important;
+            padding-bottom: 0.05cm !important;
           }
           
+          /* Option 1: Extremely minimal philosophy statement */
           .philosophy-statement {
-            font-size: 6.5px !important;
-            line-height: 1.05 !important;
-            margin-top: 0.05cm !important;
-            margin-bottom: 0.05cm !important;
-            max-width: 90% !important;
+            font-size: 5.5px !important;
+            line-height: 1 !important;
+            margin-top: 0.03cm !important;
+            margin-bottom: 0.03cm !important;
+            max-width: 85% !important;
           }
+          
+          /* Option 2: Uncomment to hide philosophy completely if space is still an issue */
+          /* 
+          .philosophy-statement {
+            display: none !important;
+          }
+          */
           
           /* Summary section spacing */
           .summary {
-            margin-bottom: 0.1cm !important; /* Reduced bottom margin */
+            margin-bottom: 0.05cm !important; /* Further reduced bottom margin */
           }
           
           .summary p {
-            font-size: 8.5px !important;
-            line-height: 1.2 !important;
+            font-size: 8px !important;
+            line-height: 1.1 !important;
           }
           
           /* Section headings */
