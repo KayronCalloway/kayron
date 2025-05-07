@@ -135,8 +135,32 @@
     /* Create visual pause between stanzas */
     .philosophy-statement .stanza-break {
       display: block;
-      height: 0.6em;
+      height: 0.85em; /* Expanded height creates more definitive pause */
       width: 100%;
+      position: relative;
+    }
+    
+    /* Optional visual divider */
+    .philosophy-statement .stanza-break::after {
+      content: "";
+      position: absolute;
+      left: 30%;
+      top: 50%;
+      width: 40%;
+      height: 0.5px;
+      background-color: rgba(224, 224, 224, 0.4);
+    }
+    
+    /* Distinct styling for each stanza */
+    .philosophy-statement .stanza-one {
+      display: block;
+      color: rgba(117, 117, 117, 0.9); /* Slightly higher contrast */
+    }
+    
+    .philosophy-statement .stanza-two {
+      display: block;
+      color: rgba(117, 117, 117, 0.85); /* Slightly lower contrast creates depth */
+      font-style: italic; /* Increased stylistic distinction */
     }
     
     /* Contact info reconceived as structured negative space system */
@@ -655,15 +679,19 @@
         <span>310.498.8059</span>
       </div>
       <div class="philosophy-statement" aria-label="Designer's philosophy - a manifesto-style statement with deliberate pause">
-        I believe the most powerful design doesn't declare itself—it invites you in.
-        My work exists between creation and consumption, where meaning isn't made but met.
-        Reflection isn't the outcome; it's the medium. Ritual becomes interface. Silence becomes authorship.
+        <span class="stanza-one">
+          I believe the most powerful design doesn't declare itself—it invites you in.
+          My work exists between creation and consumption, where meaning isn't made but met.
+          Reflection isn't the outcome; it's the medium. Ritual becomes interface. Silence becomes authorship.
+        </span>
         <span class="stanza-break"></span>
-        I lead like I create: collaboratively, with clarity, and without control. That has cost me time, certainty, and pride.
-        I've clung too tightly to elegance. I've chased clarity until the work lost its edge.
-        I've stayed quiet when I should have pushed, and pushed when I should have listened.
-        I'll delete my best work to protect coherence. But I won't let a clever idea replace an honest one.
-        That's the line I don't cross.
+        <span class="stanza-two">
+          I lead like I create: collaboratively, with clarity, and without control. That has cost me time, certainty, and pride.
+          I've clung too tightly to elegance. I've chased clarity until the work lost its edge.
+          I've stayed quiet when I should have pushed, and pushed when I should have listened.
+          I'll delete my best work to protect coherence. But I won't let a clever idea replace an honest one.
+          That's the line I don't cross.
+        </span>
       </div>
     </header>
     
