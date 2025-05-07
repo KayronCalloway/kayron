@@ -9,12 +9,39 @@
   <meta name="robots" content="index, follow">
   <meta name="color-scheme" content="light">
   <meta name="format-detection" content="telephone=yes">
-  <title>Kayron Calloway | Creative Director</title>
+  <title>Kayron Calloway | Creative Director (Print Version)</title>
+  <style>
+    @media screen {
+      body:after {
+        content: "Use browser print function (Ctrl+P / Cmd+P) to print this page to PDF";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: #333;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        font-size: 16px;
+        z-index: 9999;
+      }
+    }
+  </style>
   <!-- Resource hints for performance optimization -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&display=swap"></noscript>
+  <!-- Custom font for parentheses -->
+  <style>
+    @font-face {
+      font-family: 'Lvvvdy';
+      src: url('Lvvvdy.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
   <!-- Include html2pdf.js library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!-- Structured data for better SEO and social sharing -->
@@ -67,194 +94,229 @@
       padding: 0 var(--spacing-unit);
     }
     
-    /* Fingerprint watermark - optimized SVG */
+    /* Fingerprint watermark */
     body::after {
       content: "";
       position: fixed;
-      top: 30px;
-      right: 30px;
-      width: 40px;
-      height: 40px;
-      background-image: url("data:image/svg+xml,%3Csvg width='110' height='110' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M55 11c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zm0 65v-30c-5.5 0-10-4.5-10-10s4.5-10 10-10c-5.5 0-10 4.5-10 10s4.5 10 10 10v5c-8.3 0-15-6.7-15-15s6.7-15 15-15c-8.3 0-15 6.7-15 15s6.7 15 15 15v10c-11 0-20-9-20-20s9-20 20-20c-11 0-20 9-20 20s9 20 20 20v5c-13.8 0-25-11.2-25-25s11.2-25 25-25c-13.8 0-25 11.2-25 25s11.2 25 25 25v10c-16.5 0-30-13.5-30-30s13.5-30 30-30c16.5 0 30 13.5 30 30s-13.5 30-30 30zm25-30c0 13.8-11.2 25-25 25v-5c11 0 20-9 20-20s-9-20-20-20c11 0 20 9 20 20s-9 20-20 20v15c16.5 0 30-13.5 30-30s-13.5-30-30-30c16.5 0 30 13.5 30 30s-13.5 30-30 30v-10c13.8 0 25-11.2 25-25zm-5-5c0 8.3-6.7 15-15 15v-5c5.5 0 10-4.5 10-10s-4.5-10-10-10c5.5 0 10 4.5 10 10s-4.5 10-10 10v10c11 0 20-9 20-20s-9-20-20-20c11 0 20 9 20 20z' fill='rgba(0,0,0,0.07)'/%3E%3C/svg%3E");
+      bottom: 40px;
+      right: 40px;
+      width: 100px;
+      height: 100px;
+      background-image: url("fingerprint.png");
       background-size: contain;
       background-repeat: no-repeat;
-      opacity: 0.07;
+      opacity: 0.13;
       z-index: -1;
       pointer-events: none;
+      transform: rotate(-37deg);
     }
     
     .resume-container {
       position: relative;
     }
     
-    /* Header Section */
+    /* Header Section - Fortune 100 Style */
     header {
-      margin-bottom: 64px;
+      margin-bottom: calc(var(--spacing-unit) * 7);
+      padding-bottom: calc(var(--spacing-unit) * 3);
+      border-bottom: 1px solid var(--color-border);
     }
     
     header h1 {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 500;
-      letter-spacing: -0.01em;
-      color: #111;
-      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+      color: var(--color-text-primary);
+      margin-bottom: calc(var(--spacing-unit) * 1.5);
+      text-transform: uppercase;
     }
     
     .title-line {
       font-size: 14px;
-      color: #555;
-      font-weight: 300;
-      margin-bottom: 20px;
-      letter-spacing: 0.01em;
+      color: var(--color-text-secondary);
+      font-weight: 400;
+      margin-bottom: calc(var(--spacing-unit) * 2.5);
+      letter-spacing: 0.02em;
     }
     
     .philosophy-statement {
       font-style: italic;
-      color: #666;
-      margin-top: 30px;
+      color: var(--color-text-tertiary);
+      margin-top: calc(var(--spacing-unit) * 3.5);
       font-weight: 300;
-      margin-bottom: 24px;
+      margin-bottom: calc(var(--spacing-unit) * 3);
       max-width: 90%;
       font-size: 14px;
+      line-height: 1.6;
     }
     
     .contact-info {
       display: flex;
       flex-wrap: wrap;
-      gap: 18px;
-      margin-top: 16px;
-      font-size: 14px;
-      color: #666;
-      letter-spacing: 0.02em;
-      font-weight: 300;
+      align-items: center;
+      gap: calc(var(--spacing-unit) * 2);
+      margin-top: calc(var(--spacing-unit) * 2);
+      font-size: 13px;
+      color: var(--color-text-tertiary);
+      letter-spacing: 0.01em;
+      font-weight: 400;
     }
     
     .contact-info a {
-      color: #333;
+      color: var(--color-text-secondary);
       text-decoration: none;
       padding-bottom: 1px;
-      border-bottom: 1px solid #ccc;
-      transition: border-color 0.2s;
+      border-bottom: 1px solid var(--color-border);
+      transition: all 0.2s;
     }
     
     .contact-info a:hover {
-      border-color: #333;
+      color: var(--color-text-primary);
+      border-color: var(--color-text-secondary);
     }
     
-    /* Main Content Layout */
+    /* Main Content Layout - Optimized Fortune 100 Grid */
     .main-content {
       display: grid;
-      grid-template-columns: 2fr 1fr;
-      grid-gap: 48px;
+      grid-template-columns: 68fr 32fr;
+      grid-gap: calc(var(--spacing-unit) * 6);
     }
     
     /* Summary Section */
     .summary {
-      margin-bottom: 64px;
+      margin-bottom: calc(var(--spacing-unit) * 7);
       position: relative;
+      max-width: 95%;
     }
     
     .summary p {
-      color: #333;
+      color: var(--color-text-secondary);
       line-height: 1.6;
       font-weight: 300;
+      font-size: 15px;
     }
     
     .summary .quote {
-      margin-top: 16px;
+      margin-top: calc(var(--spacing-unit) * 2);
       font-size: 14px;
-      color: #666;
+      color: var(--color-text-tertiary);
       font-style: italic;
-      padding-left: 16px;
-      border-left: 1px solid #ddd;
+      padding-left: calc(var(--spacing-unit) * 2);
+      border-left: 1px solid var(--color-border);
     }
     
     /* Section Styling */
     section {
-      margin-bottom: 64px;
+      margin-bottom: calc(var(--spacing-unit) * 7);
     }
     
     h2 {
       font-size: 16px;
       font-weight: 500;
-      color: #111;
+      color: var(--color-text-primary);
       letter-spacing: 0.03em;
-      margin-bottom: 16px;
+      margin-bottom: calc(var(--spacing-unit) * 2.5);
       position: relative;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: calc(var(--spacing-unit) * 0.75);
     }
     
     h2::before {
       content: "(";
       margin-right: 4px;
-      opacity: 0.4;
+      opacity: 0.7;
+      font-weight: 300;
+      font-family: 'Lvvvdy', sans-serif;
+      font-size: 120%;
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
     }
     
     h2::after {
       content: ")";
       margin-left: 4px;
-      opacity: 0.4;
+      opacity: 0.7;
+      font-weight: 300;
+      font-family: 'Lvvvdy', sans-serif;
+      font-size: 120%;
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
     }
     
-    /* Experience Items */
+    /* Experience Items - Fortune 100 Style */
     .experience-item {
-      margin-bottom: 40px;
+      margin-bottom: calc(var(--spacing-unit) * 5);
       position: relative;
+      padding-bottom: calc(var(--spacing-unit) * 2);
+    }
+    
+    .experience-item:not(:last-child) {
+      border-bottom: 1px dotted var(--color-border);
     }
     
     .experience-item:last-child {
       margin-bottom: 0;
+      border-bottom: none;
     }
     
     h3 {
       font-size: 16px;
       font-weight: 500;
-      margin-bottom: 2px;
-      color: #111;
+      margin-bottom: calc(var(--spacing-unit) * 0.5);
+      color: var(--color-text-primary);
+      letter-spacing: 0.01em;
     }
     
     .position-details {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 8px;
+      margin-bottom: calc(var(--spacing-unit) * 1.5);
       font-size: 14px;
-      color: #666;
+      color: var(--color-text-secondary);
     }
     
     .company {
-      font-weight: 400;
+      font-weight: 500;
     }
     
     .date {
-      color: #666;
+      color: var(--color-text-tertiary);
+      font-weight: 400;
     }
     
     .experience-item p {
-      margin-bottom: 8px;
-      color: #333;
+      margin-bottom: calc(var(--spacing-unit) * 1.5);
+      color: var(--color-text-secondary);
       font-weight: 300;
+      line-height: 1.5;
     }
     
     /* Lists */
     ul {
-      padding-left: 8px;
-      margin: 8px 0;
+      padding-left: calc(var(--spacing-unit) * 1);
+      margin: calc(var(--spacing-unit) * 1) 0;
       list-style-type: none;
     }
     
     li {
-      margin-bottom: 8px;
+      margin-bottom: calc(var(--spacing-unit) * 1.25);
       position: relative;
-      padding-left: 16px;
-      font-size: 16px;
-      color: #333;
+      padding-left: calc(var(--spacing-unit) * 2);
+      font-size: 14.5px;
+      color: var(--color-text-secondary);
       font-weight: 300;
+      line-height: 1.5;
     }
     
     li::before {
-      content: "—";
+      content: "•";
       position: absolute;
-      left: -8px;
-      color: #666;
+      left: 0;
+      color: var(--color-text-tertiary);
+      font-size: 12px;
     }
     
     /* Key Achievements */
@@ -280,79 +342,108 @@
       font-size: 14px;
     }
     
-    /* Skills Grid */
+    /* Skills Grid - Fortune 100 Style */
     .skills {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 16px;
+      gap: calc(var(--spacing-unit) * 2.5);
+      background-color: rgba(250, 250, 250, 0.5);
+      padding: calc(var(--spacing-unit) * 2.5);
+      border-radius: 4px;
+      border: 1px solid var(--color-border);
     }
     
     .skill-category {
-      margin-bottom: 16px;
+      margin-bottom: calc(var(--spacing-unit) * 2);
     }
     
     .skill-category h4 {
       font-size: 14px;
       font-weight: 500;
-      margin-bottom: 4px;
-      color: #111;
-      letter-spacing: 0.02em;
+      margin-bottom: calc(var(--spacing-unit) * 0.75);
+      color: var(--color-text-primary);
+      letter-spacing: 0.01em;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: calc(var(--spacing-unit) * 0.5);
+      display: inline-block;
     }
     
     .skill-list {
-      font-size: 14px;
-      color: #333;
+      font-size: 13.5px;
+      color: var(--color-text-secondary);
       line-height: 1.6;
       font-weight: 300;
     }
     
-    /* Education */
+    /* Education - Fortune 100 Style */
     .education-item {
-      margin-bottom: 24px;
+      margin-bottom: calc(var(--spacing-unit) * 3);
+      padding-bottom: calc(var(--spacing-unit) * 1.5);
     }
     
     .education-item .degree {
       font-weight: 500;
-      margin-bottom: 4px;
-      color: #111;
+      margin-bottom: calc(var(--spacing-unit) * 0.5);
+      color: var(--color-text-primary);
+      font-size: 14px;
     }
     
     .education-item .institution {
       font-size: 14px;
-      color: #666;
+      color: var(--color-text-secondary);
+      font-weight: 400;
     }
     
     .education-item .details {
-      font-size: 14px;
-      color: #333;
-      margin-top: 6px;
+      font-size: 13px;
+      color: var(--color-text-tertiary);
+      margin-top: calc(var(--spacing-unit) * 0.75);
       font-weight: 300;
+      letter-spacing: 0.01em;
     }
     
     /* Certifications */
     .certifications ul {
-      margin-top: 6px;
+      margin-top: calc(var(--spacing-unit) * 0.75);
     }
     
     .certifications li {
-      margin-bottom: 6px;
+      margin-bottom: calc(var(--spacing-unit) * 0.75);
     }
     
-    /* Projects */
+    /* Projects - Fortune 100 Style */
     .projects ul {
-      margin-top: 6px;
+      margin-top: calc(var(--spacing-unit) * 1.5);
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--spacing-unit) * 1.5);
     }
     
     .projects li {
-      margin-bottom: 16px;
+      margin-bottom: calc(var(--spacing-unit) * 1);
+      background: linear-gradient(to right, rgba(245, 245, 245, 0.5), transparent);
+      padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 1.5);
+      border-radius: 3px;
+      border-left: 2px solid var(--color-border);
     }
     
     .projects li strong {
-      color: #111;
+      color: var(--color-text-primary);
       display: block;
-      margin-bottom: 2px;
+      margin-bottom: calc(var(--spacing-unit) * 0.5);
       font-weight: 500;
+      font-size: 14px;
     }
+    
+    /* Philosophy Section */
+    .philosophy {
+      background-color: rgba(245, 245, 245, 0.5);
+      padding: calc(var(--spacing-unit) * 2);
+      border-radius: 4px;
+      border: 1px solid var(--color-border);
+      margin-top: calc(var(--spacing-unit) * 2);
+    }
+    
     
     /* Footer */
     .signature {
@@ -360,17 +451,17 @@
       margin-top: calc(var(--spacing-unit) * 7);
       color: #ddd;
       font-weight: 300;
-      font-size: 28px;
+      font-size: 32px;
       letter-spacing: 0.05em;
       padding-top: calc(var(--spacing-unit) * 3);
       border-top: 1px solid var(--color-border);
+      font-family: 'Lvvvdy', sans-serif;
     }
     
     @media print {
       .signature {
         display: none; /* Hide default signature */
       }
-      
     }
     
     /* Enhanced Print Styles */
@@ -378,21 +469,21 @@
       body {
         margin: 0;
         padding: 0;
-        font-size: 11px;
-        line-height: 1.5;
+        font-size: 10px;
+        line-height: 1.3;
         background: #fff !important;
         color: #000 !important;
         max-width: 100%;
       }
       
       @page {
-        margin: 0.5cm 1.5cm;
+        margin: 0.5cm;
         size: letter portrait;
       }
       
       .resume-container {
         margin: 0;
-        padding: 0.5cm 0;
+        padding: 0.2cm 0;
         max-width: 100%;
       }
       
@@ -405,79 +496,143 @@
       h1, h2, h3, h4 {
         color: #000 !important;
         page-break-after: avoid;
+        break-after: avoid;
+        margin-top: 0.4cm;
+        margin-bottom: 0.2cm;
       }
       
       h2 {
-        font-size: 14px;
-        margin-bottom: 8px;
+        font-size: 12px;
+        padding-bottom: 3px;
       }
       
       h3 {
-        font-size: 13px;
+        font-size: 11px;
       }
       
       h4 {
-        font-size: 12px;
+        font-size: 10px;
       }
       
       section {
-        margin-bottom: 20px;
+        margin-bottom: 12px;
         page-break-inside: avoid;
         break-inside: avoid;
       }
       
       .main-content {
         display: grid;
-        grid-template-columns: 66% 30%;
-        grid-gap: 4%;
+        grid-template-columns: 65% 32%;
+        grid-gap: 3%;
       }
       
       .experience-item {
-        margin-bottom: 16px;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
         page-break-inside: avoid;
         break-inside: avoid;
       }
       
-      /* Ensure sections don't break across pages */
-      .skills, .projects, .education-item {
+      /* Better control for page breaks */
+      .skills, .projects, .education-item, .key-achievements {
         page-break-inside: avoid;
         break-inside: avoid;
       }
       
-        
+      /* Keep lists together */
       ul, li {
         page-break-inside: avoid;
         break-inside: avoid;
       }
       
       li {
-        margin-bottom: 4px;
-        font-size: 11px;
+        margin-bottom: 2px;
+        font-size: 10px;
+        line-height: 1.3;
       }
       
+      p {
+        margin-bottom: 0.2cm;
+      }
+      
+      /* Compact spacing */
       .contact-info {
-        font-size: 10px;
+        font-size: 9px;
+        margin-top: 0.1cm;
+        gap: 8px;
       }
       
-      .skill-list, .philosophy-statement {
-        font-size: 10px;
+      /* Ensure URLs display properly */
+      .contact-info a {
+        font-family: monospace;
+        word-break: keep-all;
+        white-space: nowrap;
       }
       
-      /* Hide fingerprint watermark and signature when printing */
-      body::after, .signature {
+      .skill-list {
+        font-size: 9px;
+        line-height: 1.3;
+      }
+      
+      .philosophy-statement {
+        font-size: 9px;
+        line-height: 1.3;
+        margin-top: 0.2cm;
+        margin-bottom: 0.2cm;
+        max-width: 95%;
+      }
+      
+      /* Keep fingerprint, hide signature */
+      .signature {
         display: none !important;
       }
       
-      /* Ensure critical sections stay on the first page */
-      header, .summary {
+      /* Position fingerprint in print mode */
+      body::after {
+        position: absolute;
+        bottom: 20mm;
+        right: 15mm;
+        width: 25mm;
+        height: 25mm;
+        opacity: 0.13;
+        z-index: 1;
+        transform: rotate(-37deg);
+      }
+      
+      /* Create balanced layout */
+      header {
+        margin-bottom: 0.3cm;
+        padding-bottom: 0.2cm;
         page-break-after: avoid;
         break-after: avoid;
       }
       
-      /* Ensure last sections stay on page */
+      .summary {
+        margin-bottom: 0.3cm;
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+      
       section:last-child {
         page-break-inside: avoid;
         break-inside: avoid;
+      }
+      
+      /* Right column spacing */
+      .right-column section {
+        margin-bottom: 0.3cm;
+      }
+      
+      /* Adjust skill boxes */
+      .skill-category {
+        margin-bottom: 0.2cm;
+      }
+      
+      /* Philosophy fits better */
+      .philosophy-statement {
+        font-style: italic;
+        font-size: 8.5px;
+        line-height: 1.3;
       }
     }
     
@@ -499,28 +654,38 @@
   <main class="resume-container" itemscope itemtype="https://schema.org/Person">
     <header>
       <h1 itemprop="name">KAYRON CALLOWAY</h1>
-      <div class="title-line" itemprop="jobTitle">Creative Strategist | Conceptual Designer | Brand Architect</div>
+      <div class="title-line" itemprop="jobTitle">Creative Director | Systems Thinker | Emotional Architect</div>
       <div class="contact-info">
         <span itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
           <span itemprop="addressLocality">Los Angeles</span>, 
           <span itemprop="addressRegion">CA</span>
         </span>
-        <span><a href="https://kayroncalloway.github.io/kayron/" itemprop="url">kayroncalloway.github.io</a></span>
+        <span><a href="https://kayroncalloway.github.io/kayron/" itemprop="url">kayroncalloway.github.io/kayron</a></span>
         <span itemprop="alternateName">@coolwithakay</span>
         <span><a href="mailto:KayronCalloway@gmail.com" itemprop="email">KayronCalloway@gmail.com</a></span>
         <span itemprop="telephone">310.498.8059</span>
+      </div>
+      <div class="philosophy-statement">
+        I believe the most powerful design doesn't declare itself—it invites you in.
+        My work exists between creation and consumption, where meaning isn't made but met.
+        Reflection isn't the outcome; it's the medium. Ritual becomes interface. Silence becomes authorship.
+        I lead like I create: collaboratively, with clarity, and without control. That has cost me time, certainty, and pride.
+        I've clung too tightly to elegance. I've chased clarity until the work lost its edge.
+        I've stayed quiet when I should have pushed, and pushed when I should have listened.
+        I'll delete my best work to protect coherence. But I won't let a clever idea replace an honest one.
+        That's the line I don't cross.
       </div>
     </header>
     
     <div class="main-content">
       <div class="left-column">
         <section class="summary">
-          <h2>Summary</h2>
-          <p>Creative Director with 7+ years of experience leading cross-functional creative work across branding, campaign development, product innovation, and user experience. Proven ability to build and scale brands across luxury, wellness, and tech. Strength in visual storytelling, design systems, content strategy, and experiential marketing. Known for blending emotional intelligence with high-performance execution.</p>
+          <h2>SUMMARY</h2>
+          <p>I don't make products. I build emotional systems people live inside. Whether scent, site, or sequence, I design for resonance, not reaction. I've led six full product drops through fracture, restart, and real pressure. I've lost momentum doing it my way. But I've never regretted protecting the soul of the work.</p>
         </section>
         
         <section>
-          <h2>Experience</h2>
+          <h2>EXPERIENCE</h2>
           <div class="experience-item" itemprop="workExperience" itemscope itemtype="https://schema.org/OrganizationRole">
             <h3 itemprop="roleName">Founder & Creative Director</h3>
             <div class="position-details">
@@ -531,12 +696,26 @@
                 <time itemprop="startDate" datetime="2024">2024</time> — <time itemprop="endDate">Present</time> | Los Angeles, CA
               </span>
             </div>
+            <p>A memory design house. Each product is its own world. The user completes the art.</p>
             <ul itemprop="description">
-              <li>Founded a multidisciplinary house based on philosophy, spanning film, photography, fragrance, technology, and product development.</li>
-              <li>Created Reflections of You, a multidimensional experience spanning fragrance, film, and product design - using multiple mediums to tell a single cohesive story.</li>
-              <li>Led full GTM strategy, including digital assets, storytelling, packaging engineering, and customer experience.</li>
-              <li>Developed sustainable supply chain and negotiated international vendor partnerships.</li>
+              <li>Built CG as a system-first brand where fragrance, footwear, ritual objects, and interaction act as emotional portals.</li>
+              <li>Directed scent formulation, packaging systems, story sequencing, site logic, and all campaign structure.</li>
+              <li>Led a decentralized team of perfumers, coders, editors, 3D artists, and makers.</li>
+              <li>Developed symbolic packaging: fingerprinted glass, dipped book-safes, refillable crayons.</li>
+              <li>Built a gated site mechanic where access unlocks only after the user draws with intention.</li>
             </ul>
+            <div class="key-achievements">
+              <h4>TENSION</h4>
+              <p>One launch collapsed after I overstructured the logic. I rebuilt it with fewer assumptions and more space. Another drop moved too fast. A creative peer slowed me down. Their restraint saved the rhythm. Later, I held the structure when the team asked me to loosen it. It didn't test as well, but it meant something deeper. One feature never clicked—but I kept it. Not everything needs to be understood to be felt.</p>
+              <h4>SELECTED DROPS</h4>
+              <ul>
+                <li>Reflections of You: A scent designed to smell like presence.</li>
+                <li>The Fingerprint: A shoe built around absence and imprint.</li>
+                <li>Crayon Candle: Wax as memory. Refillable. Relearnable.</li>
+                <li>Coloring With Gray (Film): On global circuit (status pending).</li>
+                <li>The State Within: Governance simulator with emotional consequence.</li>
+              </ul>
+            </div>
           </div>
           
           <div class="experience-item">
@@ -584,34 +763,41 @@
       
       <div class="right-column">
         <section class="skills">
-          <h2>Core Competencies</h2>
+          <h2>TOOLS & SYSTEMS</h2>
           <div class="skill-category">
-            <h4>Design & Creative</h4>
-            <p class="skill-list">Creative Direction, Brand Strategy, Campaign Development, Experiential Design, Art Direction, Multisensory Storytelling</p>
+            <h4>APPROACH</h4>
+            <p class="skill-list">I critique rhythm, tension, and consequence. I let others lead when I'm too close. I defend flawed ideas that move people. I kill polished ones that don't. When alignment breaks, I return to structure. When structure breaks, I listen for the fracture. I've paid in time and velocity, but I never betray clarity to protect myself.</p>
           </div>
           <div class="skill-category">
-            <h4>Technical Skills</h4>
-            <p class="skill-list">Adobe Creative Suite, Figma, Final Cut Pro, Notion, Airtable, Brand Architecture, HTML/CSS, GitHub</p>
+            <h4>Creative Execution</h4>
+            <p class="skill-list">Figma, Adobe Creative Suite, Final Cut Pro, HTML/CSS, GitHub, Notion, Airtable</p>
           </div>
           <div class="skill-category">
-            <h4>Industry Expertise</h4>
-            <p class="skill-list">Entertainment & Media, Luxury & Consumer Goods, Technology & Digital, UX/UI Design</p>
+            <h4>AI + Generative Tools</h4>
+            <p class="skill-list">Runway Gen-4, 11 Labs, OpenAI API (/ask product agent)</p>
+          </div>
+          <div class="skill-category">
+            <h4>Physical Systems</h4>
+            <p class="skill-list">Fragrance Formulation, Footwear Tech Packs, Packaging Architecture, Vendor Coordination (LA, Tokyo)</p>
           </div>
         </section>
         
         <section class="projects">
-          <h2>Projects</h2>
+          <h2>RESONANCE & CONSEQUENCE</h2>
           <ul>
-            <li><strong>Reflections of You</strong> Multidimensional project combining fragrance, film, and product design to tell a cohesive story</li>
-            <li><strong>Coloring with Gray</strong> Multidisciplinary creative house based on philosophical principles</li>
-            <li><strong>VOL 1 Coffee</strong> Experiential hospitality concept centered on ritual and cultural storytelling</li>
-            <li><strong>The State Within</strong> In-development AI governance simulation exploring emotional consequence</li>
-            <li><strong>Paris Fashion Week</strong> Live performance integrating original voiceover and soundscape design</li>
+            <li><strong>Reflections of You:</strong> 200+ testers, 20% resample rate, 100+ testimonials</li>
+            <li><strong>Coloring With Gray film:</strong> On global circuit (selection status pending)</li>
+            <li><strong>C'est Bon x Jordan:</strong> Consulted on tone and cohesion</li>
+            <li><strong>Vogue + Pause:</strong> Featured for sonic authorship at Paris Fashion Week</li>
+            <li><strong>/ask:</strong> OpenAI-powered product dialogue live on site</li>
+            <li><strong>Crayon unlock:</strong> 87% completion rate—ritual drives interaction</li>
+            <li>A user told me the third drop made the first one click. That's the point. The system rewards memory.</li>
+            <li>Twelve staged drops. Not seasonal—sequential. Each reframes the last. The site is live. The story's still becoming.</li>
           </ul>
         </section>
         
         <section>
-          <h2>Education</h2>
+          <h2>EDUCATION</h2>
           <div class="education-item">
             <div class="degree">Bachelor of Arts, Philosophy</div>
             <div class="institution">California State University, Fullerton</div>
@@ -631,58 +817,41 @@
       }
     });
 
-    // Handle PDF saving
+    // Print-specific instructions
     if (window.top === window.self) {
-      // Create a simple download button
-      const downloadButton = document.createElement('button');
-      downloadButton.textContent = 'Save as PDF';
-      downloadButton.style.cssText = 'position: fixed; top: 20px; right: 20px; padding: 10px 18px; background: #f8f8f8; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-family: var(--font-primary); z-index: 1000; font-size: 14px; letter-spacing: 0.02em; color: #333; box-shadow: 0 1px 3px rgba(0,0,0,0.1);';
-      document.body.appendChild(downloadButton);
+      const printButton = document.createElement('button');
+      printButton.textContent = 'Print to PDF';
+      printButton.style.cssText = 'position: fixed; top: 60px; left: 50%; transform: translateX(-50%); padding: 15px 25px; background: #4285f4; color: white; border: none; border-radius: 4px; cursor: pointer; font-family: var(--font-primary); z-index: 1000; font-size: 16px; letter-spacing: 0.02em; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2);';
+      document.body.appendChild(printButton);
       
-      // Configure PDF settings
-      const pdfOptions = {
-        margin: [10, 15, 10, 15], // [top, right, bottom, left] in mm
-        filename: 'KayronCalloway_Resume.pdf',
-        image: { type: 'jpeg', quality: 1 },
-        html2canvas: { 
-          scale: 2,
-          useCORS: true,
-          letterRendering: true,
-          dpi: 300
-        },
-        jsPDF: { 
-          unit: 'mm', 
-          format: 'letter', 
-          orientation: 'portrait'
-        },
-        pagebreak: {
-          mode: ['avoid-all', 'css', 'legacy'],
-          before: '.philosophy-full-width',
-          avoid: ['h2', 'h3', '.experience-item', '.skill-category', '.projects li', '.education-item']
-        }
-      };
+      printButton.addEventListener('click', function() {
+        window.print();
+      });
       
-      // Automatically download after a delay if direct navigation
-      if (document.referrer === '') {
-        setTimeout(() => {
-          const resumeContainer = document.querySelector('.resume-container');
-          html2pdf().from(resumeContainer).set(pdfOptions).save();
-        }, 1500);
-      }
+      // Instructions
+      const instructions = document.createElement('div');
+      instructions.innerHTML = `
+        <h2 style="text-align: center; margin-top: 120px; margin-bottom: 20px;">Print Instructions</h2>
+        <ol style="max-width: 600px; margin: 0 auto; font-size: 16px; line-height: 1.6;">
+          <li>Click the "Print to PDF" button above or use keyboard shortcut (Ctrl+P / Cmd+P)</li>
+          <li>In the print dialog, select "Save as PDF" or similar option</li>
+          <li>Make sure "Background graphics" option is checked (if available)</li>
+          <li>Set Scale to 100% and disable headers/footers</li>
+          <li>Click "Save" to generate the PDF</li>
+        </ol>
+      `;
+      instructions.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; background: #f5f5f5; padding: 20px; z-index: 998; display: block; @media print { display: none; }';
+      document.body.insertBefore(instructions, document.body.firstChild);
       
-      // Download when button is clicked
-      downloadButton.addEventListener('click', () => {
-        const resumeContainer = document.querySelector('.resume-container');
-        // Hide the button temporarily for the PDF capture
-        downloadButton.style.display = 'none';
-        
-        // Generate PDF
-        html2pdf().from(resumeContainer).set(pdfOptions).save().then(() => {
-          // Show button again after generation starts
-          setTimeout(() => {
-            downloadButton.style.display = 'block';
-          }, 500);
-        });
+      // Hide buttons and instructions when printing
+      window.addEventListener('beforeprint', function() {
+        printButton.style.display = 'none';
+        instructions.style.display = 'none';
+      });
+      
+      window.addEventListener('afterprint', function() {
+        printButton.style.display = 'block';
+        instructions.style.display = 'block';
       });
     }
   </script>

@@ -808,55 +808,63 @@
       downloadButton.style.cssText = 'position: fixed; top: 20px; right: 20px; padding: 10px 18px; background: #f8f8f8; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-family: var(--font-primary); z-index: 1000; font-size: 14px; letter-spacing: 0.02em; color: #333; box-shadow: 0 1px 3px rgba(0,0,0,0.1);';
       document.body.appendChild(downloadButton);
       
-      // Configure PDF settings
+      // Add fallback direct PDF link
+      const directPdfLink = document.createElement('a');
+      directPdfLink.href = 'https://kayroncalloway.github.io/kayron/temp/kayron_resume_print.html';
+      directPdfLink.textContent = 'Direct PDF Link';
+      directPdfLink.target = '_blank';
+      directPdfLink.style.cssText = 'position: fixed; top: 20px; right: 160px; padding: 10px 18px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-family: var(--font-primary); z-index: 1000; font-size: 14px; letter-spacing: 0.02em; color: #333; box-shadow: 0 1px 3px rgba(0,0,0,0.1); text-decoration: none;';
+      document.body.appendChild(directPdfLink);
+      
+      // Simpler PDF settings to fix blank PDF issue
       const pdfOptions = {
-        margin: [10, 15, 10, 15], // [top, right, bottom, left] in mm
+        margin: 10,
         filename: 'KayronCalloway_Resume.pdf',
-        image: { type: 'jpeg', quality: 1 },
+        image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { 
-          scale: 2,
+          scale: 2, 
           useCORS: true,
+          logging: true,
           letterRendering: true,
-          dpi: 300,
-          allowTaint: true,
-          backgroundColor: null,
-          imageTimeout: 0,
-          removeContainer: true,
-          foreignObjectRendering: true
+          allowTaint: true
         },
         jsPDF: { 
           unit: 'mm', 
-          format: 'letter', 
+          format: 'a4', 
           orientation: 'portrait'
         },
         pagebreak: {
           mode: ['avoid-all', 'css', 'legacy'],
-          before: '.philosophy-full-width',
-          avoid: ['h2', 'h3', '.experience-item', '.skill-category', '.projects li', '.education-item', '.key-achievements']
+          avoid: ['h2', 'h3', '.experience-item']
         }
       };
       
-      // Automatically download after a delay if direct navigation
-      if (document.referrer === '') {
-        setTimeout(() => {
-          const resumeContainer = document.querySelector('.resume-container');
-          html2pdf().from(resumeContainer).set(pdfOptions).save();
-        }, 1500);
-      }
+      // Handle font loading before PDF generation
+      document.fonts.ready.then(() => {
+        console.log("Fonts loaded and ready for PDF generation");
+      });
       
-      // Download when button is clicked
-      downloadButton.addEventListener('click', () => {
-        const resumeContainer = document.querySelector('.resume-container');
-        // Hide the button temporarily for the PDF capture
-        downloadButton.style.display = 'none';
+      // Download when button is clicked - simplified for reliability
+      downloadButton.addEventListener('click', function() {
+        // Hide button during capture
+        this.style.display = 'none';
         
-        // Generate PDF
-        html2pdf().from(resumeContainer).set(pdfOptions).save().then(() => {
-          // Show button again after generation starts
-          setTimeout(() => {
-            downloadButton.style.display = 'block';
-          }, 500);
-        });
+        // Wait for any pending operations
+        setTimeout(() => {
+          const element = document.querySelector('.resume-container');
+          
+          // Basic approach with fewer options for stability
+          html2pdf(element, pdfOptions)
+            .then(() => {
+              // Show button again
+              downloadButton.style.display = 'block';
+            })
+            .catch(err => {
+              console.error('PDF generation error:', err);
+              alert('There was an error generating the PDF. Please try again.');
+              downloadButton.style.display = 'block';
+            });
+        }, 200);
       });
     }
   </script>
