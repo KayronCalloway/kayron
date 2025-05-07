@@ -76,38 +76,67 @@
       transform: translateY(-0.02em);
     }
     
-    /* Title line reconceived with calibrated proportional relationship to name */
+    /* Title line: From descriptor to signature */
     .title-line {
-      font-size: 13.5px; /* Calibrated size creates hierarchical distinction */
+      font-size: 14.5px; /* Enlarged for more presence and breathing room */
       color: var(--color-text-secondary);
       font-weight: 400;
-      margin-bottom: calc(var(--spacing-unit) * 2.2); /* Adjusted spacing creates intentional rhythm */
-      letter-spacing: 0.03em; /* Expanded tracking balances reduced size */
+      /* Deliberate whitespace creates signature-like presence */
+      margin: calc(var(--spacing-unit) * 1.5) 0 calc(var(--spacing-unit) * 2.6); 
+      letter-spacing: 0.042em; /* Expanded tracking creates authoritative rhythm */
       
-      /* Create subtle layering through opacity */
-      opacity: 0.92;
+      /* Material distinction through layering */
+      opacity: 0.94;
+      
+      /* Create visual signature through typographic refinement */
+      position: relative;
+      left: -0.03em; /* Optical alignment with name */
+      max-width: 95%;
+      
+      /* Optional: typographic distinction through stylistic set */
+      font-feature-settings: "ss01", "case";
+      
+      /* Subtle highlight effect */
+      padding: calc(var(--spacing-unit) * 0.2) 0;
     }
     
     /* 
-    Philosophy statement - Museum-level curation:
-    The philosophy isn't mere text; it's an invisible frame.
-    Its materiality lies in occupying negative space—
-    present enough to establish atmosphere, absent enough to
-    prioritize the concrete work. The scale creates deliberate
-    tension between legibility and visual impression.
+    Philosophy statement - Manifesto pullquote:
+    Reconceived as a framed field with deliberate visual pause between stanzas.
+    The statement becomes an invitation to listen rather than simply read,
+    creating a moment of reflection that mirrors the content itself.
     */
     .philosophy-statement {
       font-style: italic;
       color: var(--color-text-tertiary);
-      margin-top: calc(var(--spacing-unit) * 0.5);
+      margin-top: calc(var(--spacing-unit) * 1);
       font-weight: 300;
-      margin-bottom: calc(var(--spacing-unit) * 0.5);
-      max-width: 80%;
-      font-size: 8px;
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-      opacity: 0.7;
-      /* Creates spatial tension through minimization */
+      margin-bottom: calc(var(--spacing-unit) * 1);
+      max-width: 85%;
+      font-size: 9px;
+      line-height: 1.28;
+      letter-spacing: -0.005em;
+      opacity: 0.75;
+      
+      /* Manifesto box treatment */
+      text-align: justify;
+      padding: calc(var(--spacing-unit) * 1.2) calc(var(--spacing-unit) * 1.4);
+      border-left: 0.5px solid rgba(224, 224, 224, 0.75);
+      background-color: rgba(249, 249, 249, 0.25);
+      
+      /* Creates deliberate structural tension */
+      position: relative;
+      left: calc(var(--spacing-unit) * 0.2);
+      
+      /* Creates material distinction */
+      box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.02);
+    }
+    
+    /* Create visual pause between stanzas */
+    .philosophy-statement .stanza-break {
+      display: block;
+      height: 0.6em;
+      width: 100%;
     }
     
     /* Contact info reconceived as structured negative space system */
@@ -180,28 +209,33 @@
       margin-bottom: calc(var(--spacing-unit) * 4);
     }
     
-    /* Section headings: From typographic to architectural */
+    /* Section headings: From typographic to monumental */
     h2 {
-      font-size: 14.5px; /* Calibrated size creates precise typographic system */
-      font-weight: 450;  /* Custom weight creates material tension between light and medium */
+      font-size: 14.8px; /* Increased presence */
+      font-weight: 450;  /* Custom weight creates material tension */
       color: var(--color-text-primary);
-      letter-spacing: 0.105em;  /* Expanded tracking creates ceremonial authority */
-      margin-bottom: calc(var(--spacing-unit) * 1.7);  /* Calibrated negative space */
+      letter-spacing: 0.115em;  /* Expanded tracking with authoritative rhythm */
+      margin-bottom: calc(var(--spacing-unit) * 1.8);  /* Extended negative space creates breathing room */
       position: relative;
       text-transform: uppercase;
-      /* Reduced weight creates threshold border */
-      border-bottom: 0.5px solid rgba(224, 224, 224, 0.85);
-      padding-bottom: calc(var(--spacing-unit) * 0.7);  /* Optical balance with x-height */
       
-      /* Structural system - transforms line from decoration to architecture */
-      display: inline-block;  /* Containment creates tension with text block */
-      margin-right: auto;  /* Creates asymmetrical spatial field */
+      /* Increased line weight commands visual rhythm */
+      border-bottom: 0.75px solid rgba(17, 17, 17, 0.75);
+      padding-bottom: calc(var(--spacing-unit) * 0.7);
       
-      /* Precise optical alignment */
+      /* Structural system */
+      display: inline-block;
+      margin-right: auto;
+      
+      /* Precise alignment */
       transform: translateX(-0.04em) translateY(-0.02em);
       
-      /* Subtle material distinction */
-      font-feature-settings: "case", "ss02"; /* Optical caps, alternate glyphs if available */
+      /* Material distinction */
+      font-feature-settings: "case", "ss02"; 
+      
+      /* Command section hierarchy */
+      position: relative;
+      z-index: 2; /* Creates perceptual layering */
     }
     
     /* Parentheses: From character to symbolic field */
@@ -337,53 +371,83 @@
       transform: scaleX(0.9); /* Subtly compressed for materiality */
     }
     
+    /* Tension section: From informational to conceptual */
     .key-achievements {
-      margin: 16px 0;
-      padding-left: 16px;
-      border-left: 1px solid #ddd;
+      margin: 20px 0;
+      padding-left: 18px;
+      border-left: 0.5px solid rgba(200, 200, 200, 0.85); /* Refined border creates subtle distinction */
+      position: relative;
     }
     
     .key-achievements h4 {
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 500;
-      margin-bottom: 4px;
-      color: #111;
+      margin-bottom: 5px;
+      color: rgba(17, 17, 17, 0.9);
+      letter-spacing: 0.03em; /* Expanded tracking for authoritative presence */
     }
     
     .key-achievements ul {
-      margin-top: 4px;
+      margin-top: 5px;
     }
     
     .key-achievements li {
-      color: #333;
-      font-size: 14px;
+      color: rgba(51, 51, 51, 0.95);
+      font-size: 13.2px;
     }
     
-    /* Skills container: From container to field through calibrated presence */
+    /* Pull quote highlight for key tension insight */
+    .key-achievements .pullquote {
+      font-style: italic;
+      font-size: 13px;
+      line-height: 1.35;
+      color: rgba(66, 66, 66, 0.9);
+      padding: calc(var(--spacing-unit) * 1.2) calc(var(--spacing-unit) * 1.4);
+      margin: calc(var(--spacing-unit) * 1.2) 0 calc(var(--spacing-unit) * 0.8);
+      border-top: 0.5px solid rgba(224, 224, 224, 0.7);
+      border-bottom: 0.5px solid rgba(224, 224, 224, 0.7);
+      max-width: 95%;
+      font-weight: 300;
+      position: relative;
+      left: -5px;
+      text-align: center;
+    }
+    
+    /* TOOLS & SYSTEMS: From spreadsheet to curated exhibition */
     .skills {
       display: grid;
       grid-template-columns: 1fr;
-      gap: calc(var(--spacing-unit) * 2.4); /* Calibrated negative space creates structured breathing */
+      gap: calc(var(--spacing-unit) * 3.2); /* Expanded spacing creates intentional breathing room */
       
-      /* Container exists as perceptual field rather than visual box */
-      background-color: rgba(250, 250, 250, 0.25); /* Threshold of perceptibility */
-      padding: calc(var(--spacing-unit) * 2.3) calc(var(--spacing-unit) * 2.7); /* Asymmetrical padding induces subtle directional tension */
-      border-radius: 2px; /* Minimal radius creates architectural precision */
+      /* Container reconceived as exhibition space */
+      background-color: rgba(248, 248, 248, 0.2); /* Reduced to perceptual threshold */
+      padding: calc(var(--spacing-unit) * 2.5) calc(var(--spacing-unit) * 2.8); /* Expanded padding creates spatial distinction */
+      border-radius: 2px; /* Architectural precision */
       
-      /* Border exists as optical threshold rather than visual boundary */
-      border: 0.5px solid rgba(222, 222, 222, 0.65); /* Calibrated to perceptual threshold */
+      /* Border as architectural element */
+      border: 0.5px solid rgba(220, 220, 220, 0.6); /* Perceptual threshold */
       
-      /* Transform from decorative to conceptual through precise placement */
+      /* Precise placement creates composed frame */
       position: relative;
-      /* Golden ratio-based offset creates structured imbalance */
       left: calc(var(--spacing-unit) * 0.15);
       width: calc(100% - var(--spacing-unit) * 0.3);
       
-      /* Vertical rhythm creates systemic distinction */
-      margin-bottom: calc(var(--spacing-unit) * 2.7);
+      /* Distinctive rhythm in vertical composition */
+      margin-bottom: calc(var(--spacing-unit) * 3);
       
-      /* Optional material system intervention */
-      box-shadow: 0 0.5px 1.5px rgba(0, 0, 0, 0.02); /* Threshold shadow creates perceptual depth */
+      /* Material distinction */
+      box-shadow: 0 0.5px 1.5px rgba(0, 0, 0, 0.015);
+    }
+    
+    /* Section dividers create visual rhythm */
+    .skills::after {
+      content: "";
+      position: absolute;
+      bottom: calc(var(--spacing-unit) * -1.8);
+      left: 0;
+      width: 25%;
+      height: 0.5px;
+      background-color: rgba(224, 224, 224, 0.6);
     }
     
     .skill-category {
@@ -391,18 +455,24 @@
       position: relative; /* Establishes positioning context */
     }
     
+    /* Skill category: From label to curatorial heading */
     .skill-category h4 {
-      font-size: 13px; /* Reduced size creates intentional hierarchy */
+      font-size: 13.5px; /* Increased presence */
       font-weight: 500;
-      margin-bottom: calc(var(--spacing-unit) * 0.6); /* Compressed spacing pulls content together */
+      margin-bottom: calc(var(--spacing-unit) * 0.8); /* Expanded spacing creates distinction */
       color: var(--color-text-primary);
-      letter-spacing: 0.03em; /* Expanded tracking balances reduced size */
-      border-bottom: 1px solid rgba(224, 224, 224, 0.7); /* Reduced opacity creates layered depth */
-      padding-bottom: calc(var(--spacing-unit) * 0.4); /* Recalibrated for optimal optical balance */
+      letter-spacing: 0.045em; /* Expanded tracking creates authority */
+      /* Border reconceived as exhibition divider */
+      border-bottom: 0.5px solid rgba(224, 224, 224, 0.85);
+      padding-bottom: calc(var(--spacing-unit) * 0.5);
       display: inline-block;
       
-      /* Transform creates subtle distinction from section headings */
+      /* Visual distinction through positioning */
       transform: translateX(-0.04em);
+      
+      /* Material distinction through typographic treatment */
+      text-transform: uppercase; /* Creates structural authority */
+      font-size: 12.5px; /* Optical balance with transformation */
     }
     
     .skill-list {
@@ -463,24 +533,42 @@
       letter-spacing: 0.01em; /* Slight expansion creates distinction */
     }
     
-    /* Watermark reconceived as conceptual artifact rather than decorative element */
+    /* Fingerprint watermark: From absence to presence as signature moment */
     .watermark {
-      display: none;
+      display: none; /* Hidden initially, revealed in print */
       position: fixed;
-      bottom: 28mm; /* Recalibrated position creates diagonal tension with page corner */
-      right: 17mm; /* Asymmetrical placement creates spatial tension */
-      width: 24mm; /* Precise scaling creates perceptual alignment with content */
-      height: 24mm;
+      bottom: 30mm; /* Calibrated position creates diagonal tension */
+      right: 20mm; /* Asymmetrical placement creates spatial interest */
+      width: 28mm; /* Increased size creates definitive presence */
+      height: 28mm;
       background-image: url('./fingerprint.png');
       background-size: contain;
       background-repeat: no-repeat;
-      transform: rotate(-36deg); /* Adjusted rotation creates subtler integration */
-      opacity: 0.11; /* Reduced opacity transforms from visual element to perceptual texture */
+      transform: rotate(-38deg); /* Diagonal tension creates visual interest */
+      opacity: 0.13; /* Calibrated visibility creates permanent presence */
       z-index: 9999;
       pointer-events: none;
       
-      /* Creates visual tension through subtle distortion */
-      filter: contrast(0.98) brightness(1.02);
+      /* Material distinction through subtle enhancement */
+      filter: contrast(1.05) brightness(1.01);
+    }
+    
+    /* Secondary watermark for page 2 */
+    .watermark-page2 {
+      display: none;
+      position: fixed;
+      bottom: 35mm; /* Different position creates distinctive marking */
+      right: 22mm;
+      width: 32mm; /* Larger size creates distinctive presence on page 2 */
+      height: 32mm;
+      background-image: url('./fingerprint.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      transform: rotate(-42deg); /* Different rotation creates page distinction */
+      opacity: 0.15; /* Increased visibility on final page */
+      z-index: 9999;
+      pointer-events: none;
+      filter: contrast(1.02) brightness(1.01);
     }
     
     /* Print button styling */
@@ -551,8 +639,9 @@
   </style>
 </head>
 <body>
-  <!-- Watermark element that will appear in print -->
+  <!-- Watermark elements that will appear in print -->
   <div class="watermark"></div>
+  <div class="watermark-page2"></div>
   
   <main class="resume-container">
     <header>
@@ -565,10 +654,11 @@
         <span><a href="mailto:KayronCalloway@gmail.com">KayronCalloway@gmail.com</a></span>
         <span>310.498.8059</span>
       </div>
-      <div class="philosophy-statement" aria-label="Designer's philosophy - deliberately minimized as a visual field rather than primary content">
+      <div class="philosophy-statement" aria-label="Designer's philosophy - a manifesto-style statement with deliberate pause">
         I believe the most powerful design doesn't declare itself—it invites you in.
         My work exists between creation and consumption, where meaning isn't made but met.
         Reflection isn't the outcome; it's the medium. Ritual becomes interface. Silence becomes authorship.
+        <span class="stanza-break"></span>
         I lead like I create: collaboratively, with clarity, and without control. That has cost me time, certainty, and pride.
         I've clung too tightly to elegance. I've chased clarity until the work lost its edge.
         I've stayed quiet when I should have pushed, and pushed when I should have listened.
@@ -602,7 +692,8 @@
             </ul>
             <div class="key-achievements">
               <h4>TENSION</h4>
-              <p>One launch collapsed after I overstructured the logic. I rebuilt it with fewer assumptions and more space. Another drop moved too fast. A creative peer slowed me down. Their restraint saved the rhythm. Later, I held the structure when the team asked me to loosen it. It didn't test as well, but it meant something deeper. One feature never clicked—but I kept it. Not everything needs to be understood to be felt.</p>
+              <p>One launch collapsed after I overstructured the logic. I rebuilt it with fewer assumptions and more space. Another drop moved too fast. A creative peer slowed me down. Their restraint saved the rhythm. Later, I held the structure when the team asked me to loosen it. It didn't test as well, but it meant something deeper.</p>
+              <div class="pullquote">One feature never clicked—but I kept it. Not everything needs to be understood to be felt.</div>
               <h4>SELECTED DROPS</h4>
               <ul>
                 <li>Reflections of You: A scent designed to smell like presence.</li>
@@ -703,45 +794,71 @@
   </main>
   
   <script>
-    // Handle print events for watermarking
+    // Enhanced print events for watermarking
     window.addEventListener('beforeprint', function() {
-      // Show watermark during print
+      // Show watermarks during print
       document.querySelector('.watermark').style.display = 'block';
+      document.querySelector('.watermark-page2').style.display = 'block';
       
-      // Inject the fingerprint directly as an element for maximum printer compatibility
-      injectWatermark();
+      // Inject the fingerprints directly as elements for maximum printer compatibility
+      injectWatermarks();
     });
     
     window.addEventListener('afterprint', function() {
+      // Hide watermarks after printing
       document.querySelector('.watermark').style.display = 'none';
+      document.querySelector('.watermark-page2').style.display = 'none';
       
       // Remove the injected watermarks
       document.querySelectorAll('.injected-watermark').forEach(el => el.remove());
     });
     
-    // Function to inject watermark as actual HTML elements
-    function injectWatermark() {
-      // Create an image element for the watermark
-      const img = document.createElement('img');
-      img.src = './fingerprint.png';
-      img.className = 'injected-watermark';
-      img.style.cssText = 'position: fixed; bottom: 25mm; right: 15mm; width: 25mm; height: 25mm; transform: rotate(-37deg); opacity: 0.13; z-index: 9999; pointer-events: none;';
-      document.body.appendChild(img);
+    // Enhanced function to inject watermarks as actual HTML elements
+    function injectWatermarks() {
+      // Page 1 watermark - Create image element
+      const img1 = document.createElement('img');
+      img1.src = './fingerprint.png';
+      img1.className = 'injected-watermark';
+      img1.style.cssText = 'position: fixed; bottom: 30mm; right: 20mm; width: 28mm; height: 28mm; transform: rotate(-38deg); opacity: 0.13; z-index: 9999; pointer-events: none; filter: contrast(1.05) brightness(1.01);';
+      document.body.appendChild(img1);
       
-      // Also add an SVG watermark as a fallback
-      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svg.setAttribute("width", "25mm");
-      svg.setAttribute("height", "25mm");
-      svg.setAttribute("viewBox", "0 0 100 100");
-      svg.style.cssText = 'position: fixed; bottom: 25mm; left: 15mm; width: 25mm; height: 25mm; transform: rotate(-37deg); opacity: 0.13; z-index: 9999; pointer-events: none;';
-      svg.classList.add('injected-watermark');
+      // Page 2 watermark - Create image element
+      const img2 = document.createElement('img');
+      img2.src = './fingerprint.png';
+      img2.className = 'injected-watermark page2';
+      img2.style.cssText = 'position: fixed; bottom: 35mm; right: 22mm; width: 32mm; height: 32mm; transform: rotate(-42deg); opacity: 0.15; z-index: 9999; pointer-events: none; filter: contrast(1.02) brightness(1.01);';
+      document.body.appendChild(img2);
       
-      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-      path.setAttribute("d", "M50 10c-22.1 0-40 17.9-40 40s17.9 40 40 40 40-17.9 40-40-17.9-40-40-40zm0 75v-10c-13.8 0-25-11.2-25-25s11.2-25 25-25-25 11.2-25 25 11.2 25 25 25v-35c0-2.8 2.2-5 5-5s5 2.2 5 5v35c13.8 0 25-11.2 25-25s-11.2-25-25-25 25 11.2 25 25-11.2 25-25 25v10c22.1 0 40-17.9 40-40s-17.9-40-40-40-40 17.9-40 40 17.9 40 40 40z");
-      path.setAttribute("fill", "#000");
+      // Also add SVG watermarks as fallbacks
+      // Page 1 SVG
+      const svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg1.setAttribute("width", "28mm");
+      svg1.setAttribute("height", "28mm");
+      svg1.setAttribute("viewBox", "0 0 100 100");
+      svg1.style.cssText = 'position: fixed; bottom: 30mm; left: 20mm; width: 28mm; height: 28mm; transform: rotate(-38deg); opacity: 0.13; z-index: 9999; pointer-events: none; filter: contrast(1.05) brightness(1.01);';
+      svg1.classList.add('injected-watermark');
       
-      svg.appendChild(path);
-      document.body.appendChild(svg);
+      const path1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path1.setAttribute("d", "M50 10c-22.1 0-40 17.9-40 40s17.9 40 40 40 40-17.9 40-40-17.9-40-40-40zm0 75v-10c-13.8 0-25-11.2-25-25s11.2-25 25-25-25 11.2-25 25 11.2 25 25 25v-35c0-2.8 2.2-5 5-5s5 2.2 5 5v35c13.8 0 25-11.2 25-25s-11.2-25-25-25 25 11.2 25 25-11.2 25-25 25v10c22.1 0 40-17.9 40-40s-17.9-40-40-40-40 17.9-40 40 17.9 40 40 40z");
+      path1.setAttribute("fill", "#000");
+      
+      svg1.appendChild(path1);
+      document.body.appendChild(svg1);
+      
+      // Page 2 SVG
+      const svg2 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg2.setAttribute("width", "32mm");
+      svg2.setAttribute("height", "32mm");
+      svg2.setAttribute("viewBox", "0 0 100 100");
+      svg2.style.cssText = 'position: fixed; bottom: 35mm; left: 22mm; width: 32mm; height: 32mm; transform: rotate(-42deg); opacity: 0.15; z-index: 9999; pointer-events: none; filter: contrast(1.02) brightness(1.01);';
+      svg2.classList.add('injected-watermark', 'page2');
+      
+      const path2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path2.setAttribute("d", "M50 10c-22.1 0-40 17.9-40 40s17.9 40 40 40 40-17.9 40-40-17.9-40-40-40zm0 75v-10c-13.8 0-25-11.2-25-25s11.2-25 25-25-25 11.2-25 25 11.2 25 25 25v-35c0-2.8 2.2-5 5-5s5 2.2 5 5v35c13.8 0 25-11.2 25-25s-11.2-25-25-25 25 11.2 25 25-11.2 25-25 25v10c22.1 0 40-17.9 40-40s-17.9-40-40-40-40 17.9-40 40 17.9 40 40 40z");
+      path2.setAttribute("fill", "#000");
+      
+      svg2.appendChild(path2);
+      document.body.appendChild(svg2);
     }
     
     // Guarantee background printing is enabled
