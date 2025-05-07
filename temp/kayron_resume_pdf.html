@@ -45,6 +45,8 @@
       max-width: 8.5in;
       margin: 60px auto;
       padding: 0 var(--spacing-unit);
+      /* Establish spatial tension through measured constraint */
+      width: 92%;
     }
     
     .resume-container {
@@ -57,21 +59,33 @@
       border-bottom: 1px solid var(--color-border);
     }
     
+    /* Name reconceived with calibrated typographic tension */
     header h1 {
-      font-size: 22px;
+      font-size: 21px; /* Calibrated size creates deliberate tension with page scale */
       font-weight: 500;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.042em; /* Expanded tracking creates ceremonial authority */
       color: var(--color-text-primary);
-      margin-bottom: calc(var(--spacing-unit) * 1.5);
+      margin-bottom: calc(var(--spacing-unit) * 1.3); /* Reduced spacing creates visual momentum */
       text-transform: uppercase;
+      
+      /* Create perceptual alignment with page boundaries */
+      position: relative;
+      left: -0.04em;
+      
+      /* Optional: creates subtle distinction through vertical positioning */
+      transform: translateY(-0.02em);
     }
     
+    /* Title line reconceived with calibrated proportional relationship to name */
     .title-line {
-      font-size: 14px;
+      font-size: 13.5px; /* Calibrated size creates hierarchical distinction */
       color: var(--color-text-secondary);
       font-weight: 400;
-      margin-bottom: calc(var(--spacing-unit) * 2.5);
-      letter-spacing: 0.02em;
+      margin-bottom: calc(var(--spacing-unit) * 2.2); /* Adjusted spacing creates intentional rhythm */
+      letter-spacing: 0.03em; /* Expanded tracking balances reduced size */
+      
+      /* Create subtle layering through opacity */
+      opacity: 0.92;
     }
     
     /* 
@@ -96,30 +110,45 @@
       /* Creates spatial tension through minimization */
     }
     
+    /* Contact info reconceived as structured negative space system */
     .contact-info {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: calc(var(--spacing-unit) * 2);
-      margin-top: calc(var(--spacing-unit) * 2);
-      font-size: 13px;
+      gap: calc(var(--spacing-unit) * 1.8) calc(var(--spacing-unit) * 2.2); /* Asymmetrical spacing creates perceptual rhythm */
+      margin-top: calc(var(--spacing-unit) * 1.8); /* Calibrated spacing creates intentional cadence */
+      font-size: 12.5px; /* Reduced size creates hierarchical distinction */
       color: var(--color-text-tertiary);
-      letter-spacing: 0.01em;
+      letter-spacing: 0.015em; /* Expanded tracking balances reduced size */
       font-weight: 400;
+      
+      /* Create subtle containment through width constraint */
+      max-width: 98%;
+      
+      /* Create subtle perceptual alignment */
+      position: relative;
+      left: -0.02em;
     }
     
     .contact-info a {
       color: var(--color-text-secondary);
       text-decoration: none;
-      padding-bottom: 1px;
-      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 0.5px; /* Reduced padding creates subtler distinction */
+      border-bottom: 0.5px solid rgba(224, 224, 224, 0.7); /* Reduced weight and opacity creates layered depth */
       transition: all 0.2s;
+      
+      /* Optional: creates subtle emphasis differentiation */
+      font-weight: 400;
     }
     
+    /* Grid structure recalibrated for intentional asymmetry */
     .main-content {
       display: grid;
-      grid-template-columns: 68fr 32fr;
-      grid-gap: calc(var(--spacing-unit) * 6);
+      grid-template-columns: 67fr 33fr;  /* Golden ratio approximation */
+      grid-gap: calc(var(--spacing-unit) * 4.8);  /* Calibrated tension in negative space */
+      position: relative;
+      /* Creates perceptual tension through subtle shift */
+      transform: translateX(0.5%);
     }
     
     .summary {
@@ -128,36 +157,52 @@
       max-width: 95%;
     }
     
+    /* Summary paragraph reconceived as anchoring statement with calibrated typographic presence */
     .summary p {
       color: var(--color-text-secondary);
-      line-height: 1.6;
+      line-height: 1.5; /* Calibrated line height creates precise text density */
       font-weight: 300;
-      font-size: 15px;
+      font-size: 14.5px; /* Precise size reduction creates deliberate tension with surrounding elements */
+      letter-spacing: -0.005em; /* Subtle kerning adjustment creates confident cohesion */
+      
+      /* Create subtle emphasis through spacing modulation */
+      word-spacing: 0.02em; 
+      
+      /* Create deliberate constraint through width limitation */
+      max-width: 96%;
+      
+      /* Optional: creates text block distinction */
+      position: relative;
+      left: -0.02em;
     }
     
     section {
       margin-bottom: calc(var(--spacing-unit) * 4);
     }
     
+    /* Section headings: From decorative to conceptual */
     h2 {
-      font-size: 16px;
-      font-weight: 500;
+      font-size: 15px;
+      font-weight: 400;  /* Reduced weight creates deliberate tension with the uppercase */
       color: var(--color-text-primary);
-      letter-spacing: 0.03em;
-      margin-bottom: calc(var(--spacing-unit) * 2.5);
+      letter-spacing: 0.09em;  /* Expanded tracking creates authoritative rhythm */
+      margin-bottom: calc(var(--spacing-unit) * 1.8);  /* Precise asymmetrical spacing */
       position: relative;
       text-transform: uppercase;
       border-bottom: 1px solid var(--color-border);
-      padding-bottom: calc(var(--spacing-unit) * 0.75);
+      padding-bottom: calc(var(--spacing-unit) * 0.65);  /* Calibrated to optical balance */
+      /* Structural intervention */
+      display: inline-block;  /* Contains the border to text width only */
+      margin-right: auto;  /* Creates asymmetrical placement */
     }
     
     h2::before {
       content: "(";
       margin-right: 4px;
-      opacity: 0.7;
+      opacity: 0.45;  /* Reduced presence - parentheses as whisper not declaration */
       font-weight: 300;
       font-family: 'Lvvvdy', sans-serif;
-      font-size: 120%;
+      font-size: 116%;
       vertical-align: middle;
       position: relative;
       top: -1px;
@@ -166,10 +211,10 @@
     h2::after {
       content: ")";
       margin-left: 4px;
-      opacity: 0.7;
+      opacity: 0.45;  /* Matched opacity creates system coherence */
       font-weight: 300;
       font-family: 'Lvvvdy', sans-serif;
-      font-size: 120%;
+      font-size: 116%;
       vertical-align: middle;
       position: relative;
       top: -1px;
@@ -185,36 +230,51 @@
       border-bottom: 1px dotted var(--color-border);
     }
     
+    /* Experience hierarchy reimagined as controlled contrast system */
     h3 {
-      font-size: 16px;
+      font-size: 15.5px; /* Calibrated slight reduction creates subtle tension */
       font-weight: 500;
-      margin-bottom: calc(var(--spacing-unit) * 0.5);
+      margin-bottom: calc(var(--spacing-unit) * 0.35); /* Compressed spacing pulls position closer to title */
       color: var(--color-text-primary);
-      letter-spacing: 0.01em;
+      letter-spacing: 0.02em; /* Slight expansion adds authority */
+      /* Establish optical alignment with section headings */
+      position: relative;
+      left: -0.04em;
     }
     
     .position-details {
       display: flex;
       justify-content: space-between;
-      margin-bottom: calc(var(--spacing-unit) * 1.5);
-      font-size: 14px;
+      margin-bottom: calc(var(--spacing-unit) * 1.2); /* Reduced to create forward momentum */
+      font-size: 13.5px; /* Reduced scale creates hierarchy through contrast */
       color: var(--color-text-secondary);
+      /* Creates perceptual space through typographic contrast rather than physical space */
+      max-width: 97%;
     }
     
     .company {
       font-weight: 500;
+      letter-spacing: 0.01em; /* Slight expansion balances reduced size */
     }
     
     .date {
       color: var(--color-text-tertiary);
       font-weight: 400;
+      opacity: 0.85; /* Subtle reduction creates depth without sacrificing legibility */
+      font-size: 0.95em; /* Slightly smaller than company for hierarchical distinction */
     }
     
+    /* Description text reimagined with calibrated typographic restraint */
     .experience-item p {
-      margin-bottom: calc(var(--spacing-unit) * 1.5);
+      margin-bottom: calc(var(--spacing-unit) * 1.3);
       color: var(--color-text-secondary);
       font-weight: 300;
-      line-height: 1.5;
+      line-height: 1.45; /* Slightly tighter line height creates cohesion */
+      font-size: 13.8px; /* Precise typographic scale creates intentional system */
+      letter-spacing: -0.01em; /* Slight kerning adjustment for density without sacrificing clarity */
+      max-width: 97%; /* Constrains line length without rigid boundaries */
+      /* Subtle emphasis distinction */
+      font-feature-settings: 'ss01'; /* Optional: enable stylistic alternates if available in Space Grotesk */
     }
     
     ul {
@@ -223,22 +283,27 @@
       list-style-type: none;
     }
     
+    /* List items reconceived as a system of deliberate asymmetries */
     li {
-      margin-bottom: calc(var(--spacing-unit) * 1);
+      margin-bottom: calc(var(--spacing-unit) * 0.95); /* Slight compression creates forward momentum */
       position: relative;
-      padding-left: calc(var(--spacing-unit) * 2);
-      font-size: 14px;
+      padding-left: calc(var(--spacing-unit) * 1.8); /* Calibrated to optical alignment with heading structure */
+      font-size: 13.5px; /* Reduced size increases information density while maintaining white space */
       color: var(--color-text-secondary);
       font-weight: 300;
-      line-height: 1.4;
+      line-height: 1.38; /* Precise line-height creates measured breathing space */
+      letter-spacing: -0.008em; /* Subtly tightened tracking creates horizontal tension */
+      max-width: 98%; /* Limits line length for increased readability */
     }
     
     li::before {
-      content: "•";
+      content: "•"; /* Consider alt: "–" for hierarchy differentiation */
       position: absolute;
       left: 0;
       color: var(--color-text-tertiary);
-      font-size: 12px;
+      font-size: 10px; /* Reduced from default creates perceptual tension */
+      opacity: 0.7; /* Reduced presence - bullet as guide not anchor */
+      top: 0.4em; /* Optical vertical alignment with text */
     }
     
     .key-achievements {
@@ -263,36 +328,51 @@
       font-size: 14px;
     }
     
+    /* Skills container reconceived as negative space architecture */
     .skills {
       display: grid;
       grid-template-columns: 1fr;
-      gap: calc(var(--spacing-unit) * 2.5);
-      background-color: rgba(250, 250, 250, 0.5);
-      padding: calc(var(--spacing-unit) * 2.5);
-      border-radius: 4px;
-      border: 1px solid var(--color-border);
+      gap: calc(var(--spacing-unit) * 2.2); /* Calibrated compression creates density */
+      background-color: rgba(249, 249, 249, 0.4); /* Reduced contrast creates depth through subtlety */
+      padding: calc(var(--spacing-unit) * 2.4) calc(var(--spacing-unit) * 2.6); /* Asymmetrical padding creates perceptual tension */
+      border-radius: 3px; /* Reduced radius creates subtler frame */
+      border: 1px solid rgba(224, 224, 224, 0.8); /* Reduced border opacity creates layered depth */
+      
+      /* Create optical margins through slight inset */
+      position: relative;
+      left: calc(var(--spacing-unit) * 0.2);
+      width: calc(100% - var(--spacing-unit) * 0.4);
+      
+      /* Create vertical rhythm distinction */
+      margin-bottom: calc(var(--spacing-unit) * 2.8);
     }
     
     .skill-category {
-      margin-bottom: calc(var(--spacing-unit) * 2);
+      margin-bottom: calc(var(--spacing-unit) * 1.8); /* Calibrated spacing reduction */
+      position: relative; /* Establishes positioning context */
     }
     
     .skill-category h4 {
-      font-size: 14px;
+      font-size: 13px; /* Reduced size creates intentional hierarchy */
       font-weight: 500;
-      margin-bottom: calc(var(--spacing-unit) * 0.75);
+      margin-bottom: calc(var(--spacing-unit) * 0.6); /* Compressed spacing pulls content together */
       color: var(--color-text-primary);
-      letter-spacing: 0.01em;
-      border-bottom: 1px solid var(--color-border);
-      padding-bottom: calc(var(--spacing-unit) * 0.5);
+      letter-spacing: 0.03em; /* Expanded tracking balances reduced size */
+      border-bottom: 1px solid rgba(224, 224, 224, 0.7); /* Reduced opacity creates layered depth */
+      padding-bottom: calc(var(--spacing-unit) * 0.4); /* Recalibrated for optimal optical balance */
       display: inline-block;
+      
+      /* Transform creates subtle distinction from section headings */
+      transform: translateX(-0.04em);
     }
     
     .skill-list {
-      font-size: 13.5px;
+      font-size: 13px; /* Slight reduction increases information density */
       color: var(--color-text-secondary);
-      line-height: 1.6;
+      line-height: 1.48; /* Calibrated line height creates precise breathing room */
       font-weight: 300;
+      letter-spacing: -0.005em; /* Subtle tracking adjustment for cohesive text block */
+      max-width: 98%; /* Controls line length for optimal readability */
     }
     
     .education-item {
@@ -320,37 +400,48 @@
       gap: calc(var(--spacing-unit) * 1.5);
     }
     
+    /* Project items reconceived with layered spatial hierarchy */
     .projects li {
-      margin-bottom: calc(var(--spacing-unit) * 1);
-      background: linear-gradient(to right, rgba(245, 245, 245, 0.5), transparent);
-      padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 1.5);
-      border-radius: 3px;
-      border-left: 2px solid var(--color-border);
+      margin-bottom: calc(var(--spacing-unit) * 1.1); /* Slight expansion creates breathing room for dense content */
+      /* Gradient subtly modulated for cognitive rather than visual distinction */
+      background: linear-gradient(to right, rgba(247, 247, 247, 0.4), rgba(247, 247, 247, 0.05) 85%);
+      padding: calc(var(--spacing-unit) * 0.9) calc(var(--spacing-unit) * 1.4); /* Asymmetrical padding creates structured tension */
+      border-radius: 2px; /* Reduced radius creates subtler frame */
+      border-left: 1.5px solid rgba(224, 224, 224, 0.9); /* Refined border weight and opacity */
+      
+      /* Calibrated positioning for optical alignment */
+      position: relative;
+      left: calc(var(--spacing-unit) * 0.1);
+      width: calc(100% - var(--spacing-unit) * 0.3);
     }
     
     .projects li strong {
       color: var(--color-text-primary);
       display: block;
-      margin-bottom: calc(var(--spacing-unit) * 0.5);
+      margin-bottom: calc(var(--spacing-unit) * 0.35); /* Reduced spacing pulls content together */
       font-weight: 500;
-      font-size: 14px;
+      font-size: 13.5px; /* Reduced size with restored weight creates tension */
+      letter-spacing: 0.01em; /* Slight expansion creates distinction */
     }
     
-    /* Add watermark element that will appear in print */
+    /* Watermark reconceived as conceptual artifact rather than decorative element */
     .watermark {
       display: none;
       position: fixed;
-      bottom: 25mm;
-      right: 15mm;
-      width: 25mm;
-      height: 25mm;
+      bottom: 28mm; /* Recalibrated position creates diagonal tension with page corner */
+      right: 17mm; /* Asymmetrical placement creates spatial tension */
+      width: 24mm; /* Precise scaling creates perceptual alignment with content */
+      height: 24mm;
       background-image: url('./fingerprint.png');
       background-size: contain;
       background-repeat: no-repeat;
-      transform: rotate(-37deg);
-      opacity: 0.13;
+      transform: rotate(-36deg); /* Adjusted rotation creates subtler integration */
+      opacity: 0.11; /* Reduced opacity transforms from visual element to perceptual texture */
       z-index: 9999;
       pointer-events: none;
+      
+      /* Creates visual tension through subtle distortion */
+      filter: contrast(0.98) brightness(1.02);
     }
     
     /* Print button styling */
