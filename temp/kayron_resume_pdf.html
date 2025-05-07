@@ -74,15 +74,26 @@
       letter-spacing: 0.02em;
     }
     
+    /* 
+    Philosophy statement - Museum-level curation:
+    The philosophy isn't mere text; it's an invisible frame.
+    Its materiality lies in occupying negative space—
+    present enough to establish atmosphere, absent enough to
+    prioritize the concrete work. The scale creates deliberate
+    tension between legibility and visual impression.
+    */
     .philosophy-statement {
       font-style: italic;
       color: var(--color-text-tertiary);
-      margin-top: calc(var(--spacing-unit) * 1);
+      margin-top: calc(var(--spacing-unit) * 0.5);
       font-weight: 300;
-      margin-bottom: calc(var(--spacing-unit) * 1);
-      max-width: 90%;
-      font-size: 10px;
-      line-height: 1.3;
+      margin-bottom: calc(var(--spacing-unit) * 0.5);
+      max-width: 80%;
+      font-size: 8px;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      opacity: 0.7;
+      /* Creates spatial tension through minimization */
     }
     
     .contact-info {
@@ -424,7 +435,7 @@
         <span><a href="mailto:KayronCalloway@gmail.com">KayronCalloway@gmail.com</a></span>
         <span>310.498.8059</span>
       </div>
-      <div class="philosophy-statement">
+      <div class="philosophy-statement" aria-label="Designer's philosophy - deliberately minimized as a visual field rather than primary content">
         I believe the most powerful design doesn't declare itself—it invites you in.
         My work exists between creation and consumption, where meaning isn't made but met.
         Reflection isn't the outcome; it's the medium. Ritual becomes interface. Silence becomes authorship.
@@ -639,21 +650,24 @@
             padding-bottom: 0.05cm !important;
           }
           
-          /* Option 1: Extremely minimal philosophy statement */
-          .philosophy-statement {
-            font-size: 5.5px !important;
-            line-height: 1 !important;
-            margin-top: 0.03cm !important;
-            margin-bottom: 0.03cm !important;
-            max-width: 85% !important;
-          }
-          
-          /* Option 2: Uncomment to hide philosophy completely if space is still an issue */
           /* 
-          .philosophy-statement {
-            display: none !important;
-          }
+          Museum-grade print treatment for philosophy statement
+          - Scale reduced to threshold of visibility/invisibility
+          - Creates tension between content and form
+          - Transforms from language to visual texture at print scale
+          - Becomes a field rather than a statement
           */
+          .philosophy-statement {
+            font-size: 4.2px !important;  /* Calibrated to perceptual threshold */
+            line-height: 0.9 !important;  /* Compresses vertical space while preserving field impression */
+            margin: 0.02cm !important;    /* Minimalist edge treatment */
+            max-width: 75% !important;    /* Asymmetrical weighting */
+            letter-spacing: -0.02em !important; /* Optical kerning adjustment */
+            opacity: 0.65 !important;     /* Recedes while remaining present */
+            font-weight: 200 !important;  /* Reduced visual weight */
+            transform: scale(0.98) !important; /* Subtle scale distinction */
+            transform-origin: top left !important;
+          }
           
           /* Summary section spacing */
           .summary {
@@ -743,6 +757,21 @@
     // Run when page loads
     window.addEventListener('load', function() {
       enforceBackgroundPrinting();
+      
+      // Apply museum-level treatment to philosophy
+      const philosophy = document.querySelector('.philosophy-statement');
+      if (philosophy) {
+        // Intentional tension between presence/absence through calculated minimization
+        philosophy.style.cssText = `
+          font-size: 8px;
+          line-height: 1.2;
+          opacity: 0.7;
+          max-width: 80%;
+          letter-spacing: -0.01em;
+          font-weight: 300;
+          margin: 4px 0;
+        `;
+      }
       
       // Show watermark on screen for preview
       setTimeout(() => {
