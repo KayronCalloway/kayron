@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Kayron Calloway - AI Product Designer & Creative Director with 7+ years experience in machine learning, C# development, Unity game development, OpenAI API integration, and cross-functional team leadership. Proven track record building scalable AI systems and innovative user experiences.">
+  <meta name="description" content="Kayron Calloway - Creative Technologist & AI Product Designer with entertainment industry expertise, film festival submissions, and hands-on AI development experience. Building innovative AI platforms while managing $300M+ streaming operations.">
   <meta name="keywords" content="Creative Director, AI Product Designer, Machine Learning Engineer, Unity Developer, OpenAI API, Python Programming, JavaScript, React, Node.js, TensorFlow, PyTorch, Computer Vision, Natural Language Processing, Product Management, User Experience Design, Human-Computer Interaction, Innovation Leadership, Cross-functional Teams, Agile Development, Cloud Computing, AWS, Google Cloud, DevOps, Continuous Integration, Data Science, Analytics, A/B Testing, Mobile Development, iOS, Android, Full Stack Development, API Development, Microservices, Docker, Kubernetes, Product Strategy, Design Thinking, Prototyping, Wireframing, Information Architecture, Accessibility, WCAG, Performance Optimization, Creative Technology, Interactive Media, Augmented Reality, Virtual Reality, Game Development, Audio Processing, Video Production, 3D Modeling, Animation, Visual Effects, Adobe Creative Suite, Figma, Sketch, InVision, Git, GitHub, Jira, Confluence, Slack, Notion, Airtable">
   <title>Kayron Calloway | Creative Director | AI Product Designer</title>
   <!-- Resource hints for performance optimization -->
@@ -219,21 +219,32 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: calc(var(--spacing-unit) * 2);
+      gap: calc(var(--spacing-unit) * 3);
       margin-top: calc(var(--spacing-unit) * 2);
-      font-size: 13px;
+      font-size: 14px;
       color: var(--color-text-tertiary);
       letter-spacing: 0.01em;
       font-weight: 400;
+      justify-content: center;
     }
     
-    /* Memory as material - subtle connection lines */
-    .contact-info .separator {
-      width: 1px;
-      height: 12px;
-      background: linear-gradient(to bottom, transparent 0%, var(--color-accent) 30%, var(--color-accent) 70%, transparent 100%);
-      opacity: 0.3;
-      transform: rotate(0.5deg);
+    .festival-info {
+      text-align: center;
+      margin-top: calc(var(--spacing-unit) * 1.5);
+      font-size: 13px;
+      color: var(--color-accent);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+    
+    /* Clean contact separators */
+    .contact-info span:not(:last-child)::after,
+    .contact-info a:not(:last-child)::after {
+      content: '|';
+      margin-left: calc(var(--spacing-unit) * 1.5);
+      color: var(--color-accent);
+      opacity: 0.4;
+      font-weight: 300;
     }
     
     .contact-info a {
@@ -895,23 +906,15 @@
   <main class="resume-container" itemscope itemtype="https://schema.org/Person">
     <header>
       <h1 itemprop="name">KAYRON CALLOWAY</h1>
-      <div class="title-line" itemprop="jobTitle">Creative Technologist | UX Designer | Art Director | AI Product Designer</div>
+      <div class="title-line" itemprop="jobTitle">Creative Technologist | Art Director | AI Product Designer</div>
       <div class="contact-info">
         <span class="location" itemprop="address">Los Angeles, CA</span>
-        <div class="separator"></div>
         <span class="phone" itemprop="telephone">310.498.8059</span>
-        <div class="separator"></div>
         <a href="mailto:KayronCalloway@gmail.com" itemprop="email">KayronCalloway@gmail.com</a>
-        <div class="separator"></div>
-        <span>Berlin Film Festival & HollyShorts <span class="rotated-paren-open">(</span>Oscar-qualifying<span class="rotated-paren-close">)</span> Submitted</span>
       </div>
-        <span>Los Angeles, CA</span>
-        <span><a href="mailto:KayronCalloway@gmail.com" itemprop="email">KayronCalloway@gmail.com</a></span>
-        <span>(310) 498-8059</span>
-        <span><a href="https://www.linkedin.com/in/kayron-calloway-278997117" itemprop="url">linkedin.com/in/kayron-calloway-278997117</a></span>
-        <span><a href="https://kayroncalloway.github.io/kayron/" itemprop="url">Portfolio: kayroncalloway.github.io/kayron</a></span>
-        <span><a href="https://github.com/kayroncalloway" itemprop="url">GitHub: github.com/kayroncalloway</a></span>
-        <span><strong>SEEKING: Creative Technologist | Senior UX Designer | Art Director ($120K-$180K)</strong></span>
+      <div class="festival-info">
+        <span>Berlin Film Festival & HollyShorts (Oscar-qualifying) Submitted</span>
+      </div>
       </div>
     </header>
     
