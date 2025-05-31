@@ -126,6 +126,91 @@
         { name: 'Technical Implementation', description: 'Translating concepts into functional interactive experiences.' }
       ]
     },
+    'curiosity': {
+      title: 'Curiosity',
+      tagline: 'AI-powered reflective audio platform that evolves with your inner world',
+      description: `Designed and built a daily audio experience that replaces traditional podcasts by reflecting the user's evolving inner world. Curiosity synthesizes thread-level behavior, emotional tone, and latent questions to deliver personalized, voice-narrated episodes rooted in philosophy, psychology, and real-time research. Unlike content platforms, Curiosity anticipates what the user hasn't asked, teaches through reflection and disruption, and evolves with them over time—serving as a mirror, not a broadcast.`,
+      projectUrl: '#',
+      metaInfo: [
+        { label: 'Type', value: 'AI Audio Platform' },
+        { label: 'Category', value: 'Personalized Content Experience' },
+        { label: 'Status', value: 'In Development' }
+      ],
+      galleryImages: [
+        { 
+          customHtml: `
+            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e, #16213e); display: flex; flex-direction: column; padding: 20px; color: #e0e0e0; position: relative; overflow: hidden;">
+              <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 30% 40%, rgba(100, 200, 255, 0.1), transparent 50%), radial-gradient(circle at 70% 60%, rgba(150, 100, 255, 0.1), transparent 50%);"></div>
+              <div style="font-family: 'Space Grotesk', monospace; font-size: 20px; margin-bottom: 20px; letter-spacing: 2px; z-index: 2;">CURIOSITY</div>
+              <div style="display: flex; flex-direction: column; gap: 15px; flex: 1; justify-content: center; z-index: 2;">
+                <div style="width: 100%; height: 5px; background: linear-gradient(90deg, #6c63ff 0%, #a855f7 100%); margin-bottom: 5px;"></div>
+                <div style="font-size: 14px; letter-spacing: 1px;">REFLECTION · ANTICIPATION · EVOLUTION</div>
+                <div style="margin-top: 15px; font-size: 12px; opacity: 0.7; line-height: 1.4;">
+                  AI that mirrors your inner world through personalized philosophical audio.
+                </div>
+              </div>
+            </div>
+          `,
+          alt: 'Curiosity - Concept Preview' 
+        },
+        { 
+          customHtml: `
+            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #16213e, #0f172a); display: flex; flex-direction: column; padding: 20px; color: #ddd;">
+              <div style="font-family: 'Space Grotesk', monospace; font-size: 16px; margin-bottom: 15px; letter-spacing: 1px; opacity: 0.6;">PERSONALIZATION ENGINE</div>
+              <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>Content Synthesis:</span>
+                    <span style="color: #6c63ff;">Philosophy + Psychology</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>Learning Mode:</span>
+                    <span style="color: #6c63ff;">Anticipatory</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>Delivery Method:</span>
+                    <span style="color: #6c63ff;">Voice-Narrated</span>
+                  </div>
+                </div>
+                <div style="width: 100%; height: 1px; background: linear-gradient(90deg, #1e293b, #6c63ff, #1e293b); margin: 15px 0;"></div>
+                <div style="font-size: 11px; opacity: 0.7; font-style: italic;">
+                  "A mirror, not a broadcast. Content that evolves as you do."
+                </div>
+              </div>
+            </div>
+          `,
+          alt: 'Curiosity - Personalization Engine' 
+        },
+        { 
+          customHtml: `
+            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #0f172a, #1a1a2e); display: flex; flex-direction: column; padding: 20px; color: #e0e0e0;">
+              <div style="font-family: 'Space Grotesk', monospace; font-size: 16px; margin-bottom: 15px; letter-spacing: 1px; opacity: 0.6;">REFLECTION MECHANICS</div>
+              <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 15px;">
+                <div style="padding: 12px; background: rgba(108, 99, 255, 0.1); border-left: 3px solid #6c63ff; border-radius: 4px;">
+                  <div style="font-size: 12px; font-weight: bold; margin-bottom: 5px;">Thread Analysis</div>
+                  <div style="font-size: 11px; opacity: 0.8;">Synthesizes behavioral patterns and emotional threads</div>
+                </div>
+                <div style="padding: 12px; background: rgba(168, 85, 247, 0.1); border-left: 3px solid #a855f7; border-radius: 4px;">
+                  <div style="font-size: 12px; font-weight: bold; margin-bottom: 5px;">Latent Discovery</div>
+                  <div style="font-size: 11px; opacity: 0.8;">Anticipates questions you haven't yet articulated</div>
+                </div>
+                <div style="padding: 12px; background: rgba(100, 200, 255, 0.1); border-left: 3px solid #64c8ff; border-radius: 4px;">
+                  <div style="font-size: 12px; font-weight: bold; margin-bottom: 5px;">Evolutionary Content</div>
+                  <div style="font-size: 11px; opacity: 0.8;">Daily episodes that grow with your inner world</div>
+                </div>
+              </div>
+            </div>
+          `,
+          alt: 'Curiosity - Reflection Mechanics' 
+        }
+      ],
+      processStages: [
+        { name: 'Behavioral Analysis', description: 'Developing AI systems to understand thread-level user behavior and emotional patterns in real-time.' },
+        { name: 'Content Synthesis Engine', description: 'Building algorithms that combine philosophy, psychology, and research to create personalized narratives.' },
+        { name: 'Anticipatory Intelligence', description: 'Creating systems that predict and surface questions users haven\'t yet consciously formed.' },
+        { name: 'Voice Experience Design', description: 'Crafting the audio delivery mechanism that makes complex insights feel intimate and accessible.' }
+      ]
+    },
     'featured-video': {
       title: 'Featured Reel',
       tagline: 'Video showcase of recent work and highlights',
