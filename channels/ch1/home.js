@@ -464,31 +464,303 @@ function setupPDFDownload() {
       downloadButton.innerHTML = '( generating... )';
       downloadButton.disabled = true;
 
-      // Fetch the clean resume HTML
-      const response = await fetch('./kayron_resume_new.html');
-      if (!response.ok) {
-        throw new Error('Failed to fetch resume');
-      }
-      
-      const htmlContent = await response.text();
-      
+      // Create PDF-optimized resume content directly in JavaScript
+      const resumeHTML = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <style>
+            body {
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+              font-size: 11px;
+              line-height: 1.4;
+              color: #1a1a1a;
+              background: #ffffff;
+              margin: 0;
+              padding: 20px;
+              max-width: 8.5in;
+            }
+            
+            h1 {
+              font-size: 24px;
+              font-weight: 600;
+              margin: 0 0 8px 0;
+              letter-spacing: -0.02em;
+            }
+            
+            .title {
+              font-size: 16px;
+              color: #4a4a4a;
+              margin-bottom: 16px;
+            }
+            
+            .contact-info {
+              font-size: 12px;
+              color: #6a6a6a;
+              margin-bottom: 24px;
+            }
+            
+            .contact-info span {
+              margin-right: 16px;
+            }
+            
+            .main-content {
+              display: grid;
+              grid-template-columns: 2fr 1fr;
+              gap: 32px;
+            }
+            
+            h2 {
+              font-size: 14px;
+              font-weight: 600;
+              margin: 0 0 12px 0;
+              text-transform: uppercase;
+              letter-spacing: 0.05em;
+              border-bottom: 1px solid #e5e5e5;
+              padding-bottom: 4px;
+            }
+            
+            h3 {
+              font-size: 13px;
+              font-weight: 500;
+              margin: 0 0 4px 0;
+            }
+            
+            .company {
+              color: #4a4a4a;
+              font-size: 11px;
+              font-weight: 400;
+            }
+            
+            .dates {
+              color: #6a6a6a;
+              font-size: 11px;
+              margin-top: 2px;
+            }
+            
+            .experience-item {
+              margin-bottom: 20px;
+              page-break-inside: avoid;
+            }
+            
+            ul {
+              list-style: none;
+              margin: 8px 0 0 0;
+              padding: 0;
+            }
+            
+            li {
+              margin-bottom: 6px;
+              padding-left: 12px;
+              position: relative;
+              font-size: 10px;
+              line-height: 1.4;
+            }
+            
+            li::before {
+              content: "•";
+              position: absolute;
+              left: 0;
+              color: #2563eb;
+            }
+            
+            .sidebar {
+              font-size: 11px;
+            }
+            
+            .sidebar section {
+              margin-bottom: 20px;
+            }
+            
+            .sidebar h2 {
+              font-size: 12px;
+              margin-bottom: 8px;
+            }
+            
+            .sidebar li {
+              margin-bottom: 4px;
+              padding-left: 0;
+              font-size: 10px;
+            }
+            
+            .sidebar li::before {
+              display: none;
+            }
+            
+            .skill-category {
+              margin-bottom: 12px;
+            }
+            
+            .skill-category h4 {
+              margin-bottom: 4px;
+              font-size: 10px;
+              font-weight: 500;
+            }
+            
+            .skill-list {
+              color: #6a6a6a;
+              font-size: 9px;
+              line-height: 1.3;
+            }
+            
+            .education-item {
+              margin-bottom: 12px;
+            }
+            
+            .degree {
+              font-weight: 500;
+              font-size: 10px;
+              margin-bottom: 2px;
+            }
+            
+            .institution {
+              color: #4a4a4a;
+              font-size: 9px;
+            }
+          </style>
+        </head>
+        <body>
+          <header>
+            <h1>KAYRON CALLOWAY</h1>
+            <div class="title">Creative Director</div>
+            <div class="contact-info">
+              <span>Los Angeles, CA</span>
+              <span>310.498.8059</span>
+              <span>KayronCalloway@gmail.com</span>
+            </div>
+          </header>
+
+          <div class="main-content">
+            <div class="primary-content">
+              <section class="experience">
+                <h2>Experience</h2>
+                
+                <div class="experience-item">
+                  <h3>Founder & Creative Director</h3>
+                  <div class="company">Coloring With Gray</div>
+                  <div class="dates">2024 - Present</div>
+                  <ul>
+                    <li>Building philosophy-driven creative house developing multimodal experiences across fragrance, film, digital applications, and experiential design</li>
+                    <li>Developing philosophical frameworks into scalable creative systems spanning multiple mediums and touchpoints</li>
+                    <li>Leading team of 7 specialists (designers, developers, photographers, vendors) through pre-launch development and strategic planning</li>
+                    <li>Managing $50k development budget across product innovation, digital platforms, and content creation initiatives</li>
+                  </ul>
+                </div>
+
+                <div class="experience-item">
+                  <h3>Financial Analyst (Residuals)</h3>
+                  <div class="company">Cast & Crew</div>
+                  <div class="dates">Apr 2019 - Present</div>
+                  <ul>
+                    <li>Manage high-volume residual reporting for entertainment clients including Netflix, HBO, Amazon, and Apple</li>
+                    <li>Built automated reporting workflows reducing process time by 30% while maintaining compliance accuracy</li>
+                    <li>Interpret complex legal contracts into actionable reporting frameworks for executive teams</li>
+                    <li>Allocate and track over $50M annually across multiple client accounts and production budgets</li>
+                  </ul>
+                </div>
+
+                <div class="experience-item">
+                  <h3>Creative Strategist</h3>
+                  <div class="company">Independent Practice</div>
+                  <div class="dates">2018 - Present</div>
+                  <ul>
+                    <li>Led creative strategy for Cest Bon Paris Fashion Week activation featuring NBA MVP Shai Gilgeous-Alexander, generating Vogue coverage and brand positioning</li>
+                    <li>Developed brand campaigns for Bulletproof Coffee, GOAT Group, No Plastic, Kris Fe, and Purespores, managing budgets up to $250k</li>
+                    <li>Created integrated creative solutions spanning digital, experiential, and traditional media for emerging and established brands</li>
+                    <li>Negotiated acquisition contracts and strategic partnerships, combining creative vision with business development</li>
+                  </ul>
+                </div>
+
+                <div class="experience-item">
+                  <h3>Creative Director & Co-Founder</h3>
+                  <div class="company">Modern Tea Room</div>
+                  <div class="dates">Mar 2015 - 2018</div>
+                  <ul>
+                    <li>Conceptualized and launched community-focused tea house, developing unique sensory experience strategy including signature gummy bear tea blend</li>
+                    <li>Designed comprehensive brand identity, interior concept, and customer journey from initial scent immersion to gallery art curation</li>
+                    <li>Managed $150k operational budget and collaborated with local artists to create integrated cultural experience</li>
+                    <li>Built sustainable community gathering space that became neighborhood staple (600+ Yelp reviews, 4.5+ rating)</li>
+                  </ul>
+                </div>
+              </section>
+            </div>
+
+            <div class="sidebar">
+              <section class="skills">
+                <h2>Core Skills</h2>
+                
+                <div class="skill-category">
+                  <h4>Creative Leadership</h4>
+                  <div class="skill-list">Brand Strategy, Creative Direction, Campaign Development, Concept Ideation, Cross-platform Integration</div>
+                </div>
+                
+                <div class="skill-category">
+                  <h4>Business Operations</h4>
+                  <div class="skill-list">Budget Management, Financial Analysis, Contract Negotiation, Team Leadership, Strategic Planning</div>
+                </div>
+                
+                <div class="skill-category">
+                  <h4>Technical</h4>
+                  <div class="skill-list">Adobe Creative Suite, Workflow Automation, Data Analysis, Digital Platforms, Project Management</div>
+                </div>
+                
+                <div class="skill-category">
+                  <h4>Specialized</h4>
+                  <div class="skill-list">Philosophy & Conceptual Thinking, Multimodal Design, Cultural Strategy, Venture Development</div>
+                </div>
+              </section>
+
+              <section class="education">
+                <h2>Education</h2>
+                <div class="education-item">
+                  <div class="degree">Bachelor of Arts in Philosophy</div>
+                  <div class="institution">California State University, Fullerton</div>
+                </div>
+              </section>
+
+              <section class="recognition">
+                <h2>Recognition</h2>
+                <ul>
+                  <li>Vogue Feature - Cest Bon Paris Fashion Week Campaign</li>
+                  <li>Modern Tea Room - 600+ Reviews, 4.5+ Rating</li>
+                </ul>
+              </section>
+
+              <section class="philosophy">
+                <h2>Philosophy</h2>
+                <div style="color: #4a4a4a; font-size: 9px; line-height: 1.4; font-style: italic;">
+                  "I create from lived experience and authentic perspective, building universes that extend philosophical concepts across multiple mediums. My approach combines analytical thinking with creative innovation, always seeking the redemptive quality in art and business."
+                </div>
+              </section>
+            </div>
+          </div>
+        </body>
+        </html>
+      `;
+
       // Create a temporary container for the resume content
       const tempContainer = document.createElement('div');
-      tempContainer.innerHTML = htmlContent;
+      tempContainer.innerHTML = resumeHTML;
       tempContainer.style.position = 'absolute';
       tempContainer.style.left = '-9999px';
       tempContainer.style.top = '-9999px';
       document.body.appendChild(tempContainer);
 
+      // Wait a moment for any fonts to load
+      await new Promise(resolve => setTimeout(resolve, 500));
+
       // Configure html2pdf options
       const opt = {
-        margin: 0.5,
+        margin: 0.4,
         filename: 'Kayron_Calloway_Resume.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { 
           scale: 2,
           useCORS: true,
-          letterRendering: true
+          letterRendering: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff'
         },
         jsPDF: { 
           unit: 'in', 
@@ -498,7 +770,7 @@ function setupPDFDownload() {
       };
 
       // Generate and download the PDF
-      await html2pdf().set(opt).from(tempContainer).save();
+      await html2pdf().set(opt).from(tempContainer.querySelector('body')).save();
 
       // Clean up
       document.body.removeChild(tempContainer);
