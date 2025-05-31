@@ -545,10 +545,10 @@ function setupPDFDownload() {
                       <h3 style="font-size: 14px; font-weight: bold; margin: 0 0 3px 0;">Founder & Creative Director</h3>
                       <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Coloring With Gray | 2024 - Present</div>
                       <ul style="margin: 0; padding-left: 18px; list-style-type: disc;">
-                        <li style="margin-bottom: 4px; font-size: 11px; word-wrap: break-word;">Building philosophy-driven creative house developing multimodal experiences across fragrance, film, digital applications, and experiential design</li>
-                        <li style="margin-bottom: 4px; font-size: 11px; word-wrap: break-word;">Developing philosophical frameworks into scalable creative systems spanning multiple mediums and touchpoints</li>
-                        <li style="margin-bottom: 4px; font-size: 11px; word-wrap: break-word;">Leading team of 7 specialists (designers, developers, photographers, vendors) through pre-launch development and strategic planning</li>
-                        <li style="margin-bottom: 4px; font-size: 11px; word-wrap: break-word;">Managing $50k development budget across product innovation, digital platforms, and content creation initiatives</li>
+                        <li style="margin-bottom: 4px; font-size: 11px;">Building philosophy-driven creative house developing multimodal experiences</li>
+                        <li style="margin-bottom: 4px; font-size: 11px;">Developing philosophical frameworks into scalable creative systems</li>
+                        <li style="margin-bottom: 4px; font-size: 11px;">Leading team of 7 specialists through pre-launch development</li>
+                        <li style="margin-bottom: 4px; font-size: 11px;">Managing $50k development budget across multiple initiatives</li>
                       </ul>
                     </div>
                     
@@ -557,10 +557,10 @@ function setupPDFDownload() {
                       <h3 style="font-size: 14px; font-weight: bold; margin: 0 0 3px 0;">Financial Analyst (Residuals)</h3>
                       <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Cast & Crew | Apr 2019 - Present</div>
                       <ul style="margin: 0; padding-left: 18px; list-style-type: disc;">
-                        <li style="margin-bottom: 4px; font-size: 11px; word-wrap: break-word;">Manage high-volume residual reporting for entertainment clients including Netflix, HBO, Amazon, and Apple</li>
-                        <li style="margin-bottom: 4px; font-size: 11px; word-wrap: break-word;">Built automated reporting workflows reducing process time by 30% while maintaining compliance accuracy</li>
-                        <li style="margin-bottom: 4px; font-size: 11px; word-wrap: break-word;">Interpret complex legal contracts into actionable reporting frameworks for executive teams</li>
-                        <li style="margin-bottom: 4px; font-size: 11px; word-wrap: break-word;">Allocate and track over $50M annually across multiple client accounts and production budgets</li>
+                        <li style="margin-bottom: 4px; font-size: 11px;">Manage residual reporting for Netflix, HBO, Amazon, and Apple</li>
+                        <li style="margin-bottom: 4px; font-size: 11px;">Built automated workflows reducing process time by 30%</li>
+                        <li style="margin-bottom: 4px; font-size: 11px;">Interpret complex legal contracts into actionable frameworks</li>
+                        <li style="margin-bottom: 4px; font-size: 11px;">Allocate and track over $50M annually across multiple accounts</li>
                       </ul>
                     </div>
                     
@@ -569,10 +569,10 @@ function setupPDFDownload() {
                       <h3 style="font-size: 14px; font-weight: bold; margin: 0 0 3px 0;">Creative Strategist</h3>
                       <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Independent Practice | 2018 - Present</div>
                       <ul style="margin: 0; padding-left: 18px; list-style-type: disc;">
-                        <li style="margin-bottom: 4px; font-size: 11px; word-wrap: break-word;">Led creative strategy for Cest Bon Paris Fashion Week activation featuring NBA MVP Shai Gilgeous-Alexander, generating Vogue coverage and brand positioning</li>
-                        <li style="margin-bottom: 4px; font-size: 11px; word-wrap: break-word;">Developed brand campaigns for Bulletproof Coffee, GOAT Group, No Plastic, Kris Fe, and Purespores, managing budgets up to $250k</li>
-                        <li style="margin-bottom: 4px; font-size: 11px; word-wrap: break-word;">Created integrated creative solutions spanning digital, experiential, and traditional media for emerging and established brands</li>
-                        <li style="margin-bottom: 4px; font-size: 11px; word-wrap: break-word;">Negotiated acquisition contracts and strategic partnerships, combining creative vision with business development</li>
+                        <li style="margin-bottom: 4px; font-size: 11px;">Led Cest Bon Paris Fashion Week activation with NBA MVP Shai Gilgeous-Alexander, generating Vogue coverage</li>
+                        <li style="margin-bottom: 4px; font-size: 11px;">Developed campaigns for Bulletproof Coffee, GOAT Group, managing budgets up to $250k</li>
+                        <li style="margin-bottom: 4px; font-size: 11px;">Created integrated solutions spanning digital, experiential, and traditional media</li>
+                        <li style="margin-bottom: 4px; font-size: 11px;">Negotiated acquisition contracts and strategic partnerships</li>
                       </ul>
                     </div>
                     
@@ -581,10 +581,10 @@ function setupPDFDownload() {
                       <h3 style="font-size: 14px; font-weight: bold; margin: 0 0 3px 0;">Creative Director & Co-Founder</h3>
                       <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Modern Tea Room | Mar 2015 - 2018</div>
                       <ul style="margin: 0; padding-left: 18px; list-style-type: disc;">
-                        <li style="margin-bottom: 4px; font-size: 11px; word-wrap: break-word;">Conceptualized and launched community-focused tea house, developing unique sensory experience strategy including signature gummy bear tea blend</li>
-                        <li style="margin-bottom: 4px; font-size: 11px; word-wrap: break-word;">Designed comprehensive brand identity, interior concept, and customer journey from initial scent immersion to gallery art curation</li>
-                        <li style="margin-bottom: 4px; font-size: 11px; word-wrap: break-word;">Managed $150k operational budget and collaborated with local artists to create integrated cultural experience</li>
-                        <li style="margin-bottom: 4px; font-size: 11px; word-wrap: break-word;">Built sustainable community gathering space that became neighborhood staple (600+ Yelp reviews, 4.5+ rating)</li>
+                        <li style="margin-bottom: 4px; font-size: 11px;">Conceptualized and launched community tea house with unique sensory experience strategy</li>
+                        <li style="margin-bottom: 4px; font-size: 11px;">Designed comprehensive brand identity, interior concept, and customer journey</li>
+                        <li style="margin-bottom: 4px; font-size: 11px;">Managed $150k operational budget and collaborated with local artists</li>
+                        <li style="margin-bottom: 4px; font-size: 11px;">Built neighborhood staple with 600+ Yelp reviews, 4.5+ rating</li>
                       </ul>
                     </div>
                     
