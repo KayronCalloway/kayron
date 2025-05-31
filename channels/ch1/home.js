@@ -378,6 +378,9 @@ function setupModalEventListeners() {
   setupModal('aboutButton', 'aboutModal', 'closeAbout');
   setupModal('contactButton', 'contactModal', 'closeContact');
 
+  // Setup PDF download functionality
+  setupPDFDownload();
+
   // Handle modal scroll behavior for iOS
   if (isMobile) {
     // Fix for iOS momentum scrolling
@@ -443,6 +446,74 @@ function setupModalEventListeners() {
           }, 600);
         }
       });
+    }
+  });
+}
+
+function setupPDFDownload() {
+  const downloadButton = document.getElementById('downloadPDF');
+  if (!downloadButton) {
+    console.error('Download PDF button not found');
+    return;
+  }
+
+  downloadButton.addEventListener('click', async function() {
+    try {
+      // Show loading state
+      const originalText = downloadButton.innerHTML;
+      downloadButton.innerHTML = '( generating... )';
+      downloadButton.disabled = true;
+
+      // Fetch the clean resume HTML
+      const response = await fetch('./kayron_resume_new.html');
+      if (!response.ok) {
+        throw new Error('Failed to fetch resume');
+      }
+      
+      const htmlContent = await response.text();
+      
+      // Create a temporary container for the resume content
+      const tempContainer = document.createElement('div');
+      tempContainer.innerHTML = htmlContent;
+      tempContainer.style.position = 'absolute';
+      tempContainer.style.left = '-9999px';
+      tempContainer.style.top = '-9999px';
+      document.body.appendChild(tempContainer);
+
+      // Configure html2pdf options
+      const opt = {
+        margin: 0.5,
+        filename: 'Kayron_Calloway_Resume.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+          scale: 2,
+          useCORS: true,
+          letterRendering: true
+        },
+        jsPDF: { 
+          unit: 'in', 
+          format: 'letter', 
+          orientation: 'portrait' 
+        }
+      };
+
+      // Generate and download the PDF
+      await html2pdf().set(opt).from(tempContainer).save();
+
+      // Clean up
+      document.body.removeChild(tempContainer);
+      
+      // Reset button state
+      downloadButton.innerHTML = originalText;
+      downloadButton.disabled = false;
+
+    } catch (error) {
+      console.error('PDF generation failed:', error);
+      alert('PDF generation failed. Please try again.');
+      
+      // Reset button state
+      downloadButton.innerHTML = '( download pdf )';
+      downloadButton.disabled = false;
     }
   });
 }

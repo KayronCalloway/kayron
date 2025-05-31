@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kayron Calloway - Creative Director with financial operations background. Builds successful ventures from concept to execution, combining analytical thinking with creative innovation.">
+  <title>Kayron Calloway | Creative Director</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --color-text-primary: #1a1a1a;
+      --color-text-secondary: #4a4a4a;
+      --color-text-tertiary: #6a6a6a;
+      --color-border: #e5e5e5;
+      --color-background: #ffffff;
+      --color-accent: #2563eb;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--color-text-primary);
+      background: var(--color-background);
+      max-width: 8.5in;
+      margin: 40px auto;
+      padding: 40px;
+    }
+    
+    .resume-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    
+    /* Header */
+    header {
+      text-align: left;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--color-border);
+    }
+    
+    h1 {
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+    
+    .title {
+      font-size: 18px;
+      color: var(--color-text-secondary);
+      font-weight: 400;
+      margin-bottom: 16px;
+    }
+    
+    .contact-info {
+      display: flex;
+      gap: 24px;
+      font-size: 14px;
+      color: var(--color-text-tertiary);
+    }
+    
+    .contact-info a {
+      color: var(--color-accent);
+      text-decoration: none;
+    }
+    
+    /* Content Grid */
+    .main-content {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 48px;
+    }
+    
+    /* Sections */
+    section {
+      margin-bottom: 40px;
+    }
+    
+    h2 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text-primary);
+    }
+    
+    h3 {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    
+    h4 {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      margin-bottom: 12px;
+    }
+    
+    /* Experience Items */
+    .experience-item {
+      margin-bottom: 32px;
+    }
+    
+    .experience-header {
+      margin-bottom: 12px;
+    }
+    
+    .company {
+      color: var(--color-text-secondary);
+      font-size: 14px;
+      font-weight: 400;
+    }
+    
+    .dates {
+      color: var(--color-text-tertiary);
+      font-size: 14px;
+      margin-top: 2px;
+    }
+    
+    ul {
+      list-style: none;
+      margin-top: 8px;
+    }
+    
+    li {
+      margin-bottom: 8px;
+      padding-left: 16px;
+      position: relative;
+      color: var(--color-text-secondary);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    
+    li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--color-accent);
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      font-size: 14px;
+    }
+    
+    .sidebar section {
+      margin-bottom: 32px;
+    }
+    
+    .sidebar h2 {
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+    
+    .sidebar ul {
+      margin-top: 4px;
+    }
+    
+    .sidebar li {
+      margin-bottom: 6px;
+      padding-left: 0;
+      color: var(--color-text-secondary);
+    }
+    
+    .sidebar li::before {
+      display: none;
+    }
+    
+    .skill-category {
+      margin-bottom: 16px;
+    }
+    
+    .skill-category h4 {
+      margin-bottom: 6px;
+      font-size: 13px;
+      color: var(--color-text-primary);
+    }
+    
+    .skill-list {
+      color: var(--color-text-tertiary);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    
+    /* Education */
+    .education-item {
+      margin-bottom: 16px;
+    }
+    
+    .degree {
+      font-weight: 500;
+      color: var(--color-text-primary);
+      margin-bottom: 2px;
+    }
+    
+    .institution {
+      color: var(--color-text-secondary);
+      font-size: 13px;
+    }
+    
+    /* Print Styles */
+    @media print {
+      body {
+        margin: 0;
+        padding: 20px;
+        font-size: 11px;
+        line-height: 1.4;
+      }
+      
+      @page {
+        margin: 0.5in;
+        size: letter portrait;
+      }
+      
+      .main-content {
+        grid-template-columns: 65% 32%;
+        gap: 3%;
+      }
+      
+      section {
+        margin-bottom: 16px;
+        page-break-inside: avoid;
+      }
+      
+      .experience-item {
+        margin-bottom: 20px;
+        page-break-inside: avoid;
+      }
+      
+      h1 { font-size: 24px; }
+      h2 { font-size: 12px; }
+      h3 { font-size: 12px; }
+      .title { font-size: 14px; }
+      .contact-info { font-size: 10px; }
+      li { font-size: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="resume-container">
+    <header>
+      <h1>KAYRON CALLOWAY</h1>
+      <div class="title">Creative Director</div>
+      <div class="contact-info">
+        <span>Los Angeles, CA</span>
+        <a href="mailto:KayronCalloway@gmail.com">KayronCalloway@gmail.com</a>
+        <span>310.498.8059</span>
+      </div>
+    </header>
+
+    <div class="main-content">
+      <div class="primary-content">
+        
+        <section class="experience">
+          <h2>Experience</h2>
+          
+          <div class="experience-item">
+            <div class="experience-header">
+              <h3>Founder & Creative Director</h3>
+              <div class="company">Coloring With Gray</div>
+              <div class="dates">2024 - Present</div>
+            </div>
+            <ul>
+              <li>Building philosophy-driven creative house developing multimodal experiences across fragrance, film, digital applications, and experiential design</li>
+              <li>Developing philosophical frameworks into scalable creative systems spanning multiple mediums and touchpoints</li>
+              <li>Leading team of 7 specialists (designers, developers, photographers, vendors) through pre-launch development and strategic planning</li>
+              <li>Managing $50k development budget across product innovation, digital platforms, and content creation initiatives</li>
+            </ul>
+          </div>
+
+          <div class="experience-item">
+            <div class="experience-header">
+              <h3>Financial Analyst (Residuals)</h3>
+              <div class="company">Cast & Crew</div>
+              <div class="dates">Apr 2019 - Present</div>
+            </div>
+            <ul>
+              <li>Manage high-volume residual reporting for entertainment clients including Netflix, HBO, Amazon, and Apple</li>
+              <li>Built automated reporting workflows reducing process time by 30% while maintaining compliance accuracy</li>
+              <li>Interpret complex legal contracts into actionable reporting frameworks for executive teams</li>
+              <li>Allocate and track over $50M annually across multiple client accounts and production budgets</li>
+            </ul>
+          </div>
+
+          <div class="experience-item">
+            <div class="experience-header">
+              <h3>Creative Strategist</h3>
+              <div class="company">Independent Practice</div>
+              <div class="dates">2018 - Present</div>
+            </div>
+            <ul>
+              <li>Led creative strategy for Cest Bon Paris Fashion Week activation featuring NBA MVP Shai Gilgeous-Alexander, generating Vogue coverage and brand positioning</li>
+              <li>Developed brand campaigns for Bulletproof Coffee, GOAT Group, No Plastic, Kris Fe, and Purespores, managing budgets up to $250k</li>
+              <li>Created integrated creative solutions spanning digital, experiential, and traditional media for emerging and established brands</li>
+              <li>Negotiated acquisition contracts and strategic partnerships, combining creative vision with business development</li>
+            </ul>
+          </div>
+
+          <div class="experience-item">
+            <div class="experience-header">
+              <h3>Creative Director & Co-Founder</h3>
+              <div class="company">Modern Tea Room</div>
+              <div class="dates">Mar 2015 - 2018</div>
+            </div>
+            <ul>
+              <li>Conceptualized and launched community-focused tea house, developing unique sensory experience strategy including signature gummy bear tea blend</li>
+              <li>Designed comprehensive brand identity, interior concept, and customer journey from initial scent immersion to gallery art curation</li>
+              <li>Managed $150k operational budget and collaborated with local artists to create integrated cultural experience</li>
+              <li>Built sustainable community gathering space that became neighborhood staple (600+ Yelp reviews, 4.5+ rating)</li>
+            </ul>
+          </div>
+
+        </section>
+
+      </div>
+
+      <div class="sidebar">
+        
+        <section class="skills">
+          <h2>Core Skills</h2>
+          
+          <div class="skill-category">
+            <h4>Creative Leadership</h4>
+            <div class="skill-list">Brand Strategy, Creative Direction, Campaign Development, Concept Ideation, Cross-platform Integration</div>
+          </div>
+          
+          <div class="skill-category">
+            <h4>Business Operations</h4>
+            <div class="skill-list">Budget Management, Financial Analysis, Contract Negotiation, Team Leadership, Strategic Planning</div>
+          </div>
+          
+          <div class="skill-category">
+            <h4>Technical</h4>
+            <div class="skill-list">Adobe Creative Suite, Workflow Automation, Data Analysis, Digital Platforms, Project Management</div>
+          </div>
+          
+          <div class="skill-category">
+            <h4>Specialized</h4>
+            <div class="skill-list">Philosophy & Conceptual Thinking, Multimodal Design, Cultural Strategy, Venture Development</div>
+          </div>
+        </section>
+
+        <section class="education">
+          <h2>Education</h2>
+          <div class="education-item">
+            <div class="degree">Bachelor of Arts in Philosophy</div>
+            <div class="institution">California State University, Fullerton</div>
+          </div>
+        </section>
+
+        <section class="recognition">
+          <h2>Recognition</h2>
+          <ul>
+            <li>Vogue Feature - Cest Bon Paris Fashion Week Campaign</li>
+            <li>Modern Tea Room - 600+ Reviews, 4.5+ Rating</li>
+          </ul>
+        </section>
+
+        <section class="interests">
+          <h2>Philosophy</h2>
+          <div style="color: var(--color-text-secondary); font-size: 13px; line-height: 1.5; font-style: italic;">
+            "I create from lived experience and authentic perspective, building universes that extend philosophical concepts across multiple mediums. My approach combines analytical thinking with creative innovation, always seeking the redemptive quality in art and business."
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>
