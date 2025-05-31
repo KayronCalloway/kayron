@@ -469,132 +469,38 @@ function setupPDFDownload() {
         throw new Error('html2pdf library not loaded');
       }
 
-      // Create a simpler PDF element
-      const pdfElement = document.createElement('div');
-      pdfElement.style.width = '8.5in';
-      pdfElement.style.padding = '0.5in';
-      pdfElement.style.fontFamily = 'Arial, sans-serif';
-      pdfElement.style.fontSize = '12px';
-      pdfElement.style.lineHeight = '1.4';
-      pdfElement.style.color = '#000';
-      pdfElement.style.backgroundColor = '#fff';
+      // Create a simple test element first
+      const testElement = document.createElement('div');
+      testElement.innerHTML = '<h1>TEST</h1><p>This is a test document</p>';
+      testElement.style.padding = '20px';
+      testElement.style.fontFamily = 'Arial';
+      testElement.style.fontSize = '14px';
+      testElement.style.width = '600px';
+      testElement.style.height = '400px';
+      testElement.style.backgroundColor = 'white';
+      testElement.style.color = 'black';
+      
+      document.body.appendChild(testElement);
+      
+      console.log('Test element created and added to DOM');
+      console.log('Element content:', testElement.innerHTML);
+      console.log('Element computed styles:', window.getComputedStyle(testElement));
 
-      pdfElement.innerHTML = `
-        <div style="text-align: center; margin-bottom: 30px;">
-          <h1 style="font-size: 28px; margin: 0 0 5px 0; font-weight: bold;">KAYRON CALLOWAY</h1>
-          <div style="font-size: 16px; color: #666; margin-bottom: 10px;">Creative Director</div>
-          <div style="font-size: 12px; color: #666;">
-            Los Angeles, CA | 310.498.8059 | KayronCalloway@gmail.com
-          </div>
-        </div>
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-        <div style="display: flex; gap: 30px;">
-          <div style="flex: 2;">
-            <h2 style="font-size: 16px; margin: 0 0 15px 0; border-bottom: 2px solid #333; padding-bottom: 5px; text-transform: uppercase;">EXPERIENCE</h2>
-            
-            <div style="margin-bottom: 25px;">
-              <h3 style="font-size: 14px; margin: 0 0 3px 0; font-weight: bold;">Founder & Creative Director</h3>
-              <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Coloring With Gray | 2024 - Present</div>
-              <ul style="margin: 0; padding-left: 20px;">
-                <li style="margin-bottom: 5px; font-size: 11px;">Building philosophy-driven creative house developing multimodal experiences across fragrance, film, digital applications, and experiential design</li>
-                <li style="margin-bottom: 5px; font-size: 11px;">Developing philosophical frameworks into scalable creative systems spanning multiple mediums and touchpoints</li>
-                <li style="margin-bottom: 5px; font-size: 11px;">Leading team of 7 specialists (designers, developers, photographers, vendors) through pre-launch development and strategic planning</li>
-                <li style="margin-bottom: 5px; font-size: 11px;">Managing $50k development budget across product innovation, digital platforms, and content creation initiatives</li>
-              </ul>
-            </div>
-
-            <div style="margin-bottom: 25px;">
-              <h3 style="font-size: 14px; margin: 0 0 3px 0; font-weight: bold;">Financial Analyst (Residuals)</h3>
-              <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Cast & Crew | Apr 2019 - Present</div>
-              <ul style="margin: 0; padding-left: 20px;">
-                <li style="margin-bottom: 5px; font-size: 11px;">Manage high-volume residual reporting for entertainment clients including Netflix, HBO, Amazon, and Apple</li>
-                <li style="margin-bottom: 5px; font-size: 11px;">Built automated reporting workflows reducing process time by 30% while maintaining compliance accuracy</li>
-                <li style="margin-bottom: 5px; font-size: 11px;">Interpret complex legal contracts into actionable reporting frameworks for executive teams</li>
-                <li style="margin-bottom: 5px; font-size: 11px;">Allocate and track over $50M annually across multiple client accounts and production budgets</li>
-              </ul>
-            </div>
-
-            <div style="margin-bottom: 25px;">
-              <h3 style="font-size: 14px; margin: 0 0 3px 0; font-weight: bold;">Creative Strategist</h3>
-              <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Independent Practice | 2018 - Present</div>
-              <ul style="margin: 0; padding-left: 20px;">
-                <li style="margin-bottom: 5px; font-size: 11px;">Led creative strategy for Cest Bon Paris Fashion Week activation featuring NBA MVP Shai Gilgeous-Alexander, generating Vogue coverage and brand positioning</li>
-                <li style="margin-bottom: 5px; font-size: 11px;">Developed brand campaigns for Bulletproof Coffee, GOAT Group, No Plastic, Kris Fe, and Purespores, managing budgets up to $250k</li>
-                <li style="margin-bottom: 5px; font-size: 11px;">Created integrated creative solutions spanning digital, experiential, and traditional media for emerging and established brands</li>
-                <li style="margin-bottom: 5px; font-size: 11px;">Negotiated acquisition contracts and strategic partnerships, combining creative vision with business development</li>
-              </ul>
-            </div>
-
-            <div style="margin-bottom: 25px;">
-              <h3 style="font-size: 14px; margin: 0 0 3px 0; font-weight: bold;">Creative Director & Co-Founder</h3>
-              <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Modern Tea Room | Mar 2015 - 2018</div>
-              <ul style="margin: 0; padding-left: 20px;">
-                <li style="margin-bottom: 5px; font-size: 11px;">Conceptualized and launched community-focused tea house, developing unique sensory experience strategy including signature gummy bear tea blend</li>
-                <li style="margin-bottom: 5px; font-size: 11px;">Designed comprehensive brand identity, interior concept, and customer journey from initial scent immersion to gallery art curation</li>
-                <li style="margin-bottom: 5px; font-size: 11px;">Managed $150k operational budget and collaborated with local artists to create integrated cultural experience</li>
-                <li style="margin-bottom: 5px; font-size: 11px;">Built sustainable community gathering space that became neighborhood staple (600+ Yelp reviews, 4.5+ rating)</li>
-              </ul>
-            </div>
-          </div>
-
-          <div style="flex: 1;">
-            <h2 style="font-size: 14px; margin: 0 0 15px 0; border-bottom: 2px solid #333; padding-bottom: 5px; text-transform: uppercase;">CORE SKILLS</h2>
-            
-            <div style="margin-bottom: 15px;">
-              <h4 style="font-size: 12px; margin: 0 0 5px 0; font-weight: bold;">Creative Leadership</h4>
-              <div style="font-size: 10px; color: #666; line-height: 1.3;">Brand Strategy, Creative Direction, Campaign Development, Concept Ideation, Cross-platform Integration</div>
-            </div>
-            
-            <div style="margin-bottom: 15px;">
-              <h4 style="font-size: 12px; margin: 0 0 5px 0; font-weight: bold;">Business Operations</h4>
-              <div style="font-size: 10px; color: #666; line-height: 1.3;">Budget Management, Financial Analysis, Contract Negotiation, Team Leadership, Strategic Planning</div>
-            </div>
-            
-            <div style="margin-bottom: 15px;">
-              <h4 style="font-size: 12px; margin: 0 0 5px 0; font-weight: bold;">Technical</h4>
-              <div style="font-size: 10px; color: #666; line-height: 1.3;">Adobe Creative Suite, Workflow Automation, Data Analysis, Digital Platforms, Project Management</div>
-            </div>
-            
-            <div style="margin-bottom: 25px;">
-              <h4 style="font-size: 12px; margin: 0 0 5px 0; font-weight: bold;">Specialized</h4>
-              <div style="font-size: 10px; color: #666; line-height: 1.3;">Philosophy & Conceptual Thinking, Multimodal Design, Cultural Strategy, Venture Development</div>
-            </div>
-
-            <h2 style="font-size: 14px; margin: 0 0 15px 0; border-bottom: 2px solid #333; padding-bottom: 5px; text-transform: uppercase;">EDUCATION</h2>
-            <div style="margin-bottom: 20px;">
-              <div style="font-size: 12px; font-weight: bold; margin-bottom: 2px;">Bachelor of Arts in Philosophy</div>
-              <div style="font-size: 11px; color: #666;">California State University, Fullerton</div>
-            </div>
-
-            <h2 style="font-size: 14px; margin: 0 0 15px 0; border-bottom: 2px solid #333; padding-bottom: 5px; text-transform: uppercase;">RECOGNITION</h2>
-            <ul style="margin: 0; padding-left: 15px;">
-              <li style="font-size: 11px; margin-bottom: 5px;">Vogue Feature - Cest Bon Paris Fashion Week Campaign</li>
-              <li style="font-size: 11px; margin-bottom: 5px;">Modern Tea Room - 600+ Reviews, 4.5+ Rating</li>
-            </ul>
-          </div>
-        </div>
-      `;
-
-      // Add to DOM temporarily
-      pdfElement.style.position = 'absolute';
-      pdfElement.style.left = '-9999px';
-      pdfElement.style.top = '0';
-      document.body.appendChild(pdfElement);
-
-      // Wait for DOM update
-      await new Promise(resolve => setTimeout(resolve, 100));
-
-      // Configure html2pdf options with simpler settings
-      const opt = {
-        margin: 0.5,
-        filename: 'Kayron_Calloway_Resume.pdf',
-        image: { type: 'jpeg', quality: 0.95 },
+      // Try the simplest possible PDF generation
+      const simpleOpt = {
+        margin: 1,
+        filename: 'Test_Resume.pdf',
+        image: { type: 'jpeg', quality: 0.8 },
         html2canvas: { 
-          scale: 1.5,
+          scale: 1,
           useCORS: false,
           allowTaint: false,
           backgroundColor: '#ffffff',
-          logging: false
+          logging: true,
+          height: 400,
+          width: 600
         },
         jsPDF: { 
           unit: 'in', 
@@ -603,15 +509,73 @@ function setupPDFDownload() {
         }
       };
 
-      console.log('Starting PDF generation...');
+      console.log('Starting simple PDF generation test...');
       
-      // Generate and download the PDF
-      await html2pdf().set(opt).from(pdfElement).save();
-
-      console.log('PDF generation completed');
+      // Test basic functionality first
+      const result = await html2pdf().set(simpleOpt).from(testElement).outputPdf();
+      
+      console.log('PDF generated successfully, result length:', result.length);
+      
+      if (result && result.length > 100) {
+        // If test works, try with real content
+        testElement.innerHTML = `
+          <div style="padding: 20px; font-family: Arial; line-height: 1.4;">
+            <h1 style="text-align: center; margin: 0 0 10px 0;">KAYRON CALLOWAY</h1>
+            <div style="text-align: center; margin-bottom: 20px; color: #666;">
+              Creative Director<br>
+              Los Angeles, CA | 310.498.8059 | KayronCalloway@gmail.com
+            </div>
+            
+            <h2 style="font-size: 16px; border-bottom: 1px solid #333; margin: 20px 0 10px 0;">EXPERIENCE</h2>
+            
+            <div style="margin-bottom: 15px;">
+              <h3 style="font-size: 14px; margin: 0;">Founder & Creative Director</h3>
+              <div style="color: #666; margin: 2px 0 5px 0;">Coloring With Gray | 2024 - Present</div>
+              <ul style="margin: 5px 0; padding-left: 20px;">
+                <li style="margin-bottom: 3px;">Building philosophy-driven creative house developing multimodal experiences</li>
+                <li style="margin-bottom: 3px;">Leading team of 7 specialists through pre-launch development</li>
+                <li style="margin-bottom: 3px;">Managing $50k development budget across multiple initiatives</li>
+              </ul>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+              <h3 style="font-size: 14px; margin: 0;">Financial Analyst (Residuals)</h3>
+              <div style="color: #666; margin: 2px 0 5px 0;">Cast & Crew | Apr 2019 - Present</div>
+              <ul style="margin: 5px 0; padding-left: 20px;">
+                <li style="margin-bottom: 3px;">Manage residual reporting for Netflix, HBO, Amazon, and Apple</li>
+                <li style="margin-bottom: 3px;">Built automated workflows reducing process time by 30%</li>
+                <li style="margin-bottom: 3px;">Allocate and track over $50M annually</li>
+              </ul>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+              <h3 style="font-size: 14px; margin: 0;">Creative Strategist</h3>
+              <div style="color: #666; margin: 2px 0 5px 0;">Independent Practice | 2018 - Present</div>
+              <ul style="margin: 5px 0; padding-left: 20px;">
+                <li style="margin-bottom: 3px;">Led Cest Bon Paris Fashion Week activation with Vogue coverage</li>
+                <li style="margin-bottom: 3px;">Developed campaigns for Bulletproof Coffee, GOAT Group, managing budgets up to $250k</li>
+              </ul>
+            </div>
+            
+            <h2 style="font-size: 16px; border-bottom: 1px solid #333; margin: 20px 0 10px 0;">EDUCATION</h2>
+            <div>
+              <strong>Bachelor of Arts in Philosophy</strong><br>
+              California State University, Fullerton
+            </div>
+          </div>
+        `;
+        
+        await new Promise(resolve => setTimeout(resolve, 200));
+        
+        // Generate final PDF
+        await html2pdf().set(simpleOpt).from(testElement).save();
+        console.log('Final PDF generation completed');
+      } else {
+        throw new Error('PDF generation test failed - empty or invalid result');
+      }
 
       // Clean up
-      document.body.removeChild(pdfElement);
+      document.body.removeChild(testElement);
       
       // Reset button state
       downloadButton.innerHTML = originalText;
@@ -621,7 +585,11 @@ function setupPDFDownload() {
       console.error('PDF generation failed:', error);
       console.error('Error details:', error.message, error.stack);
       
-      alert(`PDF generation failed: ${error.message}. Please try again or contact support.`);
+      // Try to clean up any test elements
+      const testElements = document.querySelectorAll('div[style*="TEST"]');
+      testElements.forEach(el => el.remove());
+      
+      alert(`PDF generation failed: ${error.message}. Check console for details.`);
       
       // Reset button state
       downloadButton.innerHTML = originalText;
