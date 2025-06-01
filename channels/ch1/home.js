@@ -517,49 +517,67 @@ function setupPDFDownload() {
       console.log('PDF generated successfully, result length:', result.length);
       
       if (result && result.length > 100) {
-        // Start with minimal content and build up
+        // Even more minimal - just the essential content
         testElement.innerHTML = `
-          <div style="padding: 20px; font-family: Arial; font-size: 12px; color: #000;">
-            <h1 style="text-align: center;">KAYRON CALLOWAY</h1>
+          <div style="padding: 20px; font-family: Arial; font-size: 12px; color: #000; width: 600px;">
             <div style="text-align: center; margin-bottom: 20px;">
-              Creative Director<br>
-              Los Angeles, CA | 310.498.8059 | KayronCalloway@gmail.com<br>
-              Portfolio: kayroncalloway.github.io/kayron
+              <h1 style="margin: 0;">KAYRON CALLOWAY</h1>
+              <div>Creative Director</div>
+              <div>Los Angeles, CA | 310.498.8059</div>
+              <div>KayronCalloway@gmail.com</div>
+              <div>Portfolio: kayroncalloway.github.io/kayron</div>
             </div>
             
-            <h2>EXPERIENCE</h2>
+            <div style="margin-bottom: 15px;">
+              <h2 style="font-size: 14px; margin: 10px 0 5px 0;">EXPERIENCE</h2>
+            </div>
             
-            <h3>Founder & Creative Director</h3>
-            <div>Coloring With Gray | 2024 - Present</div>
-            <p>Building philosophy-driven creative house</p>
-            <p>Leading team of 7 specialists</p>
-            <p>Managing $50k development budget</p>
+            <div style="margin-bottom: 15px;">
+              <div style="font-weight: bold;">Founder & Creative Director</div>
+              <div>Coloring With Gray | 2024 - Present</div>
+              <div>• Building philosophy-driven creative house</div>
+              <div>• Leading team of 7 specialists</div>
+              <div>• Managing $50k development budget</div>
+            </div>
             
-            <h3>Financial Analyst</h3>
-            <div>Cast & Crew | Apr 2019 - Present</div>
-            <p>Manage reporting for Netflix, HBO, Amazon, Apple</p>
-            <p>Built automated workflows</p>
-            <p>Track over $50M annually</p>
+            <div style="margin-bottom: 15px;">
+              <div style="font-weight: bold;">Financial Analyst</div>
+              <div>Cast & Crew | Apr 2019 - Present</div>
+              <div>• Manage reporting for Netflix, HBO, Amazon, Apple</div>
+              <div>• Built automated workflows</div>
+              <div>• Track over $50M annually</div>
+            </div>
             
-            <h3>Creative Strategist</h3>
-            <div>Independent Practice | 2018 - Present</div>
-            <p>Led Cest Bon Paris Fashion Week with Vogue coverage</p>
-            <p>Developed campaigns for Bulletproof Coffee, GOAT Group</p>
+            <div style="margin-bottom: 15px;">
+              <div style="font-weight: bold;">Creative Strategist</div>
+              <div>Independent Practice | 2018 - Present</div>
+              <div>• Led Cest Bon Paris Fashion Week with Vogue coverage</div>
+              <div>• Developed campaigns for major brands</div>
+            </div>
             
-            <h3>Creative Director & Co-Founder</h3>
-            <div>Modern Tea Room | Mar 2015 - 2018</div>
-            <p>Launched community tea house</p>
-            <p>600+ Yelp reviews, 4.5+ rating</p>
+            <div style="margin-bottom: 15px;">
+              <div style="font-weight: bold;">Creative Director & Co-Founder</div>
+              <div>Modern Tea Room | Mar 2015 - 2018</div>
+              <div>• Launched community tea house</div>
+              <div>• 600+ Yelp reviews, 4.5+ rating</div>
+            </div>
             
-            <h2>SKILLS</h2>
-            <p>Brand Strategy, Creative Direction, Budget Management, Financial Analysis</p>
+            <div style="margin-bottom: 15px;">
+              <h2 style="font-size: 14px; margin: 10px 0 5px 0;">SKILLS</h2>
+              <div>Brand Strategy, Creative Direction, Budget Management, Financial Analysis</div>
+            </div>
             
-            <h2>EDUCATION</h2>
-            <p>Bachelor of Arts in Philosophy<br>California State University, Fullerton</p>
+            <div style="margin-bottom: 15px;">
+              <h2 style="font-size: 14px; margin: 10px 0 5px 0;">EDUCATION</h2>
+              <div style="font-weight: bold;">Bachelor of Arts in Philosophy</div>
+              <div>California State University, Fullerton</div>
+            </div>
             
-            <h2>RECOGNITION</h2>
-            <p>Vogue Feature - Cest Bon Paris Fashion Week Campaign</p>
-            <p>Modern Tea Room - 600+ Reviews, 4.5+ Rating</p>
+            <div>
+              <h2 style="font-size: 14px; margin: 10px 0 5px 0;">RECOGNITION</h2>
+              <div>• Vogue Feature - Cest Bon Paris Fashion Week Campaign</div>
+              <div>• Modern Tea Room - 600+ Reviews, 4.5+ Rating</div>
+            </div>
           </div>
         `;
         
