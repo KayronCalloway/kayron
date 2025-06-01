@@ -783,8 +783,8 @@
       body {
         margin: 0;
         padding: 0;
-        font-size: 11px;
-        line-height: 1.3;
+        font-size: 12px;
+        line-height: 1.4;
         background: #fff !important;
         color: #000 !important;
         max-width: 100%;
@@ -841,16 +841,16 @@
       }
       
       h2 {
-        font-size: 12px;
-        padding-bottom: 3px;
+        font-size: 14px;
+        padding-bottom: 4px;
       }
       
       h3 {
-        font-size: 11px;
+        font-size: 13px;
       }
       
       h4 {
-        font-size: 10px;
+        font-size: 11px;
       }
       
       section {
@@ -861,20 +861,16 @@
       
       .main-content {
         display: grid;
-        grid-template-columns: 65% 32%;
-        grid-gap: 3%;
+        grid-template-columns: 68fr 32fr;
+        grid-gap: calc(var(--spacing-unit) * 6);
+        align-items: start;
       }
       
-      /* Single column option for better PDF flow */
-      @media print and (max-height: 11in) {
-        .main-content {
-          grid-template-columns: 1fr;
-          grid-gap: 0.3cm;
-        }
-        
-        .right-column {
-          margin-top: 0.5cm;
-        }
+      /* Maintain consistent spacing */
+      .resume-container {
+        margin: 0;
+        padding: 0.3cm 0.5cm;
+        max-width: 100%;
       }
       
       .experience-item {
@@ -910,20 +906,21 @@
       }
       
       li {
-        margin-bottom: 2px;
-        font-size: 10px;
-        line-height: 1.3;
+        margin-bottom: 3px;
+        font-size: 11px;
+        line-height: 1.4;
       }
       
       p {
-        margin-bottom: 0.2cm;
+        margin-bottom: 0.3cm;
+        font-size: 12px;
       }
       
       /* Compact spacing */
       .contact-info {
-        font-size: 9px;
-        margin-top: 0.1cm;
-        gap: 8px;
+        font-size: 11px;
+        margin-top: 0.2cm;
+        gap: 10px;
       }
       
       /* Ensure URLs display properly */
