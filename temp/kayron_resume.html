@@ -869,8 +869,22 @@
       /* Maintain consistent spacing */
       .resume-container {
         margin: 0;
-        padding: 0.3cm 0.5cm;
+        padding: 0.4cm 0.6cm;
         max-width: 100%;
+      }
+      
+      /* Optimize spacing for better page 1 usage */
+      header {
+        margin-bottom: 0.4cm;
+        padding-bottom: 0.3cm;
+      }
+      
+      .summary {
+        margin-bottom: 0.4cm;
+      }
+      
+      section {
+        margin-bottom: 0.4cm;
       }
       
       .experience-item {
@@ -880,29 +894,39 @@
         break-inside: avoid;
       }
       
-      /* Strategic page breaks - allow breaks between major sections */
-      .experience-item:first-child {
-        page-break-before: avoid;
+      /* Strategic page breaks - optimize page 1 space usage */
+      
+      /* Allow EXPERIENCE section to break, but keep individual items together */
+      section {
+        page-break-inside: auto; /* Allow sections to split */
       }
       
-      .right-column {
-        page-break-before: auto;
+      .experience-item {
+        page-break-inside: avoid; /* Keep individual jobs together */
+        break-inside: avoid;
+        page-break-after: auto; /* Allow breaks between jobs */
       }
       
-      /* Keep important content together */
+      /* Keep compact sections together */
       .skills, .projects, .education-item {
         page-break-inside: avoid;
         break-inside: avoid;
       }
       
-      /* Allow list breaks for better flow */
-      ul {
+      /* Allow portfolio lists to break between items */
+      .projects ul, .recognition ul {
         page-break-inside: auto;
       }
       
+      /* Keep individual list items together */
       li {
         page-break-inside: avoid;
         break-inside: avoid;
+      }
+      
+      /* Ensure header and summary stay on page 1 */
+      header, .summary {
+        page-break-after: avoid;
       }
       
       li {
