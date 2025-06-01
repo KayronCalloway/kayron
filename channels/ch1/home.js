@@ -461,239 +461,25 @@ function setupPDFDownload() {
     try {
       // Show loading state
       const originalText = downloadButton.innerHTML;
-      downloadButton.innerHTML = '( opening print... )';
+      downloadButton.innerHTML = '( opening resume... )';
       downloadButton.disabled = true;
 
-      // Create a new window with the resume content
-      const printWindow = window.open('', '_blank', 'width=800,height=1000');
+      // Open the new resume HTML file in a new window for printing
+      const printWindow = window.open('/temp/kayron_resume.html', '_blank', 'width=800,height=1000');
       
-      // Write the complete resume HTML to the new window
-      printWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Kayron Calloway - Resume</title>
-          <style>
-            @media print {
-              @page {
-                margin: 0.5in;
-                size: letter portrait;
-              }
-            }
-            
-            body {
-              font-family: Arial, sans-serif;
-              font-size: 12px;
-              line-height: 1.4;
-              color: #000;
-              background: #fff;
-              margin: 0;
-              padding: 20px;
-              max-width: 8in;
-            }
-            
-            .header {
-              text-align: center;
-              margin-bottom: 30px;
-              border-bottom: 2px solid #000;
-              padding-bottom: 15px;
-            }
-            
-            h1 {
-              font-size: 28px;
-              font-weight: bold;
-              margin: 0 0 8px 0;
-              letter-spacing: 1px;
-            }
-            
-            .title {
-              font-size: 16px;
-              color: #333;
-              margin-bottom: 8px;
-            }
-            
-            .contact {
-              font-size: 12px;
-              color: #666;
-            }
-            
-            .main-content {
-              display: flex;
-              gap: 30px;
-            }
-            
-            .left-column {
-              flex: 2;
-            }
-            
-            .right-column {
-              flex: 1;
-            }
-            
-            h2 {
-              font-size: 16px;
-              font-weight: bold;
-              margin: 20px 0 15px 0;
-              border-bottom: 2px solid #333;
-              padding-bottom: 5px;
-              text-transform: uppercase;
-            }
-            
-            h3 {
-              font-size: 14px;
-              font-weight: bold;
-              margin: 15px 0 3px 0;
-            }
-            
-            .job-details {
-              font-size: 12px;
-              color: #666;
-              margin-bottom: 8px;
-            }
-            
-            .job-item {
-              margin-bottom: 20px;
-            }
-            
-            .bullet {
-              margin: 3px 0;
-              padding-left: 15px;
-              position: relative;
-            }
-            
-            .bullet::before {
-              content: "•";
-              position: absolute;
-              left: 0;
-            }
-            
-            .skill-category {
-              margin-bottom: 15px;
-            }
-            
-            .skill-title {
-              font-size: 12px;
-              font-weight: bold;
-              margin-bottom: 5px;
-            }
-            
-            .skill-list {
-              font-size: 10px;
-              color: #666;
-              line-height: 1.3;
-            }
-            
-            @media print {
-              body { font-size: 11px; }
-              .main-content { display: block; }
-              .right-column { margin-top: 20px; }
-            }
-          </style>
-        </head>
-        <body>
-          <div class="header">
-            <h1>KAYRON CALLOWAY</h1>
-            <div class="title">Creative Director</div>
-            <div class="contact">
-              Los Angeles, CA | 310.498.8059 | KayronCalloway@gmail.com<br>
-              Portfolio: kayroncalloway.github.io/kayron
-            </div>
-          </div>
-
-          <div class="main-content">
-            <div class="left-column">
-              <h2>Experience</h2>
-              
-              <div class="job-item">
-                <h3>Founder & Creative Director</h3>
-                <div class="job-details">Coloring With Gray | 2024 - Present</div>
-                <div class="bullet">Building philosophy-driven creative house developing multimodal experiences</div>
-                <div class="bullet">Developing philosophical frameworks into scalable creative systems</div>
-                <div class="bullet">Leading team of 7 specialists through pre-launch development</div>
-                <div class="bullet">Managing $50k development budget across multiple initiatives</div>
-              </div>
-
-              <div class="job-item">
-                <h3>Financial Analyst (Residuals)</h3>
-                <div class="job-details">Cast & Crew | Apr 2019 - Present</div>
-                <div class="bullet">Manage residual reporting for Netflix, HBO, Amazon, and Apple</div>
-                <div class="bullet">Built automated workflows reducing process time by 30%</div>
-                <div class="bullet">Interpret complex legal contracts into actionable frameworks</div>
-                <div class="bullet">Allocate and track over $50M annually across multiple accounts</div>
-              </div>
-
-              <div class="job-item">
-                <h3>Creative Strategist</h3>
-                <div class="job-details">Independent Practice | 2018 - Present</div>
-                <div class="bullet">Led Cest Bon Paris Fashion Week activation with Vogue coverage</div>
-                <div class="bullet">Developed campaigns for Bulletproof Coffee, GOAT Group, managing budgets up to $250k</div>
-                <div class="bullet">Created integrated solutions spanning digital, experiential, and traditional media</div>
-                <div class="bullet">Negotiated acquisition contracts and strategic partnerships</div>
-              </div>
-
-              <div class="job-item">
-                <h3>Creative Director & Co-Founder</h3>
-                <div class="job-details">Modern Tea Room | Mar 2015 - 2018</div>
-                <div class="bullet">Conceptualized and launched community tea house with unique sensory experience</div>
-                <div class="bullet">Designed comprehensive brand identity, interior concept, and customer journey</div>
-                <div class="bullet">Managed $150k operational budget and collaborated with local artists</div>
-                <div class="bullet">Built neighborhood staple with 600+ Yelp reviews, 4.5+ rating</div>
-              </div>
-            </div>
-
-            <div class="right-column">
-              <h2>Core Skills</h2>
-              
-              <div class="skill-category">
-                <div class="skill-title">Creative Leadership</div>
-                <div class="skill-list">Brand Strategy, Creative Direction, Campaign Development, Concept Ideation, Cross-platform Integration</div>
-              </div>
-              
-              <div class="skill-category">
-                <div class="skill-title">Business Operations</div>
-                <div class="skill-list">Budget Management, Financial Analysis, Contract Negotiation, Team Leadership, Strategic Planning</div>
-              </div>
-              
-              <div class="skill-category">
-                <div class="skill-title">Technical</div>
-                <div class="skill-list">Adobe Creative Suite, Workflow Automation, Data Analysis, Digital Platforms, Project Management</div>
-              </div>
-              
-              <div class="skill-category">
-                <div class="skill-title">Specialized</div>
-                <div class="skill-list">Philosophy & Conceptual Thinking, Multimodal Design, Cultural Strategy, Venture Development</div>
-              </div>
-
-              <h2>Education</h2>
-              <div style="margin-bottom: 15px;">
-                <div style="font-weight: bold; margin-bottom: 2px;">Bachelor of Arts in Philosophy</div>
-                <div style="color: #666;">California State University, Fullerton</div>
-              </div>
-
-              <h2>Recognition</h2>
-              <div class="bullet">Vogue Feature - Cest Bon Paris Fashion Week Campaign</div>
-              <div class="bullet">Modern Tea Room - 600+ Reviews, 4.5+ Rating</div>
-            </div>
-          </div>
-        </body>
-        </html>
-      `);
+      if (!printWindow) {
+        throw new Error('Popup blocked or failed to open');
+      }
       
-      printWindow.document.close();
-      
-      // Wait for content to load, then trigger print dialog
+      // Reset button state
       setTimeout(() => {
-        printWindow.focus();
-        printWindow.print();
-        
-        // Reset button state
         downloadButton.innerHTML = originalText;
         downloadButton.disabled = false;
-      }, 500);
+      }, 1000);
 
     } catch (error) {
-      console.error('Print generation failed:', error);
-      alert('Print dialog failed. Please try again.');
+      console.error('Resume open failed:', error);
+      alert('Failed to open resume. Please check popup blockers.');
       
       // Reset button state
       downloadButton.innerHTML = originalText;
