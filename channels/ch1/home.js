@@ -465,7 +465,7 @@ function setupPDFDownload() {
       downloadButton.disabled = true;
 
       // Open the new resume HTML file in a new window for printing
-      const printWindow = window.open('/temp/kayron_resume.html', '_blank', 'width=800,height=1000');
+      const printWindow = window.open('../../temp/kayron_resume.html', '_blank', 'width=800,height=1000');
       
       if (!printWindow) {
         throw new Error('Popup blocked or failed to open');
