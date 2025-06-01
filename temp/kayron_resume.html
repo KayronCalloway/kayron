@@ -790,6 +790,12 @@
         max-width: 100%;
       }
       
+      /* Remove decorative elements for clean PDF */
+      body::before,
+      body::after {
+        display: none !important;
+      }
+      
       @page {
         margin: 0.5cm;
         size: letter portrait;
@@ -840,6 +846,18 @@
         grid-gap: 3%;
       }
       
+      /* Single column option for better PDF flow */
+      @media print and (max-height: 11in) {
+        .main-content {
+          grid-template-columns: 1fr;
+          grid-gap: 0.3cm;
+        }
+        
+        .right-column {
+          margin-top: 0.5cm;
+        }
+      }
+      
       .experience-item {
         margin-bottom: 12px;
         padding-bottom: 8px;
@@ -847,14 +865,27 @@
         break-inside: avoid;
       }
       
-      /* Better control for page breaks */
-      .skills, .projects, .education-item, .key-achievements {
+      /* Strategic page breaks - allow breaks between major sections */
+      .experience-item:first-child {
+        page-break-before: avoid;
+      }
+      
+      .right-column {
+        page-break-before: auto;
+      }
+      
+      /* Keep important content together */
+      .skills, .projects, .education-item {
         page-break-inside: avoid;
         break-inside: avoid;
       }
       
-      /* Keep lists together */
-      ul, li {
+      /* Allow list breaks for better flow */
+      ul {
+        page-break-inside: auto;
+      }
+      
+      li {
         page-break-inside: avoid;
         break-inside: avoid;
       }
