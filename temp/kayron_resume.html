@@ -796,6 +796,25 @@
         display: none !important;
       }
       
+      /* Remove all gradient backgrounds for clean printing */
+      header,
+      .philosophy,
+      .projects li,
+      .recognition li,
+      .experience-item:not(:last-child)::after,
+      .key-achievements::before,
+      .projects ul::before {
+        background: none !important;
+        border-left: none !important;
+      }
+      
+      /* Simplify borders for print */
+      .projects li,
+      .recognition li {
+        border-left: 1px solid #ddd !important;
+        background: none !important;
+      }
+      
       @page {
         margin: 0.5cm;
         size: letter portrait;
