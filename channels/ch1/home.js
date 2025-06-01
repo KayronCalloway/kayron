@@ -461,154 +461,239 @@ function setupPDFDownload() {
     try {
       // Show loading state
       const originalText = downloadButton.innerHTML;
-      downloadButton.innerHTML = '( generating... )';
+      downloadButton.innerHTML = '( opening print... )';
       downloadButton.disabled = true;
 
-      // Check if html2pdf is available
-      if (typeof html2pdf === 'undefined') {
-        throw new Error('html2pdf library not loaded');
-      }
-
-      // Create a simple test element first
-      const testElement = document.createElement('div');
-      testElement.innerHTML = '<h1>TEST</h1><p>This is a test document</p>';
-      testElement.style.padding = '20px';
-      testElement.style.fontFamily = 'Arial';
-      testElement.style.fontSize = '14px';
-      testElement.style.width = '600px';
-      testElement.style.height = '400px';
-      testElement.style.backgroundColor = 'white';
-      testElement.style.color = 'black';
+      // Create a new window with the resume content
+      const printWindow = window.open('', '_blank', 'width=800,height=1000');
       
-      document.body.appendChild(testElement);
-      
-      console.log('Test element created and added to DOM');
-      console.log('Element content:', testElement.innerHTML);
-      console.log('Element computed styles:', window.getComputedStyle(testElement));
-
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      // Try the simplest possible PDF generation
-      const simpleOpt = {
-        margin: 1,
-        filename: 'Test_Resume.pdf',
-        image: { type: 'jpeg', quality: 0.8 },
-        html2canvas: { 
-          scale: 1,
-          useCORS: false,
-          allowTaint: false,
-          backgroundColor: '#ffffff',
-          logging: true,
-          height: 400,
-          width: 600
-        },
-        jsPDF: { 
-          unit: 'in', 
-          format: 'letter', 
-          orientation: 'portrait' 
-        }
-      };
-
-      console.log('Starting simple PDF generation test...');
-      
-      // Test basic functionality first
-      const result = await html2pdf().set(simpleOpt).from(testElement).outputPdf();
-      
-      console.log('PDF generated successfully, result length:', result.length);
-      
-      if (result && result.length > 100) {
-        // Even more minimal - just the essential content
-        testElement.innerHTML = `
-          <div style="padding: 20px; font-family: Arial; font-size: 12px; color: #000; width: 600px;">
-            <div style="text-align: center; margin-bottom: 20px;">
-              <h1 style="margin: 0;">KAYRON CALLOWAY</h1>
-              <div>Creative Director</div>
-              <div>Los Angeles, CA | 310.498.8059</div>
-              <div>KayronCalloway@gmail.com</div>
-              <div>Portfolio: kayroncalloway.github.io/kayron</div>
-            </div>
+      // Write the complete resume HTML to the new window
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Kayron Calloway - Resume</title>
+          <style>
+            @media print {
+              @page {
+                margin: 0.5in;
+                size: letter portrait;
+              }
+            }
             
-            <div style="margin-bottom: 15px;">
-              <h2 style="font-size: 14px; margin: 10px 0 5px 0;">EXPERIENCE</h2>
-            </div>
+            body {
+              font-family: Arial, sans-serif;
+              font-size: 12px;
+              line-height: 1.4;
+              color: #000;
+              background: #fff;
+              margin: 0;
+              padding: 20px;
+              max-width: 8in;
+            }
             
-            <div style="margin-bottom: 15px;">
-              <div style="font-weight: bold;">Founder & Creative Director</div>
-              <div>Coloring With Gray | 2024 - Present</div>
-              <div>• Building philosophy-driven creative house</div>
-              <div>• Leading team of 7 specialists</div>
-              <div>• Managing $50k development budget</div>
-            </div>
+            .header {
+              text-align: center;
+              margin-bottom: 30px;
+              border-bottom: 2px solid #000;
+              padding-bottom: 15px;
+            }
             
-            <div style="margin-bottom: 15px;">
-              <div style="font-weight: bold;">Financial Analyst</div>
-              <div>Cast & Crew | Apr 2019 - Present</div>
-              <div>• Manage reporting for Netflix, HBO, Amazon, Apple</div>
-              <div>• Built automated workflows</div>
-              <div>• Track over $50M annually</div>
-            </div>
+            h1 {
+              font-size: 28px;
+              font-weight: bold;
+              margin: 0 0 8px 0;
+              letter-spacing: 1px;
+            }
             
-            <div style="margin-bottom: 15px;">
-              <div style="font-weight: bold;">Creative Strategist</div>
-              <div>Independent Practice | 2018 - Present</div>
-              <div>• Led Cest Bon Paris Fashion Week with Vogue coverage</div>
-              <div>• Developed campaigns for major brands</div>
-            </div>
+            .title {
+              font-size: 16px;
+              color: #333;
+              margin-bottom: 8px;
+            }
             
-            <div style="margin-bottom: 15px;">
-              <div style="font-weight: bold;">Creative Director & Co-Founder</div>
-              <div>Modern Tea Room | Mar 2015 - 2018</div>
-              <div>• Launched community tea house</div>
-              <div>• 600+ Yelp reviews, 4.5+ rating</div>
-            </div>
+            .contact {
+              font-size: 12px;
+              color: #666;
+            }
             
-            <div style="margin-bottom: 15px;">
-              <h2 style="font-size: 14px; margin: 10px 0 5px 0;">SKILLS</h2>
-              <div>Brand Strategy, Creative Direction, Budget Management, Financial Analysis</div>
-            </div>
+            .main-content {
+              display: flex;
+              gap: 30px;
+            }
             
-            <div style="margin-bottom: 15px;">
-              <h2 style="font-size: 14px; margin: 10px 0 5px 0;">EDUCATION</h2>
-              <div style="font-weight: bold;">Bachelor of Arts in Philosophy</div>
-              <div>California State University, Fullerton</div>
-            </div>
+            .left-column {
+              flex: 2;
+            }
             
-            <div>
-              <h2 style="font-size: 14px; margin: 10px 0 5px 0;">RECOGNITION</h2>
-              <div>• Vogue Feature - Cest Bon Paris Fashion Week Campaign</div>
-              <div>• Modern Tea Room - 600+ Reviews, 4.5+ Rating</div>
+            .right-column {
+              flex: 1;
+            }
+            
+            h2 {
+              font-size: 16px;
+              font-weight: bold;
+              margin: 20px 0 15px 0;
+              border-bottom: 2px solid #333;
+              padding-bottom: 5px;
+              text-transform: uppercase;
+            }
+            
+            h3 {
+              font-size: 14px;
+              font-weight: bold;
+              margin: 15px 0 3px 0;
+            }
+            
+            .job-details {
+              font-size: 12px;
+              color: #666;
+              margin-bottom: 8px;
+            }
+            
+            .job-item {
+              margin-bottom: 20px;
+            }
+            
+            .bullet {
+              margin: 3px 0;
+              padding-left: 15px;
+              position: relative;
+            }
+            
+            .bullet::before {
+              content: "•";
+              position: absolute;
+              left: 0;
+            }
+            
+            .skill-category {
+              margin-bottom: 15px;
+            }
+            
+            .skill-title {
+              font-size: 12px;
+              font-weight: bold;
+              margin-bottom: 5px;
+            }
+            
+            .skill-list {
+              font-size: 10px;
+              color: #666;
+              line-height: 1.3;
+            }
+            
+            @media print {
+              body { font-size: 11px; }
+              .main-content { display: block; }
+              .right-column { margin-top: 20px; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>KAYRON CALLOWAY</h1>
+            <div class="title">Creative Director</div>
+            <div class="contact">
+              Los Angeles, CA | 310.498.8059 | KayronCalloway@gmail.com<br>
+              Portfolio: kayroncalloway.github.io/kayron
             </div>
           </div>
-        `;
-        
-        // Update filename for the real resume
-        simpleOpt.filename = 'Kayron_Calloway_Resume.pdf';
-        
-        await new Promise(resolve => setTimeout(resolve, 300));
-        
-        // Generate final PDF
-        await html2pdf().set(simpleOpt).from(testElement).save();
-        console.log('Final PDF generation completed');
-      } else {
-        throw new Error('PDF generation test failed - empty or invalid result');
-      }
 
-      // Clean up
-      document.body.removeChild(testElement);
+          <div class="main-content">
+            <div class="left-column">
+              <h2>Experience</h2>
+              
+              <div class="job-item">
+                <h3>Founder & Creative Director</h3>
+                <div class="job-details">Coloring With Gray | 2024 - Present</div>
+                <div class="bullet">Building philosophy-driven creative house developing multimodal experiences</div>
+                <div class="bullet">Developing philosophical frameworks into scalable creative systems</div>
+                <div class="bullet">Leading team of 7 specialists through pre-launch development</div>
+                <div class="bullet">Managing $50k development budget across multiple initiatives</div>
+              </div>
+
+              <div class="job-item">
+                <h3>Financial Analyst (Residuals)</h3>
+                <div class="job-details">Cast & Crew | Apr 2019 - Present</div>
+                <div class="bullet">Manage residual reporting for Netflix, HBO, Amazon, and Apple</div>
+                <div class="bullet">Built automated workflows reducing process time by 30%</div>
+                <div class="bullet">Interpret complex legal contracts into actionable frameworks</div>
+                <div class="bullet">Allocate and track over $50M annually across multiple accounts</div>
+              </div>
+
+              <div class="job-item">
+                <h3>Creative Strategist</h3>
+                <div class="job-details">Independent Practice | 2018 - Present</div>
+                <div class="bullet">Led Cest Bon Paris Fashion Week activation with Vogue coverage</div>
+                <div class="bullet">Developed campaigns for Bulletproof Coffee, GOAT Group, managing budgets up to $250k</div>
+                <div class="bullet">Created integrated solutions spanning digital, experiential, and traditional media</div>
+                <div class="bullet">Negotiated acquisition contracts and strategic partnerships</div>
+              </div>
+
+              <div class="job-item">
+                <h3>Creative Director & Co-Founder</h3>
+                <div class="job-details">Modern Tea Room | Mar 2015 - 2018</div>
+                <div class="bullet">Conceptualized and launched community tea house with unique sensory experience</div>
+                <div class="bullet">Designed comprehensive brand identity, interior concept, and customer journey</div>
+                <div class="bullet">Managed $150k operational budget and collaborated with local artists</div>
+                <div class="bullet">Built neighborhood staple with 600+ Yelp reviews, 4.5+ rating</div>
+              </div>
+            </div>
+
+            <div class="right-column">
+              <h2>Core Skills</h2>
+              
+              <div class="skill-category">
+                <div class="skill-title">Creative Leadership</div>
+                <div class="skill-list">Brand Strategy, Creative Direction, Campaign Development, Concept Ideation, Cross-platform Integration</div>
+              </div>
+              
+              <div class="skill-category">
+                <div class="skill-title">Business Operations</div>
+                <div class="skill-list">Budget Management, Financial Analysis, Contract Negotiation, Team Leadership, Strategic Planning</div>
+              </div>
+              
+              <div class="skill-category">
+                <div class="skill-title">Technical</div>
+                <div class="skill-list">Adobe Creative Suite, Workflow Automation, Data Analysis, Digital Platforms, Project Management</div>
+              </div>
+              
+              <div class="skill-category">
+                <div class="skill-title">Specialized</div>
+                <div class="skill-list">Philosophy & Conceptual Thinking, Multimodal Design, Cultural Strategy, Venture Development</div>
+              </div>
+
+              <h2>Education</h2>
+              <div style="margin-bottom: 15px;">
+                <div style="font-weight: bold; margin-bottom: 2px;">Bachelor of Arts in Philosophy</div>
+                <div style="color: #666;">California State University, Fullerton</div>
+              </div>
+
+              <h2>Recognition</h2>
+              <div class="bullet">Vogue Feature - Cest Bon Paris Fashion Week Campaign</div>
+              <div class="bullet">Modern Tea Room - 600+ Reviews, 4.5+ Rating</div>
+            </div>
+          </div>
+        </body>
+        </html>
+      `);
       
-      // Reset button state
-      downloadButton.innerHTML = originalText;
-      downloadButton.disabled = false;
+      printWindow.document.close();
+      
+      // Wait for content to load, then trigger print dialog
+      setTimeout(() => {
+        printWindow.focus();
+        printWindow.print();
+        
+        // Reset button state
+        downloadButton.innerHTML = originalText;
+        downloadButton.disabled = false;
+      }, 500);
 
     } catch (error) {
-      console.error('PDF generation failed:', error);
-      console.error('Error details:', error.message, error.stack);
-      
-      // Try to clean up any test elements
-      const testElements = document.querySelectorAll('div[style*="TEST"]');
-      testElements.forEach(el => el.remove());
-      
-      alert(`PDF generation failed: ${error.message}. Check console for details.`);
+      console.error('Print generation failed:', error);
+      alert('Print dialog failed. Please try again.');
       
       // Reset button state
       downloadButton.innerHTML = originalText;
