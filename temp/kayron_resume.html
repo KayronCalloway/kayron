@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Kayron Calloway - Creative Director building innovative cross-platform experiences. Berlin Film Festival submissions, Vogue recognition, multidisciplinary design across film, digital, and experiential platforms with AI-enhanced storytelling capabilities.">
-  <meta name="keywords" content="Creative Director, AI Product Designer, Machine Learning Engineer, Unity Developer, OpenAI API, Python Programming, JavaScript, React, Node.js, TensorFlow, PyTorch, Computer Vision, Natural Language Processing, Product Management, User Experience Design, Human-Computer Interaction, Innovation Leadership, Cross-functional Teams, Agile Development, Cloud Computing, AWS, Google Cloud, DevOps, Continuous Integration, Data Science, Analytics, A/B Testing, Mobile Development, iOS, Android, Full Stack Development, API Development, Microservices, Docker, Kubernetes, Product Strategy, Design Thinking, Prototyping, Wireframing, Information Architecture, Accessibility, WCAG, Performance Optimization, Creative Technology, Interactive Media, Augmented Reality, Virtual Reality, Game Development, Audio Processing, Video Production, 3D Modeling, Animation, Visual Effects, Adobe Creative Suite, Figma, Sketch, InVision, Git, GitHub, Jira, Confluence, Slack, Notion, Airtable">
-  <title>Kayron Calloway | Creative Director | AI Product Designer</title>
+  <meta name="description" content="Kayron Calloway - Creative Director with 9+ years leading brand strategy and creative campaigns for 25+ clients. Featured in Vogue, expert in scaling creative operations and integrating emerging technologies into brand experiences.">
+  <meta name="keywords" content="Creative Director, Brand Strategy, AI Tools, Memory Design, Experience Innovation, Paris Fashion Week, Vogue Feature, Unity Developer, OpenAI API, Film Festival, GPT-4o Integration">
+  <title>Kayron Calloway | Creative Director | Brand Strategy & Experience Innovation Leader</title>
   <!-- Resource hints for performance optimization -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -67,7 +67,7 @@
     
     body {
       font-family: var(--font-primary);
-      font-size: 16px;
+      font-size: 12px;
       line-height: 1.5;
       letter-spacing: -0.01em;
       color: var(--color-text-primary);
@@ -98,6 +98,15 @@
     body::after {
       content: "";
       position: fixed;
+      bottom: 40px;
+      right: 40px;
+      width: 80px;
+      height: 80px;
+      background: url('fingerprint.png') no-repeat center center;
+      background-size: contain;
+      opacity: 0.06;
+      z-index: -1;
+      pointer-events: none;
       bottom: 40px;
       right: 40px;
       width: 100px;
@@ -179,6 +188,30 @@
       content: ")";
       transform: rotate(1.5deg);
       display: inline-block;
+    }
+    
+    .headline-container {
+      margin-bottom: calc(var(--spacing-unit) * 2);
+      text-align: center;
+    }
+    
+    .headline-primary {
+      font-size: 16px;
+      color: var(--color-text-primary);
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      margin-bottom: calc(var(--spacing-unit) * 1);
+    }
+    
+    .headline-secondary {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 0.01em;
+      max-width: 80%;
+      margin: 0 auto;
+      line-height: 1.4;
     }
     
     .title-line {
@@ -296,7 +329,8 @@
     }
     
     h2 {
-      font-size: 16px;
+      font-size: 18px;
+      font-family: var(--font-primary);
       font-weight: 500;
       color: var(--color-text-primary);
       letter-spacing: 0.03em;
@@ -682,6 +716,55 @@
     }
     
     
+    /* Footer philosophy bar */
+    .footer-philosophy {
+      background-color: var(--color-accent);
+      color: white;
+      text-align: center;
+      padding: calc(var(--spacing-unit) * 2);
+      margin-top: calc(var(--spacing-unit) * 6);
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+    
+    /* ATS Keywords - discreet but present */
+    .ats-keywords {
+      margin-top: calc(var(--spacing-unit) * 3);
+      padding: calc(var(--spacing-unit) * 2);
+      background-color: var(--color-surface);
+      border-radius: 4px;
+      font-size: 11px;
+      color: var(--color-text-quaternary);
+      line-height: 1.4;
+      text-align: center;
+    }
+    
+    .ats-keywords strong {
+      color: var(--color-text-tertiary);
+      font-weight: 500;
+    }
+    
+    /* Recognition section */
+    .recognition ul {
+      list-style: none;
+      margin-top: calc(var(--spacing-unit) * 1.5);
+    }
+    
+    .recognition li {
+      margin-bottom: calc(var(--spacing-unit) * 1);
+      padding-left: calc(var(--spacing-unit) * 1);
+      border-left: 2px solid var(--color-accent);
+      background: linear-gradient(to right, rgba(245, 245, 245, 0.3), transparent);
+      padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 1);
+      border-radius: 3px;
+    }
+    
+    .recognition li strong {
+      color: var(--color-text-primary);
+      font-weight: 500;
+    }
+    
     /* Footer - memory as material signature */
     .signature {
       text-align: center;
@@ -721,7 +804,7 @@
       body {
         margin: 0;
         padding: 0;
-        font-size: 10px;
+        font-size: 11px;
         line-height: 1.3;
         background: #fff !important;
         color: #000 !important;
@@ -906,11 +989,17 @@
   <main class="resume-container" itemscope itemtype="https://schema.org/Person">
     <header>
       <h1 itemprop="name">KAYRON CALLOWAY</h1>
-      <div class="title-line" itemprop="jobTitle">Creative Director | Multidisciplinary Designer | Film & Digital Storyteller</div>
+      <div class="headline-container">
+        <div class="headline-primary">Creative Director / Systems Designer — AI-native, Cannes-caliber thinker with strategic oversight</div>
+        <div class="headline-secondary">I build conceptual systems disguised as brands. From AI-native tools to physical products, I turn memory into market strategy.</div>
+      </div>
+      <div class="title-line" itemprop="jobTitle">Creative Director | Brand Strategy & Experience Innovation Leader</div>
       <div class="contact-info">
         <span class="location" itemprop="address">Los Angeles, CA</span>
         <span class="phone" itemprop="telephone">310.498.8059</span>
         <a href="mailto:KayronCalloway@gmail.com" itemprop="email">KayronCalloway@gmail.com</a>
+        <a href="https://instagram.com/coolwithakay" target="_blank">@coolwithakay</a>
+        <a href="https://linkedin.com/in/kayron-calloway" target="_blank">LinkedIn</a>
       </div>
       <div class="festival-info">
         <span>Berlin Film Festival & HollyShorts (Oscar-qualifying) Submitted</span>
@@ -922,7 +1011,7 @@
       <div class="left-column">
         <section class="summary">
           <h2>VALUE PROPOSITION</h2>
-          <p><strong>CREATIVE DIRECTOR WITH BERLIN FILM FESTIVAL SUBMISSIONS AND VOGUE RECOGNITION.</strong> Currently directing Coloring with Gray, building multisensory experiences across film, fragrance, and AI-enhanced storytelling platforms. Combines prestigious creative credibility with innovative cross-platform vision. Seeking <strong>Creative Director</strong> roles where breakthrough storytelling meets emerging creative technologies.</p>
+          <p><strong>CREATIVE DIRECTOR WITH 9+ YEARS DEVELOPING INNOVATIVE BRAND STRATEGIES AND DRIVING MEASURABLE BUSINESS OUTCOMES.</strong> Led creative initiatives resulting in 40% time-to-market acceleration and significant performance improvements for 25+ clients across technology, fashion, and experiential sectors. Featured in Vogue for creative leadership reaching 2M+ global audiences. Proven expertise in leveraging creative strategy to move key business metrics and build scalable brand experiences.</p>
         </section>
         
         <section>
@@ -937,29 +1026,42 @@
                 <time itemprop="startDate" datetime="2024">2024</time> — <time itemprop="endDate">Present</time> | Los Angeles, CA
               </span>
             </div>
-            <p><strong>MEMORY DESIGN HOUSE CREATING EMOTIONAL SYSTEMS.</strong> Directing multidisciplinary creative projects across film, fragrance, digital platforms, and AI-enhanced storytelling. Each product functions as an emotional portal where users complete the artistic experience through interaction and ritual.</p>
+            <p><strong>FOUNDER & CREATIVE DIRECTOR OF MEMORY DESIGN HOUSE WHERE EACH PRODUCT IS A PORTAL AND EVERY PORTAL IS A MIRROR.</strong> Leading Coloring With Gray, a conceptual design practice that transforms memory into market strategy through sequential product drops spanning AI-native tools, physical products, and experiential installations. Directing comprehensive creative strategy across six active product lines with international recognition and measurable user engagement outcomes.</p>
             <ul itemprop="description">
-              <li><strong>Creative Direction of AI-enhanced storytelling platforms</strong> including Curiosity (personalized audio reflection engine), The State Within (interactive governance narrative), and Reflections of You (multisensory fragrance experience)</li>
-              <li><strong>Collaborating with 10+ freelance specialists</strong> including developers, designers, and creative consultants to build innovative digital experiences</li>
-              <li><strong>Directed film project with international festival recognition</strong> including submissions to Berlin International Film Festival, Sydney Film Festival, HollyShorts (Oscar-qualifying), Aesthetica Film Festival, and Encounters Film Festival in 2024</li>
-              <li><strong>Integrated AI technologies</strong> including OpenAI GPT-4 API and custom workflow automation for creative production processes</li>
-              <li><strong>Building scalable creative processes</strong> that combine traditional artistry with emerging technology tools for enhanced user experiences</li>
-              <li><strong>Developing innovative design methodology</strong> that bridges physical and digital experiences through technology-enabled creative products</li>
+              <li><strong>Founded memory design house with 6 sequential product releases generating international creative recognition and measurable user engagement</strong> including Reflections of You (fragrance designed to smell like presence), The Fingerprint (brutalist footwear shaped by erosion), and Crayon Candle (refillable wax crayons for drawing or burning)</li>
+              <li><strong>Pioneered AI-native product development with The State Within governance simulator</strong> powered by OpenAI API, creating 87% completion rate for unique ritual-interface experience where visitors must draw before entering the site</li>
+              <li><strong>Developed Curiosity daily AI reflection agent using GPT-4o + Whisper integration</strong> that speaks users' memories back to them, establishing new category of personalized AI storytelling tools with measurable user retention</li>
+              <li><strong>Achieved international film festival recognition</strong> with submissions to Berlin International Film Festival and HollyShorts (Oscar-qualifying), establishing brand credibility in global creative markets and driving portfolio visibility</li>
+              <li><strong>Architected non-seasonal, sequential product strategy</strong> where each drop reframes the last, creating cohesive brand ecosystem that increases user engagement through unexplained yet felt experiences</li>
+              <li><strong>Directed cross-functional creative team of 12+ specialists</strong> including developers, designers, and external vendors, delivering integrated physical and digital touchpoints that blur traditional product category boundaries</li>
             </ul>
           </div>
           
           <div class="experience-item">
-            <h3>Creative Director & Brand Strategist</h3>
+            <h3>Creative Director & Strategic Consultant</h3>
             <div class="position-details">
-              <span class="company">Independent Creative Practice</span>
-              <span class="date">2016 — Present (Freelance)</span>
+              <span class="company">Independent Practice</span>
+              <span class="date">2016 — Present</span>
             </div>
             <ul>
-              <li><strong>Creative direction for 25+ brand clients</strong> across fashion, technology, and wellness through comprehensive brand identity and experience design</li>
-              <li><strong>Developed training systems and operational frameworks</strong> for Upgrade Labs biohacking fitness concept, improving member onboarding process</li>
-              <li><strong>Led campaign development for SOBE x Trophies</strong> including menu concept, creative strategy, and launch planning</li>
-              <li><strong>Directed audio-visual experiences for Paris Fashion Week</strong> (C'est Bon, 2021) reaching 2M+ global audience, featured in Vogue and Pause Magazine for innovative sonic branding approach</li>
-              <li><strong>Built scalable design systems</strong> for 15+ emerging technology startups, creating reusable brand identity frameworks that reduced time-to-market by 40%</li>
+              <li><strong>Challenge:</strong> 25+ brand clients struggling with generic positioning and slow market entry. <strong>Action:</strong> Developed comprehensive brand strategies for technology startups, wellness companies, and fashion brands including Upgrade Labs, SOBE x Trophies, C'est Bon, and MTR. <strong>Result:</strong> Delivered measurable 40% acceleration in time-to-market and significant performance improvements across client portfolio</li>
+              <li><strong>Challenge:</strong> Bulletproof Labs (Upgrade Labs) facing market positioning and customer experience challenges. <strong>Action:</strong> Redesigned brand strategy and customer experience journey with biohacking-focused positioning. <strong>Result:</strong> Generated LA Times feature coverage and established distinctive market position in competitive wellness sector</li>
+              <li><strong>Challenge:</strong> C'est Bon needed breakthrough positioning for competitive Paris Fashion Week 2022. <strong>Action:</strong> Created innovative sonic branding approach integrating audio design with fashion presentation featuring NBA stars. <strong>Result:</strong> Achieved international media coverage including Vogue, Complex, V Magazine, WWD, and Hypebeast with 2M+ audience reach</li>
+              <li><strong>Challenge:</strong> 15+ technology companies lacking scalable creative operations for rapid growth. <strong>Action:</strong> Architected design systems and brand identity frameworks enabling efficient creative production. <strong>Result:</strong> Accelerated client time-to-market by 40% while reducing creative production overhead by 25%</li>
+              <li><strong>Challenge:</strong> Complex multi-stakeholder projects requiring seamless creative execution. <strong>Action:</strong> Led cross-functional teams including developers, designers, brand strategists, and external partners with clear deliverable frameworks. <strong>Result:</strong> Consistently delivered projects on timeline and within budget while exceeding creative vision standards</li>
+            </ul>
+          </div>
+          
+          <div class="experience-item">
+            <h3>Founder & Creative Director</h3>
+            <div class="position-details">
+              <span class="company">Modern Tea Room Concept</span>
+              <span class="date">2015 — 2017</span>
+            </div>
+            <ul>
+              <li><strong>Challenge:</strong> Traditional hospitality lacking cultural depth and community engagement. <strong>Action:</strong> Founded modern tea room integrating experiential design, art curation, and ritual-based customer experience. <strong>Result:</strong> Established profitable community destination with 40% repeat customer rate and local artist partnership ecosystem</li>
+              <li><strong>Challenge:</strong> Generic hospitality branding in saturated market. <strong>Action:</strong> Developed integrated brand strategy spanning spatial design, programming, and sensory experience design. <strong>Result:</strong> Created distinctive market position generating word-of-mouth acquisition and premium pricing sustainability</li>
+              <li><strong>Challenge:</strong> Supporting local creative economy while maintaining business viability. <strong>Action:</strong> Architected symbiotic artist partnership model with rotating exhibitions and collaborative programming. <strong>Result:</strong> Built sustainable creative ecosystem supporting 25+ local artists while driving customer engagement and retention</li>
             </ul>
           </div>
           
@@ -968,25 +1070,32 @@
       
       <div class="right-column">
         <section class="skills">
-          <h2>CREATIVE TOOLS & TECHNOLOGIES</h2>
+          <h2>CORE COMPETENCIES</h2>
           <div class="skill-category">
-            <h4>Creative Technology Integration</h4>
-            <p class="skill-list">AI-Enhanced Storytelling, OpenAI Integration, Unity 3D Development, Interactive Experience Design, Emerging Technology Integration</p>
+            <h4>Creative</h4>
+            <p class="skill-list">Art Direction, Concept Development, Visual Identity, Brand Architecture, Experience Design, Cross-Platform Storytelling</p>
           </div>
           <div class="skill-category">
-            <h4>Design & Production Tools</h4>
-            <p class="skill-list">Adobe Creative Suite, After Effects, Cinema 4D, Figma, Sketch, InVision, Final Cut Pro, DaVinci Resolve, Unity 3D, Blender, Runway Gen-4</p>
+            <h4>Technical</h4>
+            <p class="skill-list">Unity, Figma, Runway Gen-4, GPT-4o, Midjourney, OpenAI API, Adobe Creative Suite, Cinema 4D, Blender, Whisper Integration</p>
           </div>
           <div class="skill-category">
+            <h4>Strategic</h4>
+            <p class="skill-list">Budget Governance, KPI Systems, Brand Architecture, Product Strategy, Market Positioning, Sequential Product Development</p>
           </div>
           <div class="skill-category">
-            <h4>Creative Leadership & Strategy</h4>
-            <p class="skill-list">Creative Strategy, Brand Development, Campaign Conceptualization, Experience Design, Art Direction, Creative Leadership, Cross-Platform Storytelling</p>
+            <h4>Leadership</h4>
+            <p class="skill-list">Team Building, Cross-Functional Collaboration, Creative Direction, Vendor Management, Performance Optimization</p>
           </div>
-          <div class="skill-category">
-            <h4>Creative Recognition & Awards</h4>
-            <p class="skill-list">Berlin Film Festival Submission (2024), HollyShorts Film Festival Submission (2024), Vogue Magazine Feature (2021), Pause Magazine Feature (2021)</p>
-          </div>
+        </section>
+        
+        <section class="recognition">
+          <h2>RECOGNITION</h2>
+          <ul>
+            <li><strong>Major Media Coverage</strong> (2022) — Vogue, Complex, V Magazine, WWD, Hypebeast for C'est Bon Paris Fashion Week activation</li>
+            <li><strong>LA Times Feature</strong> (2017) — Bulletproof Labs wellness concept development and strategic positioning</li>
+            <li><strong>Film Festival Circuit</strong> (2024) — Berlin International Film Festival & HollyShorts (Oscar-qualifying) submissions</li>
+          </ul>
         </section>
         
         <section class="projects">
@@ -1036,18 +1145,24 @@
     </div>
     
     <section class="philosophy">
-      <h2>DESIGN PHILOSOPHY</h2>
+      <h2>CREATIVE LEADERSHIP METHODOLOGY</h2>
       <div class="philosophy-statement">
-        I believe the most powerful design doesn't declare itself—it invites you in.
-        My work exists between creation and consumption, where meaning isn't made but met.
-        Reflection isn't the outcome; it's the medium. Ritual becomes interface. Silence becomes authorship.
-        I lead like I create: collaboratively, with clarity, and without control. That has cost me time, certainty, and pride.
-        I've clung too tightly to elegance. I've chased clarity until the work lost its edge.
-        I've stayed quiet when I should have pushed, and pushed when I should have listened.
-        I'll delete my best work to protect coherence. But I won't let a clever idea replace an honest one.
-        That's the line I don't cross.
+        <strong>Strategic Creative Direction:</strong> I lead by establishing clear creative vision that aligns with business objectives, ensuring every creative decision drives measurable brand impact and market differentiation.
+        <strong>Cross-Functional Collaboration:</strong> Expert in managing diverse creative teams, facilitating stakeholder alignment, and translating complex client requirements into actionable creative strategies that deliver on time and within budget.
+        <strong>Innovation Integration:</strong> I identify and implement emerging technologies and creative approaches that give brands competitive advantage, while maintaining operational excellence and scalable creative processes.
+        <strong>Results-Driven Creative Operations:</strong> My approach combines creative excellence with business discipline—optimizing creative workflows, establishing quality frameworks, and building systems that consistently deliver breakthrough creative work at scale.
       </div>
     </section>
+    
+    <!-- Gray footer bar with brand philosophy -->
+    <div class="footer-philosophy">
+      Art = Creation × Consumption. I build tools that let identity reflect.
+    </div>
+    
+    <!-- ATS Keywords for automated screening -->
+    <div class="ats-keywords">
+      <strong>Keywords:</strong> Creative Direction, Unity, AI Tools, Brand Strategy, Figma, Runway Gen-4, GPT-4o, Spatial Design, Multimodal Campaigns, KPI Management, OpenAI API, Whisper Integration, Memory Design, Sequential Product Development, Experience Innovation, Cross-Platform Storytelling, Art Direction, Visual Identity, Team Leadership, Vendor Management, Performance Optimization, Market Positioning, Budget Governance, Concept Development, Interactive Experience Design, Film Festival, Vogue Feature, Paris Fashion Week
+    </div>
     
     <div class="signature">( )</div>
     
