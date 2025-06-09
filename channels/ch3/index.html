@@ -1,96 +1,116 @@
-<!-- channels/ch3/index.html -->
-<div id="gameshow-container">
-  <!-- TV Static Overlay -->
-  <div id="tv-static"></div>
+<!-- Channel 3: Music/Audio Works -->
+<div id="music-interface" role="region" aria-label="Music Channel Interface">
   
-  <!-- Channel Info -->
-  <div id="channel-info">
-    <div class="channel-number">CH 3</div>
-    <div class="recording-dot"></div>
-    <div class="timestamp">LIVE</div>
-  </div>
-  
-  <!-- Add Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-  <!-- Host Introduction -->
-  <div id="host-intro" class="game-screen">
-    <div class="host-content">
-      <div class="host-image"></div>
-      <div class="host-speech">
-        "Welcome to Skill Feud! I'm Kayron Calloway, and today we're diving into the world of business, technology, and innovation. Are you ready to play Fast Money?"
-      </div>
-    </div>
-  </div>
-
-  <!-- Fast Money Round -->
-  <div id="fast-money" class="game-screen hidden">
-    <div class="game-header">
-      <div class="round-info">
-        <span id="roundNumber">ROUND 1</span>
-        <div class="timer-container">
-          <div id="timer-bar"></div>
-          <span id="timer">30</span>
+  <!-- Main Video Display -->
+  <div class="music-player-container">
+    <div class="video-display">
+      <div id="music-video-player"></div>
+      <div class="video-overlay">
+        <div class="now-playing-ticker">
+          <span class="ticker-text">NOW PLAYING: </span>
+          <span id="current-track">Select a track to begin...</span>
         </div>
       </div>
-      <div class="score-display">
-        <span>SCORE</span>
-        <span id="current-score">0</span>
-      </div>
-    </div>
-
-    <div class="question-area">
-      <div id="question-display"></div>
-      <!-- The options container will be added dynamically by JavaScript -->
-    </div>
-
-    <!-- Answer Board -->
-    <div id="answer-board" class="hidden">
-      <div class="board-header">TOP ANSWERS</div>
-      <div class="answers-container"></div>
-    </div>
-  </div>
-
-  <!-- Commercial Break -->
-  <div id="commercial-break" class="game-screen hidden">
-    <div class="commercial-content">
-      <h2>We'll be right back after these messages!</h2>
-      <div class="skill-showcase">
-        <!-- Skills will be populated dynamically -->
-      </div>
-    </div>
-  </div>
-
-  <!-- Final Results -->
-  <div id="final-results" class="game-screen hidden">
-    <div class="results-header">
-      <h2>SHOW WRAP</h2>
-      <div class="final-score">TOTAL SCORE: <span id="final-score">0</span></div>
     </div>
     
-    <div class="results-content">
-      <div class="performance-summary">
-        <h3>Performance Analysis</h3>
-        <div id="performance-details"></div>
+    <!-- TV-Style Controls -->
+    <div class="tv-controls">
+      <div class="control-panel">
+        <button class="control-btn" id="prevTrack" aria-label="Previous Track">⏮</button>
+        <button class="control-btn" id="playPause" aria-label="Play/Pause">▶</button>
+        <button class="control-btn" id="nextTrack" aria-label="Next Track">⏭</button>
+        <button class="control-btn" id="muteBtn" aria-label="Mute">🔊</button>
       </div>
       
-      <div class="unlocked-content">
-        <h3>You've Unlocked</h3>
-        <div id="unlocked-skills"></div>
+      <div class="channel-display">
+        <span class="channel-number">CH3</span>
+        <span class="channel-name">SONIC MEMORIES</span>
       </div>
     </div>
-
-    <div class="call-to-action">
-      <a href="#portfolio" class="cta-button">View Full Portfolio</a>
-      <a href="#contact" class="cta-button">Get in Touch</a>
-    </div>
-
-    <button id="playAgainBtn" class="tv-button">NEXT EPISODE</button>
   </div>
-
-  <!-- TV Effects -->
-  <div id="channel-change-effect"></div>
-  <div id="screen-glitch"></div>
+  
+  <!-- Track Selection / Timeline -->
+  <div class="track-selection">
+    <h2 class="section-title">CREATIVE TIMELINE</h2>
+    <div class="track-grid">
+      
+      <!-- Track 1 -->
+      <div class="track-card" data-youtube-id="ftp_QMl9BgU" data-track-title="Track 1" data-year="2024">
+        <div class="track-preview">
+          <div class="track-thumbnail"></div>
+          <div class="track-info">
+            <h3 class="track-title">Audio Project 1</h3>
+            <p class="track-meta">Creative Expression • 2024</p>
+            <p class="track-description">Exploring identity through sonic storytelling</p>
+          </div>
+        </div>
+        <button class="play-track-btn" aria-label="Play Track 1">BROADCAST</button>
+      </div>
+      
+      <!-- Track 2 -->
+      <div class="track-card" data-youtube-id="tpeUkuGCzOU" data-track-title="Track 2" data-year="2023">
+        <div class="track-preview">
+          <div class="track-thumbnail"></div>
+          <div class="track-info">
+            <h3 class="track-title">Audio Project 2</h3>
+            <p class="track-meta">Sonic Experimentation • 2023</p>
+            <p class="track-description">Raw creative expression and artistic authenticity</p>
+          </div>
+        </div>
+        <button class="play-track-btn" aria-label="Play Track 2">BROADCAST</button>
+      </div>
+      
+      <!-- Track 3 -->
+      <div class="track-card" data-youtube-id="ptNBEZ6pPp4" data-track-title="Track 3" data-year="2023">
+        <div class="track-preview">
+          <div class="track-thumbnail"></div>
+          <div class="track-info">
+            <h3 class="track-title">Audio Project 3</h3>
+            <p class="track-meta">Performance Art • 2023</p>
+            <p class="track-description">Bridging philosophy and street-level creativity</p>
+          </div>
+        </div>
+        <button class="play-track-btn" aria-label="Play Track 3">BROADCAST</button>
+      </div>
+      
+    </div>
+  </div>
+  
+  <!-- Behind the Scenes / Documentary Section -->
+  <div class="documentary-section">
+    <h2 class="section-title">CREATIVE PROCESS</h2>
+    <div class="process-grid">
+      
+      <div class="process-card">
+        <h3>Philosophy Meets Street</h3>
+        <p>How academic philosophy informs authentic creative expression through music and performance.</p>
+      </div>
+      
+      <div class="process-card">
+        <h3>Audio as Memory</h3>
+        <p>Exploring how sonic experiences create lasting impressions and shape identity over time.</p>
+      </div>
+      
+      <div class="process-card">
+        <h3>Multidisciplinary Practice</h3>
+        <p>Connecting audio work to broader creative strategy, from fashion week sonic branding to personal expression.</p>
+      </div>
+      
+    </div>
+  </div>
+  
+  <!-- Visitor Interaction -->
+  <div class="broadcast-signals">
+    <h2 class="section-title">BROADCAST SIGNALS</h2>
+    <div class="signals-container">
+      <div class="signal-input">
+        <textarea id="signalMessage" placeholder="Leave a signal in the broadcast..."></textarea>
+        <button id="sendSignal">TRANSMIT</button>
+      </div>
+      <div class="signals-feed" id="signalsFeed">
+        <!-- Signals will appear here -->
+      </div>
+    </div>
+  </div>
+  
 </div>

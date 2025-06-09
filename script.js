@@ -114,12 +114,15 @@ document.addEventListener('DOMContentLoaded', () => {
       module = await import(`./channels/ch1/home.js`);
     } else if (moduleName === 'ch2') {
       module = await import(`./channels/ch2/ch2.js`);
+    } else if (moduleName === 'sonic memories') {
+      // Load the new music channel
+      module = await import(`./channels/ch3/ch3.js`);
     } else if (moduleName === 'skill games') {
       // Reset any global styles that might have been set by the game
       resetMenuStyles();
-      module = await import(`./channels/ch3/ch3.js`);
-    } else if (moduleName === 'under the influence') {
       module = await import(`./channels/ch4/ch4.js`);
+    } else if (moduleName === 'under the influence') {
+      module = await import(`./channels/ch5/ch5.js`);
     }
     
     if (module) {

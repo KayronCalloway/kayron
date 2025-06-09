@@ -1,0 +1,439 @@
+/* channels/ch4/styles.css */
+.video-background {
+  position: absolute;
+  top: 60px; /* Space for header */
+  left: 0;
+  width: 100%;
+  height: calc(100% - 60px); /* Reduced height to accommodate header */
+  overflow: hidden;
+  z-index: 1; /* Updated z-index */
+  background: #000; /* fallback background color */
+}
+
+/* Ensure the YouTube iframe fills the container */
+#youtube-player-4 iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Mobile optimizations for video background */
+@media (max-width: 600px) {
+  .video-background {
+    top: 45px; /* Adjusted for smaller header on mobile */
+    height: calc(100% - 45px);
+  }
+  
+  #youtube-player-4 iframe {
+    width: 100vw !important;
+    height: 100vh !important;
+    object-fit: cover;
+  }
+  
+  /* iPhone vertical-specific optimizations */
+  @supports (-webkit-touch-callout: none) and (orientation: portrait) {
+    .video-background {
+      /* Account for iPhone safe areas */
+      top: calc(45px + env(safe-area-inset-top, 0px));
+      height: calc(100% - 45px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    }
+    
+    /* Fix YouTube player positioning for notched phones */
+    #youtube-player-4 {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    #youtube-player-4 iframe {
+      /* Ensure full coverage with safe areas */
+      height: calc(100vh + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px)) !important;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+    
+    /* Fix button positioning for vertical iPhone */
+    .channel4-buttons {
+      /* Place buttons in more thumb-accessible area */
+      top: 60%;
+      gap: 20px !important;
+    }
+    
+    /* Enhance modal for iPhone vertical */
+    .modal-overlay {
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+  }
+}
+
+/* Channel 4 Buttons */
+.channel4-buttons {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: row; /* Changed from column to row */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  z-index: 10;
+  max-width: 90%;
+}
+
+/* Channel button styling with better touch targets */
+.channel-button {
+  min-height: 50px;
+  min-width: 180px;
+  padding: 12px 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+  border: 2px solid #1e90ff;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* Remove default mobile highlight */
+}
+
+.channel-button:hover {
+  background-color: rgba(30, 144, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.channel-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Additional class added to buttons on mobile */
+.channel-button.mobile-enhanced {
+  box-shadow: 0 4px 12px rgba(30, 144, 255, 0.3);
+  border-width: 2.5px;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999997; /* Reduced z-index to be below menu button (999999) */
+  backdrop-filter: blur(5px);
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.modal-box {
+  position: relative;
+  width: 90%;
+  max-width: 700px;
+  background-color: var(--bg-color, #000);
+  color: var(--text-color, #fff);
+  border: 2px solid var(--primary-color, #fff);
+  border-radius: 10px;
+  padding: 30px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 28px;
+  background: none;
+  border: none;
+  color: var(--primary-color, #fff);
+  cursor: pointer;
+  z-index: 2;
+  /* Enhanced touch target */
+  padding: 6px 12px;
+  margin: -6px -12px;
+  /* Visual feedback */
+  transition: transform 0.2s ease;
+}
+
+.modal-static {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.08;
+  background-image: url('../visuals/static.gif');
+  background-size: cover;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: 8px;
+}
+
+/* Role Model Overlay */
+.role-model-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  padding: 20px;
+  box-sizing: border-box;
+  pointer-events: auto; /* Allow interaction with the dropdown */
+}
+
+.role-model-content {
+  max-width: 700px;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  border-left: 4px solid #1e90ff;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  animation: fadeIn 1.5s ease-out;
+  overflow-y: auto;
+  max-height: 85vh;
+}
+
+.role-model-content h2 {
+  font-size: 2.2rem;
+  margin: 0 0 5px 0;
+  color: #1e90ff;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.role-model-content h3 {
+  font-size: 1.6rem;
+  margin: 0 0 15px 0;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.dropdown-toggle {
+  transition: color 0.3s ease;
+}
+
+.dropdown-toggle:hover {
+  color: #4db8ff;
+}
+
+.dropdown-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.6s ease-in-out;
+  opacity: 0;
+}
+
+.dropdown.active .dropdown-content {
+  max-height: 1000px;
+  opacity: 1;
+  transition: max-height 0.6s ease-in-out, opacity 0.6s ease-in-out;
+}
+
+.role-model-quotes {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: 25px 0;
+}
+
+.role-model-quote {
+  font-style: italic;
+  position: relative;
+  padding: 0 20px;
+  border-left: 3px solid #1e90ff;
+  background: rgba(30, 144, 255, 0.1);
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.role-model-quote p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  margin: 0 0 10px 0;
+}
+
+.quote-author {
+  font-size: 0.9rem !important;
+  text-align: right;
+  opacity: 0.8;
+  margin: 0 !important;
+}
+
+.role-model-description {
+  margin-top: 20px;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  opacity: 0.9;
+  text-align: left;
+}
+
+/* Annual Letter Link */
+.annual-letter-link {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.letter-button {
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.5);
+  color: #f0f0f0;
+  padding: 12px 30px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 10px 0;
+  border: 2px solid #3e92cc;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 0 10px rgba(62, 146, 204, 0.3);
+}
+
+.letter-button:hover {
+  background: rgba(62, 146, 204, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 0 10px rgba(62, 146, 204, 0.5);
+}
+
+.annual-letter-link a {
+  color: #1e90ff;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.annual-letter-link a:hover {
+  color: #4db8ff;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Channel Number - fixed in bottom corner */
+.channel-number-overlay {
+  position: fixed;
+  bottom: 40px;
+  right: 20px;
+  font-size: 2rem;
+  color: var(--primary-color, #fff);
+  opacity: 0.8;
+  z-index: 999998;
+  pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  /* Buttons optimized for mobile */
+  .channel4-buttons {
+    flex-direction: column;
+    gap: 30px; /* Increased gap for better touch separation */
+    width: 85%; /* Control width */
+    max-width: 300px; /* Prevent too wide buttons */
+  }
+  
+  .channel-button {
+    min-height: 60px; /* Larger touch target */
+    width: 100%; /* Full width buttons */
+    padding: 15px 25px; /* More padding */
+    font-size: 1.2rem; /* Larger text */
+    -webkit-tap-highlight-color: rgba(30, 144, 255, 0.4); /* Visual feedback on tap */
+    margin: 5px 0; /* Vertical spacing */
+  }
+  
+  .channel-button:active {
+    transform: scale(0.97); /* Visual feedback on press */
+  }
+  
+  /* Modal optimizations */
+  .modal-box {
+    width: 95%; /* Wider on mobile */
+    padding: 25px 18px; /* Adjusted padding */
+    max-height: 80vh;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  }
+  
+  .close-modal {
+    top: 8px;
+    right: 8px;
+    font-size: 32px; /* Larger close button */
+    padding: 8px 12px; /* Larger touch target */
+  }
+  
+  /* Content optimizations */
+  .role-model-content {
+    padding: 20px;
+    max-width: 100%;
+    max-height: 75vh;
+  }
+  
+  .role-model-content h2 {
+    font-size: 1.8rem;
+  }
+  
+  .role-model-content h3 {
+    font-size: 1.3rem;
+  }
+  
+  .role-model-quote p {
+    font-size: 1rem;
+  }
+  
+  .role-model-description {
+    font-size: 0.95rem;
+    line-height: 1.6; /* Improved readability */
+  }
+  
+  .role-model-quotes {
+    gap: 20px; /* Increased separation */
+  }
+  
+  .role-model-quote {
+    padding: 12px;
+    margin: 5px 0;
+  }
+  
+  /* Annual letter link optimizations */
+  .letter-button {
+    padding: 16px 28px; /* Larger touch target */
+    width: 80%; /* Wider button */
+    text-align: center;
+    font-size: 1.1rem;
+  }
+  
+  .annual-letter-link a {
+    padding: 5px; /* Larger touch target for inline links */
+    display: inline-block;
+  }
+}
