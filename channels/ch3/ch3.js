@@ -96,7 +96,7 @@ function setupTrackSelection() {
     const playBtn = card.querySelector('.play-track-btn');
     if (playBtn) {
       playBtn.addEventListener('click', () => {
-        playRandomTrack(); // Play random instead of specific track
+        playTrack(index); // Play specific track
       });
     }
     
@@ -104,7 +104,7 @@ function setupTrackSelection() {
     card.addEventListener('click', (e) => {
       // Don't trigger if clicking the button directly
       if (!e.target.classList.contains('play-track-btn')) {
-        playRandomTrack(); // Play random instead of specific track
+        playTrack(index); // Play specific track
       }
     });
   });
