@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
       module = await import(`./channels/ch1/home.js`);
     } else if (moduleName === 'ch2') {
       module = await import(`./channels/ch2/ch2.js`);
-    } else if (moduleName === 'sonic memories') {
+    } else if (moduleName === 'music channel') {
       // Load the new music channel
       module = await import(`./channels/ch3/ch3.js`);
     } else if (moduleName === 'skill games') {
