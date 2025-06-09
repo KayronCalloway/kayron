@@ -45,14 +45,17 @@ let tracks = [];
 function setupMusicPlayer() {
   console.log('Setting up music player...');
   
-  // Get track data from the DOM
+  // Get track data from the DOM - updated for Instagram
   tracks = Array.from(document.querySelectorAll('.track-card')).map((card, index) => ({
-    id: card.dataset.youtubeId,
+    id: card.dataset.instagramId,
     title: card.dataset.trackTitle,
     year: card.dataset.year,
     element: card,
     index: index
   }));
+  
+  // Set up channel visibility detection for audio control
+  setupChannelVisibilityDetection();
   
   console.log('Found tracks:', tracks);
   
@@ -121,12 +124,12 @@ function playTrack(index) {
   // Update visual states
   updateTrackStates();
   
-  // Load YouTube video
-  loadYouTubeVideo(track.id);
+  // Load Instagram video
+  loadInstagramVideo(track.id);
 }
 
-function loadYouTubeVideo(videoId) {
-  console.log('Loading YouTube video:', videoId);
+function loadInstagramVideo(videoId) {
+  console.log('Loading Instagram video:', videoId);
   
   const playerContainer = document.getElementById('music-video-player');
   if (!playerContainer) {
@@ -134,18 +137,23 @@ function loadYouTubeVideo(videoId) {
     return;
   }
   
-  // Create iframe for YouTube video
+  // Create iframe for Instagram embed
   const iframe = document.createElement('iframe');
-  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&rel=0&showinfo=0`;
+  iframe.src = `https://www.instagram.com/p/${videoId}/embed/`;
   iframe.width = '100%';
   iframe.height = '100%';
   iframe.frameBorder = '0';
-  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+  iframe.allow = 'autoplay; clipboard-write; encrypted-media';
   iframe.allowFullscreen = true;
+  iframe.scrolling = 'no';
+  iframe.style.border = 'none';
+  iframe.style.overflow = 'hidden';
   
   // Clear previous content and add new iframe
   playerContainer.innerHTML = '';
   playerContainer.appendChild(iframe);
+  
+  currentPlayer = iframe;
   
   // Update play button state
   const playPauseBtn = document.getElementById('playPause');
@@ -263,18 +271,76 @@ function addSignalToFeed(message, isSystem = false) {
 // Add CSS for active track state
 const style = document.createElement('style');
 style.textContent = `
-  .track-card.active {
+  #section3 .track-card.active {
     border-color: #3e92cc !important;
     background: rgba(62, 146, 204, 0.1) !important;
     box-shadow: 0 0 20px rgba(62, 146, 204, 0.3) !important;
   }
   
-  .track-card.active .track-title {
+  #section3 .track-card.active .track-title {
     color: #3e92cc !important;
   }
   
-  .track-card.active .play-track-btn {
+  #section3 .track-card.active .play-track-btn {
     background: linear-gradient(45deg, #5d9edd, #3e92cc) !important;
   }
 `;
 document.head.appendChild(style);
+
+// Channel visibility detection for audio control
+function setupChannelVisibilityDetection() {
+  let isChannelVisible = false;
+  
+  // Create intersection observer to detect when Channel 3 is visible
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.target.id === 'section3') {
+        const wasVisible = isChannelVisible;
+        isChannelVisible = entry.isIntersecting && entry.intersectionRatio > 0.5;
+        
+        // If channel became invisible and there's a current player, handle it
+        if (wasVisible && !isChannelVisible && currentPlayer) {
+          console.log('Channel 3 left viewport - pausing media');
+          pauseCurrentMedia();
+        }
+        
+        // If channel became visible and there was a paused player, resume it
+        if (!wasVisible && isChannelVisible && currentPlayer) {
+          console.log('Channel 3 entered viewport - resuming media');
+          // Note: Instagram embeds don't support programmatic play/pause
+          // But we can track the state for user experience
+        }
+      }
+    });
+  }, {
+    threshold: [0.1, 0.5, 0.9] // Trigger at different visibility levels
+  });
+  
+  // Observe Channel 3
+  const section3 = document.getElementById('section3');
+  if (section3) {
+    observer.observe(section3);
+  }
+  
+  // Also listen for visibility change events (when user switches tabs)
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && currentPlayer) {
+      console.log('Tab became hidden - pausing media');
+      pauseCurrentMedia();
+    }
+  });
+}
+
+function pauseCurrentMedia() {
+  // For Instagram embeds, we can't control playback directly
+  // But we can provide visual feedback and clear the player if needed
+  const playPauseBtn = document.getElementById('playPause');
+  if (playPauseBtn) {
+    playPauseBtn.textContent = '▶';
+  }
+  
+  // You could also hide/remove the iframe to stop playback entirely
+  // if (currentPlayer) {
+  //   currentPlayer.style.display = 'none';
+  // }
+}
