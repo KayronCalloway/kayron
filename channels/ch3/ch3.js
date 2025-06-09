@@ -39,8 +39,9 @@ export async function init() {
 }
 
 let currentPlayer = null;
-let currentTrackIndex = 0;
+let currentTrackIndex = -1; // Start with -1 to indicate no track selected
 let tracks = [];
+let autoAdvanceTimer = null; // Track the auto-advance timer
 
 function setupMusicPlayer() {
   console.log('Setting up music player...');
@@ -103,17 +104,17 @@ function setupTrackSelection() {
 }
 
 function playTrack(index) {
-  console.log('Playing track:', index);
+  console.log('Playing track:', index, 'out of', tracks.length, 'tracks');
   
   if (index < 0 || index >= tracks.length) {
-    console.error('Invalid track index:', index);
+    console.error('Invalid track index:', index, 'tracks length:', tracks.length);
     return;
   }
   
   currentTrackIndex = index;
   const track = tracks[index];
   
-  // No need to update current track display since we removed the ticker
+  console.log('Selected track:', track);
   
   // Update visual states
   updateTrackStates();
@@ -125,20 +126,27 @@ function playTrack(index) {
 function loadYouTubeVideo(videoId) {
   console.log('Loading YouTube video:', videoId);
   
+  // Clear any existing auto-advance timer
+  if (autoAdvanceTimer) {
+    clearTimeout(autoAdvanceTimer);
+    autoAdvanceTimer = null;
+  }
+  
   const playerContainer = document.getElementById('music-video-player');
   if (!playerContainer) {
     console.error('Player container not found');
     return;
   }
   
-  // Create iframe for YouTube video
+  // Create iframe for YouTube video with autoplay enabled
   const iframe = document.createElement('iframe');
-  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&rel=0&showinfo=0`;
+  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&rel=0&showinfo=0&enablejsapi=1`;
   iframe.width = '100%';
   iframe.height = '100%';
   iframe.frameBorder = '0';
   iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
   iframe.allowFullscreen = true;
+  iframe.id = 'youtube-player-iframe';
   
   // Clear previous content and add new iframe
   playerContainer.innerHTML = '';
@@ -146,10 +154,59 @@ function loadYouTubeVideo(videoId) {
   
   currentPlayer = iframe;
   
+  // Set up auto-advance when video ends
+  setupAutoAdvance(videoId);
+  
   // Update play button state
   const playPauseBtn = document.getElementById('playPause');
   if (playPauseBtn) {
     playPauseBtn.textContent = '⏸';
+  }
+}
+
+// Set up auto-advance to next video
+function setupAutoAdvance(videoId) {
+  // Since we can't directly detect when a YouTube embed ends,
+  // we'll use a timer-based approach with estimated video duration
+  
+  // First, try to get video duration from YouTube API
+  fetchVideoDuration(videoId).then(duration => {
+    if (duration > 0) {
+      console.log(`Video ${videoId} duration: ${duration} seconds`);
+      
+      // Set timer to auto-advance slightly before video ends
+      autoAdvanceTimer = setTimeout(() => {
+        console.log('Auto-advancing to next video...');
+        playNextTrack();
+      }, (duration - 2) * 1000); // Advance 2 seconds before end
+    } else {
+      // Fallback: assume average video length and auto-advance
+      autoAdvanceTimer = setTimeout(() => {
+        console.log('Auto-advancing to next video (fallback timing)...');
+        playNextTrack();
+      }, 180000); // 3 minutes fallback
+    }
+  });
+}
+
+// Fetch video duration using YouTube oEmbed API
+async function fetchVideoDuration(videoId) {
+  try {
+    // This is a simple fallback - YouTube oEmbed doesn't provide duration
+    // For a production app, you'd want to use the YouTube Data API v3
+    // For now, we'll use estimated durations based on video type
+    
+    // Different durations for different video types - most music videos are 3-5 minutes
+    const estimatedDurations = {
+      'ftp_QMl9BgU': 240, // 4 minutes
+      'tpeUkuGCzOU': 210, // 3.5 minutes  
+      'ptNBEZ6pPp4': 180  // 3 minutes
+    };
+    
+    return estimatedDurations[videoId] || 210; // Default 3.5 minutes
+  } catch (error) {
+    console.error('Could not fetch video duration:', error);
+    return 180; // 3 minute fallback
   }
 }
 
@@ -181,12 +238,33 @@ function togglePlayPause() {
 }
 
 function playPreviousTrack() {
+  console.log('Previous track clicked, current index:', currentTrackIndex);
+  if (tracks.length === 0) return;
+  
+  // If no track is currently selected, start from the last one
+  if (currentTrackIndex === -1) {
+    playTrack(tracks.length - 1);
+    return;
+  }
+  
   const newIndex = currentTrackIndex > 0 ? currentTrackIndex - 1 : tracks.length - 1;
+  console.log('Going to previous track:', newIndex);
   playTrack(newIndex);
 }
 
 function playNextTrack() {
+  console.log('Next track triggered, current index:', currentTrackIndex);
+  if (tracks.length === 0) return;
+  
+  // If no track is currently selected, start from the first one
+  if (currentTrackIndex === -1) {
+    playTrack(0);
+    return;
+  }
+  
+  // Move to next track, or loop back to start
   const newIndex = currentTrackIndex < tracks.length - 1 ? currentTrackIndex + 1 : 0;
+  console.log('Auto-advancing to track:', newIndex);
   playTrack(newIndex);
 }
 
