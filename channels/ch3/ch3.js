@@ -145,24 +145,48 @@ function loadYouTubeVideo(videoId) {
     return;
   }
   
-  // Create iframe for YouTube video with autoplay enabled
-  const iframe = document.createElement('iframe');
-  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&rel=0&showinfo=0&enablejsapi=1`;
-  iframe.width = '100%';
-  iframe.height = '100%';
-  iframe.frameBorder = '0';
-  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-  iframe.allowFullscreen = true;
-  iframe.id = 'youtube-player-iframe';
-  
-  // Clear previous content and add new iframe
+  // Clear previous content
   playerContainer.innerHTML = '';
-  playerContainer.appendChild(iframe);
   
-  currentPlayer = iframe;
-  
-  // Set up auto-advance when video ends
-  setupAutoAdvance(videoId);
+  // Create YouTube player using the iframe API
+  if (window.YT && window.YT.Player) {
+    // Create a div for the YouTube player
+    const playerDiv = document.createElement('div');
+    playerDiv.id = 'yt-player-' + Date.now();
+    playerContainer.appendChild(playerDiv);
+    
+    currentPlayer = new window.YT.Player(playerDiv.id, {
+      videoId: videoId,
+      width: '100%',
+      height: '100%',
+      playerVars: {
+        autoplay: 1,
+        controls: 1,
+        rel: 0,
+        showinfo: 0,
+        enablejsapi: 1
+      },
+      events: {
+        onStateChange: onPlayerStateChange
+      }
+    });
+  } else {
+    // Fallback to iframe if YT API not loaded
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&rel=0&showinfo=0&enablejsapi=1`;
+    iframe.width = '100%';
+    iframe.height = '100%';
+    iframe.frameBorder = '0';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+    iframe.id = 'youtube-player-iframe';
+    
+    playerContainer.appendChild(iframe);
+    currentPlayer = iframe;
+    
+    // Use timer-based auto-advance as fallback
+    setupAutoAdvance(videoId);
+  }
   
   // Update play button state
   const playPauseBtn = document.getElementById('playPause');
@@ -231,16 +255,41 @@ function updateTrackStates() {
 
 function togglePlayPause() {
   const playPauseBtn = document.getElementById('playPause');
-  if (!playPauseBtn) return;
+  if (!playPauseBtn || !currentPlayer) return;
   
-  // This is a simplified version - in a full implementation,
-  // we'd need to interact with the YouTube player API
-  if (playPauseBtn.textContent === '▶') {
-    playPauseBtn.textContent = '⏸';
-    // Would send play command to YouTube player
+  // Check if we have a YouTube API player or iframe
+  if (currentPlayer.pauseVideo && currentPlayer.playVideo) {
+    // YouTube API player
+    if (playPauseBtn.textContent === '▶') {
+      currentPlayer.playVideo();
+      playPauseBtn.textContent = '⏸';
+    } else {
+      currentPlayer.pauseVideo();
+      playPauseBtn.textContent = '▶';
+    }
   } else {
-    playPauseBtn.textContent = '▶';
-    // Would send pause command to YouTube player
+    // Iframe fallback - just update button state
+    if (playPauseBtn.textContent === '▶') {
+      playPauseBtn.textContent = '⏸';
+    } else {
+      playPauseBtn.textContent = '▶';
+    }
+  }
+}
+
+// YouTube API event handler
+function onPlayerStateChange(event) {
+  const playPauseBtn = document.getElementById('playPause');
+  
+  if (event.data === window.YT.PlayerState.PLAYING) {
+    console.log('Video is playing');
+    if (playPauseBtn) playPauseBtn.textContent = '⏸';
+  } else if (event.data === window.YT.PlayerState.PAUSED) {
+    console.log('Video is paused');
+    if (playPauseBtn) playPauseBtn.textContent = '▶';
+  } else if (event.data === window.YT.PlayerState.ENDED) {
+    console.log('Video ended - auto advancing');
+    playNextTrack();
   }
 }
 
