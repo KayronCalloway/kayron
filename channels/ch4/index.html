@@ -1,12 +1,86 @@
-<!-- channels/ch4/index.html -->
-<div class="video-background">
-  <div id="youtube-player-4"></div>
+<!-- channels/ch3/gameshow.html -->
+<div id="game-show-container">
+  <!-- Curtain Animation -->
+  <div class="curtain-container">
+    <div class="curtain curtain-left"></div>
+    <div class="curtain curtain-right"></div>
+  </div>
+
+  <!-- TV Static Overlay -->
+  <div id="tv-static"></div>
+  
+  <!-- Channel Info -->
+  <div id="channel-info">
+    <div class="channel-number">CH 3</div>
+    <div class="recording-dot"></div>
+    <div class="timestamp">LIVE</div>
+  </div>
+  
+  <!-- Host Introduction Screen -->
+  <div id="host-intro" class="game-screen" style="display:flex; visibility:visible; opacity:1; z-index:10;">
+    <div class="host-content">
+      <h1>Professional Skill Showdown!</h1>
+      <div class="host-speech">
+        <p>"Welcome to the most entertaining job application you'll see today! I'm Kayron Calloway, your creative host, and I've turned my portfolio into this game because PowerPoints are boring!"</p>
+        <p>"Ready to see how I tackle real-world challenges? Play through these scenarios and discover why my creative problem-solving would make me an awesome addition to your team!"</p>
+      </div>
+      <button id="start-game-button" class="start-game-button" style="position:relative; z-index:100; cursor:pointer; display:block; visibility:visible; opacity:1;">LET'S PLAY!</button>
+    </div>
+  </div>
+
+  <!-- Main Game Round Screen -->
+  <div id="game-round" class="game-screen hidden">
+    <div class="game-header">
+      <div class="round-info">
+        <span id="round-number">ROUND 1</span>
+        <div class="timer-container">
+          <div id="timer-bar"></div>
+          <span id="timer">30</span>
+        </div>
+      </div>
+      <div class="score-display">
+        <span>SCORE</span>
+        <span id="current-score">0</span>
+      </div>
+    </div>
+
+    <div class="question-area">
+      <div id="question-display"></div>
+      <div id="options-container"></div>
+    </div>
+  </div>
+
+  <!-- Commercial Break Screen (Only appears once mid-game) -->
+  <div id="commercial-break" class="game-screen hidden" style="visibility: hidden; display: none;">
+    <div class="commercial-content" style="display: block; visibility: visible; opacity: 1; z-index: 15;">
+      <h2>Mid-Game Break! Almost There!</h2>
+      <div class="skill-showcase">
+        <!-- Skills will be populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Final Results Screen -->
+  <div id="final-results" class="game-screen hidden">
+    <div class="results-header">
+      <h2>YOUR HIRING VERDICT</h2>
+      <div class="final-score">YOUR SCORE: <span id="final-score">0</span></div>
+    </div>
+    
+    <div class="results-content">
+      <div class="performance-summary">
+        <h3>Hiring Assessment</h3>
+        <div id="performance-details"></div>
+      </div>
+    </div>
+
+    <button id="play-again-btn" class="play-again-button">INTERVIEW AGAIN!</button>
+  </div>
+
+  <!-- TV Effects -->
+  <div id="channel-change-effect"></div>
+  <div id="screen-glitch"></div>
 </div>
 
-<div class="channel4-buttons">
-  <button id="warrenButton" class="channel-button" aria-label="Warren Buffett">Warren Buffett</button>
-  <button id="charlieButton" class="channel-button" aria-label="Charlie Munger">Charlie Munger</button>
-  <button id="annualLetterButton" class="channel-button" aria-label="Annual Letter">Annual Letter</button>
-</div>
-
-<!-- Modal will be added dynamically via ch4.js -->
+<!-- Channel Indicator - Maintained for Consistency -->
+<div class="channel-number-overlay">CH 03</div>
