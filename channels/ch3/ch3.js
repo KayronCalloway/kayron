@@ -66,7 +66,6 @@ function setupMusicPlayer() {
   const playPauseBtn = document.getElementById('playPause');
   const prevBtn = document.getElementById('prevTrack');
   const nextBtn = document.getElementById('nextTrack');
-  const muteBtn = document.getElementById('muteBtn');
   
   if (playPauseBtn) {
     playPauseBtn.addEventListener('click', togglePlayPause);
@@ -78,10 +77,6 @@ function setupMusicPlayer() {
   
   if (nextBtn) {
     nextBtn.addEventListener('click', playNextTrack);
-  }
-  
-  if (muteBtn) {
-    muteBtn.addEventListener('click', toggleMute);
   }
 }
 
@@ -118,11 +113,7 @@ function playTrack(index) {
   currentTrackIndex = index;
   const track = tracks[index];
   
-  // Update current track display
-  const currentTrackElement = document.getElementById('current-track');
-  if (currentTrackElement) {
-    currentTrackElement.textContent = track.title || `Audio Project ${index + 1}`;
-  }
+  // No need to update current track display since we removed the ticker
   
   // Update visual states
   updateTrackStates();
@@ -199,17 +190,7 @@ function playNextTrack() {
   playTrack(newIndex);
 }
 
-function toggleMute() {
-  const muteBtn = document.getElementById('muteBtn');
-  if (!muteBtn) return;
-  
-  // Toggle mute state (simplified)
-  if (muteBtn.textContent === '🔊') {
-    muteBtn.textContent = '🔇';
-  } else {
-    muteBtn.textContent = '🔊';
-  }
-}
+// Removed toggleMute function since mute button was removed
 
 function setupBroadcastSignals() {
   console.log('Setting up broadcast signals...');
@@ -359,10 +340,27 @@ async function fetchVideoTitles() {
         if (titleElement && data.title) {
           titleElement.textContent = data.title;
           console.log(`Updated title for ${track.id}: ${data.title}`);
+        } else {
+          console.log(`No title found for ${track.id}`);
+        }
+      } else {
+        console.error(`Failed to fetch title for ${track.id}: ${response.status}`);
+        // Fallback titles if API fails
+        const titleElement = track.element.querySelector('.track-title');
+        if (titleElement) {
+          titleElement.textContent = `Video ${i + 1}`;
         }
       }
     } catch (error) {
       console.error(`Failed to fetch title for video ${track.id}:`, error);
+      // Fallback titles if fetch fails
+      const titleElement = track.element.querySelector('.track-title');
+      if (titleElement) {
+        titleElement.textContent = `Video ${i + 1}`;
+      }
     }
+    
+    // Small delay between requests to avoid rate limiting
+    await new Promise(resolve => setTimeout(resolve, 100));
   }
 }
