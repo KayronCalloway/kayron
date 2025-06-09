@@ -55,8 +55,8 @@ function setupMusicPlayer() {
     index: index
   }));
   
-  // Fetch video titles for each track
-  fetchVideoTitles();
+  // Don't fetch video titles since we already have the correct ones
+  // fetchVideoTitles();
   
   // Set up channel visibility detection for audio control
   setupChannelVisibilityDetection();
@@ -69,7 +69,14 @@ function setupMusicPlayer() {
   const nextBtn = document.getElementById('nextTrack');
   
   if (playPauseBtn) {
-    playPauseBtn.addEventListener('click', togglePlayPause);
+    playPauseBtn.addEventListener('click', () => {
+      // If no track is playing, start with a random one
+      if (currentTrackIndex === -1) {
+        playRandomTrack();
+      } else {
+        togglePlayPause();
+      }
+    });
   }
   
   if (prevBtn) {
@@ -89,7 +96,7 @@ function setupTrackSelection() {
     const playBtn = card.querySelector('.play-track-btn');
     if (playBtn) {
       playBtn.addEventListener('click', () => {
-        playTrack(index);
+        playRandomTrack(); // Play random instead of specific track
       });
     }
     
@@ -97,7 +104,7 @@ function setupTrackSelection() {
     card.addEventListener('click', (e) => {
       // Don't trigger if clicking the button directly
       if (!e.target.classList.contains('play-track-btn')) {
-        playTrack(index);
+        playRandomTrack(); // Play random instead of specific track
       }
     });
   });
@@ -268,6 +275,15 @@ function playNextTrack() {
   playTrack(newIndex);
 }
 
+function playRandomTrack() {
+  console.log('Playing random track...');
+  if (tracks.length === 0) return;
+  
+  const randomIndex = Math.floor(Math.random() * tracks.length);
+  console.log('Selected random track:', randomIndex, '(' + tracks[randomIndex].title + ')');
+  playTrack(randomIndex);
+}
+
 // Removed toggleMute function since mute button was removed
 
 function setupBroadcastSignals() {
@@ -403,42 +419,3 @@ function pauseCurrentMedia() {
   // }
 }
 
-// Fetch video titles from YouTube (using oEmbed API which doesn't require API key)
-async function fetchVideoTitles() {
-  console.log('Fetching video titles...');
-  
-  for (let i = 0; i < tracks.length; i++) {
-    const track = tracks[i];
-    try {
-      // Use YouTube oEmbed API to get video title
-      const response = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${track.id}&format=json`);
-      if (response.ok) {
-        const data = await response.json();
-        const titleElement = track.element.querySelector('.track-title');
-        if (titleElement && data.title) {
-          titleElement.textContent = data.title;
-          console.log(`Updated title for ${track.id}: ${data.title}`);
-        } else {
-          console.log(`No title found for ${track.id}`);
-        }
-      } else {
-        console.error(`Failed to fetch title for ${track.id}: ${response.status}`);
-        // Fallback titles if API fails
-        const titleElement = track.element.querySelector('.track-title');
-        if (titleElement) {
-          titleElement.textContent = `Video ${i + 1}`;
-        }
-      }
-    } catch (error) {
-      console.error(`Failed to fetch title for video ${track.id}:`, error);
-      // Fallback titles if fetch fails
-      const titleElement = track.element.querySelector('.track-title');
-      if (titleElement) {
-        titleElement.textContent = `Video ${i + 1}`;
-      }
-    }
-    
-    // Small delay between requests to avoid rate limiting
-    await new Promise(resolve => setTimeout(resolve, 100));
-  }
-}
