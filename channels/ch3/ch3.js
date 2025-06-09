@@ -45,14 +45,17 @@ let tracks = [];
 function setupMusicPlayer() {
   console.log('Setting up music player...');
   
-  // Get track data from the DOM - updated for Instagram
+  // Get track data from the DOM - back to YouTube
   tracks = Array.from(document.querySelectorAll('.track-card')).map((card, index) => ({
-    id: card.dataset.instagramId,
+    id: card.dataset.youtubeId,
     title: card.dataset.trackTitle,
     year: card.dataset.year,
     element: card,
     index: index
   }));
+  
+  // Fetch video titles for each track
+  fetchVideoTitles();
   
   // Set up channel visibility detection for audio control
   setupChannelVisibilityDetection();
@@ -124,12 +127,12 @@ function playTrack(index) {
   // Update visual states
   updateTrackStates();
   
-  // Load Instagram video
-  loadInstagramVideo(track.id);
+  // Load YouTube video
+  loadYouTubeVideo(track.id);
 }
 
-function loadInstagramVideo(videoId) {
-  console.log('Loading Instagram video:', videoId);
+function loadYouTubeVideo(videoId) {
+  console.log('Loading YouTube video:', videoId);
   
   const playerContainer = document.getElementById('music-video-player');
   if (!playerContainer) {
@@ -137,17 +140,14 @@ function loadInstagramVideo(videoId) {
     return;
   }
   
-  // Create iframe for Instagram embed
+  // Create iframe for YouTube video
   const iframe = document.createElement('iframe');
-  iframe.src = `https://www.instagram.com/p/${videoId}/embed/`;
+  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&rel=0&showinfo=0`;
   iframe.width = '100%';
   iframe.height = '100%';
   iframe.frameBorder = '0';
-  iframe.allow = 'autoplay; clipboard-write; encrypted-media';
+  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
   iframe.allowFullscreen = true;
-  iframe.scrolling = 'no';
-  iframe.style.border = 'none';
-  iframe.style.overflow = 'hidden';
   
   // Clear previous content and add new iframe
   playerContainer.innerHTML = '';
@@ -332,8 +332,7 @@ function setupChannelVisibilityDetection() {
 }
 
 function pauseCurrentMedia() {
-  // For Instagram embeds, we can't control playback directly
-  // But we can provide visual feedback and clear the player if needed
+  // For YouTube embeds, we can provide visual feedback
   const playPauseBtn = document.getElementById('playPause');
   if (playPauseBtn) {
     playPauseBtn.textContent = '▶';
@@ -343,4 +342,27 @@ function pauseCurrentMedia() {
   // if (currentPlayer) {
   //   currentPlayer.style.display = 'none';
   // }
+}
+
+// Fetch video titles from YouTube (using oEmbed API which doesn't require API key)
+async function fetchVideoTitles() {
+  console.log('Fetching video titles...');
+  
+  for (let i = 0; i < tracks.length; i++) {
+    const track = tracks[i];
+    try {
+      // Use YouTube oEmbed API to get video title
+      const response = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${track.id}&format=json`);
+      if (response.ok) {
+        const data = await response.json();
+        const titleElement = track.element.querySelector('.track-title');
+        if (titleElement && data.title) {
+          titleElement.textContent = data.title;
+          console.log(`Updated title for ${track.id}: ${data.title}`);
+        }
+      }
+    } catch (error) {
+      console.error(`Failed to fetch title for video ${track.id}:`, error);
+    }
+  }
 }
