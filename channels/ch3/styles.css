@@ -33,40 +33,7 @@
   height: 100%;
 }
 
-#section3 .video-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(transparent, rgba(0,0,0,0.8));
-  padding: 20px;
-  z-index: 10;
-}
-
-#section3 .now-playing-ticker {
-  display: flex;
-  align-items: center;
-  font-family: 'Courier New', monospace;
-  font-size: 14px;
-  color: #3e92cc;
-  text-shadow: 0 0 5px rgba(62, 146, 204, 0.5);
-}
-
-#section3 .ticker-text {
-  color: #ffffff;
-  margin-right: 10px;
-  font-weight: bold;
-}
-
-#section3 #current-track {
-  animation: ticker-scroll 20s linear infinite;
-  white-space: nowrap;
-}
-
-@keyframes ticker-scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100px); }
-}
+/* Removed video overlay and ticker styles */
 
 /* TV Controls - Scoped to Section 3 */
 #section3 .tv-controls {
