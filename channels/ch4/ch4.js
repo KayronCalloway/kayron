@@ -66,12 +66,8 @@ async function loadStyles() {
 function initializeGameshow() {
   console.log('Initializing gameshow...');
   
-  // Start with curtains closed, then open them
-  setTimeout(() => {
-    openCurtains();
-  }, 500);
-  
-  // Show host intro by default
+  // Don't open curtains immediately - wait for intersection observer
+  // Show host intro by default (behind curtains)
   showScreen('host-intro');
   
   // Set up event listeners
@@ -191,6 +187,16 @@ function showScreen(screenName) {
 function startGame() {
   console.log('🎬 STARTING GAMESHOW...');
   
+  // Reset game state
+  gameState.score = 0;
+  gameState.currentQuestionIndex = 0;
+  
+  // Update displays
+  const scoreDisplay = document.getElementById('current-score');
+  if (scoreDisplay) {
+    scoreDisplay.textContent = '0';
+  }
+  
   // Play start sound
   playSound('./audio/whoosh.mp3');
   
@@ -205,85 +211,230 @@ function startGame() {
   }, 500);
 }
 
+// Game state
+let gameState = {
+  score: 0,
+  currentQuestionIndex: 0,
+  questions: [
+    {
+      question: "What's Kayron's favorite programming language?",
+      options: [
+        { letter: "A", text: "JavaScript", points: 20 },
+        { letter: "B", text: "Python", points: 10 },
+        { letter: "C", text: "Java", points: 5 },
+        { letter: "D", text: "C++", points: 5 }
+      ],
+      insight: "JavaScript is Kayron's go-to language for both frontend and backend development!"
+    },
+    {
+      question: "Which project is Kayron most proud of?",
+      options: [
+        { letter: "A", text: "AI-powered chatbot", points: 10 },
+        { letter: "B", text: "Personal portfolio website", points: 5 },
+        { letter: "C", text: "Game development project", points: 15 },
+        { letter: "D", text: "Machine learning model", points: 20 }
+      ],
+      insight: "Kayron's passion for AI and machine learning shines through in his projects!"
+    },
+    {
+      question: "What's Kayron's preferred development environment?",
+      options: [
+        { letter: "A", text: "VS Code", points: 20 },
+        { letter: "B", text: "Sublime Text", points: 5 },
+        { letter: "C", text: "IntelliJ IDEA", points: 10 },
+        { letter: "D", text: "Vim", points: 15 }
+      ],
+      insight: "VS Code's extensibility and integrated features make it Kayron's top choice!"
+    }
+  ]
+};
+
 function displayQuestion() {
   const questionDisplay = document.getElementById('question-display');
-  if (questionDisplay) {
+  const currentQuestion = gameState.questions[gameState.currentQuestionIndex];
+  
+  if (questionDisplay && currentQuestion) {
     questionDisplay.innerHTML = `
-      <h2>Professional Skills Assessment</h2>
       <div class="question">
-        <h3>What's most important for creative strategy success?</h3>
-        <div class="options-container">
-          <button class="option-btn" data-answer="Understanding client needs">
-            A) Understanding client needs
-          </button>
-          <button class="option-btn" data-answer="Creative problem-solving">
-            B) Creative problem-solving  
-          </button>
-          <button class="option-btn" data-answer="Clear communication">
-            C) Clear communication
-          </button>
-          <button class="option-btn" data-answer="All of the above">
-            D) All of the above
-          </button>
-        </div>
+        <h3>${currentQuestion.question}</h3>
       </div>
     `;
     
-    // Add event listeners to option buttons
-    const optionButtons = questionDisplay.querySelectorAll('.option-btn');
-    console.log(`📋 Found ${optionButtons.length} option buttons`);
-    
-    optionButtons.forEach((button, index) => {
-      button.addEventListener('click', () => {
-        const answer = button.getAttribute('data-answer');
-        console.log(`🖱️ Button ${index + 1} clicked: ${answer}`);
-        selectAnswer(answer);
+    // Create options container separately to ensure proper styling
+    const optionsContainer = document.getElementById('options-container');
+    if (optionsContainer) {
+      optionsContainer.innerHTML = '';
+      
+      currentQuestion.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.className = 'option-button';
+        button.innerHTML = `
+          <span class="option-letter">${option.letter}</span>
+          <span class="option-text">${option.text}</span>
+        `;
+        
+        // Add click handler
+        button.addEventListener('click', () => {
+          console.log(`🖱️ Option ${option.letter} clicked: ${option.text} (${option.points} points)`);
+          selectAnswer(option);
+        });
+        
+        // Ensure button is clickable
+        button.style.pointerEvents = 'auto';
+        button.style.cursor = 'pointer';
+        
+        optionsContainer.appendChild(button);
       });
       
-      // Ensure buttons are clickable
-      button.style.pointerEvents = 'auto';
-      button.style.cursor = 'pointer';
-      
-      console.log(`✅ Event listener added to button: ${button.getAttribute('data-answer')}`);
-    });
+      console.log(`📋 Displayed question ${gameState.currentQuestionIndex + 1}: ${currentQuestion.question}`);
+    }
   }
 }
 
 // Answer selection function
-function selectAnswer(answer) {
-  console.log(`🎯 Answer selected: ${answer}`);
+function selectAnswer(selectedOption) {
+  console.log(`🎯 Answer selected: ${selectedOption.text} (${selectedOption.points} points)`);
+  
+  // Disable all buttons
+  const optionButtons = document.querySelectorAll('.option-button');
+  optionButtons.forEach(btn => {
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+  });
+  
+  // Add score
+  gameState.score += selectedOption.points;
+  console.log(`💰 Score updated: ${gameState.score} total points`);
+  
+  // Update score display
+  const scoreDisplay = document.getElementById('current-score');
+  if (scoreDisplay) {
+    scoreDisplay.textContent = gameState.score;
+  }
+  
+  // Highlight selected answer
+  const selectedButton = Array.from(optionButtons).find(btn => 
+    btn.querySelector('.option-text').textContent === selectedOption.text
+  );
+  if (selectedButton) {
+    selectedButton.classList.add('selected');
+    selectedButton.style.opacity = '1';
+    
+    // Show points earned
+    const pointsDisplay = document.createElement('div');
+    pointsDisplay.className = 'points-display';
+    pointsDisplay.textContent = `+${selectedOption.points} POINTS!`;
+    selectedButton.appendChild(pointsDisplay);
+  }
   
   // Play success sound
   playSound('./audio/ka-ching.mp3');
   
-  // Show results after delay
+  // Show insight and progress to next question
   setTimeout(() => {
-    showResults(answer);
-  }, 1000);
+    showInsight(selectedOption);
+  }, 1500);
 }
 
-function showResults(answer) {
+function showInsight(selectedOption) {
+  const currentQuestion = gameState.questions[gameState.currentQuestionIndex];
+  const questionArea = document.querySelector('.question-area');
+  
+  if (questionArea && currentQuestion.insight) {
+    const insight = document.createElement('div');
+    insight.className = 'insight';
+    insight.textContent = currentQuestion.insight;
+    questionArea.appendChild(insight);
+    
+    setTimeout(() => {
+      if (insight && insight.parentNode) {
+        insight.parentNode.removeChild(insight);
+      }
+      
+      // Move to next question or show final results
+      gameState.currentQuestionIndex++;
+      
+      if (gameState.currentQuestionIndex < gameState.questions.length) {
+        console.log(`📚 Moving to question ${gameState.currentQuestionIndex + 1}`);
+        displayQuestion();
+      } else {
+        console.log(`🏁 Game complete! Final score: ${gameState.score}`);
+        showFinalResults();
+      }
+    }, 2500);
+  }
+}
+
+function showFinalResults() {
   showScreen('final-results');
   
+  // Calculate performance level
+  const performanceLevels = [
+    {
+      threshold: 50,
+      title: "Tech Virtuoso!",
+      message: "You really know your stuff! Your understanding of technology and development is impressive.",
+      skills: ["Advanced Problem Solving", "Technical Excellence", "Innovation"]
+    },
+    {
+      threshold: 30,
+      title: "Rising Star!",
+      message: "Great job! You've shown a solid grasp of development concepts.",
+      skills: ["Problem Solving", "Technical Knowledge", "Quick Learning"]
+    },
+    {
+      threshold: 0,
+      title: "Tech Explorer!",
+      message: "Good start! Keep exploring and learning about technology.",
+      skills: ["Curiosity", "Determination", "Growth Mindset"]
+    }
+  ];
+  
+  const performanceLevel = performanceLevels.find(level => 
+    gameState.score >= level.threshold
+  ) || performanceLevels[performanceLevels.length - 1];
+  
+  // Update final score
+  const finalScoreElement = document.getElementById('final-score');
+  if (finalScoreElement) {
+    finalScoreElement.textContent = gameState.score;
+  }
+  
+  // Update performance details
   const resultsDisplay = document.getElementById('performance-details');
   if (resultsDisplay) {
     resultsDisplay.innerHTML = `
-      <div class="results-content">
-        <h2>Excellent Choice!</h2>
-        <p><strong>You selected:</strong> ${answer}</p>
-        <div class="assessment">
-          <h3>Your Creative Strategy Assessment</h3>
-          <p>This demonstrates strong understanding of holistic creative strategy. 
-          The best creative strategists combine client empathy, innovative problem-solving, 
-          and clear communication to deliver exceptional results.</p>
+      <h4>${performanceLevel.title}</h4>
+      <p>${performanceLevel.message}</p>
+      <div class="skills-earned">
+        <h5>Skills Demonstrated:</h5>
+        <div class="skill-list">
+          ${performanceLevel.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
         </div>
       </div>
     `;
   }
+  
+  console.log(`🏆 Final Results: ${gameState.score} points - ${performanceLevel.title}`);
 }
 
 function resetGame() {
-  console.log('Resetting gameshow...');
+  console.log('🔄 Resetting gameshow...');
+  
+  // Reset game state
+  gameState = {
+    score: 0,
+    currentQuestionIndex: 0,
+    questions: gameState.questions // Keep the same questions
+  };
+  
+  // Update score display
+  const scoreDisplay = document.getElementById('current-score');
+  if (scoreDisplay) {
+    scoreDisplay.textContent = '0';
+  }
+  
+  // Show host intro
   showScreen('host-intro');
 }
 
@@ -318,14 +469,21 @@ window.testGameshowButton = function() {
 
 // Audio control based on channel visibility
 window.controlGameshowAudio = function(isVisible) {
-  if (window.gameshowAudio) {
-    if (isVisible) {
-      console.log('🔊 Starting gameshow audio');
+  if (isVisible) {
+    console.log('🔊 Channel 4 is visible - opening curtains and starting audio');
+    
+    // Open curtains when channel becomes visible
+    openCurtains();
+    
+    // Start audio
+    if (window.gameshowAudio) {
       window.gameshowAudio.play().catch(err => {
         console.log('Gameshow audio play failed:', err);
       });
-    } else {
-      console.log('🔇 Stopping gameshow audio');
+    }
+  } else {
+    console.log('🔇 Stopping gameshow audio');
+    if (window.gameshowAudio) {
       window.gameshowAudio.pause();
       window.gameshowAudio.currentTime = 0;
     }
