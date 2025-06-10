@@ -325,6 +325,13 @@ function setupModalEventListeners() {
 export async function init() {
   console.log('Channel 5 Under the Influence init started');
   
+  // Prevent duplicate initialization
+  const section5 = document.getElementById('section5');
+  if (section5 && section5.querySelector('.channel5-buttons')) {
+    console.log('Channel 5 already initialized, skipping...');
+    return;
+  }
+  
   try {
     // Load the influence content
     console.log('Loading Channel 5 influence content...');
@@ -335,9 +342,17 @@ export async function init() {
     const html = await response.text();
     
     // Insert into the section
-    const section5 = document.getElementById('section5');
     if (section5) {
+      // Preserve any existing channel overlay from main page
+      const existingOverlay = section5.querySelector('.channel-number-overlay');
+      const overlayHTML = existingOverlay ? existingOverlay.outerHTML : '';
+      
       section5.innerHTML = html;
+      
+      // If there was an existing overlay and the new content doesn't have one, restore it
+      if (overlayHTML && !section5.querySelector('.channel-number-overlay')) {
+        section5.insertAdjacentHTML('beforeend', overlayHTML);
+      }
       
       // Load influence styles
       const influenceStylesheet = document.createElement('link');
@@ -384,11 +399,12 @@ export async function init() {
         });
       }, 500);
       
-      // Set up YouTube player
+      // Set up YouTube player only if it doesn't exist
       setTimeout(() => {
-        if (typeof YT !== 'undefined' && YT.Player) {
+        if (typeof YT !== 'undefined' && YT.Player && !window.channel5Player) {
           const isMobile = isMobileDevice();
           
+          console.log("Creating Channel 5 YouTube player...");
           // Create the YouTube player for channel 5
           window.channel5Player = new YT.Player('youtube-player-5', {
             videoId: 'OFlnSoPm7x4', // Same video as channel 4 for consistency
@@ -411,6 +427,8 @@ export async function init() {
               }
             }
           });
+        } else if (window.channel5Player) {
+          console.log("Channel 5 YouTube player already exists, reusing...");
         } else {
           console.error("YouTube API not available for Channel 5.");
         }
