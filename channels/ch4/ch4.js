@@ -213,27 +213,45 @@ function displayQuestion() {
       <div class="question">
         <h3>What's most important for creative strategy success?</h3>
         <div class="options-container">
-          <button class="option-btn" onclick="selectAnswer('Understanding client needs')">
+          <button class="option-btn" data-answer="Understanding client needs">
             A) Understanding client needs
           </button>
-          <button class="option-btn" onclick="selectAnswer('Creative problem-solving')">
+          <button class="option-btn" data-answer="Creative problem-solving">
             B) Creative problem-solving  
           </button>
-          <button class="option-btn" onclick="selectAnswer('Clear communication')">
+          <button class="option-btn" data-answer="Clear communication">
             C) Clear communication
           </button>
-          <button class="option-btn" onclick="selectAnswer('All of the above')">
+          <button class="option-btn" data-answer="All of the above">
             D) All of the above
           </button>
         </div>
       </div>
     `;
+    
+    // Add event listeners to option buttons
+    const optionButtons = questionDisplay.querySelectorAll('.option-btn');
+    console.log(`📋 Found ${optionButtons.length} option buttons`);
+    
+    optionButtons.forEach((button, index) => {
+      button.addEventListener('click', () => {
+        const answer = button.getAttribute('data-answer');
+        console.log(`🖱️ Button ${index + 1} clicked: ${answer}`);
+        selectAnswer(answer);
+      });
+      
+      // Ensure buttons are clickable
+      button.style.pointerEvents = 'auto';
+      button.style.cursor = 'pointer';
+      
+      console.log(`✅ Event listener added to button: ${button.getAttribute('data-answer')}`);
+    });
   }
 }
 
-// Answer selection (global function)
-window.selectAnswer = function(answer) {
-  console.log(`Answer selected: ${answer}`);
+// Answer selection function
+function selectAnswer(answer) {
+  console.log(`🎯 Answer selected: ${answer}`);
   
   // Play success sound
   playSound('./audio/ka-ching.mp3');
@@ -242,7 +260,7 @@ window.selectAnswer = function(answer) {
   setTimeout(() => {
     showResults(answer);
   }, 1000);
-};
+}
 
 function showResults(answer) {
   showScreen('final-results');
