@@ -1,4 +1,4 @@
-// Channel 5: Under the Influence JavaScript (moved from ch4)
+// Channel 5: Under the Influence JavaScript
 
 function createModals() {
   // Create the Warren Buffett modal
