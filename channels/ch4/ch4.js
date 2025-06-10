@@ -39,10 +39,14 @@ export async function init() {
       
       // Wait a moment for the script to load, then initialize manually
       setTimeout(() => {
+        console.log('Checking for GameShow object:', window.GameShow);
         if (window.GameShow && window.GameShow.init) {
+          console.log('Calling GameShow.init()...');
           window.GameShow.init();
+        } else {
+          console.error('GameShow object not found or no init function');
         }
-      }, 100);
+      }, 500); // Increased timeout
       
     } else {
       console.error('Section 4 not found');

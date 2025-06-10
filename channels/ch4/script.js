@@ -225,12 +225,19 @@ window.GameShow = (function() {
   let elements = {};
 
   function init() {
+    console.log('GameShow.init() called!');
+    
     // Setup game container
     const container = document.getElementById('game-show-container');
+    console.log('Looking for game-show-container:', container);
+    
     if (!container) {
-      console.error('Game container not found');
+      console.error('Game container not found - available elements:', 
+        Array.from(document.querySelectorAll('[id*="game"], [id*="show"]')).map(el => el.id));
       return;
     }
+    
+    console.log('Game container found, proceeding with initialization...');
     
     // Initialize DOM elements
     elements = {
@@ -249,6 +256,12 @@ window.GameShow = (function() {
         timerBar: document.getElementById('timer-bar')
       }
     };
+    
+    // Debug: Check which elements were found
+    console.log('Found screens:', Object.keys(elements.screens).map(key => 
+      `${key}: ${elements.screens[key] ? 'found' : 'missing'}`));
+    console.log('Found game elements:', Object.keys(elements.game).map(key => 
+      `${key}: ${elements.game[key] ? 'found' : 'missing'}`));
 
     // Create options container
     elements.game.optionsContainer.className = 'options-container';
@@ -283,6 +296,7 @@ window.GameShow = (function() {
     initializeTimer();
     
     // Show host intro - user will manually start game
+    console.log('Attempting to show host-intro screen...');
     showScreen('host-intro');
     
     // Initialize analytics
@@ -338,6 +352,8 @@ window.GameShow = (function() {
   }
 
   function showScreen(screenName) {
+    console.log(`showScreen called with: ${screenName}`);
+    
     // Hide all screens
     Object.values(elements.screens).forEach(screen => {
       if (screen) screen.classList.add('hidden');
@@ -355,10 +371,16 @@ window.GameShow = (function() {
       actualScreenName = 'results';
     }
     
+    console.log(`Mapped to actualScreenName: ${actualScreenName}`);
+    console.log(`Screen element exists:`, elements.screens[actualScreenName]);
+    
     // Show requested screen
     if (elements.screens[actualScreenName]) {
       elements.screens[actualScreenName].classList.remove('hidden');
       gameState.currentScreen = screenName;
+      console.log(`Successfully showed screen: ${screenName}`);
+    } else {
+      console.error(`Screen not found: ${actualScreenName}`);
     }
   }
 
