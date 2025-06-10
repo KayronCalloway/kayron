@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         navigator.vibrate([50, 30, 50]);
       }
     } catch (e) {
-      console.log("Vibration API not supported");
+      console.log('Vibration API not supported');
     }
   };
 
