@@ -217,54 +217,54 @@ let gameState = {
   currentQuestionIndex: 0,
   questions: [
     {
-      question: "What's Kayron's secret weapon for tackling impossible deadlines?",
+      question: "When Kayron encounters a creative brief, what does he see first?",
       options: [
-        { letter: "A", text: "Panic and caffeine", points: 5 },
-        { letter: "B", text: "Breaking problems into bite-sized pieces", points: 20 },
-        { letter: "C", text: "Calling in sick", points: 2 },
-        { letter: "D", text: "Working 48 hours straight", points: 8 }
+        { letter: "A", text: "The deliverables and timeline", points: 8 },
+        { letter: "B", text: "The system of meaning underneath", points: 20 },
+        { letter: "C", text: "The budget and constraints", points: 5 },
+        { letter: "D", text: "Similar work that's been done before", points: 12 }
       ],
-      insight: "Smart problem decomposition beats brute force every time! Kayron believes impossible is just 'not yet possible.'"
+      insight: "Kayron reverse-engineers the logic beneath ideas. He sees structures, loops, and intersections—not just surface requirements."
     },
     {
-      question: "When Kayron gets stuck on a creative problem, what's his go-to move?",
+      question: "What matters most to Kayron when his work is complete?",
       options: [
-        { letter: "A", text: "Google it and hope for the best", points: 8 },
-        { letter: "B", text: "Take a walk and let the subconscious work", points: 18 },
-        { letter: "C", text: "Ask ChatGPT to solve it", points: 10 },
-        { letter: "D", text: "Switch to a completely different project", points: 15 }
+        { letter: "A", text: "Getting proper credit and recognition", points: 8 },
+        { letter: "B", text: "The idea speaking for itself", points: 20 },
+        { letter: "C", text: "Positive client feedback", points: 12 },
+        { letter: "D", text: "Award submissions and accolades", points: 5 }
       ],
-      insight: "The best ideas come when you're not forcing them. Kayron's breakthrough moments happen away from the screen!"
+      insight: "Kayron believes the creator's identity should dissolve into the concept. He wants connection, not credit."
     },
     {
-      question: "What motivates Kayron most when building something new?",
+      question: "How does Kayron approach taste and aesthetic decisions?",
       options: [
-        { letter: "A", text: "Making users' lives genuinely better", points: 20 },
-        { letter: "B", text: "Showing off cool technical skills", points: 12 },
-        { letter: "C", text: "Getting featured on Product Hunt", points: 8 },
-        { letter: "D", text: "Proving the doubters wrong", points: 15 }
+        { letter: "A", text: "Follow current design trends", points: 5 },
+        { letter: "B", text: "Study, filter, and cultivate intentionally", points: 20 },
+        { letter: "C", text: "Copy what successful brands do", points: 8 },
+        { letter: "D", text: "Trust gut instinct", points: 15 }
       ],
-      insight: "User impact over everything! Kayron believes technology should serve people, not the other way around."
+      insight: "Kayron has earned his taste through study and discipline. It's cultivated, filtered, and intentional—not trend-chasing."
     },
     {
-      question: "How does Kayron handle feedback that completely contradicts his vision?",
+      question: "What drives Kayron to create across multiple mediums?",
       options: [
-        { letter: "A", text: "Defend the original idea at all costs", points: 5 },
-        { letter: "B", text: "Listen deeply, then find the wisdom in it", points: 20 },
-        { letter: "C", text: "Compromise and meet halfway", points: 12 },
-        { letter: "D", text: "Smile, nod, then do what he planned anyway", points: 8 }
+        { letter: "A", text: "Keeping work interesting and varied", points: 12 },
+        { letter: "B", text: "Each medium reveals different angles of truth", points: 20 },
+        { letter: "C", text: "Building a diverse portfolio", points: 8 },
+        { letter: "D", text: "Avoiding creative burnout", points: 10 }
       ],
-      insight: "The best feedback often feels uncomfortable at first. Kayron knows ego is the enemy of great work."
+      insight: "Kayron is a pattern shaper. Fragrance, film, UX, AI—each becomes a vessel for the same underlying idea."
     },
     {
-      question: "What's Kayron's philosophy on work-life balance?",
+      question: "How does Kayron view the act of creation itself?",
       options: [
-        { letter: "A", text: "Work hard, play harder", points: 10 },
-        { letter: "B", text: "Strict 9-5, no exceptions", points: 8 },
-        { letter: "C", text: "Passionate work doesn't feel like work", points: 18 },
-        { letter: "D", text: "Balance is a myth, just prioritize", points: 15 }
+        { letter: "A", text: "A fun creative outlet", points: 10 },
+        { letter: "B", text: "A moral obligation to meaning", points: 20 },
+        { letter: "C", text: "A way to build career success", points: 8 },
+        { letter: "D", text: "A form of self-expression", points: 15 }
       ],
-      insight: "When you love what you do, the lines blur beautifully. Kayron finds energy in meaningful work, not exhaustion."
+      insight: "Kayron sees art and thought as obligations, not luxuries. If you're capable of making meaning, you owe the world that attempt."
     }
   ]
 };
@@ -391,28 +391,28 @@ function showFinalResults() {
   // Calculate performance level
   const performanceLevels = [
     {
-      threshold: 80,
-      title: "Kayron's Twin!",
-      message: "Incredible! You think exactly like Kayron. You understand his mindset, values, and approach to work. You'd probably finish each other's sentences!",
-      skills: ["Strategic Thinking", "User-Centric Design", "Growth Mindset", "Collaborative Leadership"]
+      threshold: 85,
+      title: "Philosophical Collaborator",
+      message: "Extraordinary. You understand Kayron's meta-awareness and systemic thinking. You see meaning beneath surfaces and value ideas over ego. You're ready for concept-first collaboration.",
+      skills: ["Systemic Thinking", "Meta-Awareness", "Concept-First Mindset", "Emotional Architecture"]
     },
     {
-      threshold: 60,
-      title: "Culture Champion!",
-      message: "Excellent! You really get Kayron's professional philosophy and working style. You'd fit right into his ideal team dynamic.",
-      skills: ["Problem Solving", "Adaptability", "User Focus", "Continuous Learning"]
+      threshold: 70,
+      title: "Meaning Maker",
+      message: "Impressive. You grasp Kayron's approach to taste cultivation and multimodal creation. You understand that true work carries emotional weight and moral purpose.",
+      skills: ["Taste Literacy", "Pattern Recognition", "Cross-Medium Thinking", "Intentional Creation"]
     },
     {
-      threshold: 40,
-      title: "Solid Collaborator!",
-      message: "Great job! You understand the fundamentals of how Kayron approaches work and creativity. There's strong potential for collaboration.",
-      skills: ["Creative Thinking", "Work Ethic", "Team Player"]
+      threshold: 50,
+      title: "Cultural Intuitive",
+      message: "Solid understanding. You recognize Kayron's preference for substance over surface. You're beginning to see how he approaches creation as obligation, not luxury.",
+      skills: ["Cultural Awareness", "Depth Recognition", "Quality Appreciation"]
     },
     {
       threshold: 0,
-      title: "Getting Acquainted!",
-      message: "Good start! You're learning about Kayron's working style. Keep exploring to discover more about his professional approach.",
-      skills: ["Curiosity", "Open-mindedness", "Growth Potential"]
+      title: "Surface Explorer",
+      message: "You're engaging with Kayron's work, but there are deeper layers to discover. His approach transcends typical creative practice—keep exploring the philosophy beneath.",
+      skills: ["Curiosity", "Aesthetic Appreciation", "Creative Interest"]
     }
   ];
   
