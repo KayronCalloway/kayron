@@ -179,14 +179,32 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
-// Unmute the video on user interaction (e.g., clicking the power button)
+// Unmute and ensure playback on user interaction (e.g., clicking the power button)
 document.addEventListener('DOMContentLoaded', () => {
   const powerButton = document.getElementById('powerButton');
   if (powerButton) {
     powerButton.addEventListener('click', () => {
       if (youtubePlayer && typeof youtubePlayer.unMute === 'function') {
+        console.log('Power button clicked - starting video playback');
         youtubePlayer.unMute();
+        // Ensure video starts playing when user interacts
+        youtubePlayer.playVideo();
       }
     });
   }
+  
+  // Also attempt playback on any user interaction if video isn't playing
+  const ensurePlaybackOnInteraction = () => {
+    if (youtubePlayer && typeof youtubePlayer.getPlayerState === 'function') {
+      if (youtubePlayer.getPlayerState() !== YT.PlayerState.PLAYING) {
+        console.log('User interaction detected - attempting video playback');
+        youtubePlayer.playVideo();
+      }
+    }
+  };
+  
+  // Listen for various user interactions to start video
+  ['click', 'touchstart', 'keydown'].forEach(eventType => {
+    document.addEventListener(eventType, ensurePlaybackOnInteraction, { once: true, passive: true });
+  });
 });
