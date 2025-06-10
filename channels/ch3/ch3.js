@@ -67,37 +67,94 @@ function setupMusicPlayer() {
   const playPauseBtn = document.getElementById('playPause');
   const prevBtn = document.getElementById('prevTrack');
   const nextBtn = document.getElementById('nextTrack');
+  const isMobile = window.innerWidth <= 768;
   
-  if (playPauseBtn) {
-    playPauseBtn.addEventListener('click', () => {
-      // If no track is playing, start with a random one
-      if (currentTrackIndex === -1) {
-        playRandomTrack();
-      } else {
-        togglePlayPause();
-      }
-    });
-  }
+  // Enhanced mobile touch support for control buttons
+  const addMobileSupport = (btn, handler) => {
+    if (!btn) return;
+    
+    btn.addEventListener('click', handler);
+    
+    if (isMobile) {
+      // Touch feedback
+      btn.addEventListener('touchstart', () => {
+        btn.style.transform = 'scale(0.9)';
+        btn.style.transition = 'transform 0.1s ease';
+      }, { passive: true });
+      
+      btn.addEventListener('touchend', () => {
+        btn.style.transform = '';
+        setTimeout(handler, 50); // Small delay for visual feedback
+      }, { passive: true });
+      
+      // Prevent text selection
+      btn.style.userSelect = 'none';
+      btn.style.webkitUserSelect = 'none';
+      btn.style.webkitTouchCallout = 'none';
+    }
+  };
   
-  if (prevBtn) {
-    prevBtn.addEventListener('click', playPreviousTrack);
-  }
+  addMobileSupport(playPauseBtn, () => {
+    // If no track is playing, start with a random one
+    if (currentTrackIndex === -1) {
+      playRandomTrack();
+    } else {
+      togglePlayPause();
+    }
+  });
   
-  if (nextBtn) {
-    nextBtn.addEventListener('click', playNextTrack);
-  }
+  addMobileSupport(prevBtn, playPreviousTrack);
+  addMobileSupport(nextBtn, playNextTrack);
 }
 
 function setupTrackSelection() {
   console.log('Setting up track selection...');
   
   const trackCards = document.querySelectorAll('.track-card');
+  const isMobile = window.innerWidth <= 768;
+  
   trackCards.forEach((card, index) => {
     const playBtn = card.querySelector('.play-track-btn');
+    
+    // Enhanced touch support for mobile
+    if (isMobile) {
+      // Add touch feedback
+      card.style.cursor = 'pointer';
+      card.style.userSelect = 'none';
+      card.style.webkitUserSelect = 'none';
+      card.style.webkitTouchCallout = 'none';
+      
+      // Touch start feedback
+      card.addEventListener('touchstart', () => {
+        card.style.transform = 'scale(0.98)';
+        card.style.transition = 'transform 0.1s ease';
+      }, { passive: true });
+      
+      // Touch end cleanup
+      card.addEventListener('touchend', () => {
+        card.style.transform = '';
+      }, { passive: true });
+    }
+    
     if (playBtn) {
-      playBtn.addEventListener('click', () => {
+      playBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent card click
         playTrack(index); // Play specific track
       });
+      
+      // Mobile touch optimization
+      if (isMobile) {
+        playBtn.addEventListener('touchstart', (e) => {
+          e.stopPropagation();
+          playBtn.style.transform = 'scale(0.95)';
+        }, { passive: true });
+        
+        playBtn.addEventListener('touchend', (e) => {
+          e.stopPropagation();
+          playBtn.style.transform = '';
+          playTrack(index);
+        }, { passive: true });
+      }
     }
     
     // Add click to whole card as well
