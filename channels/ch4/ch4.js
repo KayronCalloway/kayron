@@ -66,13 +66,18 @@ async function loadStyles() {
 function initializeGameshow() {
   console.log('Initializing gameshow...');
   
+  // Start with curtains closed, then open them
+  setTimeout(() => {
+    openCurtains();
+  }, 500);
+  
   // Show host intro by default
   showScreen('host-intro');
   
   // Set up event listeners
   setupEventListeners();
   
-  // Initialize audio
+  // Initialize audio but don't auto-play - wait for channel focus
   setupAudio();
 }
 
@@ -114,6 +119,34 @@ function setupEventListeners() {
   }
 }
 
+// Curtain opening animation
+function openCurtains() {
+  console.log('🎭 Opening curtains...');
+  
+  const leftCurtain = document.querySelector('.curtain-left');
+  const rightCurtain = document.querySelector('.curtain-right');
+  
+  if (leftCurtain && rightCurtain) {
+    // Add animation classes
+    leftCurtain.style.animation = 'curtain-left 2s ease-in-out forwards';
+    rightCurtain.style.animation = 'curtain-right 2s ease-in-out forwards';
+    
+    // After curtains open, start audio if channel is visible
+    setTimeout(() => {
+      const section4 = document.getElementById('section4');
+      if (section4) {
+        const rect = section4.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        if (isVisible && window.gameshowAudio) {
+          window.gameshowAudio.play().catch(err => {
+            console.log('Gameshow audio autoplay prevented:', err);
+          });
+        }
+      }
+    }, 2000);
+  }
+}
+
 // Audio setup
 function setupAudio() {
   try {
@@ -125,12 +158,8 @@ function setupAudio() {
     // Store in window for global access
     window.gameshowAudio = backgroundAudio;
     
-    // Auto-play with error handling
-    backgroundAudio.play().catch(err => {
-      console.log('Gameshow audio autoplay prevented:', err);
-    });
-    
-    console.log('Gameshow audio initialized');
+    // Don't auto-play immediately - let curtain animation handle this
+    console.log('Gameshow audio initialized (ready to play)');
   } catch (error) {
     console.warn('Audio setup failed:', error);
   }
@@ -268,6 +297,31 @@ window.testGameshowButton = function() {
     });
   }
 };
+
+// Audio control based on channel visibility
+window.controlGameshowAudio = function(isVisible) {
+  if (window.gameshowAudio) {
+    if (isVisible) {
+      console.log('🔊 Starting gameshow audio');
+      window.gameshowAudio.play().catch(err => {
+        console.log('Gameshow audio play failed:', err);
+      });
+    } else {
+      console.log('🔇 Stopping gameshow audio');
+      window.gameshowAudio.pause();
+      window.gameshowAudio.currentTime = 0;
+    }
+  }
+};
+
+// Listen for channel change events to stop audio
+document.addEventListener('channelChange', () => {
+  console.log('📺 Channel change detected, stopping gameshow audio');
+  if (window.gameshowAudio) {
+    window.gameshowAudio.pause();
+    window.gameshowAudio.currentTime = 0;
+  }
+});
 
 // Cleanup function for when leaving channel
 window.cleanupGameshow = function() {
