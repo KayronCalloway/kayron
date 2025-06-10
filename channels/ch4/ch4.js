@@ -29,8 +29,11 @@ export async function init() {
     
     console.log('Channel 4 gameshow loaded successfully');
     
-    // Initialize gameshow functionality
-    initializeGameshow();
+    // Wait a moment for DOM to settle, then initialize gameshow functionality
+    setTimeout(() => {
+      console.log('🚀 Initializing gameshow after DOM settlement...');
+      initializeGameshow();
+    }, 200);
     
   } catch (error) {
     console.error("Failed to load Channel 4 gameshow:", error);
@@ -78,8 +81,30 @@ function setupEventListeners() {
   // Start game button
   const startBtn = document.getElementById('start-game-button');
   if (startBtn) {
-    startBtn.addEventListener('click', startGame);
-    console.log('Start button initialized');
+    console.log('Start button found:', startBtn);
+    
+    // Ensure button is clickable
+    startBtn.style.pointerEvents = 'auto';
+    startBtn.style.cursor = 'pointer';
+    startBtn.style.zIndex = '1000';
+    
+    // Add click event listener
+    startBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('START BUTTON CLICKED!');
+      startGame();
+    });
+    
+    // Also add touch event for mobile
+    startBtn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      console.log('START BUTTON TOUCHED!');
+      startGame();
+    });
+    
+    console.log('Start button initialized with events');
+  } else {
+    console.error('Start button NOT found!');
   }
   
   // Play again button
@@ -92,18 +117,20 @@ function setupEventListeners() {
 // Audio setup
 function setupAudio() {
   try {
-    // Background audio setup
-    const backgroundAudio = new Audio('./audio/ticker-hum.mp3');
+    // Background audio setup - use gameshow.aif for proper gameshow ambiance
+    const backgroundAudio = new Audio('./audio/gameshow.aif');
     backgroundAudio.loop = true;
-    backgroundAudio.volume = 0.3;
+    backgroundAudio.volume = 0.4;
     
     // Store in window for global access
     window.gameshowAudio = backgroundAudio;
     
     // Auto-play with error handling
     backgroundAudio.play().catch(err => {
-      console.log('Background audio autoplay prevented:', err);
+      console.log('Gameshow audio autoplay prevented:', err);
     });
+    
+    console.log('Gameshow audio initialized');
   } catch (error) {
     console.warn('Audio setup failed:', error);
   }
@@ -133,16 +160,20 @@ function showScreen(screenName) {
 
 // Game logic
 function startGame() {
-  console.log('Starting gameshow...');
+  console.log('🎬 STARTING GAMESHOW...');
   
   // Play start sound
   playSound('./audio/whoosh.mp3');
   
   // Show game screen
+  console.log('🎮 Switching to game screen...');
   showScreen('game-round');
   
-  // Display first question
-  displayQuestion();
+  // Small delay then display first question
+  setTimeout(() => {
+    console.log('❓ Displaying first question...');
+    displayQuestion();
+  }, 500);
 }
 
 function displayQuestion() {
@@ -218,6 +249,25 @@ function playSound(src) {
     console.warn('Sound error:', error);
   }
 }
+
+// Global functions for testing and manual triggering
+window.startGameshow = function() {
+  console.log('🎯 Manual gameshow start triggered');
+  startGame();
+};
+
+window.testGameshowButton = function() {
+  const btn = document.getElementById('start-game-button');
+  console.log('🔍 Button test:', btn ? 'found' : 'not found');
+  if (btn) {
+    console.log('Button styles:', {
+      display: btn.style.display,
+      visibility: btn.style.visibility,
+      opacity: btn.style.opacity,
+      pointerEvents: btn.style.pointerEvents
+    });
+  }
+};
 
 // Cleanup function for when leaving channel
 window.cleanupGameshow = function() {
