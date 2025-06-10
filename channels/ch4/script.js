@@ -22,7 +22,8 @@ const soundManager = {
     correct: new Audio('./audio/ka-ching.mp3'),
     incorrect: new Audio('./audio/click.mp3'),
     success: new Audio('./audio/whoosh.mp3'),
-    background: new Audio('./audio/ticker-hum.mp3')
+    background: new Audio('./audio/ticker-hum.mp3'),
+    gameshow: new Audio('./audio/gameshow.aif')
   },
   
   play(soundId) {
@@ -225,7 +226,7 @@ const GameShow = (function() {
 
   function init() {
     // Setup game container
-    const container = document.getElementById('gameshow-container');
+    const container = document.getElementById('game-show-container');
     if (!container) {
       console.error('Game container not found');
       return;
@@ -235,15 +236,15 @@ const GameShow = (function() {
     elements = {
       screens: {
         hostIntro: document.getElementById('host-intro'),
-        fastMoney: document.getElementById('fast-money'),
+        gameRound: document.getElementById('game-round'), // Changed from fast-money to game-round
         commercial: document.getElementById('commercial-break'),
         results: document.getElementById('final-results')
       },
       game: {
         questionDisplay: document.getElementById('question-display'),
-        optionsContainer: document.createElement('div'),
+        optionsContainer: document.getElementById('options-container') || document.createElement('div'),
         scoreDisplay: document.getElementById('current-score'),
-        roundDisplay: document.getElementById('roundNumber'),
+        roundDisplay: document.getElementById('round-number'),
         timerDisplay: document.getElementById('timer'),
         timerBar: document.getElementById('timer-bar')
       }
@@ -257,9 +258,16 @@ const GameShow = (function() {
     }
 
     // Setup event listeners
-    const playAgainBtn = document.getElementById('playAgainBtn');
+    const playAgainBtn = document.getElementById('play-again-btn');
     if (playAgainBtn) {
       playAgainBtn.addEventListener('click', resetGame);
+    }
+    
+    const startGameBtn = document.getElementById('start-game-button');
+    if (startGameBtn) {
+      startGameBtn.addEventListener('click', () => {
+        startGame();
+      });
     }
     
     // Start background sound with error handling
@@ -274,11 +282,8 @@ const GameShow = (function() {
     // Initialize timer
     initializeTimer();
     
-    // Show host intro then start game after delay
+    // Show host intro - user will manually start game
     showScreen('host-intro');
-    setTimeout(() => {
-      startGame();
-    }, 3000);
     
     // Initialize analytics
     Analytics.init();
@@ -338,9 +343,21 @@ const GameShow = (function() {
       if (screen) screen.classList.add('hidden');
     });
     
+    // Handle screen name mapping
+    let actualScreenName = screenName;
+    if (screenName === 'game-round') {
+      actualScreenName = 'gameRound';
+    } else if (screenName === 'host-intro') {
+      actualScreenName = 'hostIntro';
+    } else if (screenName === 'commercial-break') {
+      actualScreenName = 'commercial';
+    } else if (screenName === 'final-results') {
+      actualScreenName = 'results';
+    }
+    
     // Show requested screen
-    if (elements.screens[screenName]) {
-      elements.screens[screenName].classList.remove('hidden');
+    if (elements.screens[actualScreenName]) {
+      elements.screens[actualScreenName].classList.remove('hidden');
       gameState.currentScreen = screenName;
     }
   }
@@ -348,7 +365,7 @@ const GameShow = (function() {
   function startGame() {
     // Reset game state
     gameState = {
-      currentScreen: 'fast-money',
+      currentScreen: 'game-round',
       score: 0,
       round: 1,
       currentQuestion: null,
@@ -363,7 +380,7 @@ const GameShow = (function() {
     updateRoundDisplay();
     
     // Show game screen
-    showScreen('fast-money');
+    showScreen('game-round');
     
     // Start timer
     startTimer();
@@ -539,7 +556,7 @@ const GameShow = (function() {
     }
     
     setTimeout(() => {
-      showScreen('fast-money');
+      showScreen('game-round');
       gameState.currentQuestion = null;
       // Restart timer for next round
       startTimer();
