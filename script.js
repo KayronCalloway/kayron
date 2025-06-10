@@ -36,7 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Analytics Reporting using Web Vitals ---
   const sendToAnalytics = (metricName, metric) => {
-    const body = { [metricName]: metric.value, path: window.location.pathname };
+    const body = {};
+    body[metricName] = metric.value;
+    body.path = window.location.pathname;
     navigator.sendBeacon('/analytics', JSON.stringify(body));
     console.log(`Tracked ${metricName}:`, metric.value);
   };
@@ -106,8 +108,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Dynamic Module Loading ---
   const loadChannelContent = async moduleName => {
   try {
-    console.log(`Loading module for ${moduleName}...`);
+    console.log(`🔄 Loading module for "${moduleName}"...`);
     let module;
+    
+    // Get target section for debugging
+    let targetSection = null;
+    if (moduleName === 'skill games') {
+      targetSection = document.getElementById('section4');
+    } else if (moduleName === 'under the influence') {
+      targetSection = document.getElementById('section5');
+    }
+    
+    if (targetSection) {
+      console.log(`🎯 Target section found: ${targetSection.id}, current content length: ${targetSection.innerHTML.length}`);
+    }
+    
     if (moduleName === 'home') {
       // Preload Channel 1 with higher priority
       console.log('Loading home module for Channel 1');
@@ -120,25 +135,41 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (moduleName === 'skill games') {
       // Reset any global styles that might have been set by the game
       resetMenuStyles();
+      console.log('📂 Importing CH4 module...');
       module = await import(`./channels/ch4/ch4.js`);
     } else if (moduleName === 'under the influence') {
+      console.log('📂 Importing CH5 module...');
       module = await import(`./channels/ch5/ch5.js`);
     }
     
     if (module) {
-      console.log(`Module for ${moduleName} loaded successfully, initializing...`);
+      console.log(`✅ Module for "${moduleName}" loaded successfully, calling init...`);
       await module.init();
-      console.log(`Module for ${moduleName} initialized`);
+      console.log(`🎉 Module for "${moduleName}" initialized successfully`);
+      
+      // Verify content was actually inserted
+      if (targetSection) {
+        console.log(`📏 Target section after init, content length: ${targetSection.innerHTML.length}`);
+        if (targetSection.innerHTML.length < 100) {
+          console.warn(`⚠️ Warning: ${targetSection.id} has very little content after init`);
+        }
+      }
       
       // Don't force menu button visibility - let MenuManager sync with header
       
       // Notify that channel has changed to trigger any observers
       notifyChannelChanged();
     } else {
-      console.warn(`No module definition found for ${moduleName}`);
+      console.warn(`⚠️ No module definition found for "${moduleName}"`);
     }
   } catch (err) {
-    console.error(`Module for ${moduleName} failed to load or initialize:`, err);
+    console.error(`❌ Module for "${moduleName}" failed to load or initialize:`, err);
+    console.error(`📝 Full error stack:`, err.stack);
+    
+    // Try to provide more debugging info
+    if (err.message.includes('Failed to fetch')) {
+      console.error(`🌐 Network error - check if files exist and server is running`);
+    }
   }
 };
 
@@ -551,11 +582,20 @@ const resetMenuStyles = () => {
   });
 
   // --- Intersection Observer for Channel Transitions ---
-  const observerOptions = { root: null, threshold: 0.7 };
+  const observerOptions = { root: null, threshold: 0.5 }; // Reduced from 0.7 to 0.5 for better triggering
   const observerCallback = entries => {
     entries.forEach(entry => {
+      const sectionId = entry.target.id;
+      const visibilityPercent = Math.round(entry.intersectionRatio * 100);
+      
+      console.log(`👁️ Intersection: ${sectionId} - ${visibilityPercent}% visible, intersecting: ${entry.isIntersecting}`);
+      
       if (entry.isIntersecting) {
         const newChannel = entry.target.id;
+        const moduleName = entry.target.dataset.module;
+        
+        console.log(`🎯 Section ${newChannel} became visible, module: "${moduleName}"`);
+        
         if (currentChannel !== newChannel) {
           // Dispatch channel change event to stop any running audio (only if not entering Channel 3)
           if (newChannel !== 'section3') {
@@ -563,7 +603,7 @@ const resetMenuStyles = () => {
             document.dispatchEvent(channelChangeEvent);
           }
           
-          console.log(`Channel change: from ${currentChannel} to ${newChannel}`);
+          console.log(`📺 Channel change: from ${currentChannel} to ${newChannel}`);
           
           // Extra cleanup for channel 3 audio - only do this when leaving Channel 3
           if (currentChannel === 'section3' && newChannel !== 'section3') {
@@ -613,11 +653,16 @@ const resetMenuStyles = () => {
           playRandomChannelSound();
           triggerChannelStatic();
           animateChannelNumber(newChannel);
-          console.log(`Now viewing channel ${newChannel.slice(-1)}`);
-          const moduleName = entry.target.dataset.module;
+          console.log(`📺 Now viewing channel ${newChannel.slice(-1)}`);
+          
+          // Load module content
           if (moduleName) {
+            console.log(`🚀 Triggering loadChannelContent for "${moduleName}"`);
             loadChannelContent(moduleName);
+          } else {
+            console.warn(`⚠️ No data-module attribute found for ${newChannel}`);
           }
+          
           distortAndWarpContent();
           
           // Let MenuManager handle menu button visibility based on header status
@@ -850,10 +895,39 @@ setTimeout(() => {
   }
 }, 2500);
 
-// Preload Channel 4 ("under the influence") so its video is already playing when scrolled into view.
+// Preload both Channel 4 and Channel 5 so their content is ready
+console.log('🔄 Starting channel preloading...');
 setTimeout(() => {
-  loadChannelContent('under the influence');
+  console.log('🚀 Preloading Channel 4 (Skill Games)...');
+  loadChannelContent('skill games');
 }, 2000);
+
+setTimeout(() => {
+  console.log('🚀 Preloading Channel 5 (Under the Influence)...');
+  loadChannelContent('under the influence');
+}, 3000);
+
+// Add manual testing functions to window for debugging
+window.debugChannels = {
+  loadCh4: () => loadChannelContent('skill games'),
+  loadCh5: () => loadChannelContent('under the influence'),
+  testIntersection: () => {
+    console.log('🔍 Current intersection state:');
+    document.querySelectorAll('.channel-section').forEach(section => {
+      const rect = section.getBoundingClientRect();
+      const visible = rect.top < window.innerHeight && rect.bottom > 0;
+      const visPercent = visible ? Math.max(0, Math.min(1, (window.innerHeight - rect.top) / rect.height)) * 100 : 0;
+      console.log(`📊 ${section.id}: ${Math.round(visPercent)}% visible, module: "${section.dataset.module}"`);
+    });
+  },
+  checkContent: () => {
+    console.log('📏 Content check:');
+    const s4 = document.getElementById('section4');
+    const s5 = document.getElementById('section5');
+    console.log(`Section 4 content length: ${s4?.innerHTML.length || 0}`);
+    console.log(`Section 5 content length: ${s5?.innerHTML.length || 0}`);
+  }
+};
   
   // --- Throttle Utility Function ---
   function throttle(fn, wait) {
