@@ -1,6 +1,6 @@
-/* Game show styles for Channel 3 */
-/* Scope variables to #section3 instead of :root to prevent affecting global styles */
-#section3 {
+/* Game show styles for Channel 4 */
+/* Scope variables to #section4 instead of :root to prevent affecting global styles */
+#section4 {
   --game-bg: #000;
   --game-primary: #fff;
   --game-accent: #1e90ff; /* Changed from gold (#ffd700) to dodger blue */

@@ -810,21 +810,23 @@ const resetMenuStyles = () => {
     ytObserver.observe(channel1);
   }
 
-  // --- Intersection Observer for Channel 4 YouTube Video Audio Control ---
+  // --- Intersection Observer for Channel 4 Gameshow Audio Control ---
   const channel4 = document.getElementById("section4");
   const channel4ObserverOptions = { root: null, threshold: 0.7 };
   const channel4Observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.target.id === "section4") {
         if (entry.intersectionRatio >= 0.7) {
-          if (window.channel4Player && typeof window.channel4Player.unMute === "function") {
-            window.channel4Player.unMute();
-            console.log("Channel 4 active: Unmuting video.");
+          console.log("Channel 4 active: Starting gameshow audio.");
+          // Control gameshow audio instead of YouTube player
+          if (window.controlGameshowAudio) {
+            window.controlGameshowAudio(true);
           }
         } else {
-          if (window.channel4Player && typeof window.channel4Player.mute === "function") {
-            window.channel4Player.mute();
-            console.log("Channel 4 inactive: Muting video.");
+          console.log("Channel 4 inactive: Stopping gameshow audio.");
+          // Stop gameshow audio when leaving channel
+          if (window.controlGameshowAudio) {
+            window.controlGameshowAudio(false);
           }
         }
       }
