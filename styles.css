@@ -1042,4 +1042,92 @@ body {
   .video-background iframe {
     height: 100vh !important; /* Use viewport height on mobile */
   }
+  
+  /* === SAFE ADDITIVE MOBILE ENHANCEMENTS FOR CHANNEL 1 === */
+  
+  /* Enhanced power button for mobile (purely additive) */
+  .power-button {
+    /* Ensure minimum touch target size (44px) */
+    min-width: 100px;
+    min-height: 100px;
+    /* Add touch-friendly styling without breaking existing styles */
+    -webkit-tap-highlight-color: rgba(255, 0, 0, 0.3);
+    touch-action: manipulation; /* Optimize for touch */
+  }
+  
+  /* Enhanced channel buttons for mobile (builds on existing styles) */
+  .channel-button {
+    /* Ensure comfortable touch targets */
+    min-height: 48px; /* Minimum recommended touch target */
+    min-width: 48px;
+    /* Add better visual feedback */
+    -webkit-tap-highlight-color: rgba(62, 146, 204, 0.3);
+    /* Optimize touch behavior */
+    touch-action: manipulation;
+    /* Add subtle mobile-specific styling */
+    transition: transform 0.1s ease-out, box-shadow 0.2s ease-out;
+  }
+  
+  .channel-button:active {
+    /* Subtle press feedback for mobile */
+    transform: scale(0.98);
+  }
+  
+  /* Safe area insets for modern phones (additive only) */
+  #section1 {
+    /* Add safe area padding without disrupting existing layout */
+    padding-top: max(env(safe-area-inset-top), 0px);
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+    /* Ensure content is accessible on phones with notches */
+    min-height: calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  }
+  
+  /* Enhanced header for mobile (purely additive) */
+  #header {
+    /* Add safe area top padding */
+    padding-top: env(safe-area-inset-top, 0px);
+    /* Ensure header works well on mobile */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px); /* Safari support */
+  }
+  
+  /* Enhanced menu button for mobile (purely additive) */
+  #menuButton {
+    /* Ensure proper touch target size */
+    min-width: 44px;
+    min-height: 44px;
+    /* Add safe area positioning */
+    top: max(10px, env(safe-area-inset-top, 0px) + 10px);
+    right: max(20px, env(safe-area-inset-right, 0px) + 20px);
+    /* Optimize for touch */
+    -webkit-tap-highlight-color: rgba(62, 146, 204, 0.3);
+    touch-action: manipulation;
+  }
+  
+  /* Enhanced landing experience for mobile (purely additive) */
+  #landing {
+    /* Add safe area handling for landing screen */
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    /* Ensure landing content is properly positioned on mobile */
+    min-height: calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  }
+  
+  /* Enhanced landing typography for mobile (builds on existing) */
+  .landing-name {
+    /* Add better mobile text handling */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Ensure proper line breaks on mobile */
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+  
+  .landing-subtitle {
+    /* Better mobile typography */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Add subtle spacing improvements for mobile */
+    line-height: 1.4;
+  }
 }
