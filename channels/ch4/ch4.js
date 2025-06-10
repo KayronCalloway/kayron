@@ -15,7 +15,16 @@ export async function init() {
     // Insert into the section
     const section4 = document.getElementById('section4');
     if (section4) {
+      // Preserve any existing channel overlay from main page
+      const existingOverlay = section4.querySelector('.channel-number-overlay');
+      const overlayHTML = existingOverlay ? existingOverlay.outerHTML : '';
+      
       section4.innerHTML = html;
+      
+      // If there was an existing overlay and the new content doesn't have one, restore it
+      if (overlayHTML && !section4.querySelector('.channel-number-overlay')) {
+        section4.insertAdjacentHTML('beforeend', overlayHTML);
+      }
       
       // Load game show styles
       const gameStylesheet = document.createElement('link');
@@ -26,10 +35,14 @@ export async function init() {
       console.log('Channel 4 game show loaded successfully');
       
       // Load and execute the game show script
-      const scriptModule = await import('./channels/ch4/script.js');
-      if (scriptModule.init) {
-        scriptModule.init();
-      }
+      await import('./channels/ch4/script.js');
+      
+      // Wait a moment for the script to load, then initialize manually
+      setTimeout(() => {
+        if (window.GameShow && window.GameShow.init) {
+          window.GameShow.init();
+        }
+      }, 100);
       
     } else {
       console.error('Section 4 not found');

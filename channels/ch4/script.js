@@ -206,7 +206,7 @@ const gameContent = {
 };
 
 // Game Module
-const GameShow = (function() {
+window.GameShow = (function() {
   const config = {
     revealDelay: 800,
     answerRevealTime: 1500,
@@ -645,7 +645,4 @@ const GameShow = (function() {
   };
 })();
 
-// Initialize game when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-  GameShow.init();
-});
+// GameShow will be initialized manually by ch4.js when the channel loads
