@@ -789,6 +789,30 @@ const resetMenuStyles = () => {
     channel4Observer.observe(channel4);
   }
   
+  // --- Intersection Observer for Channel 5 YouTube Video Audio Control ---
+  const channel5 = document.getElementById("section5");
+  const channel5ObserverOptions = { root: null, threshold: 0.7 };
+  const channel5Observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.target.id === "section5") {
+        if (entry.intersectionRatio >= 0.7) {
+          if (window.channel5Player && typeof window.channel5Player.unMute === "function") {
+            window.channel5Player.unMute();
+            console.log("Channel 5 active: Unmuting video.");
+          }
+        } else {
+          if (window.channel5Player && typeof window.channel5Player.mute === "function") {
+            window.channel5Player.mute();
+            console.log("Channel 5 inactive: Muting video.");
+          }
+        }
+      }
+    });
+  }, channel5ObserverOptions);
+  if (channel5) {
+    channel5Observer.observe(channel5);
+  }
+  
   // Initialize menu as hidden before TV powers on
   const initMenuHidden = () => {
     if (menuButton) {
