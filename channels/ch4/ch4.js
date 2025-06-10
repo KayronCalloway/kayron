@@ -34,19 +34,37 @@ export async function init() {
       
       console.log('Channel 4 game show loaded successfully');
       
-      // Load and execute the game show script
-      await import('./channels/ch4/script.js');
+      // Load and execute the game show script as a regular script (not module)
+      const script = document.createElement('script');
+      script.src = './channels/ch4/script.js';
+      script.onload = () => {
+        console.log('Game script loaded, checking for GameShow object...');
+        // Wait a moment for the script to execute
+        setTimeout(() => {
+          console.log('Checking for GameShow object:', window.GameShow);
+          if (window.GameShow && window.GameShow.init) {
+            console.log('Calling GameShow.init()...');
+            window.GameShow.init();
+          } else {
+            console.error('GameShow object not found or no init function');
+          }
+        }, 100);
+      };
+      script.onerror = (error) => {
+        console.error('Failed to load game script:', error);
+      };
       
-      // Wait a moment for the script to load, then initialize manually
-      setTimeout(() => {
-        console.log('Checking for GameShow object:', window.GameShow);
-        if (window.GameShow && window.GameShow.init) {
-          console.log('Calling GameShow.init()...');
-          window.GameShow.init();
-        } else {
-          console.error('GameShow object not found or no init function');
-        }
-      }, 500); // Increased timeout
+      // Only add script if it doesn't already exist
+      if (!document.querySelector('script[src="./channels/ch4/script.js"]')) {
+        document.head.appendChild(script);
+      } else {
+        console.log('Game script already loaded, initializing...');
+        setTimeout(() => {
+          if (window.GameShow && window.GameShow.init) {
+            window.GameShow.init();
+          }
+        }, 100);
+      }
       
     } else {
       console.error('Section 4 not found');
