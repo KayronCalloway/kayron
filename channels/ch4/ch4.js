@@ -217,34 +217,54 @@ let gameState = {
   currentQuestionIndex: 0,
   questions: [
     {
-      question: "What's Kayron's favorite programming language?",
+      question: "What's Kayron's secret weapon for tackling impossible deadlines?",
       options: [
-        { letter: "A", text: "JavaScript", points: 20 },
-        { letter: "B", text: "Python", points: 10 },
-        { letter: "C", text: "Java", points: 5 },
-        { letter: "D", text: "C++", points: 5 }
+        { letter: "A", text: "Panic and caffeine", points: 5 },
+        { letter: "B", text: "Breaking problems into bite-sized pieces", points: 20 },
+        { letter: "C", text: "Calling in sick", points: 2 },
+        { letter: "D", text: "Working 48 hours straight", points: 8 }
       ],
-      insight: "JavaScript is Kayron's go-to language for both frontend and backend development!"
+      insight: "Smart problem decomposition beats brute force every time! Kayron believes impossible is just 'not yet possible.'"
     },
     {
-      question: "Which project is Kayron most proud of?",
+      question: "When Kayron gets stuck on a creative problem, what's his go-to move?",
       options: [
-        { letter: "A", text: "AI-powered chatbot", points: 10 },
-        { letter: "B", text: "Personal portfolio website", points: 5 },
-        { letter: "C", text: "Game development project", points: 15 },
-        { letter: "D", text: "Machine learning model", points: 20 }
+        { letter: "A", text: "Google it and hope for the best", points: 8 },
+        { letter: "B", text: "Take a walk and let the subconscious work", points: 18 },
+        { letter: "C", text: "Ask ChatGPT to solve it", points: 10 },
+        { letter: "D", text: "Switch to a completely different project", points: 15 }
       ],
-      insight: "Kayron's passion for AI and machine learning shines through in his projects!"
+      insight: "The best ideas come when you're not forcing them. Kayron's breakthrough moments happen away from the screen!"
     },
     {
-      question: "What's Kayron's preferred development environment?",
+      question: "What motivates Kayron most when building something new?",
       options: [
-        { letter: "A", text: "VS Code", points: 20 },
-        { letter: "B", text: "Sublime Text", points: 5 },
-        { letter: "C", text: "IntelliJ IDEA", points: 10 },
-        { letter: "D", text: "Vim", points: 15 }
+        { letter: "A", text: "Making users' lives genuinely better", points: 20 },
+        { letter: "B", text: "Showing off cool technical skills", points: 12 },
+        { letter: "C", text: "Getting featured on Product Hunt", points: 8 },
+        { letter: "D", text: "Proving the doubters wrong", points: 15 }
       ],
-      insight: "VS Code's extensibility and integrated features make it Kayron's top choice!"
+      insight: "User impact over everything! Kayron believes technology should serve people, not the other way around."
+    },
+    {
+      question: "How does Kayron handle feedback that completely contradicts his vision?",
+      options: [
+        { letter: "A", text: "Defend the original idea at all costs", points: 5 },
+        { letter: "B", text: "Listen deeply, then find the wisdom in it", points: 20 },
+        { letter: "C", text: "Compromise and meet halfway", points: 12 },
+        { letter: "D", text: "Smile, nod, then do what he planned anyway", points: 8 }
+      ],
+      insight: "The best feedback often feels uncomfortable at first. Kayron knows ego is the enemy of great work."
+    },
+    {
+      question: "What's Kayron's philosophy on work-life balance?",
+      options: [
+        { letter: "A", text: "Work hard, play harder", points: 10 },
+        { letter: "B", text: "Strict 9-5, no exceptions", points: 8 },
+        { letter: "C", text: "Passionate work doesn't feel like work", points: 18 },
+        { letter: "D", text: "Balance is a myth, just prioritize", points: 15 }
+      ],
+      insight: "When you love what you do, the lines blur beautifully. Kayron finds energy in meaningful work, not exhaustion."
     }
   ]
 };
@@ -371,22 +391,28 @@ function showFinalResults() {
   // Calculate performance level
   const performanceLevels = [
     {
-      threshold: 50,
-      title: "Tech Virtuoso!",
-      message: "You really know your stuff! Your understanding of technology and development is impressive.",
-      skills: ["Advanced Problem Solving", "Technical Excellence", "Innovation"]
+      threshold: 80,
+      title: "Kayron's Twin!",
+      message: "Incredible! You think exactly like Kayron. You understand his mindset, values, and approach to work. You'd probably finish each other's sentences!",
+      skills: ["Strategic Thinking", "User-Centric Design", "Growth Mindset", "Collaborative Leadership"]
     },
     {
-      threshold: 30,
-      title: "Rising Star!",
-      message: "Great job! You've shown a solid grasp of development concepts.",
-      skills: ["Problem Solving", "Technical Knowledge", "Quick Learning"]
+      threshold: 60,
+      title: "Culture Champion!",
+      message: "Excellent! You really get Kayron's professional philosophy and working style. You'd fit right into his ideal team dynamic.",
+      skills: ["Problem Solving", "Adaptability", "User Focus", "Continuous Learning"]
+    },
+    {
+      threshold: 40,
+      title: "Solid Collaborator!",
+      message: "Great job! You understand the fundamentals of how Kayron approaches work and creativity. There's strong potential for collaboration.",
+      skills: ["Creative Thinking", "Work Ethic", "Team Player"]
     },
     {
       threshold: 0,
-      title: "Tech Explorer!",
-      message: "Good start! Keep exploring and learning about technology.",
-      skills: ["Curiosity", "Determination", "Growth Mindset"]
+      title: "Getting Acquainted!",
+      message: "Good start! You're learning about Kayron's working style. Keep exploring to discover more about his professional approach.",
+      skills: ["Curiosity", "Open-mindedness", "Growth Potential"]
     }
   ];
   
