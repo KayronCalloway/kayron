@@ -783,6 +783,11 @@ const resetMenuStyles = () => {
   const channel5Observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.target.id === "section5") {
+        // As soon as Channel 5 is at all visible, ensure Channel 4 audio is stopped
+        if (window.controlGameshowAudio) {
+          window.controlGameshowAudio(false);
+        }
+        
         if (entry.intersectionRatio >= 0.7) {
           // Ensure gameshow audio (Channel 4) is stopped
           if (window.controlGameshowAudio) {
