@@ -146,34 +146,23 @@ export const MenuManager = {
   },
   
   /**
-   * Toggle TV Guide visibility - SIMPLE MODAL
+   * Toggle TV Guide visibility - delegate to global implementation in script.js
    */
   toggleTVGuide() {
-    if (!this.tvGuide) {
-      console.error("TV Guide element not found");
-      return;
-    }
-    
-    // Simple toggle - if hidden, show it. If shown, hide it.
-    if (this.tvGuide.style.display === 'none' || this.tvGuide.style.display === '') {
-      // SHOW the modal
-      this.tvGuide.style.display = 'flex';
-      console.log('TV Guide modal opened');
+    if (typeof window.toggleTVGuide === 'function') {
+      window.toggleTVGuide();
     } else {
-      // HIDE the modal
-      this.tvGuide.style.display = 'none';
-      console.log('TV Guide modal closed');
+      console.error('Global toggleTVGuide function not found');
     }
   },
   
   /**
-   * Hide TV Guide (for close button) - SIMPLE
+   * Hide TV Guide (for close button) - delegate
    */
   hideTVGuide() {
-    if (!this.tvGuide) return;
-    
-    this.tvGuide.style.display = 'none';
-    console.log('TV Guide modal closed via close button');
+    if (typeof window.toggleTVGuide === 'function') {
+      window.toggleTVGuide(false);
+    }
   }
 };
 

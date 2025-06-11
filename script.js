@@ -415,6 +415,9 @@ const resetMenuStyles = () => {
     }
   };
   
+  // Expose globally for MenuManager delegation
+  window.toggleTVGuide = toggleTVGuide;
+  
   // MenuManager handles all menu button events - no duplicate setup needed
   console.log("Menu button events delegated to MenuManager");
   
