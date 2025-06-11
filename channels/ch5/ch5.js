@@ -492,92 +492,27 @@ export async function init() {
               vq: isMobile ? 'small' : 'hd720' // Lower quality on mobile for smoother playback
             },
             events: {
-              // Improved error recovery for mobile
-              onError: (event) => {
-                console.error('Channel 5 YouTube player error:', event.data);
-                
-                // Clear loading state if present
-                const videoBackground = document.querySelector('.video-background');
-                if (videoBackground) {
-                  videoBackground.classList.remove('loading');
-                }
-                
-                // Progressive recovery attempts with increasing delays
-                setTimeout(() => {
-                  if (window.channel5Player && typeof window.channel5Player.playVideo === 'function') {
-                    window.channel5Player.playVideo();
-                  }
-                }, 1000);
-                
-                setTimeout(() => {
-                  if (window.channel5Player && typeof window.channel5Player.playVideo === 'function') {
-                    window.channel5Player.playVideo();
-                  }
-                }, 3000);
-              },
               onReady: event => {
                 event.target.mute();
                 event.target.playVideo();
                 console.log("Channel 5 YouTube Player ready, starting muted.");
-                
-                // Enhanced mobile playback strategy
-                if (isMobile) {
-                  console.log("Mobile device detected, using enhanced playback strategy");
-                  // Multiple attempts to ensure continuous playback on mobile
-                  const ensurePlayback = () => {
-                    if (event.target.getPlayerState() !== YT.PlayerState.PLAYING) {
-                      event.target.playVideo();
-                    }
-                  };
-                  
-                  // Retry playback more frequently for improved reliability
-                  setTimeout(ensurePlayback, 500);
-                  setTimeout(ensurePlayback, 1000);
-                  setTimeout(ensurePlayback, 3000);
-                  setTimeout(ensurePlayback, 5000);
-                  
-                  // Simplified mobile playback maintenance - let intersection observer handle it
-                }
               },
               onStateChange: event => {
                 // Ensure continuous playback for live TV experience
                 if (event.data === YT.PlayerState.ENDED || event.data === YT.PlayerState.PAUSED) {
                   console.log("Channel 5 video paused/ended, restarting for live TV experience");
                   event.target.playVideo();
-                } else if (event.data === YT.PlayerState.BUFFERING && isMobile) {
-                  // Add loading indicator during buffering on mobile
-                  const videoBackground = document.querySelector('.video-background');
-                  if (videoBackground && !videoBackground.classList.contains('loading')) {
-                    videoBackground.classList.add('loading');
-                  }
-                  
-                  // Set a recovery timeout after buffering starts
-                  clearTimeout(window.ch5BufferingTimeout);
-                  window.ch5BufferingTimeout = setTimeout(() => {
-                    // If still buffering after timeout, force reload the player
-                    if (event.target.getPlayerState() === YT.PlayerState.BUFFERING) {
-                      console.log("Channel 5 still buffering, forcing reload");
-                      event.target.playVideo();
-                    }
-                    
-                    // Remove loading class
-                    const videoBackground = document.querySelector('.video-background');
-                    if (videoBackground) {
-                      videoBackground.classList.remove('loading');
-                    }
-                  }, 3000);
-                } else if (event.data === YT.PlayerState.PLAYING && isMobile) {
-                  // When playback resumes on mobile, remove loading indicator
-                  const videoBackground = document.querySelector('.video-background');
-                  if (videoBackground) {
-                    videoBackground.classList.remove('loading');
-                  }
-                  
-                  // Clear any buffering timeouts
-                  clearTimeout(window.ch5BufferingTimeout);
                 }
               },
-              // onError moved to top of events for better organization and expanded
+              onError: (event) => {
+                console.error('Channel 5 YouTube player error:', event.data);
+                // Simple recovery
+                setTimeout(() => {
+                  if (window.channel5Player && typeof window.channel5Player.playVideo === 'function') {
+                    window.channel5Player.playVideo();
+                  }
+                }, 1000);
+              }
             }
           });
         } else if (window.channel5Player) {
