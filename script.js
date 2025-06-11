@@ -398,29 +398,36 @@ const resetMenuStyles = () => {
     }
     
     if (show) {
-      // Force display to flex regardless of current state
-      tvGuide.style.display = 'flex';
-      // Make the TV guide appear on top of EVERYTHING
-      tvGuide.style.zIndex = '10000000'; // Extremely high z-index to be above menu button
-      // Ensure TV Guide is fixed at top
-      tvGuide.style.position = 'fixed';
-      // Ensure it covers the entire viewport
-      tvGuide.style.top = '0';
-      tvGuide.style.left = '0';
-      tvGuide.style.width = '100%';
-      tvGuide.style.height = '100%';
+      // Store current scroll position before opening TV Guide
+      window.savedScrollPosition = window.scrollY;
       
-      // iOS Safari scroll fix
-      tvGuide.style.webkitOverflowScrolling = 'touch';
-      tvGuide.style.overflowY = 'auto';
+      // Scroll to top so TV Guide is visible from any channel
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       
-      // Prevent page scrolling when TV guide is open
-      // Store current scroll position before fixing position
-      const scrollY = window.scrollY;
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
-      document.body.style.top = `-${scrollY}px`; // Preserve scroll position
+      // Small delay to allow smooth scroll to start, then open guide
+      setTimeout(() => {
+        // Force display to flex regardless of current state
+        tvGuide.style.display = 'flex';
+        // Make the TV guide appear on top of EVERYTHING
+        tvGuide.style.zIndex = '10000000'; // Extremely high z-index to be above menu button
+        // Ensure TV Guide is fixed at top
+        tvGuide.style.position = 'fixed';
+        // Ensure it covers the entire viewport
+        tvGuide.style.top = '0';
+        tvGuide.style.left = '0';
+        tvGuide.style.width = '100%';
+        tvGuide.style.height = '100%';
+        
+        // iOS Safari scroll fix
+        tvGuide.style.webkitOverflowScrolling = 'touch';
+        tvGuide.style.overflowY = 'auto';
+        
+        // Prevent page scrolling when TV guide is open
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
+        document.body.style.top = '0px'; // Keep at top since we scrolled there
+      }, 100); // Short delay for smooth scroll
       
       // Log visibility state for debugging
       console.log("Opening TV Guide");
@@ -437,13 +444,14 @@ const resetMenuStyles = () => {
       tvGuide.setAttribute('aria-hidden', 'true');
       
       // Re-enable page scrolling when TV guide is closed
-      const scrollY = parseInt((document.body.style.top || '0').replace(/[^-\d]/g, ''));
       document.body.style.overflow = 'auto';
       document.body.style.position = '';
       document.body.style.width = '';
       document.body.style.top = '';
-      // Restore scroll position
-      window.scrollTo(0, scrollY);
+      
+      // Restore the scroll position to where user was before opening guide
+      const savedPosition = window.savedScrollPosition || 0;
+      window.scrollTo({ top: savedPosition, behavior: 'smooth' });
       
       // Log visibility state for debugging
       console.log("Closing TV Guide");
