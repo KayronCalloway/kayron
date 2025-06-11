@@ -768,14 +768,11 @@ const resetMenuStyles = () => {
     entries.forEach(entry => {
       if (entry.target.id === "section5") {
         if (entry.intersectionRatio >= 0.5) {
-          console.log("Channel 5 active: Unmuting & playing video.");
-          if (window.channel5Player && typeof window.channel5Player.unMute === "function") {
-            window.channel5Player.unMute();
-          }
+          console.log("Channel 5 active: Ensuring video plays (remain muted for mobile autoplay).");
+          // Remove unmute to satisfy mobile autoplay policies
           if (window.channel5Player && typeof window.channel5Player.playVideo === "function") {
-            // Ensure the video is actually playing (important for some mobile browsers)
             const state = window.channel5Player.getPlayerState ? window.channel5Player.getPlayerState() : null;
-            if (state !== 1) { // 1 === YT.PlayerState.PLAYING
+            if (state !== 1) { // not YT.PlayerState.PLAYING
               window.channel5Player.playVideo();
             }
           }
