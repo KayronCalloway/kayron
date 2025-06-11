@@ -766,23 +766,15 @@ const resetMenuStyles = () => {
   
   // --- Intersection Observer for Channel 5 YouTube Video Control ---
   const channel5 = document.getElementById("section5");
-  const channel5ObserverOptions = { root: null, threshold: 0.5 };
+  const channel5ObserverOptions = { root: null, threshold: 0.7 };
   const channel5Observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.target.id === "section5") {
-        if (entry.intersectionRatio >= 0.5) {
-          console.log("Channel 5 active: Ensuring video plays (remain muted for mobile autoplay).");
-          if (window.channel5Player && typeof window.channel5Player.playVideo === "function") {
-            const state = window.channel5Player.getPlayerState ? window.channel5Player.getPlayerState() : null;
-            if (state !== 1) { // not YT.PlayerState.PLAYING
-              window.channel5Player.playVideo();
-            }
-            // Attempt to unmute shortly after playback starts to avoid autoplay pause issues
-            setTimeout(() => {
-              if (window.channel5Player && typeof window.channel5Player.unMute === "function") {
-                window.channel5Player.unMute();
-              }
-            }, 600);
+        if (entry.intersectionRatio >= 0.7) {
+          // Channel visible – simply unmute (video keeps playing)
+          console.log("Channel 5 active: Unmuting video.");
+          if (window.channel5Player && typeof window.channel5Player.unMute === "function") {
+            window.channel5Player.unMute();
           }
         } else {
           console.log("Channel 5 inactive: Muting video (continues playing for TV realism).");
