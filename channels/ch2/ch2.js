@@ -36,6 +36,20 @@ export async function init() {
         notifyChannelChanged();
         console.log("Notified MenuManager to ensure header and guide button visibility");
       }).catch(err => console.error("Error importing MenuManager:", err));
+      
+      // BULLETPROOF: Ensure Channel 2's event system doesn't interfere with TV Guide
+      const menuButton = document.getElementById('menuButton');
+      if (menuButton) {
+        // Add event listener that fires in capture phase BEFORE Channel 2's handlers
+        menuButton.addEventListener('click', (e) => {
+          console.log("Channel 2: Menu button click intercepted for TV Guide");
+          // Don't stop propagation here - let it reach the main handler
+          // Just ensure the button is properly styled
+          if (typeof window.ensureTVGuideStandardStyling === 'function') {
+            window.ensureTVGuideStandardStyling();
+          }
+        }, true); // Capture phase - fires first
+      }
     }, 300);
     
     // Add channel number overlay if it doesn't exist
