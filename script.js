@@ -381,120 +381,65 @@ const resetMenuStyles = () => {
   let tvGuideIsVisible = false;
 
   const toggleTVGuide = show => {
-    // Make sure TV Guide exists
     if (!tvGuide) {
       console.error("TV Guide element not found");
       return;
     }
     
-    // Prevent conflicting toggle operations
     if (tvGuideToggleInProgress) {
-      console.log("TV Guide toggle already in progress, ignoring request");
       return;
     }
     
-    // If requested state is already current state, ignore the request
     if (show === tvGuideIsVisible) {
-      console.log(`TV Guide is already ${show ? 'open' : 'closed'}, ignoring duplicate request`);
       return;
     }
     
     tvGuideToggleInProgress = true;
     
-    // Let MenuManager handle menu button visibility based on header
     if (show) {
-      console.log("Opening TV Guide - menu button should follow header visibility");
-      // Let MenuManager handle menu button visibility
-    }
-    
-    if (show) {
-      // Store current scroll position - but DON'T scroll anywhere
+      // Store current scroll position 
       window.savedScrollPosition = window.scrollY;
-      console.log(`Opening TV Guide overlay at current position: ${window.savedScrollPosition}`);
       
-      // DON'T scroll - just show the guide as a true overlay
-      
-      // Highlight the current channel in the guide
+      // Highlight current channel
       if (currentChannel) {
-        // Remove highlight from all channels
         document.querySelectorAll('.tv-guide-channel').forEach(item => {
           item.style.backgroundColor = '';
           item.style.boxShadow = '';
         });
         
-        // Find and highlight the current channel
         const currentGuideItem = document.querySelector(`.tv-guide-channel[data-target="${currentChannel}"]`);
         if (currentGuideItem) {
-          // Add selection effect
           currentGuideItem.style.backgroundColor = 'rgba(62, 146, 204, 0.3)';
           currentGuideItem.style.boxShadow = '0 0 15px rgba(62, 146, 204, 0.4)';
-          
-          // Update the current channel info
-          const currentInfoText = document.getElementById('current-channel-info');
-          if (currentInfoText) {
-            currentInfoText.textContent = channelDescriptions[currentChannel] || 'Channel information unavailable';
-          }
-          
-          console.log(`Highlighted current channel in guide: ${currentChannel}`);
         }
       }
       
-      // Show guide immediately as a true overlay
-      // Force display to flex regardless of current state
+      // Simple overlay positioning
       tvGuide.style.display = 'flex';
-      // Make the TV guide appear on top of EVERYTHING
-      tvGuide.style.zIndex = '10000000'; // Extremely high z-index to be above menu button
-      // Ensure TV Guide is fixed to viewport (not page)
       tvGuide.style.position = 'fixed';
-      // Ensure it covers the entire viewport wherever user is
       tvGuide.style.top = '0';
       tvGuide.style.left = '0';
       tvGuide.style.width = '100vw';
       tvGuide.style.height = '100vh';
+      tvGuide.style.zIndex = '999999';
+      tvGuide.style.opacity = '1';
       
-      // iOS Safari scroll fix
-      tvGuide.style.webkitOverflowScrolling = 'touch';
-      tvGuide.style.overflowY = 'auto';
-      
-      // Prevent page scrolling when TV guide is open but preserve current position
-      const currentScrollY = window.scrollY;
+      // Prevent background scrolling
       document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
-      document.body.style.top = `-${currentScrollY}px`; // Preserve current scroll position
       
-      // Log visibility state for debugging
-      console.log("Opening TV Guide");
-      
-      // Delay opacity change to allow display change to take effect
-      setTimeout(() => {
-        tvGuide.style.opacity = 1;
-        tvGuide.setAttribute('aria-hidden', 'false');
-        tvGuideIsVisible = true;
-        tvGuideToggleInProgress = false;
-      }, 100);
+      tvGuideIsVisible = true;
+      tvGuideToggleInProgress = false;
     } else {
-      tvGuide.style.opacity = 0;
-      tvGuide.setAttribute('aria-hidden', 'true');
+      tvGuide.style.opacity = '0';
       
-      // Re-enable page scrolling when TV guide is closed
-      const scrollY = parseInt((document.body.style.top || '0').replace(/[^-\d]/g, ''));
+      // Restore scrolling
       document.body.style.overflow = 'auto';
-      document.body.style.position = '';
-      document.body.style.width = '';
-      document.body.style.top = '';
-      
-      // Restore scroll position to exactly where user was
-      window.scrollTo(0, Math.abs(scrollY));
-      
-      // Log visibility state for debugging
-      console.log("Closing TV Guide");
       
       setTimeout(() => { 
         tvGuide.style.display = 'none';
         tvGuideIsVisible = false;
         tvGuideToggleInProgress = false;
-      }, 500);
+      }, 300);
     }
   };
   
@@ -879,31 +824,16 @@ const resetMenuStyles = () => {
   }
   
   // --- Intersection Observer for Channel 5 YouTube Video Control ---
-  // Channel 5 should play continuously like live TV - only control audio, not playback
   const channel5 = document.getElementById("section5");
-  const channel5ObserverOptions = { root: null, threshold: 0.7 };
+  const channel5ObserverOptions = { root: null, threshold: 0.5 };
   const channel5Observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.target.id === "section5") {
-        if (entry.intersectionRatio >= 0.7) {
+        if (entry.intersectionRatio >= 0.5) {
           console.log("Channel 5 active: Unmuting live video.");
           if (window.channel5Player) {
             try {
-              // On mobile, be more aggressive about ensuring playback
-              const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-              if (isMobile) {
-                // Force play on mobile to overcome restrictions
-                console.log("Mobile detected, forcing playVideo for Ch5");
-                window.channel5Player.playVideo();
-              } else {
-                // Only call playVideo if the video is actually paused - avoid unnecessary calls  
-                const playerState = window.channel5Player.getPlayerState ? window.channel5Player.getPlayerState() : null;
-                if (playerState !== null && playerState !== YT.PlayerState.PLAYING && playerState !== YT.PlayerState.BUFFERING) {
-                  console.log("Video not playing, attempting to resume");
-                  window.channel5Player.playVideo();
-                }
-              }
-              // Unmute the video - this is the main control for live TV experience
+              // Simple approach - just unmute, let video continue playing
               if (typeof window.channel5Player.unMute === "function") {
                 window.channel5Player.unMute();
               }
@@ -913,14 +843,13 @@ const resetMenuStyles = () => {
             }
           }
         } else {
-          console.log("Channel 5 inactive: Muting live video (continues playing).");
+          console.log("Channel 5 inactive: Muting live video.");
           if (window.channel5Player) {
             try {
-              // Only mute, don't pause - keeps video playing like live TV
               if (typeof window.channel5Player.mute === "function") {
                 window.channel5Player.mute();
               }
-              console.log("Channel 5 live video muted (still playing).");
+              console.log("Channel 5 live video muted.");
             } catch (error) {
               console.warn("Channel 5 video control failed:", error);
             }
