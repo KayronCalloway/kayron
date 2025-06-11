@@ -249,61 +249,10 @@ const resetMenuStyles = () => {
     });
   };
   
-  // Function to make menu button follow header visibility
+  // Simplified menu visibility - let MenuManager handle everything
   const ensureMenuButtonVisibility = () => {
-    // Initially hide menu button
-    if (menuButton) {
-      menuButton.style.display = "none";
-      menuButton.style.opacity = "0";
-    }
-    
-    // Simple function to show menu button - follows header visibility
-    const showButton = () => {
-      // Only show menu button when header is visible
-      if (menuButton && header && window.getComputedStyle(header).opacity > 0.5) {
-        console.log("Header is visible, showing menu button");
-        
-        // Make menu button visible
-        menuButton.style.display = "block";
-        menuButton.style.opacity = "1";
-        menuButton.style.visibility = "visible";
-        menuButton.style.pointerEvents = "auto";
-        
-        // Position in top right corner
-        menuButton.style.position = "fixed";
-        menuButton.style.top = "10px";
-        menuButton.style.right = "20px";
-        menuButton.style.zIndex = "999999";
-        
-        // Ensure tap target size is at least 44x44px for iOS Safari
-        menuButton.style.minHeight = "44px";
-        menuButton.style.minWidth = "44px";
-        
-        // Set up click handler
-        if (menuButton.onclick) {
-          menuButton.removeEventListener('click', menuButton.onclick);
-        }
-        
-        const menuClickHandler = () => {
-          // Use our tracked state variable instead of checking DOM properties
-          toggleTVGuide(!tvGuideIsVisible);
-        };
-        
-        menuButton.onclick = menuClickHandler;
-        menuButton.addEventListener('touchend', (e) => {
-          e.preventDefault(); // Prevent double-tap issues on iOS
-          menuClickHandler();
-        }, { passive: false });
-      } else if (menuButton) {
-        // If header is not visible, keep menu button hidden
-        menuButton.style.display = "none";
-        menuButton.style.opacity = "0";
-      }
-    };
-    
-    // Call immediately and also after a delay
-    showButton();
-    setTimeout(showButton, 500);
+    // Don't manually control menu button - let MenuManager handle it
+    console.log("Menu button visibility delegated to MenuManager");
     
     // Apply standard TV Guide styling
     ensureTVGuideStandardStyling();
@@ -369,41 +318,26 @@ const resetMenuStyles = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
-  // --- TV Guide Bulletproof Styling Function ---
-  // Utility function to ensure TV Guide is completely bulletproof against interference
+  // --- TV Guide Simple Styling Function ---
+  // Simple, effective TV Guide styling without over-engineering
   const ensureTVGuideStandardStyling = () => {
     const tvGuide = document.getElementById('tvGuide');
-    const menuButton = document.getElementById('menuButton');
     
     if (tvGuide) {
-      // BULLETPROOF z-index - higher than any possible conflict
-      tvGuide.style.setProperty('position', 'fixed', 'important');
-      tvGuide.style.setProperty('top', '0', 'important');
-      tvGuide.style.setProperty('left', '0', 'important');
-      tvGuide.style.setProperty('width', '100vw', 'important');
-      tvGuide.style.setProperty('height', '100vh', 'important');
-      tvGuide.style.setProperty('z-index', '2147483647', 'important'); // Maximum z-index value
-      tvGuide.style.setProperty('pointer-events', 'auto', 'important');
-      tvGuide.style.setProperty('-webkit-overflow-scrolling', 'touch', 'important');
-      tvGuide.style.setProperty('transform', 'translateZ(0)', 'important'); // Force own layer
+      tvGuide.style.position = 'fixed';
+      tvGuide.style.top = '0';
+      tvGuide.style.left = '0';
+      tvGuide.style.width = '100%';
+      tvGuide.style.height = '100%';
+      tvGuide.style.zIndex = '999999';
+      tvGuide.style.pointerEvents = 'auto';
+      tvGuide.style.webkitOverflowScrolling = 'touch';
       
-      console.log('TV Guide bulletproof styling enforced with max z-index');
-    }
-    
-    if (menuButton) {
-      // BULLETPROOF menu button - ensure it's always accessible
-      menuButton.style.setProperty('position', 'fixed', 'important');
-      menuButton.style.setProperty('top', '10px', 'important');
-      menuButton.style.setProperty('right', '20px', 'important');
-      menuButton.style.setProperty('z-index', '2147483646', 'important'); // Just below TV Guide
-      menuButton.style.setProperty('pointer-events', 'auto', 'important');
-      menuButton.style.setProperty('transform', 'translateZ(0)', 'important'); // Force own layer
-      menuButton.style.setProperty('touch-action', 'manipulation', 'important'); // Better touch handling
-      
-      console.log('Menu button bulletproof styling enforced');
+      console.log('TV Guide styling applied');
       return true;
     }
     
+    console.error('TV Guide element not found');
     return false;
   };
 
@@ -481,76 +415,18 @@ const resetMenuStyles = () => {
     }
   };
   
-  // Remove initial event listeners to prevent early triggering
-  menuButton.removeEventListener('click', () => {});
-  menuButton.removeEventListener('touchend', () => {});
+  // MenuManager handles all menu button events - no duplicate setup needed
+  console.log("Menu button events delegated to MenuManager");
   
-  // Register event listeners only after proper setup
-  const setupMenuButtonEvents = () => {
-    if (!menuButton) return;
-    
-    // Ensure TV Guide styling is applied before setting up events
-    ensureTVGuideStandardStyling();
-    
-    // BULLETPROOF event handlers that can't be interfered with
-    const bulletproofToggle = (e) => {
-      console.log("Menu button activated - bulletproof handler");
-      
-      // FORCE stop any event interference
-      if (e) {
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        e.preventDefault();
-      }
-      
-      // Double-check TV Guide exists and apply bulletproof styling
-      const tvGuide = document.getElementById('tvGuide');
-      if (!tvGuide) {
-        console.error("TV Guide element not found when clicking menu button");
-        return;
-      }
-      
-      // Force bulletproof styling before toggle
-      ensureTVGuideStandardStyling();
-      
-      // Use our tracked state variable
-      toggleTVGuide(!tvGuideIsVisible);
-    };
-    
-    // Multiple event types to catch any interaction
-    menuButton.addEventListener('click', bulletproofToggle, true); // Use capture phase
-    menuButton.addEventListener('touchend', bulletproofToggle, true);
-    menuButton.addEventListener('pointerup', bulletproofToggle, true);
-    
-    // Backup handler for emergencies
-    menuButton.addEventListener('mouseup', bulletproofToggle, true);
-    
-    console.log("Menu button event listeners properly set up");
-  };
-  
-  // Delay setting up menu button events until after initial DOM operations
-  setTimeout(setupMenuButtonEvents, 1000);
-  
-  // BULLETPROOF backup: Re-apply styling and check menu button every 3 seconds
+  // Simplified backup: Just ensure TV Guide styling every 3 seconds
   setInterval(() => {
     if (document.body.classList.contains('tv-on')) {
       ensureTVGuideStandardStyling();
-      
-      // Ensure menu button is always visible when header is visible
-      const header = document.getElementById('header');
-      const menuButton = document.getElementById('menuButton');
-      if (header && menuButton) {
-        const headerStyle = window.getComputedStyle(header);
-        if (headerStyle.display !== 'none' && parseFloat(headerStyle.opacity) > 0.5) {
-          menuButton.style.setProperty('display', 'block', 'important');
-          menuButton.style.setProperty('opacity', '1', 'important');
-          menuButton.style.setProperty('visibility', 'visible', 'important');
-        }
-      }
+      // Let MenuManager handle menu button visibility
     }
   }, 3000);
   
-  closeGuide.addEventListener('click', () => toggleTVGuide(false));
+  // Close guide handler moved to MenuManager
   // Channel descriptions for TV Guide
   const channelDescriptions = {
     'section1': 'Explore Kayron\'s portfolio home, featuring skills and professional background.',
@@ -892,43 +768,14 @@ const resetMenuStyles = () => {
     entries.forEach(entry => {
       if (entry.target.id === "section5") {
         if (entry.intersectionRatio >= 0.5) {
-          console.log("Channel 5 active: Handling video state.");
-          if (window.channel5Player) {
-            try {
-              const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-              
-              // Unmute when channel becomes active for better user experience
-              if (typeof window.channel5Player.unMute === "function") {
-                window.channel5Player.unMute();
-              }
-              
-              // Ensure video is playing for background effect, with mobile-safe timing
-              setTimeout(() => {
-                if (typeof window.channel5Player.playVideo === "function") {
-                  try {
-                    window.channel5Player.playVideo();
-                  } catch (error) {
-                    console.warn("Channel 5 play attempt failed:", error);
-                  }
-                }
-              }, isMobile ? 200 : 50);
-              
-              console.log("Channel 5 live video unmuted and playing.");
-            } catch (error) {
-              console.warn("Channel 5 video control failed:", error);
-            }
+          console.log("Channel 5 active: Unmuting video.");
+          if (window.channel5Player && typeof window.channel5Player.unMute === "function") {
+            window.channel5Player.unMute();
           }
         } else {
-          console.log("Channel 5 inactive: Muting live video.");
-          if (window.channel5Player) {
-            try {
-              if (typeof window.channel5Player.mute === "function") {
-                window.channel5Player.mute();
-              }
-              console.log("Channel 5 live video muted.");
-            } catch (error) {
-              console.warn("Channel 5 video control failed:", error);
-            }
+          console.log("Channel 5 inactive: Muting video.");
+          if (window.channel5Player && typeof window.channel5Player.mute === "function") {
+            window.channel5Player.mute();
           }
         }
       }
