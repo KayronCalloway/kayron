@@ -1,10 +1,21 @@
 // youtube-setup.js
 
 let youtubePlayer;
+let apiReady = false;
+
+// Preload YouTube API faster
+(function() {
+  const tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  tag.async = true;
+  const firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+})();
 
 // Called by the YouTube IFrame API when it's ready.
 function onYouTubeIframeAPIReady() {
   console.log('YouTube API ready, initializing player');
+  apiReady = true;
   
   // First check if the player container exists
   const playerContainer = document.getElementById('youtube-player');
@@ -56,7 +67,9 @@ function onYouTubeIframeAPIReady() {
       playsinline: 1, // Important for iOS
       fs: 0,
       showinfo: 0,
-      vq: suggestedQuality // Suggest initial quality level
+      vq: suggestedQuality, // Suggest initial quality level
+      enablejsapi: 1, // Enable JS API for better control
+      origin: window.location.origin // Specify origin for faster loading
     },
     events: {
       onReady: event => {
@@ -140,7 +153,7 @@ function onYouTubeIframeAPIReady() {
           }
         }
         
-        // Adjust the iframe size after a short delay.
+        // Adjust the iframe size after a shorter delay for faster loading
         setTimeout(() => {
           const iframe = document.querySelector('#youtube-player iframe');
           if (iframe) {
@@ -149,11 +162,14 @@ function onYouTubeIframeAPIReady() {
             iframe.style.position = 'absolute';
             iframe.style.top = '0';
             iframe.style.left = '0';
-            console.log('YouTube iframe styles applied');
+            // Add loading optimization
+            iframe.style.transform = 'translateZ(0)'; // Hardware acceleration
+            iframe.style.willChange = 'transform'; // Optimize for animations
+            console.log('YouTube iframe styles applied with optimizations');
           } else {
             console.error('YouTube iframe not found for styling');
           }
-        }, 500);
+        }, 200); // Reduced from 500ms to 200ms
       },
       onStateChange: event => {
         console.log(`YouTube player state changed: ${event.data}`);
@@ -164,14 +180,17 @@ function onYouTubeIframeAPIReady() {
       },
       onError: event => {
         console.error('YouTube player error:', event.data);
-        // On error, apply a more interesting fallback background
+        // On error, apply an optimized fallback background quickly
         const section1 = document.getElementById('section1');
         if (section1) {
           const videoBackground = section1.querySelector('.video-background');
           if (videoBackground) {
-            videoBackground.style.background = "url('visuals/static.gif') center center repeat";
+            // Use a smoother fallback transition
+            videoBackground.style.transition = 'opacity 0.3s ease-in-out';
+            videoBackground.style.background = "#000000 url('visuals/static.gif') center center repeat";
             videoBackground.style.backgroundSize = 'cover';
-            videoBackground.style.opacity = '0.7';
+            videoBackground.style.opacity = '0.8';
+            console.log('Applied optimized fallback background due to YouTube error');
           }
         }
       }
