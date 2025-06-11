@@ -30,6 +30,16 @@ export async function init() {
       setupTrackSelection();
       setupBroadcastSignals();
       
+      // Ensure TV Guide has correct positioning - USING GLOBAL STANDARD
+      setTimeout(() => {
+        if (typeof window.ensureTVGuideStandardStyling === 'function') {
+          window.ensureTVGuideStandardStyling();
+          console.log('Channel 3: Applied standard TV Guide styling');
+        } else {
+          console.warn('Channel 3: Global TV Guide styling function not available');
+        }
+      }, 100);
+      
     } else {
       console.error('Section 3 not found');
     }

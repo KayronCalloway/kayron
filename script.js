@@ -200,6 +200,11 @@ const resetMenuStyles = () => {
   // Initialize MenuManager for cross-channel menu control
   // Only initialize after DOM is loaded
   MenuManager.init();
+  
+  // Ensure TV Guide styling is applied on initial load
+  setTimeout(() => {
+    ensureTVGuideStandardStyling();
+  }, 100);
 
   // --- Power Button Touch Glow ---
   powerButton.addEventListener('touchstart', () => powerButton.classList.add('touch-glow'));
@@ -300,19 +305,8 @@ const resetMenuStyles = () => {
     showButton();
     setTimeout(showButton, 500);
     
-    // Ensure TV Guide has the correct styles
-    if (tvGuide) {
-      // Make the TV Guide appear on top of everything (higher z-index than header)
-      tvGuide.style.position = 'fixed';
-      tvGuide.style.top = '0';
-      tvGuide.style.left = '0';
-      tvGuide.style.width = '100%';
-      tvGuide.style.height = '100%';
-      tvGuide.style.zIndex = '100000'; // Higher than both header and menu button
-      
-      // Add -webkit prefixed properties for iOS Safari
-      tvGuide.style.webkitOverflowScrolling = 'touch';
-    }
+    // Apply standard TV Guide styling
+    ensureTVGuideStandardStyling();
   };
 
   powerButton.addEventListener('click', () => {
@@ -375,6 +369,29 @@ const resetMenuStyles = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
+  // --- TV Guide Global Styling Function ---
+  // Utility function to ensure consistent TV Guide styling across all channels
+  const ensureTVGuideStandardStyling = () => {
+    const tvGuide = document.getElementById('tvGuide');
+    if (tvGuide) {
+      tvGuide.style.position = 'fixed';
+      tvGuide.style.top = '0';
+      tvGuide.style.left = '0';
+      tvGuide.style.width = '100%';
+      tvGuide.style.height = '100%';
+      tvGuide.style.zIndex = '9999999'; // STANDARD z-index for all channels
+      tvGuide.style.pointerEvents = 'auto';
+      tvGuide.style.webkitOverflowScrolling = 'touch';
+      console.log('TV Guide standard styling enforced');
+      return true;
+    }
+    console.error('TV Guide element not found');
+    return false;
+  };
+
+  // Make function globally available for all channels
+  window.ensureTVGuideStandardStyling = ensureTVGuideStandardStyling;
+
   // --- TV Guide Menu Toggle ---
   // Keep track of TV Guide state to prevent conflicting operations
   let tvGuideToggleInProgress = false;
@@ -385,6 +402,9 @@ const resetMenuStyles = () => {
       console.error("TV Guide element not found");
       return;
     }
+    
+    // Ensure standard styling before any toggle operation
+    ensureTVGuideStandardStyling();
     
     if (tvGuideToggleInProgress) {
       return;
@@ -450,6 +470,9 @@ const resetMenuStyles = () => {
   // Register event listeners only after proper setup
   const setupMenuButtonEvents = () => {
     if (!menuButton) return;
+    
+    // Ensure TV Guide styling is applied before setting up events
+    ensureTVGuideStandardStyling();
     
     // Toggle guide when menu button is clicked
     menuButton.addEventListener('click', () => {
@@ -626,15 +649,8 @@ const resetMenuStyles = () => {
           // Notify system about channel change for any observers
           notifyChannelChanged();
           
-          // Make sure the TV Guide has the right styles even if not visible
-          if (tvGuide) {
-            tvGuide.style.position = 'fixed';
-            tvGuide.style.top = '0';
-            tvGuide.style.left = '0';
-            tvGuide.style.width = '100%';
-            tvGuide.style.height = '100%';
-            tvGuide.style.zIndex = '10000000';
-          }
+          // Ensure TV Guide styling is consistent on channel change - GLOBAL STANDARD
+          ensureTVGuideStandardStyling();
           
           currentChannel = newChannel;
           playRandomChannelSound();

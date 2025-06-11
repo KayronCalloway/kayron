@@ -33,6 +33,14 @@ export async function init() {
     setTimeout(() => {
       console.log('🚀 Initializing gameshow after DOM settlement...');
       initializeGameshow();
+      
+      // Ensure TV Guide has correct positioning - USING GLOBAL STANDARD
+      if (typeof window.ensureTVGuideStandardStyling === 'function') {
+        window.ensureTVGuideStandardStyling();
+        console.log('Channel 4: Applied standard TV Guide styling');
+      } else {
+        console.warn('Channel 4: Global TV Guide styling function not available');
+      }
     }, 200);
     
   } catch (error) {

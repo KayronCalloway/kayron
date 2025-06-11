@@ -436,6 +436,14 @@ export async function init() {
       setTimeout(() => {
         setupModalEventListeners();
         
+        // Ensure TV Guide has correct positioning - USING GLOBAL STANDARD
+        if (typeof window.ensureTVGuideStandardStyling === 'function') {
+          window.ensureTVGuideStandardStyling();
+          console.log('Channel 5: Applied standard TV Guide styling');
+        } else {
+          console.warn('Channel 5: Global TV Guide styling function not available');
+        }
+        
         // Apply Merova font to all CH5 buttons and handle mobile layout
         const ch5Buttons = document.querySelectorAll('.channel5-buttons .channel-button');
         const isMobileView = window.innerWidth <= 768;
