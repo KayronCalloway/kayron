@@ -393,8 +393,8 @@ const resetMenuStyles = () => {
       
       // Simple overlay positioning
       tvGuide.style.display = 'flex';
-      tvGuide.style.position = 'fixed';
-      tvGuide.style.top = '0';
+      tvGuide.style.position = 'absolute';
+      tvGuide.style.top = `${window.scrollY}px`;
       tvGuide.style.left = '0';
       tvGuide.style.width = '100vw';
       tvGuide.style.height = '100vh';
@@ -403,7 +403,15 @@ const resetMenuStyles = () => {
       
       // Prevent background scrolling
       document.body.style.overflow = 'hidden';
-      
+
+      // Auto-scroll guide to current channel for better context
+      if (currentChannel) {
+        const currentGuideItem = document.querySelector(`.tv-guide-channel[data-target="${currentChannel}"]`);
+        if (currentGuideItem && typeof currentGuideItem.scrollIntoView === 'function') {
+          currentGuideItem.scrollIntoView({ block: 'center', behavior: 'instant' });
+        }
+      }
+
       tvGuideIsVisible = true;
       tvGuideToggleInProgress = false;
     } else {
