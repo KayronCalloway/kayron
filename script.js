@@ -6,17 +6,8 @@ window.soundAllowed = false;
 const enableSound = () => {
   if (!window.soundAllowed) {
     window.soundAllowed = true;
-    console.log("User interaction detected – sound now allowed. Attempting to unmute visible channels.");
-    // Try unmuting Channel 5 if it's currently >70% visible and on mobile
-    const section5 = document.getElementById('section5');
-    if (section5 && window.channel5Player) {
-      const rect = section5.getBoundingClientRect();
-      const ratio = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
-      if (ratio / rect.height >= 0.7 && typeof window.channel5Player.unMute === 'function') {
-        window.channel5Player.unMute();
-      }
-    }
-    // Channel 1 logic assumed similar observer will handle next cycle
+    console.log("User interaction detected – sound now allowed. Channel observers will handle unmuting if channels are visible.");
+    // No direct unmute attempt here. Rely on observers to pick up the soundAllowed flag.
   }
 };
 
@@ -829,24 +820,35 @@ const resetMenuStyles = () => {
           // Unmute once player confirms it is playing (robust against slow loads)
           const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
           const unmuteWhenPlaying = () => {
-            if (!window.channel5Player) return;
-            const st = window.channel5Player.getPlayerState ? window.channel5Player.getPlayerState() : null;
-            if (st === 1) { // playing
+            if (!window.channel5Player || typeof window.channel5Player.getPlayerState !== 'function') {
+              // Player not fully initialized, retry shortly
+              console.log("Channel 5: Player not ready, will retry unmuteWhenPlaying.");
+              setTimeout(unmuteWhenPlaying, 250);
+              return;
+            }
+
+            const st = window.channel5Player.getPlayerState();
+
+            if (st === 1) { // Player is PLAYING
               if (!isMobile || window.soundAllowed) {
                 if (typeof window.channel5Player.unMute === 'function') {
                   window.channel5Player.unMute();
-                  console.log("Channel 5 active: Unmuted once playback confirmed and permission granted.");
+                  console.log("Channel 5 active: Unmuted (state: PLAYING, permission granted).");
                 }
               } else {
-                // Wait until user interaction allows sound, then unmute
+                // Mobile, sound not yet allowed: keep polling
+                console.log("Channel 5 active: Player PLAYING, but sound not yet allowed on mobile. Retrying unmute.");
                 setTimeout(unmuteWhenPlaying, 250);
-                return;
               }
-            } else {
-              setTimeout(unmuteWhenPlaying, 250);
+            } else { // Player is NOT PLAYING (e.g., -1 unstarted, 0 ended, 2 paused, 3 buffering, 5 cued)
+              console.log(`Channel 5 active: Player not in PLAYING state (current state: ${st}). Attempting to play and will retry unmute.`);
+              if (typeof window.channel5Player.playVideo === 'function') {
+                window.channel5Player.playVideo(); // Ensure it's trying to play
+              }
+              setTimeout(unmuteWhenPlaying, 250); // Retry until player is playing and conditions met
             }
           };
-          unmuteWhenPlaying();
+          unmuteWhenPlaying(); // Initial call
         } else {
           console.log("Channel 5 inactive: Muting video (continues playing for TV realism).");
           if (window.channel5Player && typeof window.channel5Player.mute === "function") {
