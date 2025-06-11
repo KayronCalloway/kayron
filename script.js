@@ -768,12 +768,19 @@ const resetMenuStyles = () => {
     entries.forEach(entry => {
       if (entry.target.id === "section5") {
         if (entry.intersectionRatio >= 0.5) {
-          console.log("Channel 5 active: Unmuting video.");
+          console.log("Channel 5 active: Unmuting & playing video.");
           if (window.channel5Player && typeof window.channel5Player.unMute === "function") {
             window.channel5Player.unMute();
           }
+          if (window.channel5Player && typeof window.channel5Player.playVideo === "function") {
+            // Ensure the video is actually playing (important for some mobile browsers)
+            const state = window.channel5Player.getPlayerState ? window.channel5Player.getPlayerState() : null;
+            if (state !== 1) { // 1 === YT.PlayerState.PLAYING
+              window.channel5Player.playVideo();
+            }
+          }
         } else {
-          console.log("Channel 5 inactive: Muting video.");
+          console.log("Channel 5 inactive: Muting video (continues playing for TV realism).");
           if (window.channel5Player && typeof window.channel5Player.mute === "function") {
             window.channel5Player.mute();
           }
@@ -784,7 +791,7 @@ const resetMenuStyles = () => {
   if (channel5) {
     channel5Observer.observe(channel5);
   }
-  
+
   // Initialize menu as hidden before TV powers on
   const initMenuHidden = () => {
     if (menuButton) {
