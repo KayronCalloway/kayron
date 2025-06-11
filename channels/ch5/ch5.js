@@ -536,43 +536,7 @@ export async function init() {
                   setTimeout(ensurePlayback, 3000);
                   setTimeout(ensurePlayback, 5000);
                   
-                  // Add mobile scroll handling to prevent playback stopping during scroll
-                  let scrollTimeout;
-                  window.addEventListener('scroll', () => {
-                    clearTimeout(scrollTimeout);
-                    
-                    // Use a flag to track if we're currently handling a scroll
-                    window.ch5ScrollHandling = true;
-                    
-                    // If the player exists and is in view, ensure it's playing
-                    const playerElement = document.getElementById('youtube-player-5');
-                    if (playerElement && window.channel5Player) {
-                      // Add loading indicator during scroll
-                      const videoBackground = document.querySelector('.video-background');
-                      if (videoBackground && !videoBackground.classList.contains('loading')) {
-                        videoBackground.classList.add('loading');
-                      }
-                      
-                      // Force play during scroll to prevent freezing
-                      window.channel5Player.playVideo();
-                    }
-                    
-                    // After scroll stops, ensure playback continues and remove loading state
-                    scrollTimeout = setTimeout(() => {
-                      window.ch5ScrollHandling = false;
-                      
-                      // Remove loading class
-                      const videoBackground = document.querySelector('.video-background');
-                      if (videoBackground) {
-                        videoBackground.classList.remove('loading');
-                      }
-                      
-                      // Re-trigger playback to recover from potential pause
-                      if (window.channel5Player) {
-                        window.channel5Player.playVideo();
-                      }
-                    }, 200);
-                  }, { passive: true }); // Use passive listener for better scroll performance
+                  // Simplified mobile playback maintenance - let intersection observer handle it
                 }
               },
               onStateChange: event => {
