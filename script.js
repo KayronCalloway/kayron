@@ -804,12 +804,17 @@ const resetMenuStyles = () => {
           }
 
           // Unmute once player confirms it is playing (robust against slow loads)
+          const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
           const unmuteWhenPlaying = () => {
             if (!window.channel5Player) return;
             const st = window.channel5Player.getPlayerState ? window.channel5Player.getPlayerState() : null;
             if (st === 1) { // playing
-              window.channel5Player.unMute();
-              console.log("Channel 5 active: Unmuted once playback confirmed.");
+              if (!isMobile && typeof window.channel5Player.unMute === 'function') {
+                window.channel5Player.unMute();
+                console.log("Channel 5 active: Unmuted once playback confirmed (desktop).");
+              } else {
+                console.log("Channel 5 active: Keeping muted on mobile to preserve autoplay.");
+              }
             } else {
               setTimeout(unmuteWhenPlaying, 250);
             }
