@@ -410,9 +410,14 @@ const resetMenuStyles = () => {
     if (show) {
       // Store current scroll position before opening TV Guide
       window.savedScrollPosition = window.scrollY;
+      console.log(`Opening TV Guide from scroll position: ${window.savedScrollPosition}`);
       
-      // Scroll to top so TV Guide is visible from any channel
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // If we're not at the top, scroll there first, then open guide
+      if (window.scrollY > 0) {
+        console.log('Scrolling to top before opening TV Guide');
+        // Use instant scroll instead of smooth to avoid delay
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
       
       // Highlight the current channel in the guide
       if (currentChannel) {
@@ -439,7 +444,7 @@ const resetMenuStyles = () => {
         }
       }
       
-      // Small delay to allow smooth scroll to start, then open guide
+      // Very short delay to ensure scroll completes, then open guide
       setTimeout(() => {
         // Force display to flex regardless of current state
         tvGuide.style.display = 'flex';
@@ -462,7 +467,7 @@ const resetMenuStyles = () => {
         document.body.style.position = 'fixed';
         document.body.style.width = '100%';
         document.body.style.top = '0px'; // Keep at top since we scrolled there
-      }, 100); // Short delay for smooth scroll
+      }, 50); // Very short delay since we use instant scroll
       
       // Log visibility state for debugging
       console.log("Opening TV Guide");
