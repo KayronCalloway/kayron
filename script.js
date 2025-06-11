@@ -349,7 +349,12 @@ const resetMenuStyles = () => {
   let tvGuideToggleInProgress = false;
   let tvGuideIsVisible = false;
 
-  const toggleTVGuide = show => {
+  const toggleTVGuide = (show) => {
+    // If no explicit instruction, toggle based on current state
+    if (typeof show === 'undefined') {
+      show = !tvGuideIsVisible;
+    }
+    
     if (!tvGuide) {
       console.error("TV Guide element not found");
       return;
