@@ -803,13 +803,18 @@ const resetMenuStyles = () => {
             }
           }
 
-          // Unmute after short delay to satisfy mobile autoplay rules
-          setTimeout(() => {
-            if (window.channel5Player && typeof window.channel5Player.unMute === "function") {
+          // Unmute once player confirms it is playing (robust against slow loads)
+          const unmuteWhenPlaying = () => {
+            if (!window.channel5Player) return;
+            const st = window.channel5Player.getPlayerState ? window.channel5Player.getPlayerState() : null;
+            if (st === 1) { // playing
               window.channel5Player.unMute();
-              console.log("Channel 5 active: Unmuted video after ensuring playback.");
+              console.log("Channel 5 active: Unmuted once playback confirmed.");
+            } else {
+              setTimeout(unmuteWhenPlaying, 250);
             }
-          }, 600);
+          };
+          unmuteWhenPlaying();
         } else {
           console.log("Channel 5 inactive: Muting video (continues playing for TV realism).");
           if (window.channel5Player && typeof window.channel5Player.mute === "function") {
