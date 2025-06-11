@@ -889,11 +889,19 @@ const resetMenuStyles = () => {
           console.log("Channel 5 active: Unmuting live video.");
           if (window.channel5Player) {
             try {
-              // Only call playVideo if the video is actually paused - avoid unnecessary calls
-              const playerState = window.channel5Player.getPlayerState ? window.channel5Player.getPlayerState() : null;
-              if (playerState !== null && playerState !== YT.PlayerState.PLAYING && playerState !== YT.PlayerState.BUFFERING) {
-                console.log("Video not playing, attempting to resume");
+              // On mobile, be more aggressive about ensuring playback
+              const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+              if (isMobile) {
+                // Force play on mobile to overcome restrictions
+                console.log("Mobile detected, forcing playVideo for Ch5");
                 window.channel5Player.playVideo();
+              } else {
+                // Only call playVideo if the video is actually paused - avoid unnecessary calls  
+                const playerState = window.channel5Player.getPlayerState ? window.channel5Player.getPlayerState() : null;
+                if (playerState !== null && playerState !== YT.PlayerState.PLAYING && playerState !== YT.PlayerState.BUFFERING) {
+                  console.log("Video not playing, attempting to resume");
+                  window.channel5Player.playVideo();
+                }
               }
               // Unmute the video - this is the main control for live TV experience
               if (typeof window.channel5Player.unMute === "function") {
