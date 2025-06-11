@@ -12,6 +12,7 @@ export const MenuManager = {
     this.menuButton = document.getElementById('menuButton');
     this.tvGuide = document.getElementById('tvGuide');
     this.header = document.getElementById('header');
+    this.closeGuide = document.getElementById('closeGuide');
     this.bindEvents();
     console.log('MenuManager initialized');
     // Don't show on initialization - will show based on header visibility
@@ -26,6 +27,25 @@ export const MenuManager = {
       console.log('Channel changed event detected, syncing menu visibility with header');
       this.show();
     });
+    
+    // Set up menu button click handler
+    if (this.menuButton) {
+      this.menuButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('MenuManager: Menu button clicked');
+        this.toggleTVGuide();
+      });
+    }
+    
+    // Set up close guide button handler
+    if (this.closeGuide) {
+      this.closeGuide.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('MenuManager: Close guide clicked');
+        this.hideTVGuide();
+      });
+    }
     
     // Create a mutation observer to detect style changes that might hide the menu
     this.createVisibilityObserver();
@@ -123,6 +143,37 @@ export const MenuManager = {
     
     observer.observe(this.header, { attributes: true });
     console.log('Header visibility observer started');
+  },
+  
+  /**
+   * Toggle TV Guide visibility - SIMPLE MODAL
+   */
+  toggleTVGuide() {
+    if (!this.tvGuide) {
+      console.error("TV Guide element not found");
+      return;
+    }
+    
+    // Simple toggle - if hidden, show it. If shown, hide it.
+    if (this.tvGuide.style.display === 'none' || this.tvGuide.style.display === '') {
+      // SHOW the modal
+      this.tvGuide.style.display = 'flex';
+      console.log('TV Guide modal opened');
+    } else {
+      // HIDE the modal
+      this.tvGuide.style.display = 'none';
+      console.log('TV Guide modal closed');
+    }
+  },
+  
+  /**
+   * Hide TV Guide (for close button) - SIMPLE
+   */
+  hideTVGuide() {
+    if (!this.tvGuide) return;
+    
+    this.tvGuide.style.display = 'none';
+    console.log('TV Guide modal closed via close button');
   }
 };
 

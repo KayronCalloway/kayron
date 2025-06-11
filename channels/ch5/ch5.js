@@ -516,59 +516,24 @@ export async function init() {
             },
             events: {
               onReady: event => {
-                event.target.mute(); // Always mute for autoplay compliance
-                
-                // Try to play immediately for background video effect
-                setTimeout(() => {
-                  try {
-                    event.target.playVideo();
-                    console.log("Channel 5 YouTube Player ready, starting muted background video.");
-                  } catch (error) {
-                    console.warn("Channel 5 autoplay failed:", error);
-                  }
-                }, 100);
+                console.log("Channel 5 YouTube Player ready");
+                event.target.mute();
+                event.target.playVideo();
               },
               onStateChange: event => {
-                const isMobile = isMobileDevice();
-                
+                // Simple state handling for background video
                 if (event.data === YT.PlayerState.ENDED) {
-                  console.log("Channel 5 video ended, restarting...");
-                  // Restart for continuous background video, but with delay on mobile
-                  setTimeout(() => {
-                    try {
-                      event.target.playVideo();
-                    } catch (error) {
-                      console.warn("Channel 5 restart failed:", error);
-                    }
-                  }, isMobile ? 200 : 50); // Longer delay on mobile to prevent freeze
-                } else if (event.data === YT.PlayerState.PAUSED) {
-                  console.log("Channel 5 video paused, resuming for background continuity");
-                  // Resume after brief delay to maintain background video effect
-                  setTimeout(() => {
-                    try {
-                      if (event.target && typeof event.target.playVideo === 'function') {
-                        event.target.playVideo();
-                      }
-                    } catch (error) {
-                      console.warn("Channel 5 resume failed:", error);
-                    }
-                  }, isMobile ? 300 : 100); // Longer delay on mobile
+                  event.target.playVideo(); // Restart when ended
                 }
               },
               onError: (event) => {
                 console.error('Channel 5 YouTube player error:', event.data);
-                const isMobile = isMobileDevice();
-                
-                // Recovery with longer delays on mobile to prevent freeze
+                // Simple recovery
                 setTimeout(() => {
-                  try {
-                    if (window.channel5Player && typeof window.channel5Player.playVideo === 'function') {
-                      window.channel5Player.playVideo();
-                    }
-                  } catch (error) {
-                    console.warn("Channel 5 error recovery failed:", error);
+                  if (window.channel5Player) {
+                    window.channel5Player.playVideo();
                   }
-                }, isMobile ? 2000 : 1000); // Much longer delay on mobile
+                }, 1000);
               }
             }
           });
