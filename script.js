@@ -776,10 +776,13 @@ const resetMenuStyles = () => {
     entries.forEach(entry => {
       if (entry.target.id === "section5") {
         if (entry.intersectionRatio >= 0.7) {
-          // Channel visible – simply unmute (video keeps playing)
-          console.log("Channel 5 active: Unmuting video.");
+          // Ensure gameshow audio (Channel 4) is stopped
+          if (window.controlGameshowAudio) {
+            window.controlGameshowAudio(false);
+          }
           if (window.channel5Player && typeof window.channel5Player.unMute === "function") {
             window.channel5Player.unMute();
+            console.log("Channel 5 active: Unmuting video.");
           }
         } else {
           console.log("Channel 5 inactive: Muting video (continues playing for TV realism).");
