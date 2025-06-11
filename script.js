@@ -411,8 +411,8 @@ const resetMenuStyles = () => {
       // Store current scroll position before opening TV Guide
       window.savedScrollPosition = window.scrollY;
       
-      // Don't automatically scroll to top - instead highlight current channel
-      // window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Scroll to top so TV Guide is visible from any channel
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       
       // Highlight the current channel in the guide
       if (currentChannel) {
@@ -437,6 +437,7 @@ const resetMenuStyles = () => {
           
           console.log(`Highlighted current channel in guide: ${currentChannel}`);
         }
+      }
       
       // Small delay to allow smooth scroll to start, then open guide
       setTimeout(() => {
