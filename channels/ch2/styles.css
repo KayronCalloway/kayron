@@ -1185,3 +1185,33 @@
 .external-link:hover .link-arrow {
   transform: translateX(4px);
 }
+
+/* === ADDITIONAL SAFE MOBILE ENHANCEMENTS (ADDITIVE ONLY) === */
+
+/* Enhanced video container for mobile touch optimization */
+#section2 .video-container iframe {
+  /* Optimize iframe for touch interactions */
+  touch-action: auto; /* Allow native touch behavior for video controls */
+}
+
+/* Enhanced project scroller for better mobile performance */
+#section2 .project-scroller {
+  /* Optimize scrolling performance on mobile */
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  /* Add momentum scrolling for iOS */
+  overscroll-behavior-x: contain;
+}
+
+/* Enhanced featured CTA for consistency with other channels */
+#section2 .featured-cta {
+  /* Ensure consistent touch optimization across channels */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(58, 134, 255, 0.3);
+  transition: transform 0.1s ease-out, box-shadow 0.2s ease-out;
+}
+
+#section2 .featured-cta:active {
+  /* Subtle press feedback consistent with other channels */
+  transform: scale(0.98);
+}
