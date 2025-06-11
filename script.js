@@ -401,8 +401,32 @@ const resetMenuStyles = () => {
       // Store current scroll position before opening TV Guide
       window.savedScrollPosition = window.scrollY;
       
-      // Scroll to top so TV Guide is visible from any channel
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Don't automatically scroll to top - instead highlight current channel
+      // window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // Highlight the current channel in the guide
+      if (currentChannel) {
+        // Remove highlight from all channels
+        document.querySelectorAll('.tv-guide-channel').forEach(item => {
+          item.style.backgroundColor = '';
+          item.style.boxShadow = '';
+        });
+        
+        // Find and highlight the current channel
+        const currentGuideItem = document.querySelector(`.tv-guide-channel[data-target="${currentChannel}"]`);
+        if (currentGuideItem) {
+          // Add selection effect
+          currentGuideItem.style.backgroundColor = 'rgba(62, 146, 204, 0.3)';
+          currentGuideItem.style.boxShadow = '0 0 15px rgba(62, 146, 204, 0.4)';
+          
+          // Update the current channel info
+          const currentInfoText = document.getElementById('current-channel-info');
+          if (currentInfoText) {
+            currentInfoText.textContent = channelDescriptions[currentChannel] || 'Channel information unavailable';
+          }
+          
+          console.log(`Highlighted current channel in guide: ${currentChannel}`);
+        }
       
       // Small delay to allow smooth scroll to start, then open guide
       setTimeout(() => {
