@@ -33,15 +33,22 @@ export async function init() {
         videoBackground.setAttribute('data-optimized', 'true');
       }
       
-      // Check if YouTube player is working, if not create a static background
-      setTimeout(() => {
+      // Monitor YouTube player loading with quicker fallback detection
+      let iframeCheckCount = 0;
+      const checkInterval = setInterval(() => {
         const iframe = section1.querySelector('#youtube-player iframe');
-        if (!iframe) {
-          console.log('No YouTube iframe found, applying static background as fallback');
+        iframeCheckCount++;
+        
+        if (iframe) {
+          console.log('YouTube iframe detected, video loading successfully');
+          clearInterval(checkInterval);
+        } else if (iframeCheckCount >= 8) { // Check 8 times over 2 seconds
+          console.log('YouTube iframe not found after checks, applying optimized fallback');
           videoBackground.style.backgroundSize = 'cover';
-          videoBackground.style.opacity = '0.7';
+          videoBackground.style.opacity = '0.8';
+          clearInterval(checkInterval);
         }
-      }, 3000);
+      }, 250); // Check every 250ms for quicker detection
     }
     
     // Ensure buttons are visible and positioned correctly with mobile optimization
