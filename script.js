@@ -1,6 +1,29 @@
 // Import the MenuManager for centralized menu control
 import { MenuManager, notifyChannelChanged } from './menu-manager.js';
 
+// Global flag: after any user interaction, browsers allow unmuted playback
+window.soundAllowed = false;
+const enableSound = () => {
+  if (!window.soundAllowed) {
+    window.soundAllowed = true;
+    console.log("User interaction detected – sound now allowed. Attempting to unmute visible channels.");
+    // Try unmuting Channel 5 if it's currently >70% visible and on mobile
+    const section5 = document.getElementById('section5');
+    if (section5 && window.channel5Player) {
+      const rect = section5.getBoundingClientRect();
+      const ratio = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+      if (ratio / rect.height >= 0.7 && typeof window.channel5Player.unMute === 'function') {
+        window.channel5Player.unMute();
+      }
+    }
+    // Channel 1 logic assumed similar observer will handle next cycle
+  }
+};
+
+['pointerdown', 'touchstart', 'mousedown'].forEach(evt => {
+  window.addEventListener(evt, enableSound, { once: true });
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   // --- DOM Elements ---
   const powerButton = document.getElementById('powerButton');
@@ -809,11 +832,11 @@ const resetMenuStyles = () => {
             if (!window.channel5Player) return;
             const st = window.channel5Player.getPlayerState ? window.channel5Player.getPlayerState() : null;
             if (st === 1) { // playing
-              if (!isMobile && typeof window.channel5Player.unMute === 'function') {
+              if (( !isMobile || window.soundAllowed) && typeof window.channel5Player.unMute === 'function') {
                 window.channel5Player.unMute();
-                console.log("Channel 5 active: Unmuted once playback confirmed (desktop).");
+                console.log("Channel 5 active: Unmuted once playback confirmed (desktop or after user gesture).");
               } else {
-                console.log("Channel 5 active: Keeping muted on mobile to preserve autoplay.");
+                console.log("Channel 5 active: Keeping muted on mobile until user interaction.");
               }
             } else {
               setTimeout(unmuteWhenPlaying, 250);
