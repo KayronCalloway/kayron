@@ -323,6 +323,15 @@ const resetMenuStyles = () => {
     // Mark TV as turned on
     document.body.classList.add('tv-on');
     
+    // Force immediate style changes to ensure power button is hidden
+    setTimeout(() => {
+      powerButton.style.display = "none";
+      powerButton.style.visibility = "hidden";
+      powerButton.style.opacity = 0;
+      powerButton.style.zIndex = "-1";
+      console.log("Power button force hidden");
+    }, 100);
+    
     gsap.to(powerButton, {
       duration: 0.3,
       opacity: 0,
@@ -330,6 +339,7 @@ const resetMenuStyles = () => {
       onComplete: () => {
         powerButton.style.display = "none";
         powerButton.style.visibility = "hidden";
+        powerButton.style.zIndex = "-1";
       }
     });
     const tl = gsap.timeline({
