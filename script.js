@@ -788,10 +788,23 @@ const resetMenuStyles = () => {
           if (window.controlGameshowAudio) {
             window.controlGameshowAudio(false);
           }
-          if (window.channel5Player && typeof window.channel5Player.unMute === "function") {
-            window.channel5Player.unMute();
-            console.log("Channel 5 active: Unmuting video.");
+
+          // Ensure video is playing; if paused or not started, play it muted
+          if (window.channel5Player && typeof window.channel5Player.playVideo === "function") {
+            const state = window.channel5Player.getPlayerState ? window.channel5Player.getPlayerState() : null;
+            // 1 = playing, 2 = paused, -1 = unstarted
+            if (state !== 1) {
+              window.channel5Player.playVideo();
+            }
           }
+
+          // Unmute after short delay to satisfy mobile autoplay rules
+          setTimeout(() => {
+            if (window.channel5Player && typeof window.channel5Player.unMute === "function") {
+              window.channel5Player.unMute();
+              console.log("Channel 5 active: Unmuted video after ensuring playback.");
+            }
+          }, 600);
         } else {
           console.log("Channel 5 inactive: Muting video (continues playing for TV realism).");
           if (window.channel5Player && typeof window.channel5Player.mute === "function") {
