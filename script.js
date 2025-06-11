@@ -408,16 +408,11 @@ const resetMenuStyles = () => {
     }
     
     if (show) {
-      // Store current scroll position before opening TV Guide
+      // Store current scroll position - but DON'T scroll anywhere
       window.savedScrollPosition = window.scrollY;
-      console.log(`Opening TV Guide from scroll position: ${window.savedScrollPosition}`);
+      console.log(`Opening TV Guide overlay at current position: ${window.savedScrollPosition}`);
       
-      // If we're not at the top, scroll there first, then open guide
-      if (window.scrollY > 0) {
-        console.log('Scrolling to top before opening TV Guide');
-        // Use instant scroll instead of smooth to avoid delay
-        window.scrollTo({ top: 0, behavior: 'instant' });
-      }
+      // DON'T scroll - just show the guide as a true overlay
       
       // Highlight the current channel in the guide
       if (currentChannel) {
@@ -444,30 +439,29 @@ const resetMenuStyles = () => {
         }
       }
       
-      // Very short delay to ensure scroll completes, then open guide
-      setTimeout(() => {
-        // Force display to flex regardless of current state
-        tvGuide.style.display = 'flex';
-        // Make the TV guide appear on top of EVERYTHING
-        tvGuide.style.zIndex = '10000000'; // Extremely high z-index to be above menu button
-        // Ensure TV Guide is fixed at top
-        tvGuide.style.position = 'fixed';
-        // Ensure it covers the entire viewport
-        tvGuide.style.top = '0';
-        tvGuide.style.left = '0';
-        tvGuide.style.width = '100%';
-        tvGuide.style.height = '100%';
-        
-        // iOS Safari scroll fix
-        tvGuide.style.webkitOverflowScrolling = 'touch';
-        tvGuide.style.overflowY = 'auto';
-        
-        // Prevent page scrolling when TV guide is open
-        document.body.style.overflow = 'hidden';
-        document.body.style.position = 'fixed';
-        document.body.style.width = '100%';
-        document.body.style.top = '0px'; // Keep at top since we scrolled there
-      }, 50); // Very short delay since we use instant scroll
+      // Show guide immediately as a true overlay
+      // Force display to flex regardless of current state
+      tvGuide.style.display = 'flex';
+      // Make the TV guide appear on top of EVERYTHING
+      tvGuide.style.zIndex = '10000000'; // Extremely high z-index to be above menu button
+      // Ensure TV Guide is fixed to viewport (not page)
+      tvGuide.style.position = 'fixed';
+      // Ensure it covers the entire viewport wherever user is
+      tvGuide.style.top = '0';
+      tvGuide.style.left = '0';
+      tvGuide.style.width = '100vw';
+      tvGuide.style.height = '100vh';
+      
+      // iOS Safari scroll fix
+      tvGuide.style.webkitOverflowScrolling = 'touch';
+      tvGuide.style.overflowY = 'auto';
+      
+      // Prevent page scrolling when TV guide is open but preserve current position
+      const currentScrollY = window.scrollY;
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${currentScrollY}px`; // Preserve current scroll position
       
       // Log visibility state for debugging
       console.log("Opening TV Guide");
@@ -484,14 +478,14 @@ const resetMenuStyles = () => {
       tvGuide.setAttribute('aria-hidden', 'true');
       
       // Re-enable page scrolling when TV guide is closed
+      const scrollY = parseInt((document.body.style.top || '0').replace(/[^-\d]/g, ''));
       document.body.style.overflow = 'auto';
       document.body.style.position = '';
       document.body.style.width = '';
       document.body.style.top = '';
       
-      // Restore the scroll position to where user was before opening guide
-      const savedPosition = window.savedScrollPosition || 0;
-      window.scrollTo({ top: savedPosition, behavior: 'smooth' });
+      // Restore scroll position to exactly where user was
+      window.scrollTo(0, Math.abs(scrollY));
       
       // Log visibility state for debugging
       console.log("Closing TV Guide");
