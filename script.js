@@ -836,21 +836,42 @@ const resetMenuStyles = () => {
     channel4Observer.observe(channel4);
   }
   
-  // --- Intersection Observer for Channel 5 YouTube Video Audio Control ---
+  // --- Intersection Observer for Channel 5 YouTube Video Control ---
+  // Channel 5 should play continuously like live TV - only control audio, not playback
   const channel5 = document.getElementById("section5");
   const channel5ObserverOptions = { root: null, threshold: 0.7 };
   const channel5Observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.target.id === "section5") {
         if (entry.intersectionRatio >= 0.7) {
-          if (window.channel5Player && typeof window.channel5Player.unMute === "function") {
-            window.channel5Player.unMute();
-            console.log("Channel 5 active: Unmuting video.");
+          console.log("Channel 5 active: Unmuting live video.");
+          if (window.channel5Player) {
+            try {
+              // Ensure video is playing (in case it stopped)
+              if (typeof window.channel5Player.playVideo === "function") {
+                window.channel5Player.playVideo();
+              }
+              // Unmute the video - this is the main control for live TV experience
+              if (typeof window.channel5Player.unMute === "function") {
+                window.channel5Player.unMute();
+              }
+              console.log("Channel 5 live video unmuted.");
+            } catch (error) {
+              console.warn("Channel 5 video control failed:", error);
+            }
           }
         } else {
-          if (window.channel5Player && typeof window.channel5Player.mute === "function") {
-            window.channel5Player.mute();
-            console.log("Channel 5 inactive: Muting video.");
+          console.log("Channel 5 inactive: Muting live video (continues playing).");
+          if (window.channel5Player) {
+            try {
+              // Only mute, don't pause - keeps video playing like live TV
+              if (typeof window.channel5Player.mute === "function") {
+                window.channel5Player.mute();
+              }
+              console.log("Channel 5 live video muted (still playing).");
+            } catch (error) {
+              console.warn("Channel 5 video control failed:", error);
+            }
           }
         }
       }

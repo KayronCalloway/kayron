@@ -9,13 +9,13 @@
   position: relative;
   overflow: hidden;
   /* Move content up to use space under header */
-  margin-top: -60px; /* Negative margin to move up under header */
-  padding-top: 80px; /* Add back some padding for breathing room */
+  margin-top: -80px; /* More negative margin to condense spacing */
+  padding-top: 90px; /* Adjust padding for tighter layout */
 }
 
 /* Main Video Player - Scoped to Section 3 */
 #section3 .music-player-container {
-  margin-bottom: 40px;
+  margin-bottom: 25px;
   border: 2px solid #3e92cc;
   border-radius: 12px;
   background: rgba(10, 15, 30, 0.95);
@@ -93,12 +93,12 @@
 
 /* Track Selection - Scoped to Section 3 */
 #section3 .track-selection {
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 }
 
 #section3 .section-title {
   font-size: 24px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   color: #ffffff;
   text-align: center;
   text-transform: uppercase;
@@ -234,14 +234,14 @@
 
 /* Documentary Section - Scoped to Section 3 */
 #section3 .documentary-section {
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 }
 
 #section3 .process-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 25px;
-  margin-top: 30px;
+  gap: 20px;
+  margin-top: 20px;
 }
 
 #section3 .process-card {
@@ -271,7 +271,7 @@
 
 /* Broadcast Signals - Scoped to Section 3 */
 #section3 .broadcast-signals {
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 }
 
 #section3 .signals-container {
@@ -282,7 +282,7 @@
 #section3 .signal-input {
   display: flex;
   gap: 15px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 #section3 #signalMessage {
@@ -342,8 +342,8 @@
 @media (max-width: 768px) {
   #section3 #music-interface {
     padding: 0 10px 15px 10px; /* Remove top padding on mobile too */
-    margin-top: -50px; /* Less negative margin on mobile */
-    padding-top: 70px; /* Adjust top padding for mobile header */
+    margin-top: -65px; /* More condensed on mobile */
+    padding-top: 75px; /* Tighter mobile spacing */
   }
   
   #section3 .track-grid {
