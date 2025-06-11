@@ -847,8 +847,10 @@ const resetMenuStyles = () => {
           console.log("Channel 5 active: Unmuting live video.");
           if (window.channel5Player) {
             try {
-              // Ensure video is playing (in case it stopped)
-              if (typeof window.channel5Player.playVideo === "function") {
+              // Only call playVideo if the video is actually paused - avoid unnecessary calls
+              const playerState = window.channel5Player.getPlayerState ? window.channel5Player.getPlayerState() : null;
+              if (playerState !== null && playerState !== YT.PlayerState.PLAYING && playerState !== YT.PlayerState.BUFFERING) {
+                console.log("Video not playing, attempting to resume");
                 window.channel5Player.playVideo();
               }
               // Unmute the video - this is the main control for live TV experience

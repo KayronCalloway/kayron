@@ -417,13 +417,48 @@ export async function init() {
               rel: 0,
               playsinline: 1,
               fs: 0,
-              showinfo: 0
+              showinfo: 0,
+              enablejsapi: 1, // Enable JS API for better mobile control
+              origin: window.location.origin, // Specify origin for mobile compatibility
+              vq: isMobile ? 'small' : 'hd720' // Lower quality on mobile for smoother playback
             },
             events: {
               onReady: event => {
                 event.target.mute();
                 event.target.playVideo();
                 console.log("Channel 5 YouTube Player ready, starting muted.");
+                
+                // Enhanced mobile playback strategy
+                if (isMobile) {
+                  console.log("Mobile device detected, using enhanced playback strategy");
+                  // Multiple attempts to ensure continuous playback on mobile
+                  const ensurePlayback = () => {
+                    if (event.target.getPlayerState() !== YT.PlayerState.PLAYING) {
+                      event.target.playVideo();
+                    }
+                  };
+                  
+                  // Retry playback every few seconds for mobile reliability
+                  setTimeout(ensurePlayback, 1000);
+                  setTimeout(ensurePlayback, 3000);
+                  setTimeout(ensurePlayback, 5000);
+                }
+              },
+              onStateChange: event => {
+                // Ensure continuous playback for live TV experience
+                if (event.data === YT.PlayerState.ENDED || event.data === YT.PlayerState.PAUSED) {
+                  console.log("Channel 5 video paused/ended, restarting for live TV experience");
+                  event.target.playVideo();
+                }
+              },
+              onError: event => {
+                console.error('Channel 5 YouTube player error:', event.data);
+                // Retry playback on error
+                setTimeout(() => {
+                  if (window.channel5Player && typeof window.channel5Player.playVideo === 'function') {
+                    window.channel5Player.playVideo();
+                  }
+                }, 2000);
               }
             }
           });
