@@ -1007,4 +1007,4 @@ window.debugChannels = {
       }
     };
   }
-});
+}); // End of DOMContentLoaded
