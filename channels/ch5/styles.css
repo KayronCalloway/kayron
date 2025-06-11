@@ -1,4 +1,4 @@
-/* channels/ch4/styles.css */
+/* channels/ch5/styles.css - Under the Influence */
 .video-background {
   position: absolute;
   top: 60px; /* Space for header */
@@ -11,7 +11,7 @@
 }
 
 /* Ensure the YouTube iframe fills the container */
-#youtube-player-4 iframe {
+#youtube-player-5 iframe {
   position: absolute;
   top: 0;
   left: 0;
@@ -27,7 +27,7 @@
     height: calc(100% - 45px);
   }
   
-  #youtube-player-4 iframe {
+  #youtube-player-5 iframe {
     width: 100vw !important;
     height: 100vh !important;
     object-fit: cover;
@@ -42,14 +42,14 @@
     }
     
     /* Fix YouTube player positioning for notched phones */
-    #youtube-player-4 {
+    #youtube-player-5 {
       position: relative;
       height: 100%;
       width: 100%;
       overflow: hidden;
     }
     
-    #youtube-player-4 iframe {
+    #youtube-player-5 iframe {
       /* Ensure full coverage with safe areas */
       height: calc(100vh + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px)) !important;
       position: absolute;
@@ -60,7 +60,7 @@
     }
     
     /* Fix button positioning for vertical iPhone */
-    .channel4-buttons {
+    .channel5-buttons {
       /* Place buttons in more thumb-accessible area */
       top: 60%;
       gap: 20px !important;
@@ -73,8 +73,8 @@
   }
 }
 
-/* Channel 4 Buttons */
-.channel4-buttons {
+/* Channel 5 Buttons */
+.channel5-buttons {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -356,7 +356,7 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   /* Buttons optimized for mobile */
-  .channel4-buttons {
+  .channel5-buttons {
     flex-direction: column;
     gap: 30px; /* Increased gap for better touch separation */
     width: 85%; /* Control width */
@@ -435,5 +435,106 @@
   .annual-letter-link a {
     padding: 5px; /* Larger touch target for inline links */
     display: inline-block;
+  }
+}
+
+/* === COMPREHENSIVE MOBILE ENHANCEMENTS FOR CHANNEL 5 === */
+
+/* Enhanced touch optimization for all interactive elements */
+@media (max-width: 768px) {
+  /* Optimize video background for mobile performance */
+  .video-background {
+    /* Better vertical space usage - move up under header like Ch3 */
+    top: 0;
+    margin-top: -50px;
+    padding-top: 70px;
+    height: calc(100vh - 20px);
+    /* Optimize for mobile scrolling */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  
+  /* Enhanced button container positioning */
+  .channel5-buttons {
+    /* Better positioning for thumb reach on mobile */
+    top: 55%;
+    gap: 25px;
+    width: 90%;
+    max-width: 320px;
+    /* Add safe area support */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  
+  /* Enhanced channel buttons for consistent mobile experience */
+  .channel-button {
+    /* Ensure proper touch targets */
+    min-height: 48px;
+    min-width: 48px;
+    /* Enhanced touch feedback */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(30, 144, 255, 0.3);
+    /* Consistent scaling with other channels */
+    transition: transform 0.1s ease-out, box-shadow 0.2s ease-out;
+  }
+  
+  .channel-button:active {
+    /* Consistent press feedback across all channels */
+    transform: scale(0.98);
+  }
+  
+  /* Enhanced modal experience for mobile */
+  .modal-overlay {
+    /* Better backdrop for mobile */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    /* Add safe area support */
+    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+  }
+  
+  .modal-box {
+    /* Enhanced mobile modal sizing */
+    margin: 20px;
+    max-height: calc(100vh - 40px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    /* Better mobile typography */
+    line-height: 1.5;
+  }
+  
+  /* Enhanced close button for mobile */
+  .close-modal {
+    /* Ensure proper touch target size */
+    min-width: 44px;
+    min-height: 44px;
+    /* Enhanced positioning for safe areas */
+    top: max(8px, env(safe-area-inset-top, 0px) + 8px);
+    right: max(8px, env(safe-area-inset-right, 0px) + 8px);
+    /* Better touch feedback */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* Enhanced support for modern iPhones */
+@supports (-webkit-touch-callout: none) and (max-width: 480px) and (orientation: portrait) {
+  /* iPhone-specific optimizations */
+  .video-background {
+    /* Account for Dynamic Island/notch */
+    margin-top: calc(-40px - env(safe-area-inset-top, 0px));
+    padding-top: calc(60px + env(safe-area-inset-top, 0px));
+  }
+  
+  .channel5-buttons {
+    /* Better thumb reach on iPhone */
+    top: 50%;
+    bottom: auto;
+    /* Account for home indicator */
+    padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  }
+  
+  /* Enhanced button feedback for iPhone */
+  .channel-button {
+    /* iOS-style button enhancements */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    -webkit-tap-highlight-color: rgba(30, 144, 255, 0.4);
   }
 }
