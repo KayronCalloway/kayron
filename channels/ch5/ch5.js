@@ -404,11 +404,25 @@ export async function init() {
           setTimeout(() => {
             const youtubePlayer = document.getElementById('youtube-player-5');
             if (youtubePlayer) {
-              console.log('YouTube iframe found, applying hardware acceleration styles');
-              youtubePlayer.style.willChange = 'transform';
-              youtubePlayer.style.transform = 'translateZ(0)';
-              youtubePlayer.style.backfaceVisibility = 'hidden';
-              youtubePlayer.style.perspective = '1000px';
+              console.log('YouTube iframe found, applying optimized styles for mobile');
+              
+              // More conservative styling for mobile to prevent freeze
+              if (isMobileDevice()) {
+                youtubePlayer.style.willChange = 'auto'; // Less aggressive on mobile
+                youtubePlayer.style.transform = 'none'; // Avoid transforms that can cause issues
+                youtubePlayer.style.backfaceVisibility = 'visible';
+                youtubePlayer.style.webkitBackfaceVisibility = 'visible';
+                youtubePlayer.style.maxWidth = '100%';
+                youtubePlayer.style.height = 'auto';
+                console.log('Applied mobile-optimized YouTube styles');
+              } else {
+                // Full hardware acceleration for desktop
+                youtubePlayer.style.willChange = 'transform';
+                youtubePlayer.style.transform = 'translateZ(0)';
+                youtubePlayer.style.backfaceVisibility = 'hidden';
+                youtubePlayer.style.perspective = '1000px';
+                console.log('Applied desktop-optimized YouTube styles');
+              }
             } else {
               // If no YouTube player yet, try again in 1 second (up to 5 attempts)
               if (window.youtubeStyleAttempts === undefined) {
@@ -486,40 +500,75 @@ export async function init() {
           window.channel5Player = new YT.Player('youtube-player-5', {
             videoId: 'OFlnSoPm7x4', // Same video as channel 4 for consistency
             playerVars: {
-              autoplay: 1,
-              controls: 0,
-              loop: 1,
-              playlist: 'OFlnSoPm7x4',
+              autoplay: 1, // Always autoplay for background video effect
+              controls: 0, // No controls for background video
+              loop: 1, // Loop for continuous background
+              playlist: 'OFlnSoPm7x4', // Playlist for looping
               modestbranding: 1,
               rel: 0,
               playsinline: 1,
               fs: 0,
               showinfo: 0,
-              enablejsapi: 1, // Enable JS API for better mobile control
-              origin: window.location.origin, // Specify origin for mobile compatibility
-              vq: isMobile ? 'small' : 'hd720' // Lower quality on mobile for smoother playback
+              enablejsapi: 1,
+              origin: window.location.origin,
+              vq: isMobile ? 'medium' : 'hd720', // Slightly higher quality on mobile but not too high
+              mute: 1 // Always start muted to comply with autoplay policies
             },
             events: {
               onReady: event => {
-                event.target.mute();
-                event.target.playVideo();
-                console.log("Channel 5 YouTube Player ready, starting muted.");
+                event.target.mute(); // Always mute for autoplay compliance
+                
+                // Try to play immediately for background video effect
+                setTimeout(() => {
+                  try {
+                    event.target.playVideo();
+                    console.log("Channel 5 YouTube Player ready, starting muted background video.");
+                  } catch (error) {
+                    console.warn("Channel 5 autoplay failed:", error);
+                  }
+                }, 100);
               },
               onStateChange: event => {
-                // Ensure continuous playback for live TV experience
-                if (event.data === YT.PlayerState.ENDED || event.data === YT.PlayerState.PAUSED) {
-                  console.log("Channel 5 video paused/ended, restarting for live TV experience");
-                  event.target.playVideo();
+                const isMobile = isMobileDevice();
+                
+                if (event.data === YT.PlayerState.ENDED) {
+                  console.log("Channel 5 video ended, restarting...");
+                  // Restart for continuous background video, but with delay on mobile
+                  setTimeout(() => {
+                    try {
+                      event.target.playVideo();
+                    } catch (error) {
+                      console.warn("Channel 5 restart failed:", error);
+                    }
+                  }, isMobile ? 200 : 50); // Longer delay on mobile to prevent freeze
+                } else if (event.data === YT.PlayerState.PAUSED) {
+                  console.log("Channel 5 video paused, resuming for background continuity");
+                  // Resume after brief delay to maintain background video effect
+                  setTimeout(() => {
+                    try {
+                      if (event.target && typeof event.target.playVideo === 'function') {
+                        event.target.playVideo();
+                      }
+                    } catch (error) {
+                      console.warn("Channel 5 resume failed:", error);
+                    }
+                  }, isMobile ? 300 : 100); // Longer delay on mobile
                 }
               },
               onError: (event) => {
                 console.error('Channel 5 YouTube player error:', event.data);
-                // Simple recovery
+                const isMobile = isMobileDevice();
+                
+                // Recovery with longer delays on mobile to prevent freeze
                 setTimeout(() => {
-                  if (window.channel5Player && typeof window.channel5Player.playVideo === 'function') {
-                    window.channel5Player.playVideo();
+                  try {
+                    if (window.channel5Player && typeof window.channel5Player.playVideo === 'function') {
+                      window.channel5Player.playVideo();
+                    }
+                  } catch (error) {
+                    console.warn("Channel 5 error recovery failed:", error);
                   }
-                }, 1000);
+                }, isMobile ? 2000 : 1000); // Much longer delay on mobile
               }
             }
           });
