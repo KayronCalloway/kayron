@@ -360,6 +360,48 @@ export async function init() {
       influenceStylesheet.href = './channels/ch5/styles.css';
       document.head.appendChild(influenceStylesheet);
       
+      // Add loading indicator style for mobile
+      if (isMobileDevice()) {
+        const loadingStyle = document.createElement('style');
+        loadingStyle.textContent = `
+          .video-background.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            margin: -20px 0 0 -20px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            z-index: 5;
+          }
+          
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+          
+          .video-background {
+            position: relative;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.8);
+          }
+          
+          /* Force hardware acceleration for smoother playback */
+          #youtube-player-5,
+          .video-background iframe {
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+          }
+        `;
+        document.head.appendChild(loadingStyle);
+      }
+      
+      
       console.log('Channel 5 influence content loaded successfully');
       
       // Create and set up the modals
@@ -423,6 +465,29 @@ export async function init() {
               vq: isMobile ? 'small' : 'hd720' // Lower quality on mobile for smoother playback
             },
             events: {
+              // Improved error recovery for mobile
+              onError: (event) => {
+                console.error('Channel 5 YouTube player error:', event.data);
+                
+                // Clear loading state if present
+                const videoBackground = document.querySelector('.video-background');
+                if (videoBackground) {
+                  videoBackground.classList.remove('loading');
+                }
+                
+                // Progressive recovery attempts with increasing delays
+                setTimeout(() => {
+                  if (window.channel5Player && typeof window.channel5Player.playVideo === 'function') {
+                    window.channel5Player.playVideo();
+                  }
+                }, 1000);
+                
+                setTimeout(() => {
+                  if (window.channel5Player && typeof window.channel5Player.playVideo === 'function') {
+                    window.channel5Player.playVideo();
+                  }
+                }, 3000);
+              },
               onReady: event => {
                 event.target.mute();
                 event.target.playVideo();
@@ -438,10 +503,49 @@ export async function init() {
                     }
                   };
                   
-                  // Retry playback every few seconds for mobile reliability
+                  // Retry playback more frequently for improved reliability
+                  setTimeout(ensurePlayback, 500);
                   setTimeout(ensurePlayback, 1000);
                   setTimeout(ensurePlayback, 3000);
                   setTimeout(ensurePlayback, 5000);
+                  
+                  // Add mobile scroll handling to prevent playback stopping during scroll
+                  let scrollTimeout;
+                  window.addEventListener('scroll', () => {
+                    clearTimeout(scrollTimeout);
+                    
+                    // Use a flag to track if we're currently handling a scroll
+                    window.ch5ScrollHandling = true;
+                    
+                    // If the player exists and is in view, ensure it's playing
+                    const playerElement = document.getElementById('youtube-player-5');
+                    if (playerElement && window.channel5Player) {
+                      // Add loading indicator during scroll
+                      const videoBackground = document.querySelector('.video-background');
+                      if (videoBackground && !videoBackground.classList.contains('loading')) {
+                        videoBackground.classList.add('loading');
+                      }
+                      
+                      // Force play during scroll to prevent freezing
+                      window.channel5Player.playVideo();
+                    }
+                    
+                    // After scroll stops, ensure playback continues and remove loading state
+                    scrollTimeout = setTimeout(() => {
+                      window.ch5ScrollHandling = false;
+                      
+                      // Remove loading class
+                      const videoBackground = document.querySelector('.video-background');
+                      if (videoBackground) {
+                        videoBackground.classList.remove('loading');
+                      }
+                      
+                      // Re-trigger playback to recover from potential pause
+                      if (window.channel5Player) {
+                        window.channel5Player.playVideo();
+                      }
+                    }, 200);
+                  }, { passive: true }); // Use passive listener for better scroll performance
                 }
               },
               onStateChange: event => {
@@ -449,17 +553,40 @@ export async function init() {
                 if (event.data === YT.PlayerState.ENDED || event.data === YT.PlayerState.PAUSED) {
                   console.log("Channel 5 video paused/ended, restarting for live TV experience");
                   event.target.playVideo();
+                } else if (event.data === YT.PlayerState.BUFFERING && isMobile) {
+                  // Add loading indicator during buffering on mobile
+                  const videoBackground = document.querySelector('.video-background');
+                  if (videoBackground && !videoBackground.classList.contains('loading')) {
+                    videoBackground.classList.add('loading');
+                  }
+                  
+                  // Set a recovery timeout after buffering starts
+                  clearTimeout(window.ch5BufferingTimeout);
+                  window.ch5BufferingTimeout = setTimeout(() => {
+                    // If still buffering after timeout, force reload the player
+                    if (event.target.getPlayerState() === YT.PlayerState.BUFFERING) {
+                      console.log("Channel 5 still buffering, forcing reload");
+                      event.target.playVideo();
+                    }
+                    
+                    // Remove loading class
+                    const videoBackground = document.querySelector('.video-background');
+                    if (videoBackground) {
+                      videoBackground.classList.remove('loading');
+                    }
+                  }, 3000);
+                } else if (event.data === YT.PlayerState.PLAYING && isMobile) {
+                  // When playback resumes on mobile, remove loading indicator
+                  const videoBackground = document.querySelector('.video-background');
+                  if (videoBackground) {
+                    videoBackground.classList.remove('loading');
+                  }
+                  
+                  // Clear any buffering timeouts
+                  clearTimeout(window.ch5BufferingTimeout);
                 }
               },
-              onError: event => {
-                console.error('Channel 5 YouTube player error:', event.data);
-                // Retry playback on error
-                setTimeout(() => {
-                  if (window.channel5Player && typeof window.channel5Player.playVideo === 'function') {
-                    window.channel5Player.playVideo();
-                  }
-                }, 2000);
-              }
+              // onError moved to top of events for better organization and expanded
             }
           });
         } else if (window.channel5Player) {
