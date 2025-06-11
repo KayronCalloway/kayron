@@ -389,8 +389,7 @@ export async function init() {
             background-color: rgba(0, 0, 0, 0.8);
           }
           
-          /* Force hardware acceleration for smoother playback */
-          #youtube-player-5,
+          /* Force hardware acceleration for smoother playback but only apply if elements exist */
           .video-background iframe {
             will-change: transform;
             transform: translateZ(0);
@@ -399,6 +398,34 @@ export async function init() {
           }
         `;
         document.head.appendChild(loadingStyle);
+        
+        // Delayed application of styles to YouTube iframe after it's loaded
+        const applyYouTubeStyles = () => {
+          setTimeout(() => {
+            const youtubePlayer = document.getElementById('youtube-player-5');
+            if (youtubePlayer) {
+              console.log('YouTube iframe found, applying hardware acceleration styles');
+              youtubePlayer.style.willChange = 'transform';
+              youtubePlayer.style.transform = 'translateZ(0)';
+              youtubePlayer.style.backfaceVisibility = 'hidden';
+              youtubePlayer.style.perspective = '1000px';
+            } else {
+              // If no YouTube player yet, try again in 1 second (up to 5 attempts)
+              if (window.youtubeStyleAttempts === undefined) {
+                window.youtubeStyleAttempts = 0;
+              }
+              
+              if (window.youtubeStyleAttempts < 5) {
+                window.youtubeStyleAttempts++;
+                console.log(`YouTube iframe not found, retry attempt ${window.youtubeStyleAttempts}`);
+                applyYouTubeStyles(); // Try again
+              }
+            }
+          }, 1000);
+        };
+        
+        // Start style application process
+        applyYouTubeStyles();
       }
       
       
