@@ -92,15 +92,12 @@ export async function init() {
       }
     }, 500);
     
-    // Ensure TV Guide has correct positioning
-    const tvGuide = document.getElementById('tvGuide');
-    if (tvGuide) {
-      tvGuide.style.position = 'fixed';
-      tvGuide.style.top = '0';
-      tvGuide.style.left = '0';
-      tvGuide.style.width = '100%';
-      tvGuide.style.height = '100%';
-      tvGuide.style.zIndex = '10000000';
+    // Ensure TV Guide has correct positioning - USING GLOBAL STANDARD
+    if (typeof window.ensureTVGuideStandardStyling === 'function') {
+      window.ensureTVGuideStandardStyling();
+      console.log('Channel 2: Applied standard TV Guide styling');
+    } else {
+      console.warn('Channel 2: Global TV Guide styling function not available');
     }
     
     console.log("Channel 2 initialized successfully with portfolio studio");
