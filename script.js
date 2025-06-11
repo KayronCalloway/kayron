@@ -832,11 +832,15 @@ const resetMenuStyles = () => {
             if (!window.channel5Player) return;
             const st = window.channel5Player.getPlayerState ? window.channel5Player.getPlayerState() : null;
             if (st === 1) { // playing
-              if (( !isMobile || window.soundAllowed) && typeof window.channel5Player.unMute === 'function') {
-                window.channel5Player.unMute();
-                console.log("Channel 5 active: Unmuted once playback confirmed (desktop or after user gesture).");
+              if (!isMobile || window.soundAllowed) {
+                if (typeof window.channel5Player.unMute === 'function') {
+                  window.channel5Player.unMute();
+                  console.log("Channel 5 active: Unmuted once playback confirmed and permission granted.");
+                }
               } else {
-                console.log("Channel 5 active: Keeping muted on mobile until user interaction.");
+                // Wait until user interaction allows sound, then unmute
+                setTimeout(unmuteWhenPlaying, 250);
+                return;
               }
             } else {
               setTimeout(unmuteWhenPlaying, 250);
