@@ -197,8 +197,7 @@ function startGame() {
     scoreDisplay.textContent = '0';
   }
   
-  // Play start sound
-  playSound('./audio/whoosh.mp3');
+  // Start sound removed - keeping only gameshow.aif background
   
   // Show game screen
   console.log('🎮 Switching to game screen...');
@@ -347,8 +346,7 @@ function selectAnswer(selectedOption) {
     selectedButton.appendChild(pointsDisplay);
   }
   
-  // Play success sound
-  playSound('./audio/ka-ching.mp3');
+  // Success sound removed - keeping only gameshow.aif background
   
   // Show insight and progress to next question
   setTimeout(() => {
@@ -464,15 +462,7 @@ function resetGame() {
   showScreen('host-intro');
 }
 
-// Sound helper
-function playSound(src) {
-  try {
-    const audio = new Audio(src);
-    audio.play().catch(err => console.log('Sound play failed:', err));
-  } catch (error) {
-    console.warn('Sound error:', error);
-  }
-}
+// Individual sound effects removed - using only gameshow.aif background audio
 
 // Global functions for testing and manual triggering
 window.startGameshow = function() {
