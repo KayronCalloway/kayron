@@ -61,13 +61,15 @@ let autoAdvanceTimer = null; // Track the auto-advance timer
 function setupMusicPlayer() {
   console.log('Setting up music player...');
   
-  // Get track data from the DOM - back to YouTube
+  // Get track data from the DOM - supports both YouTube and local videos
   tracks = Array.from(document.querySelectorAll('.track-card')).map((card, index) => ({
     id: card.dataset.youtubeId,
+    videoPath: card.dataset.videoPath,
     title: card.dataset.trackTitle,
     year: card.dataset.year,
     element: card,
-    index: index
+    index: index,
+    isLocal: !!card.dataset.videoPath
   }));
   
   // Don't fetch video titles since we already have the correct ones
@@ -198,8 +200,12 @@ function playTrack(index) {
   // Update visual states
   updateTrackStates();
   
-  // Load YouTube video
-  loadYouTubeVideo(track.id);
+  // Load video (YouTube or local)
+  if (track.isLocal) {
+    loadLocalVideo(track.videoPath);
+  } else {
+    loadYouTubeVideo(track.id);
+  }
 }
 
 function loadYouTubeVideo(videoId) {
@@ -259,6 +265,74 @@ function loadYouTubeVideo(videoId) {
     // Use timer-based auto-advance as fallback
     setupAutoAdvance(videoId);
   }
+  
+  // Update play button state
+  const playPauseBtn = document.getElementById('playPause');
+  if (playPauseBtn) {
+    playPauseBtn.textContent = '⏸';
+  }
+}
+
+function loadLocalVideo(videoPath) {
+  console.log('Loading local video:', videoPath);
+  
+  // Clear any existing auto-advance timer
+  if (autoAdvanceTimer) {
+    clearTimeout(autoAdvanceTimer);
+    autoAdvanceTimer = null;
+  }
+  
+  const playerContainer = document.getElementById('music-video-player');
+  if (!playerContainer) {
+    console.error('Player container not found');
+    return;
+  }
+  
+  // Clear previous content
+  playerContainer.innerHTML = '';
+  
+  // Create HTML5 video element with proper alignment
+  const video = document.createElement('video');
+  video.src = videoPath;
+  video.width = '100%';
+  video.height = '100%';
+  video.controls = true;
+  video.autoplay = true;
+  video.loop = false;
+  video.style.objectFit = 'contain'; // Changed from 'cover' to 'contain' for better fitting
+  video.style.objectPosition = 'center'; // Center the video
+  video.style.background = '#000'; // Black background
+  video.id = 'local-video-player';
+  
+  // Add event listeners
+  video.addEventListener('loadedmetadata', () => {
+    console.log('Local video loaded, duration:', video.duration);
+    // Set auto-advance timer based on actual duration
+    if (video.duration > 0) {
+      autoAdvanceTimer = setTimeout(() => {
+        console.log('Auto-advancing to next video...');
+        playNextTrack();
+      }, (video.duration - 2) * 1000); // Advance 2 seconds before end
+    }
+  });
+  
+  video.addEventListener('ended', () => {
+    console.log('Local video ended - auto advancing');
+    playNextTrack();
+  });
+  
+  video.addEventListener('play', () => {
+    const playPauseBtn = document.getElementById('playPause');
+    if (playPauseBtn) playPauseBtn.textContent = '⏸';
+  });
+  
+  video.addEventListener('pause', () => {
+    const playPauseBtn = document.getElementById('playPause');
+    if (playPauseBtn) playPauseBtn.textContent = '▶';
+  });
+  
+  playerContainer.appendChild(video);
+  currentPlayer = video;
   
   // Update play button state
   const playPauseBtn = document.getElementById('playPause');
@@ -330,7 +404,7 @@ function togglePlayPause() {
   const playPauseBtn = document.getElementById('playPause');
   if (!playPauseBtn || !currentPlayer) return;
   
-  // Check if we have a YouTube API player or iframe
+  // Check if we have a YouTube API player
   if (currentPlayer.pauseVideo && currentPlayer.playVideo) {
     // YouTube API player
     if (playPauseBtn.textContent === '▶') {
@@ -338,6 +412,15 @@ function togglePlayPause() {
       playPauseBtn.textContent = '⏸';
     } else {
       currentPlayer.pauseVideo();
+      playPauseBtn.textContent = '▶';
+    }
+  } else if (currentPlayer.tagName === 'VIDEO') {
+    // HTML5 video element (local video)
+    if (currentPlayer.paused) {
+      currentPlayer.play();
+      playPauseBtn.textContent = '⏸';
+    } else {
+      currentPlayer.pause();
       playPauseBtn.textContent = '▶';
     }
   } else {
@@ -529,15 +612,22 @@ function setupChannelVisibilityDetection() {
 }
 
 function pauseCurrentMedia() {
-  // For YouTube embeds, we can provide visual feedback
   const playPauseBtn = document.getElementById('playPause');
+  
+  // Try to actually pause the media if possible
+  if (currentPlayer) {
+    if (currentPlayer.pauseVideo) {
+      // YouTube API player
+      currentPlayer.pauseVideo();
+    } else if (currentPlayer.tagName === 'VIDEO') {
+      // HTML5 video element
+      currentPlayer.pause();
+    }
+  }
+  
+  // Update button state
   if (playPauseBtn) {
     playPauseBtn.textContent = '▶';
   }
-  
-  // You could also hide/remove the iframe to stop playback entirely
-  // if (currentPlayer) {
-  //   currentPlayer.style.display = 'none';
-  // }
 }
 
