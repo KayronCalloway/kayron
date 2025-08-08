@@ -293,15 +293,20 @@ function loadLocalVideo(videoPath) {
   
   // Create HTML5 video element with proper alignment
   const video = document.createElement('video');
-  video.src = videoPath;
   video.controls = true;
   video.muted = true; // Start muted to allow autoplay
-  video.autoplay = true;
+  video.autoplay = false; // Don't autoplay initially
   video.loop = false;
-  video.preload = 'metadata'; // Load metadata first
+  video.preload = 'auto'; // Preload the entire video
   video.id = 'local-video-player';
   
-  // Let CSS handle the styling for proper centering
+  // Add multiple source formats for compatibility
+  const source = document.createElement('source');
+  source.src = videoPath;
+  source.type = 'video/webm';
+  video.appendChild(source);
+  
+  console.log('Creating video element with source:', videoPath);
   
   // Add event listeners
   video.addEventListener('loadedmetadata', () => {
@@ -330,31 +335,45 @@ function loadLocalVideo(videoPath) {
     if (playPauseBtn) playPauseBtn.textContent = '▶';
   });
   
+  // Handle video loading states
+  video.addEventListener('loadstart', () => {
+    console.log('Video load started');
+  });
+  
+  video.addEventListener('canplay', () => {
+    console.log('Video can play');
+    // Try to start playing once it can play
+    video.play().then(() => {
+      console.log('Video started playing');
+      const playPauseBtn = document.getElementById('playPause');
+      if (playPauseBtn) playPauseBtn.textContent = '⏸';
+    }).catch(error => {
+      console.log('Play failed:', error);
+      const playPauseBtn = document.getElementById('playPause');
+      if (playPauseBtn) playPauseBtn.textContent = '▶';
+    });
+  });
+  
   // Handle autoplay errors
   video.addEventListener('error', (e) => {
-    console.error('Video error:', e);
+    console.error('Video error:', e.target.error);
+    console.error('Error code:', e.target.error?.code);
+    console.error('Error message:', e.target.error?.message);
     const playPauseBtn = document.getElementById('playPause');
     if (playPauseBtn) playPauseBtn.textContent = '▶';
+  });
+  
+  // Handle source errors  
+  source.addEventListener('error', (e) => {
+    console.error('Source error:', e);
   });
   
   playerContainer.appendChild(video);
   currentPlayer = video;
   
-  // Try to play the video, handle autoplay restrictions
-  const playPromise = video.play();
-  if (playPromise !== undefined) {
-    playPromise.then(() => {
-      // Autoplay started successfully
-      console.log('Video autoplay started');
-      const playPauseBtn = document.getElementById('playPause');
-      if (playPauseBtn) playPauseBtn.textContent = '⏸';
-    }).catch(error => {
-      // Autoplay was prevented
-      console.log('Autoplay prevented:', error);
-      const playPauseBtn = document.getElementById('playPause');
-      if (playPauseBtn) playPauseBtn.textContent = '▶';
-    });
-  }
+  // Set initial button state
+  const playPauseBtn = document.getElementById('playPause');
+  if (playPauseBtn) playPauseBtn.textContent = '▶';
 }
 
 // Set up auto-advance to next video
