@@ -297,11 +297,15 @@ function loadLocalVideo(videoPath) {
   video.width = '100%';
   video.height = '100%';
   video.controls = true;
+  video.muted = true; // Start muted to allow autoplay
   video.autoplay = true;
   video.loop = false;
-  video.style.objectFit = 'contain'; // Changed from 'cover' to 'contain' for better fitting
-  video.style.objectPosition = 'center'; // Center the video
-  video.style.background = '#000'; // Black background
+  video.preload = 'metadata'; // Load metadata first
+  video.style.objectFit = 'contain';
+  video.style.objectPosition = 'center center';
+  video.style.background = '#000';
+  video.style.display = 'block';
+  video.style.margin = '0 auto'; // Additional centering
   video.id = 'local-video-player';
   
   // Add event listeners
@@ -331,13 +335,30 @@ function loadLocalVideo(videoPath) {
     if (playPauseBtn) playPauseBtn.textContent = '▶';
   });
   
+  // Handle autoplay errors
+  video.addEventListener('error', (e) => {
+    console.error('Video error:', e);
+    const playPauseBtn = document.getElementById('playPause');
+    if (playPauseBtn) playPauseBtn.textContent = '▶';
+  });
+  
   playerContainer.appendChild(video);
   currentPlayer = video;
   
-  // Update play button state
-  const playPauseBtn = document.getElementById('playPause');
-  if (playPauseBtn) {
-    playPauseBtn.textContent = '⏸';
+  // Try to play the video, handle autoplay restrictions
+  const playPromise = video.play();
+  if (playPromise !== undefined) {
+    playPromise.then(() => {
+      // Autoplay started successfully
+      console.log('Video autoplay started');
+      const playPauseBtn = document.getElementById('playPause');
+      if (playPauseBtn) playPauseBtn.textContent = '⏸';
+    }).catch(error => {
+      // Autoplay was prevented
+      console.log('Autoplay prevented:', error);
+      const playPauseBtn = document.getElementById('playPause');
+      if (playPauseBtn) playPauseBtn.textContent = '▶';
+    });
   }
 }
 
