@@ -300,10 +300,10 @@ function loadLocalVideo(videoPath) {
   video.preload = 'auto'; // Preload the entire video
   video.id = 'local-video-player';
   
-  // Add multiple source formats for compatibility
+  // Add MP4 source for better browser compatibility
   const source = document.createElement('source');
   source.src = videoPath;
-  source.type = 'video/webm';
+  source.type = 'video/mp4';
   video.appendChild(source);
   
   console.log('Creating video element with source:', videoPath);
