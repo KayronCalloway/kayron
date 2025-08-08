@@ -293,6 +293,7 @@ function loadLocalVideo(videoPath) {
   
   // Create HTML5 video element with proper alignment
   const video = document.createElement('video');
+  video.src = videoPath; // Direct src assignment
   video.controls = true;
   video.muted = true; // Start muted to allow autoplay
   video.autoplay = false; // Don't autoplay initially
@@ -300,13 +301,8 @@ function loadLocalVideo(videoPath) {
   video.preload = 'auto'; // Preload the entire video
   video.id = 'local-video-player';
   
-  // Add MP4 source for better browser compatibility
-  const source = document.createElement('source');
-  source.src = videoPath;
-  source.type = 'video/mp4';
-  video.appendChild(source);
-  
   console.log('Creating video element with source:', videoPath);
+  console.log('Full video path:', window.location.origin + '/' + videoPath);
   
   // Add event listeners
   video.addEventListener('loadedmetadata', () => {
@@ -363,10 +359,7 @@ function loadLocalVideo(videoPath) {
     if (playPauseBtn) playPauseBtn.textContent = '▶';
   });
   
-  // Handle source errors  
-  source.addEventListener('error', (e) => {
-    console.error('Source error:', e);
-  });
+  // Video should load directly with src attribute
   
   playerContainer.appendChild(video);
   currentPlayer = video;
