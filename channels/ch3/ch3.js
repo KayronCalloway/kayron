@@ -304,6 +304,16 @@ function loadLocalVideo(videoPath) {
   console.log('Creating video element with source:', videoPath);
   console.log('Full video path:', window.location.origin + '/' + videoPath);
   
+  // Test if video file is accessible
+  fetch(videoPath).then(response => {
+    console.log('Video file fetch response:', response.status, response.ok);
+    if (!response.ok) {
+      console.error('Video file not accessible:', response.status, response.statusText);
+    }
+  }).catch(error => {
+    console.error('Video file fetch error:', error);
+  });
+  
   // Add event listeners
   video.addEventListener('loadedmetadata', () => {
     console.log('Local video loaded, duration:', video.duration);
