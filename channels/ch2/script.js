@@ -434,6 +434,62 @@
         { name: 'Sustainable Innovation', description: 'Implementing ethical approaches and environmentally conscious production methods across all projects.' }
       ]
     },
+    'after-school-agency': {
+      title: 'After School Agency',
+      tagline: 'Creative collective uniting diverse professional talents',
+      description: `After School Agency is a creative collective that brings together diverse professionals including artists, marketers, stylists, directors, musicians, graphic designers, photographers, writers, architects, and advertisers. This collaborative platform focuses on cross-disciplinary creative work, positioning itself as a versatile agency for dreamers and innovators who want to push creative boundaries through collective expertise.`,
+      projectUrl: 'https://www.afterschoolagency.com',
+      metaInfo: [
+        { label: 'Type', value: 'Creative Collective' },
+        { label: 'Focus', value: 'Cross-Disciplinary Collaboration' },
+        { label: 'Status', value: 'Active' }
+      ],
+      galleryImages: [
+        { 
+          customHtml: `
+            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #f8f9fa, #e9ecef); display: flex; flex-direction: column; padding: 20px; color: #333; position: relative; overflow: hidden;">
+              <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 20% 30%, rgba(0, 0, 0, 0.05), transparent 40%), radial-gradient(circle at 80% 70%, rgba(0, 0, 0, 0.03), transparent 40%);"></div>
+              <div style="font-family: 'Space Grotesk', monospace; font-size: 20px; margin-bottom: 20px; letter-spacing: 1px; z-index: 2; text-align: center;">AFTER SCHOOL<br/>AGENCY</div>
+              <div style="display: flex; flex-direction: column; gap: 15px; flex: 1; justify-content: center; z-index: 2;">
+                <div style="width: 100%; height: 1px; background: linear-gradient(90deg, transparent, #333, transparent); margin-bottom: 5px;"></div>
+                <div style="font-size: 14px; letter-spacing: 1px; text-align: center;">CREATIVE · COLLECTIVE · COLLABORATION</div>
+                <div style="margin-top: 15px; font-size: 12px; opacity: 0.7; line-height: 1.4; text-align: center;">
+                  Uniting diverse creative professionals for innovative cross-disciplinary work.
+                </div>
+              </div>
+            </div>
+          `,
+          alt: 'After School Agency - Brand Overview' 
+        },
+        { 
+          customHtml: `
+            <div style="width: 100%; height: 100%; background-color: #fafafa; display: flex; flex-direction: column; padding: 20px; color: #333;">
+              <div style="font-family: 'Space Grotesk', monospace; font-size: 16px; margin-bottom: 15px; letter-spacing: 1px; opacity: 0.8;">CREATIVE DISCIPLINES</div>
+              <div style="flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: center;">
+                <div style="text-align: center; padding: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; font-size: 11px;">ARTISTS</div>
+                <div style="text-align: center; padding: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; font-size: 11px;">MARKETERS</div>
+                <div style="text-align: center; padding: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; font-size: 11px;">DIRECTORS</div>
+                <div style="text-align: center; padding: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; font-size: 11px;">MUSICIANS</div>
+                <div style="text-align: center; padding: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; font-size: 11px;">DESIGNERS</div>
+                <div style="text-align: center; padding: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; font-size: 11px;">WRITERS</div>
+                <div style="text-align: center; padding: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; font-size: 11px;">ARCHITECTS</div>
+                <div style="text-align: center; padding: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; font-size: 11px;">ADVERTISERS</div>
+              </div>
+              <div style="margin-top: 15px; font-size: 11px; opacity: 0.7; font-style: italic; text-align: center;">
+                "A platform for dreamers to collaborate across disciplines."
+              </div>
+            </div>
+          `,
+          alt: 'After School Agency - Creative Disciplines' 
+        }
+      ],
+      processStages: [
+        { name: 'Collective Formation', description: 'Building diverse teams of creative professionals across multiple disciplines.' },
+        { name: 'Cross-Disciplinary Collaboration', description: 'Facilitating innovative partnerships between artists, marketers, designers, and other creatives.' },
+        { name: 'Creative Direction', description: 'Guiding unified vision and aesthetic across varied creative outputs.' },
+        { name: 'Platform Development', description: 'Creating systems and processes that enable seamless creative collaboration.' }
+      ]
+    },
   };
 
   // Default projects for modal process views
