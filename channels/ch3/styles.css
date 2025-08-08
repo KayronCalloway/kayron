@@ -44,8 +44,16 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  object-position: center;
+  object-position: center center;
   background: #000;
+}
+
+/* Center YouTube iframes as well */
+#section3 #music-video-player iframe {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
 }
 
 /* Removed video overlay and ticker styles */
