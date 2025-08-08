@@ -30,9 +30,9 @@ export async function init() {
       setupTrackSelection();
       setupBroadcastSignals();
       
-      // Auto-load the latest track (Window Shopping The American Dream) on channel load
+      // Auto-load the first track (Field Trippin) on channel load
       setTimeout(() => {
-        playTrack(3); // Index 3 = Track 4 = Window Shopping The American Dream
+        playTrack(0); // Index 0 = Track 1 = Field Trippin
       }, 1000);
       
       // Ensure TV Guide has correct positioning - USING GLOBAL STANDARD
@@ -112,9 +112,9 @@ function setupMusicPlayer() {
   };
   
   addMobileSupport(playPauseBtn, () => {
-    // If no track is playing, start with the latest track (track 3 - Window Shopping The American Dream)
+    // If no track is playing, start with the first track (Field Trippin)
     if (currentTrackIndex === -1) {
-      playTrack(3); // Start with the newest track
+      playTrack(0); // Start with the first track
     } else {
       togglePlayPause();
     }
@@ -415,8 +415,7 @@ async function fetchVideoDuration(videoId) {
     const estimatedDurations = {
       'ftp_QMl9BgU': 240, // 4 minutes
       'tpeUkuGCzOU': 210, // 3.5 minutes  
-      'ptNBEZ6pPp4': 180, // 3 minutes
-      'uL_TspM3twU': 200  // 3.3 minutes - Window Shopping The American Dream
+      'ptNBEZ6pPp4': 180  // 3 minutes
     };
     
     return estimatedDurations[videoId] || 210; // Default 3.5 minutes
