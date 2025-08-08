@@ -29,11 +29,15 @@
   background: #000;
   overflow: hidden;
   max-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #section3 #music-video-player {
   width: 100%;
   height: 100%;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,19 +45,19 @@
 
 /* Specific styles for HTML5 video elements */
 #section3 #music-video-player video {
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
   object-fit: contain;
-  object-position: center center;
-  background: #000;
+  display: block;
 }
 
 /* Center YouTube iframes as well */
 #section3 #music-video-player iframe {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: center center;
+  border: none;
 }
 
 /* Removed video overlay and ticker styles */

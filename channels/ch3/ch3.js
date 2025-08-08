@@ -294,19 +294,14 @@ function loadLocalVideo(videoPath) {
   // Create HTML5 video element with proper alignment
   const video = document.createElement('video');
   video.src = videoPath;
-  video.width = '100%';
-  video.height = '100%';
   video.controls = true;
   video.muted = true; // Start muted to allow autoplay
   video.autoplay = true;
   video.loop = false;
   video.preload = 'metadata'; // Load metadata first
-  video.style.objectFit = 'contain';
-  video.style.objectPosition = 'center center';
-  video.style.background = '#000';
-  video.style.display = 'block';
-  video.style.margin = '0 auto'; // Additional centering
   video.id = 'local-video-player';
+  
+  // Let CSS handle the styling for proper centering
   
   // Add event listeners
   video.addEventListener('loadedmetadata', () => {
