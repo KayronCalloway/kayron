@@ -425,6 +425,13 @@
   transition: transform var(--ch2-transition-medium);
 }
 
+/* SVG specific handling for logos */
+.card-poster img[src$=".svg"] {
+  object-fit: contain;
+  padding: 20px;
+  background-color: #fff;
+}
+
 /* Video thumbnail styles */
 .video-thumbnail {
   width: 100%;
