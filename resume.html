@@ -828,8 +828,12 @@
       }
       
       @page {
-        margin: 0.4cm;
+        margin: 0.5cm 0.6cm;
         size: letter portrait;
+      }
+      
+      @page :first {
+        margin: 0.4cm 0.6cm;
       }
       
       .resume-container {
@@ -877,6 +881,13 @@
         grid-gap: calc(var(--spacing-unit) * 4);
         align-items: start;
         align-content: start;
+        page-break-inside: auto;
+        break-inside: auto;
+      }
+      
+      .left-column, .right-column {
+        page-break-inside: auto;
+        break-inside: auto;
       }
       
       /* Maintain consistent spacing */
@@ -946,17 +957,26 @@
       
       /* Strategic page breaks and spacing optimization */
       
-      /* Allow EXPERIENCE section to break, but keep individual items together */
+      /* Allow main sections to break naturally */
       section {
-        page-break-inside: auto; /* Allow sections to split */
+        page-break-inside: auto;
+        break-inside: auto;
       }
       
+      /* Keep experience items together but allow breaks between them */
       .experience-item {
-        page-break-inside: avoid; /* Keep individual jobs together */
+        page-break-inside: avoid;
         break-inside: avoid;
-        page-break-after: auto; /* Allow breaks between jobs */
-        margin-bottom: 0.3cm; /* Reduce space between experience items */
-        padding-bottom: 0.1cm;
+        page-break-after: auto;
+        break-after: auto;
+        margin-bottom: 0.4cm;
+        padding-bottom: 0.2cm;
+      }
+      
+      /* Allow the experience section to break across pages */
+      .left-column section {
+        page-break-inside: auto;
+        break-inside: auto;
       }
       
       /* Optimize left column spacing */
@@ -969,15 +989,16 @@
         margin-bottom: calc(var(--spacing-unit) * 1.5);
       }
       
-      /* Keep compact sections together */
-      .skills, .projects, .education-item {
-        page-break-inside: avoid;
-        break-inside: avoid;
+      /* Right column sections can break if needed */
+      .skills, .projects, .recognition, .education-item {
+        page-break-inside: auto;
+        break-inside: auto;
       }
       
-      /* Allow portfolio lists to break between items */
-      .projects ul, .recognition ul {
+      /* Allow all lists to break between items */
+      .projects ul, .recognition ul, .skills {
         page-break-inside: auto;
+        break-inside: auto;
       }
       
       /* Keep individual list items together */
@@ -986,9 +1007,15 @@
         break-inside: avoid;
       }
       
-      /* Ensure header and summary stay on page 1 */
-      header, .summary {
+      /* Ensure header stays on page 1, but allow summary to flow naturally */
+      header {
         page-break-after: avoid;
+        break-after: avoid;
+      }
+      
+      .summary {
+        page-break-after: auto;
+        break-after: auto;
       }
       
       li {
