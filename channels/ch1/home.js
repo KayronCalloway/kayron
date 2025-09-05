@@ -471,8 +471,8 @@ function setupPDFDownload() {
       downloadButton.innerHTML = '( opening resume... )';
       downloadButton.disabled = true;
 
-      // Open the ATS resume HTML file in a new window for printing
-      const printWindow = window.open('/resume_ats.html', '_blank', 'width=800,height=1000');
+      // Open the new resume HTML file in a new window for printing
+      const printWindow = window.open('/temp/kayron_resume.html', '_blank', 'width=800,height=1000');
       
       if (!printWindow) {
         throw new Error('Popup blocked or failed to open');
