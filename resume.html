@@ -72,9 +72,9 @@
       letter-spacing: -0.01em;
       color: var(--color-text-primary);
       background: var(--color-background);
-      max-width: 8.5in;
+      max-width: 9in;
       margin: 60px auto;
-      padding: 0 var(--spacing-unit);
+      padding: 0 calc(var(--spacing-unit) * 2);
       position: relative;
     }
     
@@ -212,30 +212,24 @@
     }
     
     .philosophy-statement {
-      font-style: italic;
-      color: var(--color-text-tertiary);
-      margin-top: calc(var(--spacing-unit) * 3.5);
+      color: var(--color-text-secondary);
+      margin-top: calc(var(--spacing-unit) * 2);
       font-weight: 300;
-      margin-bottom: calc(var(--spacing-unit) * 3);
-      max-width: 90%;
-      font-size: 14px;
-      line-height: 1.6;
-      position: relative;
-      padding-left: calc(var(--spacing-unit) * 2);
+      margin-bottom: calc(var(--spacing-unit) * 2);
+      font-size: 13px;
+      line-height: 1.5;
     }
     
-    /* Functional philosophy - subtle quote mark */
-    .philosophy-statement::before {
-      content: '"';
-      position: absolute;
-      left: 0;
-      top: -2px;
-      font-size: 20px;
-      color: var(--color-accent);
-      opacity: 0.4;
-      font-style: normal;
-      transform: rotate(-3deg);
+    .philosophy-statement p {
+      margin-bottom: calc(var(--spacing-unit) * 1.5);
+      color: var(--color-text-secondary);
+      font-weight: 300;
     }
+    
+    .philosophy-statement p:last-child {
+      margin-bottom: 0;
+    }
+    
     
     .contact-info {
       display: flex;
@@ -286,16 +280,16 @@
     .main-content {
       display: grid;
       grid-template-columns: 68fr 32fr;
-      grid-gap: calc(var(--spacing-unit) * 4);
+      grid-gap: calc(var(--spacing-unit) * 5);
       align-items: start;
       align-content: start;
     }
     
     /* Summary Section */
     .summary {
-      margin-bottom: calc(var(--spacing-unit) * 7);
+      margin-bottom: calc(var(--spacing-unit) * 6);
       position: relative;
-      max-width: 95%;
+      max-width: 98%;
     }
     
     .summary p {
@@ -316,7 +310,7 @@
     
     /* Section Styling */
     section {
-      margin-bottom: calc(var(--spacing-unit) * 7);
+      margin-bottom: calc(var(--spacing-unit) * 6);
     }
     
     h2 {
@@ -393,9 +387,9 @@
     
     /* Experience Items - Fortune 100 Style */
     .experience-item {
-      margin-bottom: calc(var(--spacing-unit) * 5);
+      margin-bottom: calc(var(--spacing-unit) * 4.5);
       position: relative;
-      padding-bottom: calc(var(--spacing-unit) * 2);
+      padding-bottom: calc(var(--spacing-unit) * 1.5);
     }
     
     .experience-item:not(:last-child) {
@@ -657,7 +651,6 @@
     .projects li {
       margin-bottom: calc(var(--spacing-unit) * 1);
       position: relative;
-      padding-left: calc(var(--spacing-unit) * 2.5);
       background: linear-gradient(to right, rgba(245, 245, 245, 0.5), transparent);
       padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 1.5);
       border-radius: 3px;
@@ -790,6 +783,7 @@
         background: #fff !important;
         color: #000 !important;
         max-width: 100%;
+        width: 100%;
       }
       
       /* Remove decorative elements for clean PDF */
@@ -864,7 +858,7 @@
       .main-content {
         display: grid;
         grid-template-columns: 68fr 32fr;
-        grid-gap: calc(var(--spacing-unit) * 3);
+        grid-gap: calc(var(--spacing-unit) * 4);
         align-items: start;
         align-content: start;
       }
@@ -872,8 +866,9 @@
       /* Maintain consistent spacing */
       .resume-container {
         margin: 0;
-        padding: 0.4cm 0.6cm;
+        padding: 0.4cm 0.8cm;
         max-width: 100%;
+        width: 100%;
       }
       
       /* Optimize spacing for better page 1 usage */
@@ -1056,7 +1051,7 @@
       
       /* Right column spacing optimization */
       .right-column section {
-        margin-bottom: 0.25cm;
+        margin-bottom: 0.3cm;
       }
       
       /* Adjust skill boxes */
@@ -1131,7 +1126,6 @@
         <a href="mailto:KayronCalloway@gmail.com" itemprop="email">KayronCalloway@gmail.com</a>
         <a href="https://instagram.com/coolwithakay" target="_blank">@coolwithakay</a>
         <a href="https://kayroncalloway.com" target="_blank">kayroncalloway.com</a>
-      </div>
       </div>
     </header>
     
@@ -1271,10 +1265,10 @@
     <section class="philosophy">
       <h2>CREATIVE PHILOSOPHY</h2>
       <div class="philosophy-statement">
-        <strong>Creative Leadership & Vision:</strong> I lead creative initiatives through strategic vision, coordinating international teams and managing complex creative stakeholder relationships while maintaining artistic integrity and commercial viability across all creative projects.
-        <strong>Creative Technology Integration:</strong> Pioneer in merging AI and emerging technologies with traditional creative practice, developing cutting-edge creative solutions that push industry boundaries while delivering measurable creative and business impact.
-        <strong>Narrative-Driven Creative Strategy:</strong> Every creative project begins with compelling storytelling—I develop authentic brand narratives and creative concepts that resonate with target audiences while establishing distinctive market positioning and creative differentiation.
-        <strong>Creative Business Excellence:</strong> My approach combines creative vision with exceptional business acumen, ensuring creative projects deliver both artistic excellence and strategic business results through disciplined creative operations and stakeholder management.
+        <p><strong>Creative Leadership & Vision:</strong> I lead creative initiatives through strategic vision, coordinating international teams and managing complex creative stakeholder relationships while maintaining artistic integrity and commercial viability across all creative projects.</p>
+        <p><strong>Creative Technology Integration:</strong> Pioneer in merging AI and emerging technologies with traditional creative practice, developing cutting-edge creative solutions that push industry boundaries while delivering measurable creative and business impact.</p>
+        <p><strong>Narrative-Driven Creative Strategy:</strong> Every creative project begins with compelling storytelling—I develop authentic brand narratives and creative concepts that resonate with target audiences while establishing distinctive market positioning and creative differentiation.</p>
+        <p><strong>Creative Business Excellence:</strong> My approach combines creative vision with exceptional business acumen, ensuring creative projects deliver both artistic excellence and strategic business results through disciplined creative operations and stakeholder management.</p>
       </div>
     </section>
     
