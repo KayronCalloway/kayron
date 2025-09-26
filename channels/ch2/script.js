@@ -492,8 +492,8 @@
     },
     'coloring-with-gray': {
       title: 'Coloring with Gray',
-      tagline: 'Berlin Commercial Awards RAW Selection winner - Philosophy-driven creative house',
-      description: `Festival-recognized short film and creative house exploring philosophical concepts through film, fragrance, and experiential design. Winner of Berlin Commercial Awards RAW Selection in 3 categories: Cultural Impact, Craft: Idea, and Commercials & Branded Content - Short. This project represents the flagship work from Coloring With Gray creative house, demonstrating how philosophical frameworks can be translated into compelling visual narratives and multidimensional brand experiences.`,
+      tagline: 'Berlin Commercial Awards RAW Selection across 3 categories - Multidisciplinary creative house','
+      description: `Multidisciplinary creative house developing integrated experiences across film, fragrance, print, and digital platforms. Berlin Commercial Awards RAW Selection across 3 competitive categories (Cultural Impact, Craft: Idea, and Commercials & Branded Content) demonstrating creative excellence spanning conceptual innovation, technical execution, and commercial viability. Established premium market positioning with scalable creative systems and international recognition.`,
       projectUrl: 'https://coloringwithgray.github.io/coloring-page/',
       metaInfo: [
         { label: 'Recognition', value: 'Berlin Commercial Awards RAW Selection' },
