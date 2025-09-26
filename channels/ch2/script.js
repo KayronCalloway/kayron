@@ -499,7 +499,7 @@
         { label: 'Recognition', value: 'Berlin Commercial Awards RAW Selection' },
         { label: 'Categories', value: 'Cultural Impact, Craft: Idea, Branded Content' },
         { label: 'Type', value: 'Short Film & Creative House' },
-        { label: 'Status', value: 'Award Winner' }
+        { label: 'Status', value: 'RAW Selection' }
       ],
       galleryImages: [
         { 
@@ -510,7 +510,7 @@
               <div style="width: 80%; height: 1px; background: linear-gradient(90deg, transparent, #888, transparent); margin: 0 auto 15px; z-index: 2;"></div>
               <div style="text-align: center; z-index: 2;">
                 <div style="font-size: 13px; color: #ccc; margin-bottom: 8px;">Berlin Commercial Awards</div>
-                <div style="font-size: 11px; color: #999; line-height: 1.3;">RAW Selection Winner<br/>3 Categories</div>
+                <div style="font-size: 11px; color: #999; line-height: 1.3;">RAW Selection<br/>3 Categories</div>
               </div>
               <div style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #666; text-align: center; z-index: 2;">Cultural Impact • Craft: Idea • Branded Content</div>
             </div>
