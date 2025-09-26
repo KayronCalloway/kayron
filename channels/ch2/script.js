@@ -490,6 +490,77 @@
         { name: 'Platform Development', description: 'Creating systems and processes that enable seamless creative collaboration.' }
       ]
     },
+    'coloring-with-gray': {
+      title: 'Coloring with Gray',
+      tagline: 'Berlin Commercial Awards RAW Selection winner - Philosophy-driven creative house',
+      description: `Festival-recognized short film and creative house exploring philosophical concepts through film, fragrance, and experiential design. Winner of Berlin Commercial Awards RAW Selection in 3 categories: Cultural Impact, Craft: Idea, and Commercials & Branded Content - Short. This project represents the flagship work from Coloring With Gray creative house, demonstrating how philosophical frameworks can be translated into compelling visual narratives and multidimensional brand experiences.`,
+      projectUrl: 'https://coloringwithgray.github.io/coloring-page/',
+      metaInfo: [
+        { label: 'Recognition', value: 'Berlin Commercial Awards RAW Selection' },
+        { label: 'Categories', value: 'Cultural Impact, Craft: Idea, Branded Content' },
+        { label: 'Type', value: 'Short Film & Creative House' },
+        { label: 'Status', value: 'Award Winner' }
+      ],
+      galleryImages: [
+        { 
+          customHtml: `
+            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #2c2c2c, #1a1a1a); display: flex; flex-direction: column; padding: 20px; color: #e0e0e0; position: relative; overflow: hidden;">
+              <div style="position: absolute; top: 10px; right: 10px; background: linear-gradient(45deg, #ffd700, #ffed4a); color: #000; padding: 6px 12px; border-radius: 15px; font-size: 11px; font-weight: bold; letter-spacing: 0.5px;">🏆 RAW SELECTION</div>
+              <div style="font-family: 'Space Grotesk', monospace; font-size: 22px; margin-bottom: 20px; letter-spacing: 2px; text-align: center; line-height: 1.2; z-index: 2;">COLORING<br/>WITH GRAY</div>
+              <div style="width: 80%; height: 1px; background: linear-gradient(90deg, transparent, #888, transparent); margin: 0 auto 15px; z-index: 2;"></div>
+              <div style="text-align: center; z-index: 2;">
+                <div style="font-size: 13px; color: #ccc; margin-bottom: 8px;">Berlin Commercial Awards</div>
+                <div style="font-size: 11px; color: #999; line-height: 1.3;">RAW Selection Winner<br/>3 Categories</div>
+              </div>
+              <div style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #666; text-align: center; z-index: 2;">Cultural Impact • Craft: Idea • Branded Content</div>
+            </div>
+          `,
+          alt: 'Coloring with Gray - Berlin Commercial Awards Recognition' 
+        },
+        { 
+          customHtml: `
+            <div style="width: 100%; height: 100%; background-color: #f8f8f8; display: flex; flex-direction: column; padding: 20px; color: #333;">
+              <div style="font-size: 14px; text-transform: uppercase; margin-bottom: 15px; color: #555; letter-spacing: 1px;">Creative House</div>
+              <div style="font-family: 'Space Grotesk', monospace; font-size: 24px; font-weight: bold; margin-bottom: 20px; color: #1a1a1a;">Philosophy × Film × Experience</div>
+              <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
+                <div style="flex: 1; height: 100%; background: linear-gradient(45deg, #e0e0e0, #f0f0f0); border-radius: 8px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                  <div style="font-size: 48px; color: #ccc;">🎬</div>
+                </div>
+                <div style="flex: 1;">
+                  <div style="width: 100%; height: 4px; background-color: #ddd; margin-bottom: 12px; border-radius: 2px;"></div>
+                  <div style="width: 85%; height: 4px; background-color: #ccc; margin-bottom: 12px; border-radius: 2px;"></div>
+                  <div style="width: 95%; height: 4px; background-color: #bbb; margin-bottom: 15px; border-radius: 2px;"></div>
+                  <div style="font-size: 12px; color: #666; line-height: 1.4;">Multidimensional creative house translating philosophical concepts into compelling visual narratives and brand experiences.</div>
+                </div>
+              </div>
+            </div>
+          `,
+          alt: 'Coloring with Gray - Creative House Philosophy' 
+        },
+        { 
+          customHtml: `
+            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e, #16213e); display: flex; flex-direction: column; padding: 20px; color: #e0e0e0; position: relative; overflow: hidden;">
+              <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 30% 40%, rgba(255, 215, 0, 0.1), transparent 50%);"></div>
+              <div style="font-size: 14px; text-transform: uppercase; margin-bottom: 15px; color: #ccc; letter-spacing: 1px; z-index: 2;">International Recognition</div>
+              <div style="font-family: 'Space Grotesk', monospace; font-size: 20px; font-weight: bold; margin-bottom: 20px; color: #ffd700; z-index: 2;">Berlin Commercial Awards</div>
+              <div style="display: flex; flex-direction: column; gap: 12px; flex: 1; justify-content: center; z-index: 2;">
+                <div style="padding: 8px 12px; background: rgba(255, 215, 0, 0.1); border-left: 3px solid #ffd700; font-size: 11px;">Cultural Impact</div>
+                <div style="padding: 8px 12px; background: rgba(255, 215, 0, 0.1); border-left: 3px solid #ffd700; font-size: 11px;">Craft: Idea</div>
+                <div style="padding: 8px 12px; background: rgba(255, 215, 0, 0.1); border-left: 3px solid #ffd700; font-size: 11px;">Commercials & Branded Content - Short</div>
+              </div>
+              <div style="text-align: center; font-size: 10px; color: #999; z-index: 2; margin-top: 10px;">RAW Selection across three competitive categories</div>
+            </div>
+          `,
+          alt: 'Coloring with Gray - Award Categories' 
+        }
+      ],
+      processStages: [
+        { name: 'Philosophical Foundation', description: 'Developing the core philosophical concepts that would drive the creative narrative and visual storytelling approach.' },
+        { name: 'Creative Direction', description: 'Translating abstract philosophical ideas into concrete visual language and narrative structure for the short film.' },
+        { name: 'Production Leadership', description: 'Managing the complete production process from concept to final delivery, coordinating team and resources.' },
+        { name: 'Festival Strategy', description: 'Strategic positioning and submission to prestigious international festivals, resulting in Berlin Commercial Awards recognition.' }
+      ]
+    }
   };
 
   // Default projects for modal process views
