@@ -41,11 +41,11 @@
       position: fixed;
       bottom: 0.5in;
       right: 0.5in;
-      width: 80px;
-      height: 80px;
+      width: 60px;
+      height: 60px;
       background: url('fingerprint.png') no-repeat center;
       background-size: contain;
-      opacity: 0.05;
+      opacity: 0.04;
       z-index: -1;
     }
 
@@ -58,7 +58,7 @@
     }
 
     h1 {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 600;
       letter-spacing: 0.05em;
       margin-bottom: calc(var(--spacing) * 2);
@@ -79,8 +79,7 @@
       font-style: italic;
       line-height: 1.4;
       color: var(--gray-500);
-      max-width: 90%;
-      margin: 0 auto calc(var(--spacing) * 2) auto;
+      margin-bottom: calc(var(--spacing) * 2);
     }
 
     .contact {
@@ -102,16 +101,10 @@
       display: none;
     }
 
-    /* MAIN LAYOUT */
-    .container {
-      display: grid;
-      grid-template-columns: 1fr 240px;
-      gap: calc(var(--spacing) * 4);
-    }
-
     /* SECTIONS */
     section {
       margin-bottom: calc(var(--spacing) * 4);
+      page-break-inside: avoid;
     }
 
     h2 {
@@ -128,6 +121,72 @@
       font-size: 12px;
       font-weight: 500;
       margin-bottom: calc(var(--spacing) * 0.5);
+    }
+
+    /* SKILLS GRID */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: calc(var(--spacing) * 2);
+      margin-bottom: calc(var(--spacing) * 2);
+    }
+
+    .skill-group {
+      margin-bottom: calc(var(--spacing) * 1);
+    }
+
+    .skill-label {
+      font-weight: 500;
+      font-size: 10px;
+      color: var(--gray-900);
+      margin-bottom: calc(var(--spacing) * 0.5);
+    }
+
+    .skill-group p {
+      font-size: 9.5px;
+      line-height: 1.4;
+      color: var(--gray-700);
+      margin: 0;
+    }
+
+    /* HIGHLIGHTS BOX */
+    .highlights {
+      background: var(--gray-100);
+      border: 1px solid var(--gray-300);
+      padding: calc(var(--spacing) * 2);
+      margin-bottom: calc(var(--spacing) * 4);
+    }
+
+    .highlights ul {
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .highlights li {
+      font-size: 11px;
+      font-weight: 400;
+      margin-bottom: calc(var(--spacing) * 1.5);
+      position: relative;
+      padding-left: calc(var(--spacing) * 2);
+    }
+
+    .highlights li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--gray-500);
+    }
+
+    /* EXPERIENCE */
+    .role-item {
+      margin-bottom: calc(var(--spacing) * 3);
+      padding-bottom: calc(var(--spacing) * 2);
+      border-bottom: 1px dotted var(--gray-300);
+      page-break-inside: avoid;
+    }
+
+    .role-item:last-child {
+      border-bottom: none;
     }
 
     .role-header {
@@ -149,16 +208,6 @@
       white-space: nowrap;
     }
 
-    .role-item {
-      margin-bottom: calc(var(--spacing) * 3);
-      padding-bottom: calc(var(--spacing) * 2);
-      border-bottom: 1px dotted var(--gray-300);
-    }
-
-    .role-item:last-child {
-      border-bottom: none;
-    }
-
     p {
       font-size: 11px;
       line-height: 1.5;
@@ -169,6 +218,7 @@
     ul {
       list-style: none;
       padding-left: calc(var(--spacing) * 1.5);
+      margin-bottom: calc(var(--spacing) * 1);
     }
 
     li {
@@ -187,55 +237,40 @@
       color: var(--gray-500);
     }
 
-    /* HIGHLIGHTS BOX */
-    .highlights {
+    /* RECOGNITION & EDUCATION */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: calc(var(--spacing) * 3);
+      margin-bottom: calc(var(--spacing) * 3);
+    }
+
+    .info-box {
+      padding: calc(var(--spacing) * 2);
       background: var(--gray-100);
       border: 1px solid var(--gray-300);
-      padding: calc(var(--spacing) * 2);
-      margin-bottom: calc(var(--spacing) * 4);
     }
 
-    .highlights ul {
-      padding-left: 0;
-    }
-
-    .highlights li {
-      font-size: 11px;
-      font-weight: 400;
-      margin-bottom: calc(var(--spacing) * 1.5);
-    }
-
-    /* SIDEBAR */
-    .sidebar section {
-      background: white;
-      border: 1px solid var(--gray-300);
-      padding: calc(var(--spacing) * 2);
-      margin-bottom: calc(var(--spacing) * 2);
-    }
-
-    .sidebar h2 {
+    .info-box h3 {
       font-size: 11px;
       margin-bottom: calc(var(--spacing) * 1.5);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
     }
 
-    .sidebar p, .sidebar li {
-      font-size: 9.5px;
+    .info-box p, .info-box li {
+      font-size: 10px;
       line-height: 1.4;
+      color: var(--gray-700);
     }
 
-    .skill-group {
-      margin-bottom: calc(var(--spacing) * 1.5);
+    .info-box ul {
+      padding-left: 0;
+      margin: 0;
     }
 
-    .skill-group:last-child {
-      margin-bottom: 0;
-    }
-
-    .skill-label {
-      font-weight: 500;
-      font-size: 9.5px;
-      color: var(--gray-900);
-      margin-bottom: calc(var(--spacing) * 0.5);
+    .info-box li {
+      margin-bottom: calc(var(--spacing) * 0.75);
     }
 
     /* FOOTER */
@@ -251,10 +286,10 @@
 
     .philosophy-footer strong {
       display: block;
-      font-size: 14px;
+      font-size: 13px;
       font-style: normal;
       font-weight: 600;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.03em;
       color: var(--gray-900);
       margin-bottom: calc(var(--spacing) * 1);
     }
@@ -274,15 +309,11 @@
       }
 
       body::after {
-        opacity: 0.08;
-      }
-
-      .container {
-        gap: calc(var(--spacing) * 3);
+        opacity: 0.06;
       }
 
       section {
-        page-break-inside: avoid;
+        page-break-inside: auto;
       }
 
       .role-item {
@@ -292,6 +323,22 @@
       a {
         color: inherit;
         text-decoration: none;
+      }
+
+      .skills-grid {
+        page-break-inside: avoid;
+      }
+
+      .info-grid {
+        page-break-inside: avoid;
+      }
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      .skills-grid,
+      .info-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -309,134 +356,130 @@
     </div>
   </header>
 
-  <div class="container">
-    <main>
-      <!-- SELECTED HIGHLIGHTS -->
-      <section class="highlights">
-        <h2>Selected Highlights</h2>
-        <ul>
-          <li>Directed $300K+ Paris Fashion Week campaign with coverage in Vogue, Complex, WWD, and Hypebeast</li>
-          <li>Berlin Commercial Awards RAW Selection: "Coloring with Gray" film (Cultural Impact, Craft: Idea, Branded Content)</li>
-          <li>Founded Coloring with Gray: luxury AI-integrated brand achieving $300+ price points across fragrance, film, and publishing</li>
-          <li>Built AI-integrated creative tools: OpenAI API, Runway Gen-4, MidJourney, 11 Labs, Unity</li>
-          <li>Architected UATP (Unified Agent Trust Protocol): capsule-based AI governance and attribution system</li>
-          <li>Major brand partnership (NDA): strategic creative development with C-level stakeholder management</li>
-        </ul>
-      </section>
+  <!-- CORE SKILLS -->
+  <section>
+    <h2>Core Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="skill-label">Creative Direction</div>
+        <p>Campaign direction, art direction, brand strategy, visual storytelling, creative identity systems, experience design, film direction</p>
+      </div>
+      <div class="skill-group">
+        <div class="skill-label">AI & Generative Media</div>
+        <p>OpenAI API, Runway Gen-4, MidJourney, 11 Labs, Unity integration, AI-powered experiences, creative automation, generative design, AI governance systems (UATP: capsule architecture, attribution protocols, transparency infrastructure)</p>
+      </div>
+      <div class="skill-group">
+        <div class="skill-label">Product & Craft</div>
+        <p>Fragrance formulation, packaging innovation, product concepting, luxury positioning, niche perfumery, tactile design</p>
+      </div>
+      <div class="skill-group">
+        <div class="skill-label">Digital & Development</div>
+        <p>Next.js, GSAP/Lottie, interactive websites, typography design, photography, spatial design</p>
+      </div>
+    </div>
+  </section>
 
-      <!-- EXPERIENCE -->
-      <section>
-        <h2>Experience</h2>
+  <!-- SELECTED HIGHLIGHTS -->
+  <section class="highlights">
+    <h2>Selected Highlights</h2>
+    <ul>
+      <li>Directed $300K+ Paris Fashion Week campaign with coverage in Vogue, Complex, WWD, and Hypebeast</li>
+      <li>Berlin Commercial Awards RAW Selection: "Coloring with Gray" film (Cultural Impact, Craft: Idea, Branded Content)</li>
+      <li>Founded Coloring with Gray: luxury AI-integrated brand achieving $300+ price points across fragrance, film, and publishing</li>
+      <li>Built AI-integrated creative tools: OpenAI API, Runway Gen-4, MidJourney, 11 Labs, Unity</li>
+      <li>Architected UATP: capsule-based AI governance and attribution system for transparent creative attribution</li>
+      <li>Major brand partnership (NDA): strategic creative development with C-level stakeholder management</li>
+    </ul>
+  </section>
 
-        <div class="role-item">
-          <h3>Founder & Creative Director</h3>
-          <div class="role-header">
-            <span class="company">Coloring with Gray</span>
-            <span class="date">2024 — Present</span>
-          </div>
-          <p>Luxury creative brand integrating AI and traditional craft. Berlin Commercial Awards RAW Selection. Products positioned at $300+ price points across fragrance, film, and publishing.</p>
-          <ul>
-            <li>Deployed AI fragrance consultation system (OpenAI API) delivering personalized scent recommendations — live at coloringwithgray.com</li>
-            <li>Produced "Coloring with Gray: A Short Film" using Runway Gen-4, MidJourney, 11 Labs (Berlin Commercial Awards RAW Selection)</li>
-            <li>Designed luxury packaging system (book-safe, thermochromic ink, fingerprint overlays) supporting $300+ positioning</li>
-            <li>Built creative technology stack: Unity, OpenAI API, Next.js, generative AI workflows</li>
-            <li>Formulated niche fragrances using premium ingredients (Iso E Super, Ambroxan, Hedione HC)</li>
-          </ul>
-        </div>
+  <!-- EXPERIENCE -->
+  <section>
+    <h2>Experience</h2>
 
-        <div class="role-item">
-          <h3>Creative Director</h3>
-          <div class="role-header">
-            <span class="company">Freelance — Luxury & Lifestyle Brands</span>
-            <span class="date">2016 — 2024</span>
-          </div>
-          <p>Led international creative campaigns for luxury and lifestyle brands. Directed $300K+ Paris Fashion Week activation generating major press coverage. Strategic creative partner for major athletic brand (NDA).</p>
-          <ul>
-            <li>Wellness brand repositioning: narrative strategy and visual identity (LA Times feature coverage)</li>
-            <li>Major athletic brand partnership (NDA): strategic creative development, C-level stakeholder management, cross-cultural positioning</li>
-            <li>Developed AI-integrated creative tools and generative media workflows for brand applications</li>
-            <li>Led creative campaigns across fashion, wellness, technology, and lifestyle sectors</li>
-          </ul>
-        </div>
+    <div class="role-item">
+      <h3>Founder & Creative Director</h3>
+      <div class="role-header">
+        <span class="company">Coloring with Gray</span>
+        <span class="date">2024 — Present</span>
+      </div>
+      <p>Luxury creative brand integrating AI and traditional craft. Berlin Commercial Awards RAW Selection. Products positioned at $300+ price points across fragrance, film, and publishing.</p>
+      <ul>
+        <li>Deployed AI fragrance consultation system (OpenAI API) delivering personalized scent recommendations — live at coloringwithgray.com</li>
+        <li>Produced "Coloring with Gray: A Short Film" using Runway Gen-4, MidJourney, 11 Labs (Berlin Commercial Awards RAW Selection)</li>
+        <li>Designed luxury packaging system (book-safe, thermochromic ink, fingerprint overlays) supporting $300+ positioning</li>
+        <li>Built creative technology stack: Unity, OpenAI API, Next.js, generative AI workflows</li>
+      </ul>
+    </div>
 
-        <div class="role-item">
-          <h3>Production Operations</h3>
-          <div class="role-header">
-            <span class="company">Cast & Crew Entertainment Services</span>
-            <span class="date">2019 — Present</span>
-          </div>
-          <p>Financial operations support for $100M+ Netflix, HBO, Apple, and Amazon productions. Interface with production teams and studio finance departments, providing entertainment industry knowledge and production workflow expertise.</p>
-        </div>
+    <div class="role-item">
+      <h3>Creative Director</h3>
+      <div class="role-header">
+        <span class="company">Freelance — Luxury & Lifestyle Brands</span>
+        <span class="date">2016 — 2024</span>
+      </div>
+      <p>Led international creative campaigns for luxury and lifestyle brands. Directed $300K+ Paris Fashion Week activation generating major press coverage. Strategic creative partner for major athletic brand (NDA).</p>
+      <ul>
+        <li>Wellness brand repositioning: narrative strategy and visual identity (LA Times feature coverage)</li>
+        <li>Major athletic brand partnership (NDA): strategic creative development, C-level stakeholder management, cross-cultural positioning</li>
+        <li>Developed AI-integrated creative tools and generative media workflows for brand applications</li>
+        <li>Led creative campaigns across fashion, wellness, technology, and lifestyle sectors</li>
+      </ul>
+    </div>
 
-        <div class="role-item">
-          <h3>Co-Founder & Creative Director</h3>
-          <div class="role-header">
-            <span class="company">Modern Tea Room</span>
-            <span class="date">2015 — 2017</span>
-          </div>
-          <p>Built profitable creative hospitality venue with curated artist programming and experiential design. Supported 25+ local artists through rotating exhibitions and creative community events.</p>
-          <ul>
-            <li>Designed complete spatial experience: interior design, brand identity, typography, signage systems</li>
-            <li>Curated monthly artist exhibitions and creative community programming</li>
-          </ul>
-        </div>
-      </section>
+    <div class="role-item">
+      <h3>Production Operations</h3>
+      <div class="role-header">
+        <span class="company">Cast & Crew Entertainment Services</span>
+        <span class="date">2019 — Present</span>
+      </div>
+      <p>Financial operations support for $100M+ Netflix, HBO, Apple, and Amazon productions. Interface with production teams and studio finance departments, providing entertainment industry knowledge and production workflow expertise.</p>
+    </div>
 
-      <!-- BREADTH OF MEDIUMS -->
-      <section>
-        <h2>Creative Outputs</h2>
-        <ul>
-          <li><strong>Film & Video:</strong> "Coloring with Gray: A Short Film" (Runway Gen-4, Berlin Commercial Awards), generative video production</li>
-          <li><strong>Fragrance:</strong> Niche perfume formulation, luxury scent design, memory-based olfactory narratives</li>
-          <li><strong>Product Design:</strong> Glass fragrance bottles, book-safe packaging, thermochromic/reflective materials, coffee systems</li>
-          <li><strong>Digital:</strong> AI-powered consultation systems (OpenAI), Next.js websites, interactive experiences, GSAP animations</li>
-          <li><strong>AI Systems:</strong> UATP (Unified Agent Trust Protocol) — capsule-based AI governance, attribution economy, transparency infrastructure</li>
-          <li><strong>Campaigns:</strong> Paris Fashion Week ($300K), wellness repositioning (LA Times), athletic brand partnership (NDA)</li>
-          <li><strong>Publishing & Typography:</strong> Creative philosophy books, brand narratives, custom typeface design</li>
-          <li><strong>Spatial Design:</strong> Hospitality concepts, experiential installations, curated artist exhibitions</li>
-        </ul>
-      </section>
-    </main>
+    <div class="role-item">
+      <h3>Co-Founder & Creative Director</h3>
+      <div class="role-header">
+        <span class="company">Modern Tea Room</span>
+        <span class="date">2015 — 2017</span>
+      </div>
+      <p>Built profitable creative hospitality venue with curated artist programming and experiential design. Supported 25+ local artists through rotating exhibitions and creative community events.</p>
+      <ul>
+        <li>Designed complete spatial experience: interior design, brand identity, typography, signage systems</li>
+        <li>Curated monthly artist exhibitions and creative community programming</li>
+      </ul>
+    </div>
+  </section>
 
-    <aside class="sidebar">
-      <!-- SKILLS -->
-      <section>
-        <h2>Core Skills</h2>
-        <div class="skill-group">
-          <div class="skill-label">Creative Direction</div>
-          <p>Campaign direction, art direction, brand strategy, visual storytelling, creative identity systems, experience design, film direction</p>
-        </div>
-        <div class="skill-group">
-          <div class="skill-label">AI & Generative Media</div>
-          <p>OpenAI API, Runway Gen-4, MidJourney, 11 Labs, Unity integration, AI-powered experiences, creative automation, generative design, AI governance systems (UATP: capsule architecture, attribution protocols, transparency infrastructure)</p>
-        </div>
-        <div class="skill-group">
-          <div class="skill-label">Product & Craft</div>
-          <p>Fragrance formulation, packaging innovation, product concepting, luxury positioning, niche perfumery, tactile design</p>
-        </div>
-        <div class="skill-group">
-          <div class="skill-label">Digital & Development</div>
-          <p>Next.js, GSAP/Lottie, interactive websites, typography design, photography, spatial design</p>
-        </div>
-      </section>
+  <!-- CREATIVE OUTPUTS -->
+  <section>
+    <h2>Creative Outputs</h2>
+    <ul>
+      <li><strong>Film & Video:</strong> "Coloring with Gray: A Short Film" (Runway Gen-4, Berlin Commercial Awards), generative video production</li>
+      <li><strong>Fragrance:</strong> Niche perfume formulation, luxury scent design, memory-based olfactory narratives</li>
+      <li><strong>Product Design:</strong> Glass fragrance bottles, book-safe packaging, thermochromic/reflective materials, coffee systems</li>
+      <li><strong>Digital:</strong> AI-powered consultation systems (OpenAI), Next.js websites, interactive experiences, GSAP animations</li>
+      <li><strong>AI Systems:</strong> UATP (Unified Agent Trust Protocol) — capsule-based AI governance, attribution economy, transparency infrastructure</li>
+      <li><strong>Campaigns:</strong> Paris Fashion Week ($300K), wellness repositioning (LA Times), athletic brand partnership (NDA)</li>
+      <li><strong>Publishing & Typography:</strong> Creative philosophy books, brand narratives, custom typeface design</li>
+      <li><strong>Spatial Design:</strong> Hospitality concepts, experiential installations, curated artist exhibitions</li>
+    </ul>
+  </section>
 
-      <!-- EDUCATION -->
-      <section>
-        <h2>Education</h2>
-        <p><strong>B.A. Philosophy</strong><br>
-        California State University, Fullerton<br>
-        <em>Logic, Ethics, Computational Thinking</em></p>
-      </section>
+  <!-- RECOGNITION & EDUCATION -->
+  <div class="info-grid">
+    <div class="info-box">
+      <h3>Recognition</h3>
+      <ul>
+        <li>Berlin Commercial Awards RAW Selection (3 categories)</li>
+        <li>International press: Vogue, Complex, V Magazine, WWD, Hypebeast, LA Times</li>
+      </ul>
+    </div>
 
-      <!-- RECOGNITION -->
-      <section>
-        <h2>Recognition</h2>
-        <ul>
-          <li>Berlin Commercial Awards RAW Selection (3 categories)</li>
-          <li>International press: Vogue, Complex, V Magazine, WWD, Hypebeast, LA Times</li>
-        </ul>
-      </section>
-    </aside>
+    <div class="info-box">
+      <h3>Education</h3>
+      <p><strong>B.A. Philosophy</strong><br>
+      California State University, Fullerton<br>
+      <em>Logic, Ethics, Computational Thinking</em></p>
+    </div>
   </div>
 
   <footer class="philosophy-footer">
