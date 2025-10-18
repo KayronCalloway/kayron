@@ -35,6 +35,11 @@
       position: relative;
     }
 
+    @page {
+      size: legal;
+      margin: 0.5in;
+    }
+
     /* Fingerprint watermark */
     body::after {
       content: "";
@@ -119,7 +124,7 @@
 
     h3 {
       font-size: 12px;
-      font-weight: 500;
+      font-weight: 600;
       margin-bottom: calc(var(--spacing) * 0.5);
     }
 
@@ -136,7 +141,7 @@
     }
 
     .skill-label {
-      font-weight: 500;
+      font-weight: 600;
       font-size: 10px;
       color: var(--gray-900);
       margin-bottom: calc(var(--spacing) * 0.5);
@@ -189,7 +194,7 @@
 
     .company {
       font-size: 11px;
-      font-weight: 400;
+      font-weight: 600;
       color: var(--gray-700);
     }
 
@@ -285,6 +290,11 @@
 
     /* PRINT STYLES */
     @media print {
+      @page {
+        size: legal;
+        margin: 0.5in;
+      }
+
       body {
         margin: 0;
         padding: 0.4in 0.5in;
