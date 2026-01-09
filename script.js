@@ -89,21 +89,28 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true }); // Add passive flag for better performance on iOS
   
   document.addEventListener('touchend', e => {
+    // Don't interfere with project cards or interactive elements in Channel 2
+    if (e.target.closest('.project-card') ||
+        e.target.closest('.project-scroller') ||
+        e.target.closest('#portfolio-browse')) {
+      return; // Let the card's own handlers deal with it
+    }
+
     const touchEndX = e.changedTouches[0].screenX;
     const touchEndY = e.changedTouches[0].screenY;
     const touchEndTime = Date.now();
     const diffX = touchStartX - touchEndX;
     const diffY = Math.abs(touchStartY - touchEndY);
     const elapsedTime = touchEndTime - touchStartTime;
-    
+
     // Calculate velocity (pixels per millisecond)
     const velocity = Math.abs(diffX) / elapsedTime;
-    
+
     // Only trigger horizontal swipe if:
-    // 1. Horizontal movement is significant (>50px) 
+    // 1. Horizontal movement is significant (>50px)
     // 2. Vertical movement is minimal (prevent accidental swipes)
     // 3. Fast enough swipe (velocity threshold) OR large enough movement
-    if ((Math.abs(diffX) > 50 && diffY < 100) && 
+    if ((Math.abs(diffX) > 50 && diffY < 100) &&
         (velocity > 0.5 || Math.abs(diffX) > 100)) {
       const direction = diffX > 0 ? 'next' : 'prev';
       navigateChannels(direction);
