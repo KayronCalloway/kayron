@@ -28,15 +28,30 @@ export async function init() {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
 
-    // Extract styles from the standalone page
+    // Extract and scope styles to #section4 only (prevents global style leakage)
     const styles = doc.querySelector('style');
-    if (styles) {
+    if (styles && !document.getElementById('ch4-styles')) {
+      let cssText = styles.textContent;
+
+      // Remove global selectors that would affect the whole page
+      cssText = cssText.replace(/\*\s*\{[^}]*\}/g, ''); // Remove * { }
+      cssText = cssText.replace(/body\s*\{[^}]*\}/g, ''); // Remove body { }
+      cssText = cssText.replace(/html\s*\{[^}]*\}/g, ''); // Remove html { }
+
+      // Scope all remaining selectors to #section4
+      cssText = cssText.replace(/([^\r\n,{}]+)(,(?=[^}]*{)|\s*{)/g, (match, selector, suffix) => {
+        // Skip if already scoped or is a @rule
+        if (selector.trim().startsWith('@') || selector.trim().startsWith('#section4')) {
+          return match;
+        }
+        return `#section4 ${selector.trim()}${suffix}`;
+      });
+
       const styleEl = document.createElement('style');
       styleEl.id = 'ch4-styles';
-      styleEl.textContent = styles.textContent;
-      if (!document.getElementById('ch4-styles')) {
-        document.head.appendChild(styleEl);
-      }
+      styleEl.textContent = cssText;
+      document.head.appendChild(styleEl);
+      console.log('Channel 4 styles injected (scoped to #section4)');
     }
 
     // Extract body content
