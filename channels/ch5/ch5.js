@@ -90,27 +90,7 @@ function initArchive() {
     return;
   }
 
-  // Prevent scroll from bubbling to main page (channel switching)
-  if (section5) {
-    section5.addEventListener('wheel', (e) => {
-      e.stopPropagation();
-    }, { passive: true });
-
-    section5.addEventListener('touchmove', (e) => {
-      e.stopPropagation();
-    }, { passive: true });
-
-    // Prevent swipe navigation when inside archive
-    section5.addEventListener('touchstart', (e) => {
-      section5.dataset.touchStartY = e.touches[0].clientY;
-    }, { passive: true });
-
-    section5.addEventListener('touchend', (e) => {
-      e.stopPropagation();
-    }, { passive: true });
-
-    console.log('Scroll isolation enabled for Channel 5');
-  }
+  // No scroll isolation needed - ch5 is the last channel so users can scroll back up
 
   // Show document
   function showDocument(docId) {
