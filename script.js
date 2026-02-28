@@ -150,15 +150,16 @@ document.addEventListener('DOMContentLoaded', () => {
       module = await import(`./channels/ch1/home.js`);
     } else if (moduleName === 'ch2') {
       module = await import(`./channels/ch2/ch2.js`);
-    } else if (moduleName === 'music channel') {
-      // Load the new music channel
+    } else if (moduleName === 'ch3') {
+      // Music Channel
+      console.log('📂 Importing CH3 module (Music Channel)...');
       module = await import(`./channels/ch3/ch3.js`);
-    } else if (moduleName === 'skill games') {
-      // Reset any global styles that might have been set by the game
-      resetMenuStyles();
-      console.log('📂 Importing CH4 module...');
+    } else if (moduleName === 'ch4') {
+      // UATP Archive
+      console.log('📂 Importing CH4 module (UATP Archive)...');
       module = await import(`./channels/ch4/ch4.js`);
-    } else if (moduleName === 'under the influence') {
+    } else if (moduleName === 'ch5') {
+      // Under the Influence
       console.log('📂 Importing CH5 module...');
       module = await import(`./channels/ch5/ch5.js`);
     }
@@ -468,8 +469,9 @@ const resetMenuStyles = () => {
   const channelDescriptions = {
     'section1': 'Explore Kayron\'s portfolio home, featuring skills and professional background.',
     'section2': 'Discover creative works and brand strategies in a showcase format.',
-    'section3': 'Interactive games testing your creative problem-solving skills and approach.',
-    'section4': 'Examine influences and inspirations that shape creative direction.'
+    'section3': 'Audio archives and creative process documentation.',
+    'section4': 'Universal Agent Trust Protocol - AI accountability infrastructure documentation.',
+    'section5': 'Examine influences and inspirations that shape creative direction.'
   };
   
   // Make TV Guide channels clickable
@@ -509,29 +511,9 @@ const resetMenuStyles = () => {
                           item.querySelector('.channel-title').textContent : 
                           `Channel ${targetId.slice(-1)}`;
       
-      // Check if we're leaving channel 3 (section3)
-      if (currentChannel === 'section3' && targetId !== 'section3') {
-        console.log("Leaving Channel 3 from TV guide, doing additional audio cleanup");
-        // Explicitly stop any gameshow audio that might be playing
-        document.querySelectorAll('audio').forEach(audio => {
-          if (audio.src && (audio.src.includes('gameshow.aif') || 
-                           audio.src.includes('ka-ching.mp3') || 
-                           audio.src.includes('click.mp3'))) {
-            console.log("Force stopping audio:", audio.src);
-            audio.pause();
-            audio.currentTime = 0;
-            audio.loop = false;
-          }
-        });
-        // Call global cleanup event
-        resetMenuStyles();
-      }
-      
-      // Dispatch channel change event to stop any running audio (unless navigating to Ch3)
-      if (targetId !== 'section3') {
-        const channelChangeEvent = new Event('channelChange');
-        document.dispatchEvent(channelChangeEvent);
-      }
+      // Dispatch channel change event to stop any running audio
+      const channelChangeEvent = new Event('channelChange');
+      document.dispatchEvent(channelChangeEvent);
       
       if (targetSection) {
         // Create delayed closing effect for more TV-like experience
@@ -573,25 +555,6 @@ const resetMenuStyles = () => {
           }
           
           console.log(`📺 Channel change: from ${currentChannel} to ${newChannel}`);
-          
-          // Extra cleanup for channel 3 audio - only do this when leaving Channel 3
-          if (currentChannel === 'section3' && newChannel !== 'section3') {
-            console.log("Leaving Channel 3, doing additional audio cleanup");
-            // Explicitly stop any gameshow audio that might be playing
-            document.querySelectorAll('audio').forEach(audio => {
-              if (audio.src && (audio.src.includes('gameshow.aif') || 
-                               audio.src.includes('ka-ching.mp3') || 
-                               audio.src.includes('click.mp3'))) {
-                console.log("Force stopping audio:", audio.src);
-                audio.pause();
-                audio.currentTime = 0;
-                audio.loop = false;
-              }
-            });
-            
-            // Reset menu button styles
-            resetMenuStyles();
-          }
           
           // Hide all channel numbers first
           document.querySelectorAll('.channel-number-overlay').forEach(overlay => {
@@ -772,24 +735,16 @@ const resetMenuStyles = () => {
     ytObserver.observe(channel1);
   }
 
-  // --- Intersection Observer for Channel 4 Gameshow Audio Control ---
+  // --- Intersection Observer for Channel 4 (UATP Archive) ---
   const channel4 = document.getElementById("section4");
   const channel4ObserverOptions = { root: null, threshold: 0.7 };
   const channel4Observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.target.id === "section4") {
         if (entry.intersectionRatio >= 0.7) {
-          console.log("Channel 4 active: Starting gameshow audio.");
-          // Control gameshow audio instead of YouTube player
-          if (window.controlGameshowAudio) {
-            window.controlGameshowAudio(true);
-          }
+          console.log("Channel 4 active: UATP Archive in view.");
         } else {
-          console.log("Channel 4 inactive: Stopping gameshow audio.");
-          // Stop gameshow audio when leaving channel
-          if (window.controlGameshowAudio) {
-            window.controlGameshowAudio(false);
-          }
+          console.log("Channel 4 inactive: UATP Archive out of view.");
         }
       }
     });
@@ -804,16 +759,8 @@ const resetMenuStyles = () => {
   const channel5Observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.target.id === "section5") {
-        // As soon as Channel 5 is at all visible, ensure Channel 4 audio is stopped
-        if (window.controlGameshowAudio) {
-          window.controlGameshowAudio(false);
-        }
-        
         if (entry.intersectionRatio >= 0.7) {
-          // Ensure gameshow audio (Channel 4) is stopped
-          if (window.controlGameshowAudio) {
-            window.controlGameshowAudio(false);
-          }
+          console.log("Channel 5 active: Under the Influence in view.");
 
           // Ensure video is playing; if paused or not started, play it muted
           if (window.channel5Player && typeof window.channel5Player.playVideo === "function") {
@@ -906,22 +853,23 @@ setTimeout(() => {
   }
 }, 2500);
 
-// Preload both Channel 4 and Channel 5 so their content is ready
+// Preload channels so their content is ready
 console.log('🔄 Starting channel preloading...');
 setTimeout(() => {
-  console.log('🚀 Preloading Channel 4 (Skill Games)...');
-  loadChannelContent('skill games');
+  console.log('🚀 Preloading Channel 4 (UATP Archive)...');
+  loadChannelContent('ch4');
 }, 2000);
 
 setTimeout(() => {
   console.log('🚀 Preloading Channel 5 (Under the Influence)...');
-  loadChannelContent('under the influence');
+  loadChannelContent('ch5');
 }, 3000);
 
 // Add manual testing functions to window for debugging
 window.debugChannels = {
-  loadCh4: () => loadChannelContent('skill games'),
-  loadCh5: () => loadChannelContent('under the influence'),
+  loadCh3: () => loadChannelContent('ch3'),
+  loadCh4: () => loadChannelContent('ch4'),
+  loadCh5: () => loadChannelContent('ch5'),
   testIntersection: () => {
     console.log('🔍 Current intersection state:');
     document.querySelectorAll('.channel-section').forEach(section => {
