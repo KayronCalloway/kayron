@@ -90,11 +90,11 @@ document.addEventListener('DOMContentLoaded', () => {
   
   document.addEventListener('touchend', e => {
     // Don't interfere with project cards or interactive elements in Channel 2
-    // Don't interfere with UATP Archive scroll in Channel 4
+    // Don't interfere with UATP Archive scroll in Channel 5
     if (e.target.closest('.project-card') ||
         e.target.closest('.project-scroller') ||
         e.target.closest('#portfolio-browse') ||
-        e.target.closest('#section4') ||
+        e.target.closest('#section5') ||
         e.target.closest('.archive-view') ||
         e.target.closest('.reader-view')) {
       return; // Let the element's own handlers deal with it
@@ -159,12 +159,12 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('📂 Importing CH3 module (Music Channel)...');
       module = await import(`./channels/ch3/ch3.js`);
     } else if (moduleName === 'ch4') {
-      // UATP Archive
-      console.log('📂 Importing CH4 module (UATP Archive)...');
+      // Under the Influence
+      console.log('📂 Importing CH4 module (Under the Influence)...');
       module = await import(`./channels/ch4/ch4.js`);
     } else if (moduleName === 'ch5') {
-      // Under the Influence
-      console.log('📂 Importing CH5 module...');
+      // UATP Archive
+      console.log('📂 Importing CH5 module (UATP Archive)...');
       module = await import(`./channels/ch5/ch5.js`);
     }
     
@@ -474,8 +474,8 @@ const resetMenuStyles = () => {
     'section1': 'Explore Kayron\'s portfolio home, featuring skills and professional background.',
     'section2': 'Discover creative works and brand strategies in a showcase format.',
     'section3': 'Audio archives and creative process documentation.',
-    'section4': 'Universal Agent Trust Protocol - AI accountability infrastructure documentation.',
-    'section5': 'Examine influences and inspirations that shape creative direction.'
+    'section4': 'Examine influences and inspirations that shape creative direction.',
+    'section5': 'Universal Agent Trust Protocol - AI accountability infrastructure documentation.'
   };
   
   // Make TV Guide channels clickable

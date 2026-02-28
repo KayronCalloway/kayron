@@ -253,7 +253,7 @@ body {
 }
 
 /* --- Channel 4 (UATP Archive) - Independent Scroll --- */
-#section4 {
+#section5 {
   overflow-y: auto;
   overflow-x: hidden;
   padding: 0;
@@ -263,26 +263,26 @@ body {
   overscroll-behavior: contain; /* Prevent scroll chaining to parent */
 }
 
-#section4 .archive-view,
-#section4 .reader-view {
+#section5 .archive-view,
+#section5 .reader-view {
   min-height: 100vh;
   width: 100%;
 }
 
-#section4::-webkit-scrollbar {
+#section5::-webkit-scrollbar {
   width: 8px;
 }
 
-#section4::-webkit-scrollbar-track {
+#section5::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.1);
 }
 
-#section4::-webkit-scrollbar-thumb {
+#section5::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.3);
   border-radius: 4px;
 }
 
-#section4::-webkit-scrollbar-thumb:hover {
+#section5::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.5);
 }
 .channel-buttons {
