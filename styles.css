@@ -252,6 +252,11 @@ body {
   text-align: center;
 }
 
+/* Section 4 - contain absolute positioned children */
+#section4 {
+  overflow: hidden;
+}
+
 /* Section 5 (UATP Archive) - last channel, no restrictions */
 #section5 {
   overflow-y: auto;
