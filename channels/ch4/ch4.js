@@ -1,15 +1,78 @@
-// Channel 6: UATP Archive
-// Embedded document reader - click to read
+// Channel 4: UATP Archive
+// Loads the standalone archive into the main site
 
-(function() {
-  'use strict';
+export async function init() {
+  console.log('Channel 4 UATP Archive init started');
 
+  const section4 = document.getElementById('section4');
+  if (!section4) {
+    console.error('Section 4 not found');
+    return;
+  }
+
+  // Check if already initialized
+  if (section4.querySelector('.archive-view')) {
+    console.log('Channel 4 already initialized, skipping...');
+    return;
+  }
+
+  try {
+    // Load the archive HTML
+    const response = await fetch('./channels/ch4/index.html');
+    if (!response.ok) {
+      throw new Error(`Failed to fetch archive content: ${response.status}`);
+    }
+    const html = await response.text();
+
+    // Parse the HTML to extract body content
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    // Extract styles from the standalone page
+    const styles = doc.querySelector('style');
+    if (styles) {
+      const styleEl = document.createElement('style');
+      styleEl.id = 'ch4-styles';
+      styleEl.textContent = styles.textContent;
+      if (!document.getElementById('ch4-styles')) {
+        document.head.appendChild(styleEl);
+      }
+    }
+
+    // Extract body content
+    const bodyContent = doc.body.innerHTML;
+
+    // Preserve channel overlay
+    const existingOverlay = section4.querySelector('.channel-number-overlay');
+    const overlayHTML = existingOverlay ? existingOverlay.outerHTML : '<div class="channel-number-overlay">CH 04</div>';
+
+    // Insert content
+    section4.innerHTML = bodyContent + overlayHTML;
+
+    console.log('Channel 4 archive content loaded');
+
+    // Initialize the archive functionality
+    setTimeout(() => {
+      initArchive();
+    }, 100);
+
+  } catch (err) {
+    console.error('Failed to load UATP Archive:', err);
+  }
+}
+
+function initArchive() {
   const archiveView = document.getElementById('archiveView');
   const readerView = document.getElementById('readerView');
   const readerContent = document.getElementById('readerContent');
-  const readerTitle = document.querySelector('.reader-title');
+  const readerTitle = document.getElementById('readerTitle');
   const backBtn = document.getElementById('backBtn');
   const archiveItems = document.querySelectorAll('.archive-item');
+
+  if (!archiveView || !readerView) {
+    console.error('Archive elements not found');
+    return;
+  }
 
   // Show document
   function showDocument(docId) {
@@ -21,7 +84,7 @@
     const file = docEl.dataset.file;
 
     // Update title
-    readerTitle.textContent = title;
+    if (readerTitle) readerTitle.textContent = title;
 
     // Show reader view
     archiveView.classList.add('hidden');
@@ -29,24 +92,22 @@
 
     // Load content
     if (type === 'pdf' && file) {
-      readerContent.innerHTML = `<iframe src="${file}" title="${title}"></iframe>`;
+      readerContent.innerHTML = `<iframe src="./channels/ch4/${file}" title="${title}"></iframe>`;
     } else {
       readerContent.innerHTML = docEl.innerHTML;
     }
 
-    // Scroll to top
-    window.scrollTo(0, 0);
-
-    // Update URL
-    history.pushState({ doc: docId }, title, `#${docId}`);
+    // Scroll section into view
+    const section4 = document.getElementById('section4');
+    if (section4) section4.scrollTo(0, 0);
   }
 
   // Back to archive
   function backToArchive() {
     readerView.classList.remove('active');
     archiveView.classList.remove('hidden');
-    history.pushState({}, 'UATP Archive', '#');
-    window.scrollTo(0, 0);
+    const section4 = document.getElementById('section4');
+    if (section4) section4.scrollTo(0, 0);
   }
 
   // Event: Click archive item
@@ -58,30 +119,16 @@
   });
 
   // Event: Back button
-  backBtn.addEventListener('click', backToArchive);
-
-  // Event: Browser back/forward
-  window.addEventListener('popstate', (e) => {
-    if (e.state && e.state.doc) {
-      showDocument(e.state.doc);
-    } else {
-      backToArchive();
-    }
-  });
+  if (backBtn) {
+    backBtn.addEventListener('click', backToArchive);
+  }
 
   // Event: Keyboard
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && readerView.classList.contains('active')) {
+    if (e.key === 'Escape' && readerView && readerView.classList.contains('active')) {
       backToArchive();
     }
   });
 
-  // Check URL hash on load
-  if (window.location.hash) {
-    const docId = window.location.hash.slice(1);
-    if (document.getElementById(docId)) {
-      setTimeout(() => showDocument(docId), 100);
-    }
-  }
-
-})();
+  console.log('UATP Archive initialized with', archiveItems.length, 'documents');
+}
