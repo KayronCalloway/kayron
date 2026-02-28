@@ -90,10 +90,14 @@ document.addEventListener('DOMContentLoaded', () => {
   
   document.addEventListener('touchend', e => {
     // Don't interfere with project cards or interactive elements in Channel 2
+    // Don't interfere with UATP Archive scroll in Channel 4
     if (e.target.closest('.project-card') ||
         e.target.closest('.project-scroller') ||
-        e.target.closest('#portfolio-browse')) {
-      return; // Let the card's own handlers deal with it
+        e.target.closest('#portfolio-browse') ||
+        e.target.closest('#section4') ||
+        e.target.closest('.archive-view') ||
+        e.target.closest('.reader-view')) {
+      return; // Let the element's own handlers deal with it
     }
 
     const touchEndX = e.changedTouches[0].screenX;

@@ -62,6 +62,7 @@ export async function init() {
 }
 
 function initArchive() {
+  const section4 = document.getElementById('section4');
   const archiveView = document.getElementById('archiveView');
   const readerView = document.getElementById('readerView');
   const readerContent = document.getElementById('readerContent');
@@ -72,6 +73,28 @@ function initArchive() {
   if (!archiveView || !readerView) {
     console.error('Archive elements not found');
     return;
+  }
+
+  // Prevent scroll from bubbling to main page (channel switching)
+  if (section4) {
+    section4.addEventListener('wheel', (e) => {
+      e.stopPropagation();
+    }, { passive: true });
+
+    section4.addEventListener('touchmove', (e) => {
+      e.stopPropagation();
+    }, { passive: true });
+
+    // Prevent swipe navigation when inside archive
+    section4.addEventListener('touchstart', (e) => {
+      section4.dataset.touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    section4.addEventListener('touchend', (e) => {
+      e.stopPropagation();
+    }, { passive: true });
+
+    console.log('Scroll isolation enabled for Channel 4');
   }
 
   // Show document
