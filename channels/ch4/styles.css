@@ -432,14 +432,11 @@
 @media (max-width: 768px) {
   /* Optimize video background for mobile performance */
   #section4 .video-background {
-    /* Better vertical space usage - move up under header like Ch3 */
+    /* Keep within section bounds */
     top: 0;
-    margin-top: -50px;
-    padding-top: 70px;
-    height: calc(100vh - 20px);
-    /* Optimize for mobile scrolling */
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
+    height: 100%;
+    /* Allow scroll to pass through */
+    pointer-events: none;
   }
 
   /* Enhanced button container positioning */
@@ -503,13 +500,6 @@
 
 /* Enhanced support for modern iPhones */
 @supports (-webkit-touch-callout: none) and (max-width: 480px) and (orientation: portrait) {
-  /* iPhone-specific optimizations */
-  #section4 .video-background {
-    /* Account for Dynamic Island/notch */
-    margin-top: calc(-40px - env(safe-area-inset-top, 0px));
-    padding-top: calc(60px + env(safe-area-inset-top, 0px));
-  }
-
   #section4 .channel4-buttons {
     /* Better thumb reach on iPhone */
     top: 50%;
