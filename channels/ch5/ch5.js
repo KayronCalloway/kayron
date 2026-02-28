@@ -138,12 +138,14 @@ function initArchive() {
     if (section5) section5.scrollTo(0, 0);
   }
 
-  // Event: Click archive item
-  archiveItems.forEach(item => {
-    item.addEventListener('click', () => {
+  // Event: Click archive item (using event delegation)
+  section5.addEventListener('click', (e) => {
+    const item = e.target.closest('.archive-item');
+    if (item) {
       const docId = item.dataset.doc;
+      console.log('Clicked archive item:', docId);
       showDocument(docId);
-    });
+    }
   });
 
   // Event: Back button
