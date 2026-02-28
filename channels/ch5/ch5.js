@@ -77,7 +77,7 @@ function createModals() {
           </div>
           <div class="annual-letter-link">
             <p>Read the latest annual letter:</p>
-            <a href="https://www.berkshirehathaway.com/letters/2024ltr.pdf" target="_blank" rel="noopener noreferrer" class="letter-button">2024 Annual Letter</a>
+            <a href="https://www.berkshirehathaway.com/letters/2025ltr.pdf" target="_blank" rel="noopener noreferrer" class="letter-button">2025 Annual Letter</a>
             <p>Or visit the <a href="https://www.berkshirehathaway.com/letters/letters.html" target="_blank" rel="noopener noreferrer">complete archive</a> of letters dating back to 1977.</p>
           </div>
         </div>
