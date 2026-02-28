@@ -198,15 +198,14 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
-// On power button click, enable sound permission and let centralized audio handle unmuting
+// Unmute the video on user interaction (e.g., clicking the power button)
 document.addEventListener('DOMContentLoaded', () => {
   const powerButton = document.getElementById('powerButton');
   if (powerButton) {
     powerButton.addEventListener('click', () => {
-      // Sound permission is handled by window.soundAllowed in script.js
-      // The muteAllExcept function will unmute the appropriate channel
-      // We just ensure player stays muted until the channel system takes over
-      console.log('Power button clicked - sound will be managed by channel system');
+      if (youtubePlayer && typeof youtubePlayer.unMute === 'function') {
+        youtubePlayer.unMute();
+      }
     });
   }
 });
