@@ -78,24 +78,34 @@ export async function init() {
 
 function initArchive() {
   const section5 = document.getElementById('section5');
-  const archiveView = document.getElementById('archiveView');
-  const readerView = document.getElementById('readerView');
-  const readerContent = document.getElementById('readerContent');
-  const readerTitle = document.getElementById('readerTitle');
-  const backBtn = document.getElementById('backBtn');
-  const archiveItems = document.querySelectorAll('.archive-item');
+  if (!section5) {
+    console.error('Section 5 not found');
+    return;
+  }
+
+  const archiveView = section5.querySelector('#archiveView');
+  const readerView = section5.querySelector('#readerView');
+  const readerContent = section5.querySelector('#readerContent');
+  const readerTitle = section5.querySelector('#readerTitle');
+  const backBtn = section5.querySelector('#backBtn');
+  const archiveItems = section5.querySelectorAll('.archive-item');
 
   if (!archiveView || !readerView) {
     console.error('Archive elements not found');
     return;
   }
 
+  console.log('Found', archiveItems.length, 'archive items');
+
   // No scroll isolation needed - ch5 is the last channel so users can scroll back up
 
   // Show document
   function showDocument(docId) {
-    const docEl = document.getElementById(docId);
-    if (!docEl) return;
+    const docEl = section5.querySelector('#' + docId);
+    if (!docEl) {
+      console.error('Document not found:', docId);
+      return;
+    }
 
     const title = docEl.dataset.title;
     const type = docEl.dataset.type;
