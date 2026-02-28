@@ -536,28 +536,69 @@ const resetMenuStyles = () => {
     });
   });
 
+  // --- Centralized Audio Management ---
+  // Mute all channels except the specified one
+  const muteAllExcept = (activeChannel) => {
+    console.log(`🔊 Audio: Switching to ${activeChannel}`);
+
+    // Mute Channel 1 (main YouTube player)
+    if (activeChannel !== 'section1') {
+      if (window.youtubePlayer && typeof window.youtubePlayer.mute === 'function') {
+        window.youtubePlayer.mute();
+        console.log('🔇 Channel 1 muted');
+      }
+    }
+
+    // Mute Channel 5 (Under the Influence YouTube player)
+    if (activeChannel !== 'section5') {
+      if (window.channel5Player && typeof window.channel5Player.mute === 'function') {
+        window.channel5Player.mute();
+        console.log('🔇 Channel 5 muted');
+      }
+    }
+
+    // Unmute the active channel (only if sound is allowed)
+    if (window.soundAllowed) {
+      if (activeChannel === 'section1') {
+        if (window.youtubePlayer && typeof window.youtubePlayer.unMute === 'function') {
+          window.youtubePlayer.unMute();
+          console.log('🔊 Channel 1 unmuted');
+        }
+      } else if (activeChannel === 'section5') {
+        if (window.channel5Player && typeof window.channel5Player.unMute === 'function') {
+          window.channel5Player.unMute();
+          console.log('🔊 Channel 5 unmuted');
+        }
+      }
+    }
+  };
+
+  // Make it globally available
+  window.muteAllExcept = muteAllExcept;
+
   // --- Intersection Observer for Channel Transitions ---
   const observerOptions = { root: null, threshold: 0.5 }; // Reduced from 0.7 to 0.5 for better triggering
   const observerCallback = entries => {
     entries.forEach(entry => {
       const sectionId = entry.target.id;
       const visibilityPercent = Math.round(entry.intersectionRatio * 100);
-      
+
       console.log(`👁️ Intersection: ${sectionId} - ${visibilityPercent}% visible, intersecting: ${entry.isIntersecting}`);
-      
+
       if (entry.isIntersecting) {
         const newChannel = entry.target.id;
         const moduleName = entry.target.dataset.module;
-        
+
         console.log(`🎯 Section ${newChannel} became visible, module: "${moduleName}"`);
-        
+
         if (currentChannel !== newChannel) {
-          // Dispatch channel change event to stop any running audio (only if not entering Channel 3)
-          if (newChannel !== 'section3') {
-            const channelChangeEvent = new Event('channelChange');
-            document.dispatchEvent(channelChangeEvent);
-          }
-          
+          // Dispatch channel change event
+          const channelChangeEvent = new Event('channelChange');
+          document.dispatchEvent(channelChangeEvent);
+
+          // Mute all audio except the new channel
+          muteAllExcept(newChannel);
+
           console.log(`📺 Channel change: from ${currentChannel} to ${newChannel}`);
           
           // Hide all channel numbers first
@@ -688,7 +729,8 @@ const resetMenuStyles = () => {
     );
   };
 
-  // --- Intersection Observer for YouTube Video Audio Control ---
+  // --- Channel 1 Battery Optimization Observer ---
+  // Audio is handled by centralized muteAllExcept(), this only handles battery saving
   const channel1 = document.getElementById("section1");
   const ytObserverOptions = {
     root: null,
@@ -696,41 +738,24 @@ const resetMenuStyles = () => {
   };
   const ytObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.target.id === "section1") {
-        if (entry.intersectionRatio >= 0.7) {
-          if (youtubePlayer && typeof youtubePlayer.unMute === "function") {
-            youtubePlayer.unMute();
-            console.log("Channel 1 active: Unmuting video.");
-          }
-          
-          // Mobile optimization: If on mobile device, check battery level
-          if (window.navigator.getBattery) {
-            window.navigator.getBattery().then(battery => {
-              // If battery is below 20%, use static image instead of video
-              if (battery.level < 0.2 && !battery.charging) {
-                const videoBackground = document.querySelector('.video-background');
-                if (videoBackground && window.innerWidth < 768) {
-                  console.log("Low battery detected on mobile. Using static background.");
-                  // Only apply if not already applied
-                  if (!videoBackground.classList.contains('battery-saving')) {
-                    // Hide YouTube iframe
-                    const ytFrame = videoBackground.querySelector('iframe');
-                    if (ytFrame) ytFrame.style.display = 'none';
-                    
-                    // Add battery saving mode class and background
-                    videoBackground.classList.add('battery-saving');
-                    videoBackground.style.backgroundImage = 'url("visuals/static.gif")';
-                    videoBackground.style.backgroundSize = 'cover';
-                  }
+      if (entry.target.id === "section1" && entry.intersectionRatio >= 0.7) {
+        // Mobile optimization: If on mobile device, check battery level
+        if (window.navigator.getBattery) {
+          window.navigator.getBattery().then(battery => {
+            if (battery.level < 0.2 && !battery.charging) {
+              const videoBackground = document.querySelector('.video-background');
+              if (videoBackground && window.innerWidth < 768) {
+                console.log("Low battery detected on mobile. Using static background.");
+                if (!videoBackground.classList.contains('battery-saving')) {
+                  const ytFrame = videoBackground.querySelector('iframe');
+                  if (ytFrame) ytFrame.style.display = 'none';
+                  videoBackground.classList.add('battery-saving');
+                  videoBackground.style.backgroundImage = 'url("visuals/static.gif")';
+                  videoBackground.style.backgroundSize = 'cover';
                 }
               }
-            }).catch(err => console.log("Battery API not available", err));
-          }
-        } else {
-          if (youtubePlayer && typeof youtubePlayer.mute === "function") {
-            youtubePlayer.mute();
-            console.log("Channel 1 inactive: Muting video.");
-          }
+            }
+          }).catch(err => console.log("Battery API not available", err));
         }
       }
     });
@@ -757,60 +782,19 @@ const resetMenuStyles = () => {
     channel4Observer.observe(channel4);
   }
   
-  // --- Intersection Observer for Channel 5 YouTube Video Control ---
+  // --- Intersection Observer for Channel 5 Video Playback ---
+  // Audio is handled by centralized muteAllExcept(), this only ensures video keeps playing
   const channel5 = document.getElementById("section5");
   const channel5ObserverOptions = { root: null, threshold: 0.7 };
   const channel5Observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.target.id === "section5") {
-        if (entry.intersectionRatio >= 0.7) {
-          console.log("Channel 5 active: Under the Influence in view.");
-
-          // Ensure video is playing; if paused or not started, play it muted
-          if (window.channel5Player && typeof window.channel5Player.playVideo === "function") {
-            const state = window.channel5Player.getPlayerState ? window.channel5Player.getPlayerState() : null;
-            // 1 = playing, 2 = paused, -1 = unstarted
-            if (state !== 1) {
-              window.channel5Player.playVideo();
-            }
-          }
-
-          // Unmute once player confirms it is playing (robust against slow loads)
-          const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
-          const unmuteWhenPlaying = () => {
-            if (!window.channel5Player || typeof window.channel5Player.getPlayerState !== 'function') {
-              // Player not fully initialized, retry shortly
-              console.log("Channel 5: Player not ready, will retry unmuteWhenPlaying.");
-              setTimeout(unmuteWhenPlaying, 250);
-              return;
-            }
-
-            const st = window.channel5Player.getPlayerState();
-
-            if (st === 1) { // Player is PLAYING
-              if (!isMobile || window.soundAllowed) {
-                if (typeof window.channel5Player.unMute === 'function') {
-                  window.channel5Player.unMute();
-                  console.log("Channel 5 active: Unmuted (state: PLAYING, permission granted).");
-                }
-              } else {
-                // Mobile, sound not yet allowed: keep polling
-                console.log("Channel 5 active: Player PLAYING, but sound not yet allowed on mobile. Retrying unmute.");
-                setTimeout(unmuteWhenPlaying, 250);
-              }
-            } else { // Player is NOT PLAYING (e.g., -1 unstarted, 0 ended, 2 paused, 3 buffering, 5 cued)
-              console.log(`Channel 5 active: Player not in PLAYING state (current state: ${st}). Attempting to play and will retry unmute.`);
-              if (typeof window.channel5Player.playVideo === 'function') {
-                window.channel5Player.playVideo(); // Ensure it's trying to play
-              }
-              setTimeout(unmuteWhenPlaying, 250); // Retry until player is playing and conditions met
-            }
-          };
-          unmuteWhenPlaying(); // Initial call
-        } else {
-          console.log("Channel 5 inactive: Muting video (continues playing for TV realism).");
-          if (window.channel5Player && typeof window.channel5Player.mute === "function") {
-            window.channel5Player.mute();
+      if (entry.target.id === "section5" && entry.intersectionRatio >= 0.7) {
+        console.log("Channel 5 active: Under the Influence in view.");
+        // Ensure video is playing (it stays muted until muteAllExcept unmutes it)
+        if (window.channel5Player && typeof window.channel5Player.playVideo === "function") {
+          const state = window.channel5Player.getPlayerState ? window.channel5Player.getPlayerState() : null;
+          if (state !== 1) {
+            window.channel5Player.playVideo();
           }
         }
       }
