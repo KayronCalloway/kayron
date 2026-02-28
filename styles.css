@@ -233,7 +233,7 @@ body {
 #mainContent {
   display: none;
   overflow-y: auto;
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: y proximity;
   height: 100vh;
   padding-top: 60px; /* Prevents content from hiding behind the fixed header */
 }
@@ -259,18 +259,10 @@ body {
 
 /* Section 5 (UATP Archive) - last channel, no restrictions */
 #section5 {
-  overflow-y: auto;
   scroll-snap-align: none;
-  scroll-snap-stop: normal;
   display: block;
   height: auto;
   min-height: 100vh;
-  padding-bottom: 100px;
-}
-
-/* Ensure smooth scrolling to last channel */
-#mainContent:has(#section5:last-child) {
-  scroll-snap-type: y proximity;
 }
 
 .channel-buttons {
