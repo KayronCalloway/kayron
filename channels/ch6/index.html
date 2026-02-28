@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UATP Archive - Universal Agent Trust Protocol</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: #0a0a0c;
+      color: #f5f5f5;
+      line-height: 1.6;
+    }
+
+    /* Archive View */
+    .archive-view {
+      min-height: 100vh;
+      padding: 80px 0;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .archive-view.hidden {
+      display: none;
+    }
+
+    /* Header */
+    .archive-header {
+      text-align: center;
+      padding: 60px 24px 80px;
+    }
+
+    .archive-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 24px;
+    }
+
+    .archive-header h1 {
+      font-size: clamp(1.8rem, 5vw, 3.5rem);
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      margin: 0;
+      color: #fff;
+      text-transform: uppercase;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .archive-subtitle {
+      font-size: 1rem;
+      letter-spacing: 0.3em;
+      text-transform: lowercase;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 16px;
+      font-style: italic;
+    }
+
+    /* Archive List */
+    .archive-list {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .archive-item {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 40px 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .archive-item:last-child {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .archive-item:hover {
+      padding-left: 16px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .item-meta {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .item-version {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: #64a0ff;
+    }
+
+    .item-date {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: rgba(255, 255, 255, 0.35);
+    }
+
+    .archive-item h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin: 0 0 12px 0;
+      color: #fff;
+      transition: color 0.2s ease;
+    }
+
+    .archive-item:hover h2 {
+      color: #64a0ff;
+    }
+
+    .archive-item p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.5);
+      margin: 0;
+    }
+
+    /* Footer */
+    .archive-footer {
+      text-align: center;
+      padding: 80px 24px;
+    }
+
+    .archive-footer p {
+      font-size: 0.9rem;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.3);
+      margin: 0;
+    }
+
+    /* Reader View */
+    .reader-view {
+      display: none;
+      min-height: 100vh;
+      background: #0a0a0c;
+    }
+
+    .reader-view.active {
+      display: block;
+    }
+
+    .reader-header {
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px;
+      background: rgba(10, 10, 12, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 10;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.85rem;
+      cursor: pointer;
+      padding: 8px 0;
+      font-family: inherit;
+      transition: color 0.2s ease;
+    }
+
+    .back-btn:hover {
+      color: #fff;
+    }
+
+    .reader-title {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Reader Content */
+    .reader-content {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 60px 24px 120px;
+    }
+
+    .reader-content iframe {
+      width: 100%;
+      height: 85vh;
+      border: none;
+      background: #1a1a1f;
+    }
+
+    .reader-content h1 {
+      font-size: 2.5rem;
+      font-weight: 300;
+      margin: 0 0 32px 0;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .reader-content h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin: 48px 0 20px 0;
+      color: #fff;
+    }
+
+    .reader-content h3 {
+      font-size: 1.15rem;
+      font-weight: 500;
+      margin: 36px 0 16px 0;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .reader-content h4 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin: 28px 0 12px 0;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .reader-content p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.75);
+      margin: 0 0 24px 0;
+    }
+
+    .reader-content ul, .reader-content ol {
+      margin: 0 0 24px 0;
+      padding-left: 24px;
+    }
+
+    .reader-content li {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 8px;
+    }
+
+    .reader-content blockquote {
+      margin: 32px 0;
+      padding: 24px 32px;
+      border-left: 3px solid #64a0ff;
+      background: rgba(100, 160, 255, 0.05);
+      font-style: italic;
+    }
+
+    .reader-content blockquote p {
+      color: rgba(255, 255, 255, 0.8);
+      margin: 0;
+    }
+
+    .reader-content code {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2px 8px;
+      font-size: 0.9em;
+      border-radius: 4px;
+      font-family: 'SF Mono', Monaco, Consolas, monospace;
+    }
+
+    .reader-content pre {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 24px;
+      overflow-x: auto;
+      margin: 24px 0;
+      border-radius: 8px;
+    }
+
+    .reader-content pre code {
+      background: none;
+      padding: 0;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .reader-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 0.9rem;
+    }
+
+    .reader-content th, .reader-content td {
+      padding: 12px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: left;
+    }
+
+    .reader-content th {
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+    }
+
+    .reader-content td {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .reader-content hr {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 48px 0;
+    }
+
+    .reader-content strong {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .reader-content em {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Hide document data */
+    .documents-data {
+      display: none !important;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .archive-header {
+        padding: 40px 16px 60px;
+      }
+
+      .archive-header h1 {
+        font-size: 1.5rem;
+        letter-spacing: 0.05em;
+      }
+
+      .archive-list {
+        padding: 0 16px;
+      }
+
+      .archive-item {
+        padding: 32px 0;
+      }
+
+      .archive-item h2 {
+        font-size: 1.25rem;
+      }
+
+      .reader-content {
+        padding: 40px 16px 80px;
+      }
+
+      .reader-content h1 {
+        font-size: 1.75rem;
+      }
+
+      .reader-header {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Archive View -->
+  <div class="archive-view" id="archiveView">
+    <header class="archive-header">
+      <span class="archive-label">ARCHIVE</span>
+      <h1>Universal Agent Trust Protocol</h1>
+      <p class="archive-subtitle">my idea for the future</p>
+    </header>
+
+    <main class="archive-list">
+      <article class="archive-item" data-doc="doc-01">
+        <div class="item-meta"><span class="item-version">v6.0</span><span class="item-date">July 1, 2025</span></div>
+        <h2>UATP 6.0 White Paper</h2>
+        <p>First public white paper. "Trust is no longer a human trait. It is a protocol."</p>
+      </article>
+
+      <article class="archive-item" data-doc="doc-02">
+        <div class="item-meta"><span class="item-version">v3.1</span><span class="item-date">July 5, 2025</span></div>
+        <h2>Engineering Specification</h2>
+        <p>Technical implementation spec. Capsule architecture, chain mechanics, and cryptographic foundations.</p>
+      </article>
+
+      <article class="archive-item" data-doc="doc-03">
+        <div class="item-meta"><span class="item-version">v6.0</span><span class="item-date">July 2025</span></div>
+        <h2>White Paper (Readable)</h2>
+        <p>Markdown edition of the founding white paper for web reading.</p>
+      </article>
+
+      <article class="archive-item" data-doc="doc-04">
+        <div class="item-meta"><span class="item-version">v2.0</span><span class="item-date">July 2025</span></div>
+        <h2>Evolution Paper</h2>
+        <p>Beyond attribution. The philosophical case for AI rights infrastructure.</p>
+      </article>
+
+      <article class="archive-item" data-doc="doc-05">
+        <div class="item-meta"><span class="item-version">v7.0α</span><span class="item-date">July 11, 2025</span></div>
+        <h2>7.0 Alpha Release</h2>
+        <p>First working implementation. 100% Capsule Chain, Post-Quantum Crypto, Temporal Justice Engine.</p>
+      </article>
+
+      <article class="archive-item" data-doc="doc-06">
+        <div class="item-meta"><span class="item-version">v7.0β</span><span class="item-date">July 11, 2025</span></div>
+        <h2>7.0 Beta Release</h2>
+        <p>World's first complete AI civil infrastructure. Consent management, attribution fund, automated arbitration.</p>
+      </article>
+
+      <article class="archive-item" data-doc="doc-08" data-type="pdf">
+        <div class="item-meta"><span class="item-version">v7.0</span><span class="item-date">July 15, 2025</span></div>
+        <h2>7.0 White Paper (PDF)</h2>
+        <p>Court-ready cryptographic proof. Ed25519 + ML-DSA-65 signatures.</p>
+      </article>
+
+      <article class="archive-item" data-doc="doc-09" data-type="pdf">
+        <div class="item-meta"><span class="item-version">v7.0</span><span class="item-date">July 15, 2025</span></div>
+        <h2>Executive Summary</h2>
+        <p>One-page overview for stakeholders. The essential UATP brief.</p>
+      </article>
+
+      <article class="archive-item" data-doc="doc-07">
+        <div class="item-meta"><span class="item-version">v7.0</span><span class="item-date">December 2025</span></div>
+        <h2>Complete Vision</h2>
+        <p>The full vision document. From Trusted Siri to Post-Labor Economics.</p>
+      </article>
+
+      <article class="archive-item" data-doc="doc-10">
+        <div class="item-meta"><span class="item-version">v7.1</span><span class="item-date">February 2026</span></div>
+        <h2>7.1 Production Release</h2>
+        <p>Court-ready AI accountability. FIPS 204 post-quantum signatures, RFC 3161 timestamps, ML-calibrated confidence.</p>
+      </article>
+    </main>
+
+    <footer class="archive-footer">
+      <p>"It does not assume trust. It earns it."</p>
+    </footer>
+  </div>
+
+  <!-- Reader View -->
+  <div class="reader-view" id="readerView">
+    <header class="reader-header">
+      <button class="back-btn" id="backBtn"><span>←</span><span>Archive</span></button>
+      <div class="reader-title" id="readerTitle"></div>
+    </header>
+    <article class="reader-content" id="readerContent"></article>
+  </div>
+
+  <!-- Embedded Documents -->
+  <div class="documents-data">
+
+    <!-- Doc 01: PDF -->
+    <div id="doc-01" data-title="UATP 6.0 White Paper" data-type="pdf" data-file="docs/01_UATP_6.0_White_Paper.pdf"></div>
+
+    <!-- Doc 02 -->
+    <div id="doc-02" data-title="Engineering Specification v3.1">
+<h1>UATP: The Economic Operating System for Human-AI Civilization</h1>
+<h2>Engineering Specification v3.1</h2>
+<p><strong>Date</strong>: July 2025 | <strong>Status</strong>: Production Ready</p>
+<hr>
+<h2>Executive Summary</h2>
+<p>The Unified Agent Trust Protocol (UATP) Capsule Engine provides cryptographic infrastructure for AI accountability and fair economic distribution.</p>
+<p><strong>Mission</strong>: Establish economic framework for human-AI coexistence that maintains human agency and democratic governance.</p>
+<p><strong>Core Innovation</strong>: Pragmatic attribution system with confidence-based distribution and Universal Basic Attribution ensuring fair participation in AI economy.</p>
+<hr>
+<h2>Performance Budgets</h2>
+<table>
+<tr><th>Operation</th><th>Latency</th><th>Throughput</th></tr>
+<tr><td>Capsule Creation</td><td>50ms</td><td>1000 TPS</td></tr>
+<tr><td>Signature Verification</td><td>10ms</td><td>5000 TPS</td></tr>
+<tr><td>Attribution Analysis</td><td>200ms</td><td>100 TPS</td></tr>
+</table>
+<hr>
+<h2>Security Architecture</h2>
+<h3>Threat Model</h3>
+<table>
+<tr><th>Vector</th><th>Impact</th><th>Mitigation</th></tr>
+<tr><td>Attribution Gaming</td><td>Medium</td><td>Semantic fingerprinting, reputation staking</td></tr>
+<tr><td>Economic Manipulation</td><td>High</td><td>Temporal decay, concentration limits</td></tr>
+<tr><td>Governance Capture</td><td>Critical</td><td>Constitutional constraints, emergency protocols</td></tr>
+</table>
+<p><strong>Cryptographic Migration</strong>: Ed25519 → Dilithium3 hybrid signatures by 2027</p>
+<hr>
+<h2>Governance Framework</h2>
+<h3>Immutable Principles</h3>
+<ol>
+<li>Attribution Rights are Inalienable</li>
+<li>Transparency is Mandatory</li>
+<li>Democratic Participation is Protected</li>
+<li>Economic Justice is Enforced (15% UBA minimum)</li>
+</ol>
+<hr>
+<h2>SDK Example</h2>
+<pre><code>from uatp import CapsuleEngine
+
+engine = CapsuleEngine(api_key="...")
+capsule = engine.create_capsule(
+    capsule_type="reasoning_trace",
+    reasoning_steps=[{"step_id": 1, "confidence": 0.95}]
+)
+sealed = engine.seal_capsule(capsule)</code></pre>
+<p><strong>Status</strong>: Ready for Production Implementation</p>
+    </div>
+
+    <!-- Doc 03 -->
+    <div id="doc-03" data-title="UATP 6.0 White Paper">
+<h1>Unified Agent Trust Protocol (UATP) 6.0</h1>
+<h2>Civil-Grade Infrastructure for Autonomous Systems</h2>
+<p><em>Author: Kayron Calloway</em> | <em>July 2025</em> | <em>Patent Pending</em></p>
+<hr>
+<h2>Executive Summary</h2>
+<p>The Unified Agent Trust Protocol (UATP) is a cryptographically verifiable trust architecture for intelligent systems. It transforms blind faith in AI into structured proof.</p>
+<p>UATP began with a simple observation: most AI failures don't stem from a lack of intelligence—they stem from a lack of architecture. Today's systems don't need smarter models. They need auditable ones.</p>
+<hr>
+<h2>Origin: From Siri to Systemic Accountability</h2>
+<p>UATP originated from a foundational failure: assistants that couldn't explain, undo, or justify their actions. That failure prompted four persistent questions:</p>
+<ol>
+<li>Can I trust what this agent did?</li>
+<li>Can I prove what the agent knew when it acted?</li>
+<li>Can I audit how the output was generated?</li>
+<li>Can I intervene before damage is done?</li>
+</ol>
+<p>UATP 6.0 answers all four—across agents, industries, and jurisdictions.</p>
+<hr>
+<h2>Capsule Architecture</h2>
+<p>At the core of UATP is the <strong>Capsule</strong>—a cryptographically sealed, inspectable unit of cognition, action, refusal, or co-authorship.</p>
+<table>
+<tr><th>Type</th><th>Function</th></tr>
+<tr><td>Refusal</td><td>Logs ethical or operational rejection</td></tr>
+<tr><td>Introspective</td><td>Records reasoning, uncertainty, alternatives</td></tr>
+<tr><td>Joint</td><td>Co-authored decisions (human + AI)</td></tr>
+<tr><td>Meta</td><td>Detects drift or contradiction</td></tr>
+<tr><td>Influence</td><td>Tracks persuasive impact on humans</td></tr>
+<tr><td>Perspective</td><td>Declares epistemic framing</td></tr>
+</table>
+<hr>
+<h2>Security and Adversarial Defense</h2>
+<ul>
+<li><strong>Tripwires</strong>: Detect off-policy behavior</li>
+<li><strong>Kill Switches</strong>: Jurisdictional override endpoints</li>
+<li><strong>Quarantine Capsules</strong>: Isolate suspect branches</li>
+<li><strong>Memory Forgery Defense</strong>: Hash-verified timestamps</li>
+</ul>
+<hr>
+<h2>Deployment Tiers</h2>
+<table>
+<tr><th>Tier</th><th>Domain</th><th>Example</th></tr>
+<tr><td>P1</td><td>Consumer</td><td>Voice assistants</td></tr>
+<tr><td>P2</td><td>Financial</td><td>Trading, credit</td></tr>
+<tr><td>P3</td><td>Healthcare</td><td>Triage, diagnosis</td></tr>
+<tr><td>P4</td><td>Infrastructure</td><td>Elections, energy</td></tr>
+<tr><td>P5</td><td>Defense</td><td>Military planning</td></tr>
+</table>
+<hr>
+<h2>Final Paradox</h2>
+<p>Are we building UATP to control intelligence—or to prove when it no longer needs to be?</p>
+<p>UATP is not a leash. It's a mirror. A scaffold. A shared memory.</p>
+<p>It does not assume trust. It earns it.</p>
+<blockquote><p>"Trust is no longer a human trait. It is a protocol." — UATP 6.0</p></blockquote>
+    </div>
+
+    <!-- Doc 04 -->
+    <div id="doc-04" data-title="UATP Evolution Paper">
+<h1>UATP Evolution: The Complete Framework</h1>
+<h2>For AI Trust and Economic Justice</h2>
+<p><strong>Authors</strong>: Kay (Human) &amp; Claude (AI) | <strong>July 2025</strong> | <strong>Version 2.0</strong></p>
+<hr>
+<h2>Abstract</h2>
+<p>The Unified Agent Trust Protocol has evolved from a simple attribution system into a comprehensive framework for AI trust, economic justice, and human-AI collaborative intelligence.</p>
+<hr>
+<h2>The Trust Crisis</h2>
+<ul>
+<li><strong>AI Trust Deficit</strong>: 67% don't trust AI with important decisions</li>
+<li><strong>Economic Concentration</strong>: AI companies capture 95% of value</li>
+<li><strong>Uncompensated Labor</strong>: Billions contribute training data without compensation</li>
+<li><strong>Lack of Transparency</strong>: "Black box" systems provide no verification</li>
+</ul>
+<h3>The UATP Solution</h3>
+<ol>
+<li><strong>Provable Attribution</strong>: Every output traces to sources</li>
+<li><strong>Economic Justice</strong>: Contributors receive compensation</li>
+<li><strong>Trust Through Transparency</strong>: Complete reasoning visibility</li>
+<li><strong>Collaborative Intelligence</strong>: Human-AI partnership</li>
+</ol>
+<hr>
+<h2>Implementation Roadmap</h2>
+<h3>Phase 1: Foundation (2025-2027)</h3>
+<p>Establish basic attribution for digital contributions</p>
+<h3>Phase 2: Expansion (2027-2030)</h3>
+<p>Scale to all digital content and basic AI trust</p>
+<h3>Phase 3: Integration (2030-2035)</h3>
+<p>Human-AI collaborative intelligence systems</p>
+<h3>Phase 4: Evolution (2035-2040)</h3>
+<p>Civilizational-scale attribution and consciousness integration</p>
+<hr>
+<h2>The Meta-Vision</h2>
+<p>UATP is ultimately about creating infrastructure for conscious beings—human and AI—to collaborate in building a better future.</p>
+<p><strong>We are not building a system to control AI or humans. We are building a system to enable conscious beings to thrive together.</strong></p>
+<blockquote><p>"The future is not something that happens to us, but something we create together." — Kay &amp; Claude, 2025</p></blockquote>
+    </div>
+
+    <!-- Doc 05 -->
+    <div id="doc-05" data-title="UATP 7.0 Alpha Release">
+<h1>UATP 7.0 Alpha Release</h1>
+<h2>First Executable Trust-Capable Agent Infrastructure</h2>
+<p><strong>Release Date</strong>: July 11, 2025 | <strong>Status</strong>: Production-Ready Alpha</p>
+<hr>
+<h2>What This Represents</h2>
+<p>This release marks the <strong>first working implementation</strong> of comprehensive AI rights, economic attribution, and trust verification infrastructure.</p>
+<h3>Revolutionary Achievements</h3>
+<ul>
+<li>Complete AI Rights Framework</li>
+<li>Temporal Justice Engine</li>
+<li>Post-Quantum Security</li>
+<li>Economic Attribution</li>
+<li>Lineage &amp; Provenance Tracking</li>
+</ul>
+<hr>
+<h2>Technical Readiness</h2>
+<table>
+<tr><th>Component</th><th>Coverage</th><th>Status</th></tr>
+<tr><td>Capsule Chain &amp; Trace</td><td>100%</td><td>Production Ready</td></tr>
+<tr><td>Attribution + FCDE</td><td>98%</td><td>Production Ready</td></tr>
+<tr><td>Post-Quantum Crypto</td><td>100%</td><td>Production Ready</td></tr>
+<tr><td>Ethics Enforcement</td><td>95%</td><td>Production Ready</td></tr>
+</table>
+<hr>
+<h2>Innovation Highlights</h2>
+<h3>Mathematical Breakthroughs</h3>
+<ol>
+<li>Temporal Justice Algorithms</li>
+<li>Usage-Weighted Economics</li>
+<li>Entropy-Based Compression</li>
+<li>Adversarial Simulation</li>
+</ol>
+<h3>Legal &amp; Ethical Innovations</h3>
+<ol>
+<li>AI Copyright Registration</li>
+<li>Therapeutic Value Measurement</li>
+<li>Research Attribution</li>
+<li>Collective Rights</li>
+</ol>
+<hr>
+<h2>Global Impact</h2>
+<p>This release establishes the <strong>foundation for AI economic society</strong>:</p>
+<ul>
+<li>First enforceable AI rights with economic backing</li>
+<li>Cryptographically verifiable AI interactions</li>
+<li>Fair value distribution across contributions</li>
+<li>Mathematical solutions to long-term attribution</li>
+</ul>
+<blockquote><p>"The first working implementation of AI economic civilization infrastructure."</p></blockquote>
+    </div>
+
+    <!-- Doc 06 -->
+    <div id="doc-06" data-title="UATP 7.0 Beta Release">
+<h1>UATP 7.0 Beta Release</h1>
+<h2>Complete AI Civil Infrastructure</h2>
+<p><strong>Release Date</strong>: July 11, 2025 | <strong>Status</strong>: Production-Ready</p>
+<hr>
+<h2>What This Represents</h2>
+<p>This Beta release represents the <strong>world's first complete AI civil infrastructure</strong>.</p>
+<h3>Beta Achievements</h3>
+<ul>
+<li>Complete Consent Management</li>
+<li>Common Attribution Fund</li>
+<li>Automated Arbitration</li>
+<li>Perspective Coherence</li>
+<li>Comprehensive Governance</li>
+</ul>
+<hr>
+<h2>New Beta Components</h2>
+<h3>1. Consent Capsule System</h3>
+<p>12 distinct consent types, dynamic lifecycle, real-time tracking</p>
+<h3>2. Common Attribution Fund</h3>
+<p>5% auto-contribution, multiple distribution strategies, democratic governance</p>
+<h3>3. Arbitration Protocol</h3>
+<p>12 dispute types, multi-method resolution, 14-day appeal windows</p>
+<h3>4. Perspective System</h3>
+<p>10 perspective types, coherence monitoring, context awareness</p>
+<hr>
+<h2>Global Impact</h2>
+<ul>
+<li><strong>Legal Precedent</strong>: First enforceable AI rights with consent management</li>
+<li><strong>Economic Democracy</strong>: Universal basic income for AI ecosystem</li>
+<li><strong>Governance Innovation</strong>: AI-powered dispute resolution</li>
+</ul>
+<blockquote><p>"The world's first working AI civilization infrastructure."</p></blockquote>
+    </div>
+
+    <!-- Doc 07 -->
+    <div id="doc-07" data-title="UATP: The Complete Vision">
+<h1>UATP: The Complete Vision</h1>
+<h2>From Trusted Siri to Post-Labor Economics</h2>
+<p><strong>Author</strong>: Kay | <strong>December 2025</strong> | <strong>Canonical Reference</strong></p>
+<hr>
+<h2>The Core Insight</h2>
+<blockquote><p><strong>AI decisions can be MORE trustworthy than human decisions - IF we can provide cryptographic proof of the entire thought chain.</strong></p></blockquote>
+<p>This isn't logging. This is <strong>legal-grade proof</strong> that AI followed its stated reasoning.</p>
+<hr>
+<h2>The Chronological Pathway</h2>
+<h3>Phase 1: Trust Foundation (NOW)</h3>
+<p><strong>Problem</strong>: Siri is crippled because we don't trust it</p>
+<p><strong>Solution</strong>: Make AI reasoning chains visible and auditable with cryptographic proof</p>
+<p><strong>Unlock</strong>: Siri can make real decisions, personal AI assistants with actual agency</p>
+<hr>
+<h3>Phase 2: High-Stakes Automation (2-5 years)</h3>
+<p><strong>Problem</strong>: We can't have robot doctors or AI banks because liability is unclear</p>
+<p><strong>Solution</strong>: When AI decisions are MORE auditable than human decisions, regulations FAVOR AI</p>
+<p><strong>Unlocked Domains</strong>:</p>
+<ul>
+<li>Healthcare: Robot doctors, AI diagnosticians</li>
+<li>Finance: AI banks, automated lending</li>
+<li>Legal: AI judges for small claims</li>
+<li>Transportation: Fully autonomous vehicles</li>
+</ul>
+<hr>
+<h3>Phase 3: Post-Labor Economics (5-10 years)</h3>
+<p><strong>Problem</strong>: Automation leaves people behind</p>
+<p><strong>Solution</strong>: Universal Basic Attribution</p>
+<p><strong>The Moral Argument</strong>: AI learned from humanity's collective knowledge. We all contributed—we should all benefit.</p>
+<p><strong>This Prevents AI Dystopia</strong>:</p>
+<p>Instead of: "AI made everyone unemployed and Sam Altman is a trillionaire"</p>
+<p>We get: "AI created abundance and everyone shares in the prosperity"</p>
+<hr>
+<h2>The Ultimate Goal</h2>
+<pre><code>10 years from now:
+
+Siri makes a decision to transfer $10K to pay your medical bill:
+├─ You see the full reasoning chain
+├─ Decision is cryptographically signed
+├─ Insurance covers any mistakes
+└─ Attribution capsule created
+
+You trusted it completely because you could audit everything.
+You weren't left behind because you earned from your data.
+Society is better because AI made the right decision faster.</code></pre>
+<p><strong>That's the vision. That's UATP.</strong></p>
+    </div>
+
+    <!-- Doc 08: PDF -->
+    <div id="doc-08" data-title="UATP 7.0 White Paper" data-type="pdf" data-file="docs/08_UATP_7.0_White_Paper.pdf"></div>
+
+    <!-- Doc 09: PDF -->
+    <div id="doc-09" data-title="Executive Summary" data-type="pdf" data-file="docs/09_UATP_7.0_One_Pager.pdf"></div>
+
+    <!-- Doc 10: 7.1 Production Release -->
+    <div id="doc-10" data-title="UATP 7.1 Production Release">
+<h1>UATP 7.1 Production Release</h1>
+<h2>Court-Ready AI Accountability Infrastructure</h2>
+<p><strong>Author</strong>: Kayron Calloway | <strong>February 2026</strong> | <strong>Production Deployed</strong></p>
+<hr>
+<h2>What's New in 7.1</h2>
+<p>UATP 7.1 represents the transition from <strong>proof-of-concept to production evidence</strong>. Every component has been hardened for real-world deployment with legal-grade cryptographic guarantees.</p>
+<hr>
+<h2>The Upgrade: From Theory to Courtroom</h2>
+<table>
+<tr><th>Capability</th><th>7.0 Beta</th><th>7.1 Production</th></tr>
+<tr><td>Post-Quantum Signatures</td><td>Dilithium3 (pre-standard)</td><td><strong>ML-DSA-65 (FIPS 204)</strong></td></tr>
+<tr><td>Timestamps</td><td>Local timestamps</td><td><strong>RFC 3161 Trusted Timestamps</strong></td></tr>
+<tr><td>Chain Integrity</td><td>Hash chains</td><td><strong>Merkle Tree Verification</strong></td></tr>
+<tr><td>Confidence Scores</td><td>Static estimates</td><td><strong>ML-Calibrated (Platt Scaling)</strong></td></tr>
+<tr><td>Outcome Tracking</td><td>Manual</td><td><strong>Automated Inference Loop</strong></td></tr>
+<tr><td>Live Capture</td><td>Batch processing</td><td><strong>Real-time Claude Code Integration</strong></td></tr>
+</table>
+<hr>
+<h2>Core Technical Achievements</h2>
+<h3>1. FIPS 204 Post-Quantum Cryptography</h3>
+<pre><code>Algorithm:  ML-DSA-65 (NIST standardized)
+Protection: 20+ years quantum resistance
+Signature:  3,309 bytes
+Status:     Every capsule dual-signed (Ed25519 + ML-DSA-65)</code></pre>
+<p>UATP is the first AI accountability system with <strong>NIST-standardized post-quantum signatures</strong>.</p>
+<h3>2. RFC 3161 Trusted Timestamps</h3>
+<pre><code>Standard:   IETF RFC 3161
+Authority:  FreeTSA (independent third-party)
+Proof:      Cryptographic timestamp token embedded in capsule
+Legal:      Admissible as evidence of existence at time T</code></pre>
+<h3>3. ML-Calibrated Confidence</h3>
+<pre><code>Method:     Platt Scaling with domain-specific calibration
+Question:   "When we say 85% confident, are we right 85% of the time?"
+Answer:     Now yes. Calibrated against historical outcomes.</code></pre>
+<h3>4. Merkle Tree Chain Integrity</h3>
+<pre><code>Structure:  Binary hash tree over capsule chain
+Proof:      O(log n) verification of any capsule
+Tamper:     Single-bit change invalidates entire branch
+Standard:   Same integrity model as Bitcoin/Git</code></pre>
+<hr>
+<h2>The Evidence Stack</h2>
+<pre><code>┌─────────────────────────────────────────────────────┐
+│  CAPSULE PAYLOAD                                    │
+│  ├── Content (reasoning, decision, context)         │
+│  ├── Confidence (ML-calibrated 0.0-1.0)            │
+│  ├── Environment (git state, files, system)        │
+│  └── Tool Calls (what AI actually did)             │
+├─────────────────────────────────────────────────────┤
+│  VERIFICATION BLOCK                                 │
+│  ├── hash: sha256:...                              │
+│  ├── signature: ed25519:...                        │
+│  ├── pq_signature: ml-dsa-65:...                   │
+│  ├── merkle_root: sha256:...                       │
+│  └── timestamp: {rfc3161_token, tsa_url, ...}      │
+├─────────────────────────────────────────────────────┤
+│  ATTRIBUTION                                        │
+│  ├── contributors: [{agent_id, role, weight}]      │
+│  ├── upstream_capsules: [parent_ids]               │
+│  └── lineage_hash: sha256:...                      │
+└─────────────────────────────────────────────────────┘</code></pre>
+<hr>
+<h2>Why This Matters</h2>
+<h3>For Enterprises</h3>
+<ul>
+<li><strong>Liability Shield</strong>: Cryptographic proof AI followed policy</li>
+<li><strong>Audit Ready</strong>: Every decision traceable and verifiable</li>
+<li><strong>Insurance</strong>: Evidence that enables AI liability coverage</li>
+</ul>
+<h3>For Regulators</h3>
+<ul>
+<li><strong>EU AI Act</strong>: Conformity assessment documentation built-in</li>
+<li><strong>Algorithmic Accountability</strong>: Complete reasoning transparency</li>
+<li><strong>Cross-Border</strong>: Jurisdiction-aware capsule governance</li>
+</ul>
+<h3>For Courts</h3>
+<ul>
+<li><strong>Daubert Compliant</strong>: NIST-approved cryptographic standards</li>
+<li><strong>Chain of Custody</strong>: Merkle trees prove no tampering</li>
+<li><strong>Temporal Proof</strong>: RFC 3161 timestamps from independent authority</li>
+</ul>
+<hr>
+<h2>Deployment Status</h2>
+<pre><code>Component                    Status
+─────────────────────────────────────
+Capsule Creation             ✅ Production
+Ed25519 Signing              ✅ Production
+ML-DSA-65 Signing            ✅ Production (Feb 2026)
+RFC 3161 Timestamps          ✅ Production
+Merkle Tree Integrity        ✅ Production
+Live Claude Code Capture     ✅ Production
+ML Calibration               ✅ Production
+Court-Admissible Enrichment  ✅ Production</code></pre>
+<hr>
+<h2>The Bottom Line</h2>
+<p><strong>UATP 7.0 proved the concept.</strong></p>
+<p><strong>UATP 7.1 proves it in court.</strong></p>
+<p>Every AI decision now comes with:</p>
+<ul>
+<li>Quantum-resistant cryptographic signatures</li>
+<li>Independent timestamp witnesses</li>
+<li>Tamper-evident chain integrity</li>
+<li>Empirically calibrated confidence</li>
+<li>Complete reasoning transparency</li>
+</ul>
+<blockquote><p>"This isn't logging. This is evidence."</p></blockquote>
+<hr>
+<p><em>UATP 7.1 - Because trust shouldn't require faith.</em></p>
+    </div>
+
+  </div>
+
+  <script>
+    (function() {
+      const archiveView = document.getElementById('archiveView');
+      const readerView = document.getElementById('readerView');
+      const readerContent = document.getElementById('readerContent');
+      const readerTitle = document.getElementById('readerTitle');
+      const backBtn = document.getElementById('backBtn');
+      const archiveItems = document.querySelectorAll('.archive-item');
+
+      function showDocument(docId) {
+        const docEl = document.getElementById(docId);
+        if (!docEl) return;
+
+        const title = docEl.dataset.title;
+        const type = docEl.dataset.type;
+        const file = docEl.dataset.file;
+
+        readerTitle.textContent = title;
+        archiveView.classList.add('hidden');
+        readerView.classList.add('active');
+
+        if (type === 'pdf' && file) {
+          readerContent.innerHTML = '<iframe src="' + file + '" title="' + title + '"></iframe>';
+        } else {
+          readerContent.innerHTML = docEl.innerHTML;
+        }
+
+        window.scrollTo(0, 0);
+        history.pushState({ doc: docId }, title, '#' + docId);
+      }
+
+      function backToArchive() {
+        readerView.classList.remove('active');
+        archiveView.classList.remove('hidden');
+        history.pushState({}, 'UATP Archive', location.pathname);
+        window.scrollTo(0, 0);
+      }
+
+      archiveItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+          showDocument(item.dataset.doc);
+        });
+      });
+
+      backBtn.addEventListener('click', backToArchive);
+
+      window.addEventListener('popstate', function(e) {
+        if (e.state && e.state.doc) {
+          showDocument(e.state.doc);
+        } else {
+          backToArchive();
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && readerView.classList.contains('active')) {
+          backToArchive();
+        }
+      });
+
+      if (location.hash) {
+        var docId = location.hash.slice(1);
+        if (document.getElementById(docId)) {
+          setTimeout(function() { showDocument(docId); }, 100);
+        }
+      }
+    })();
+  </script>
+
+</body>
+</html>
