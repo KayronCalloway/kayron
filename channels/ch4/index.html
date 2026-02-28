@@ -141,7 +141,6 @@
       display: none;
       min-height: 100vh;
       background: #0a0a0c;
-      cursor: pointer; /* Indicate clickable background */
     }
 
     .reader-view.active {
@@ -150,35 +149,32 @@
 
     .reader-header {
       position: sticky;
-      top: 60px; /* Lowered from top */
+      top: 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 16px 24px;
+      padding: 24px;
       background: rgba(10, 10, 12, 0.95);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       z-index: 10;
-      margin-top: 40px; /* Additional spacing from top */
     }
 
     .back-btn {
       display: flex;
       align-items: center;
       gap: 8px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 6px;
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 0.9rem;
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.85rem;
       cursor: pointer;
-      padding: 10px 16px;
+      padding: 8px 0;
       font-family: inherit;
-      transition: all 0.2s ease;
+      transition: color 0.2s ease;
     }
 
     .back-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
       color: #fff;
     }
 
@@ -187,32 +183,11 @@
       color: rgba(255, 255, 255, 0.6);
     }
 
-    /* Click hint for closing */
-    .reader-view::before {
-      content: 'Click outside to close';
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.75rem;
-      color: rgba(255, 255, 255, 0.3);
-      letter-spacing: 0.1em;
-      pointer-events: none;
-      z-index: 5;
-    }
-
     /* Reader Content */
     .reader-content {
       max-width: 720px;
       margin: 0 auto;
       padding: 60px 24px 120px;
-      cursor: default; /* Reset cursor for content area */
-      position: relative;
-      z-index: 2;
-    }
-
-    .reader-header {
-      cursor: default; /* Reset cursor for header */
     }
 
     .reader-content iframe {
