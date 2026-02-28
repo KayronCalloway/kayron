@@ -1,4 +1,4 @@
-// Channel 5: Under the Influence JavaScript
+// Channel 4: Under the Influence JavaScript
 
 function createModals() {
   // Create the Warren Buffett modal
@@ -323,41 +323,41 @@ function setupModalEventListeners() {
 }
 
 export async function init() {
-  console.log('Channel 5 Under the Influence init started');
-  
+  console.log('Channel 4 Under the Influence init started');
+
   // Prevent duplicate initialization
-  const section5 = document.getElementById('section5');
-  if (section5 && section5.querySelector('.channel5-buttons')) {
-    console.log('Channel 5 already initialized, skipping...');
+  const section4 = document.getElementById('section4');
+  if (section4 && section4.querySelector('.channel4-buttons')) {
+    console.log('Channel 4 already initialized, skipping...');
     return;
   }
   
   try {
     // Load the influence content
-    console.log('Loading Channel 5 influence content...');
-    const response = await fetch('./channels/ch5/index.html');
+    console.log('Loading Channel 4 influence content...');
+    const response = await fetch('./channels/ch4/index.html');
     if (!response.ok) {
       throw new Error(`Failed to fetch influence content: ${response.status} ${response.statusText}`);
     }
     const html = await response.text();
     
     // Insert into the section
-    if (section5) {
+    if (section4) {
       // Preserve any existing channel overlay from main page
-      const existingOverlay = section5.querySelector('.channel-number-overlay');
+      const existingOverlay = section4.querySelector('.channel-number-overlay');
       const overlayHTML = existingOverlay ? existingOverlay.outerHTML : '';
-      
-      section5.innerHTML = html;
-      
+
+      section4.innerHTML = html;
+
       // If there was an existing overlay and the new content doesn't have one, restore it
-      if (overlayHTML && !section5.querySelector('.channel-number-overlay')) {
-        section5.insertAdjacentHTML('beforeend', overlayHTML);
+      if (overlayHTML && !section4.querySelector('.channel-number-overlay')) {
+        section4.insertAdjacentHTML('beforeend', overlayHTML);
       }
       
       // Load influence styles
       const influenceStylesheet = document.createElement('link');
       influenceStylesheet.rel = 'stylesheet';
-      influenceStylesheet.href = './channels/ch5/styles.css';
+      influenceStylesheet.href = './channels/ch4/styles.css';
       document.head.appendChild(influenceStylesheet);
       
       // Add loading indicator style for mobile
@@ -443,7 +443,7 @@ export async function init() {
       }
       
       
-      console.log('Channel 5 influence content loaded successfully');
+      console.log('Channel 4 influence content loaded successfully');
       
       // Create and set up the modals
       createModals();
@@ -453,25 +453,25 @@ export async function init() {
         // Ensure TV Guide has correct positioning - USING GLOBAL STANDARD
         if (typeof window.ensureTVGuideStandardStyling === 'function') {
           window.ensureTVGuideStandardStyling();
-          console.log('Channel 5: Applied standard TV Guide styling');
+          console.log('Channel 4: Applied standard TV Guide styling');
         } else {
-          console.warn('Channel 5: Global TV Guide styling function not available');
+          console.warn('Channel 4: Global TV Guide styling function not available');
         }
-        
-        // Apply Merova font to all CH5 buttons and handle mobile layout
-        const ch5Buttons = document.querySelectorAll('.channel5-buttons .channel-button');
+
+        // Apply Merova font to all CH4 buttons and handle mobile layout
+        const ch4Buttons = document.querySelectorAll('.channel4-buttons .channel-button');
         const isMobileView = window.innerWidth <= 768;
-        
-        // Adjust the channel5-buttons container for mobile vertical layout
-        const buttonContainer = document.querySelector('.channel5-buttons');
+
+        // Adjust the channel4-buttons container for mobile vertical layout
+        const buttonContainer = document.querySelector('.channel4-buttons');
         if (buttonContainer && isMobileView) {
           buttonContainer.style.flexDirection = 'column';
           buttonContainer.style.gap = '25px';
           buttonContainer.style.width = '85%';
           buttonContainer.style.maxWidth = '300px';
         }
-        
-        ch5Buttons.forEach(button => {
+
+        ch4Buttons.forEach(button => {
           button.style.fontFamily = "'Merova', sans-serif";
           button.style.letterSpacing = '0.05em';
           button.style.fontWeight = '500';
@@ -492,12 +492,12 @@ export async function init() {
       
       // Set up YouTube player only if it doesn't exist
       setTimeout(() => {
-        if (typeof YT !== 'undefined' && YT.Player && !window.channel5Player) {
+        if (typeof YT !== 'undefined' && YT.Player && !window.channel4Player) {
           const isMobile = isMobileDevice();
-          
-          console.log("Creating Channel 5 YouTube player...");
-          // Create the YouTube player for channel 5
-          window.channel5Player = new YT.Player('youtube-player-5', {
+
+          console.log("Creating Channel 4 YouTube player...");
+          // Create the YouTube player for channel 4
+          window.channel4Player = new YT.Player('youtube-player-4', {
             videoId: 'OFlnSoPm7x4', // Same video as channel 4 for consistency
             playerVars: {
               autoplay: 1, // Always autoplay for background video effect
@@ -516,7 +516,7 @@ export async function init() {
             },
             events: {
               onReady: event => {
-                console.log("Channel 5 YouTube Player ready");
+                console.log("Channel 4 YouTube Player ready");
                 event.target.mute();
                 event.target.playVideo();
               },
@@ -527,25 +527,25 @@ export async function init() {
                 }
               },
               onError: (event) => {
-                console.error('Channel 5 YouTube player error:', event.data);
+                console.error('Channel 4 YouTube player error:', event.data);
                 // Simple recovery
                 setTimeout(() => {
-                  if (window.channel5Player) {
-                    window.channel5Player.playVideo();
+                  if (window.channel4Player) {
+                    window.channel4Player.playVideo();
                   }
                 }, 1000);
               }
             }
           });
-        } else if (window.channel5Player) {
-          console.log("Channel 5 YouTube player already exists, reusing...");
+        } else if (window.channel4Player) {
+          console.log("Channel 4 YouTube player already exists, reusing...");
         } else {
-          console.error("YouTube API not available for Channel 5.");
+          console.error("YouTube API not available for Channel 4.");
         }
       }, 500);
       
     } else {
-      console.error('Section 5 not found');
+      console.error('Section 4 not found');
     }
   } catch (err) {
     console.error('Failed to load influence content:', err);

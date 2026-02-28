@@ -252,6 +252,15 @@ body {
   text-align: center;
 }
 
+/* Section 5 (UATP Archive) scroll override - allows internal content scrolling */
+#section5 {
+  overflow-y: auto;
+  scroll-snap-align: none;
+  display: block;
+  height: auto;
+  min-height: 100vh;
+}
+
 .channel-buttons {
   position: absolute;
   top: 50%;
