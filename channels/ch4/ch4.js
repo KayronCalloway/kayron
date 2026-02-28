@@ -143,7 +143,35 @@ function initArchive() {
 
   // Event: Back button
   if (backBtn) {
-    backBtn.addEventListener('click', backToArchive);
+    backBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      backToArchive();
+    });
+  }
+
+  // Event: Click on reader background (black area) to close
+  if (readerView) {
+    readerView.addEventListener('click', (e) => {
+      // Only close if clicking directly on the reader-view background
+      // Not on content, header, or other child elements
+      if (e.target === readerView) {
+        backToArchive();
+      }
+    });
+  }
+
+  // Prevent clicks on content from closing
+  if (readerContent) {
+    readerContent.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  }
+
+  const readerHeader = document.querySelector('.reader-header');
+  if (readerHeader) {
+    readerHeader.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
   }
 
   // Event: Keyboard
