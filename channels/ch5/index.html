@@ -432,6 +432,12 @@
         <h2>7.1 Production Release</h2>
         <p>Court-ready AI accountability. FIPS 204 post-quantum signatures, RFC 3161 timestamps, ML-calibrated confidence.</p>
       </article>
+
+      <article class="archive-item" data-doc="doc-11">
+        <div class="item-meta"><span class="item-version">v7.2</span><span class="item-date">March 2026</span></div>
+        <h2>7.2 Edge-Native Specification</h2>
+        <p>Edge computing, on-device training, agentic workflows. Training provenance, hardware attestation, model registry.</p>
+      </article>
     </main>
 
     <footer class="archive-footer">
@@ -855,6 +861,101 @@ Court-Admissible Enrichment  ✅ Production</code></pre>
 <blockquote><p>"This isn't logging. This is evidence."</p></blockquote>
 <hr>
 <p><em>UATP 7.1 - Because trust shouldn't require faith.</em></p>
+    </div>
+
+    <!-- Doc 11: UATP 7.2 Specification -->
+    <div id="doc-11" data-title="UATP 7.2 Edge-Native Specification">
+<h1>UATP 7.2 Specification</h1>
+<h2>Universal AI Transparency Protocol - Edge-Native Provenance</h2>
+<p><strong>Version</strong>: 7.2.0-draft | <strong>Status</strong>: Draft Specification | <strong>Date</strong>: March 2026</p>
+<hr>
+<h2>Abstract</h2>
+<p>UATP 7.2 extends the Universal AI Transparency Protocol to address the paradigm shift toward edge computing, on-device training, and agentic AI systems. This specification introduces:</p>
+<ol>
+<li><strong>Training Provenance</strong> - Full lifecycle tracking from base model to fine-tuned deployment</li>
+<li><strong>Agentic Workflow Chains</strong> - DAG-based lineage for multi-step AI agent operations</li>
+<li><strong>Hardware Attestation</strong> - Cryptographic proof of execution environment</li>
+<li><strong>Edge-Native Capsules</strong> - Lightweight format for resource-constrained devices</li>
+<li><strong>Model Registry Protocol</strong> - Content-addressed model versioning and linking</li>
+</ol>
+<p>These extensions respond to two critical developments: the democratization of AI training through on-device compute (e.g., Apple Neural Engine) and the proliferation of open-source frontier models (e.g., Qwen 3.5) that rival proprietary systems.</p>
+<hr>
+<h2>1. Motivation</h2>
+<h3>1.1 The Edge AI Shift</h3>
+<p>Traditional UATP (7.0/7.1) assumed a cloud-centric model. This model is obsolete. Evidence:</p>
+<ul>
+<li><strong>ANE Training</strong> (maderix/ANE): Neural network training directly on Apple Silicon Neural Engine</li>
+<li><strong>Qwen 3.5</strong>: Open-source 397B parameter MoE model matching Claude Opus 4.5/GPT-5.2, deployable locally</li>
+<li><strong>Regulatory Pressure</strong>: EU AI Act and similar frameworks require accountability regardless of where AI runs</li>
+</ul>
+<h3>1.2 The Attribution Gap</h3>
+<p>Current UATP tracks inference provenance but misses critical attribution layers:</p>
+<pre><code>Training Data → Base Model → Fine-Tuning → Deployment → Inference → Response
+     ↓              ↓            ↓             ↓            ↓
+  [WHO?]        [WHO?]       [WHO?]        [WHERE?]    [VERIFIED?]</code></pre>
+<p>UATP 7.2 closes this gap.</p>
+<hr>
+<h2>2. Training Provenance Schema</h2>
+<p>Training provenance captures the complete lifecycle of a model from base weights through deployment.</p>
+<h3>Key Components:</h3>
+<ul>
+<li><strong>Base Model</strong>: Model ID, hash, registry URI, license, publisher</li>
+<li><strong>Training Data</strong>: Dataset hash, sources, consent verification</li>
+<li><strong>Fine-Tuning</strong>: Method, hyperparameters, hardware attestation, trainer ID</li>
+<li><strong>Deployment</strong>: Environment, runtime, quantization</li>
+</ul>
+<hr>
+<h2>3. Agentic Workflow Chains</h2>
+<p>Agentic AI systems execute multi-step workflows with tool calls, branching decisions, and external interactions. UATP 7.2 introduces <strong>Workflow Chains</strong> to track these complex execution paths as directed acyclic graphs (DAGs).</p>
+<h3>Workflow Visualization:</h3>
+<pre><code>PLAN → [TOOL: search] → [TOOL: search] → [TOOL: search] → INFERENCE → OUTPUT
+              ↓               ↓               ↓
+           arxiv API       scholar         news API</code></pre>
+<hr>
+<h2>4. Hardware Attestation</h2>
+<p>Hardware attestation proves that AI computation occurred on specific, verified hardware. Supports:</p>
+<ul>
+<li><strong>Apple Secure Enclave</strong> (ANE/Neural Engine)</li>
+<li><strong>Android TEE</strong> (Trusted Execution Environment)</li>
+<li><strong>NVIDIA Confidential Computing</strong></li>
+</ul>
+<hr>
+<h2>5. Edge-Native Capsules</h2>
+<p>Design goals: Compact (<1KB), Self-contained, Offline-signable, Sync-friendly</p>
+<h3>Features:</h3>
+<ul>
+<li><strong>Delta Encoding</strong>: Only sync changes from last known state</li>
+<li><strong>Batching</strong>: Aggregate multiple capsules into single payload</li>
+<li><strong>Priority Tiers</strong>: Critical capsules sync first</li>
+<li><strong>Local Signing</strong>: Using device secure element</li>
+</ul>
+<hr>
+<h2>6. Model Registry Protocol</h2>
+<p>Content-addressed storage and retrieval for AI models, enabling verifiable model provenance, fine-tune chain tracking, and license compliance verification.</p>
+<p>Supports decentralized options: IPFS, Blockchain Anchoring, Federation</p>
+<hr>
+<h2>7. Cryptographic Requirements</h2>
+<table>
+<tr><th>Purpose</th><th>Algorithm</th><th>Notes</th></tr>
+<tr><td>Signing (Classical)</td><td>Ed25519</td><td>Default for edge devices</td></tr>
+<tr><td>Signing (Post-Quantum)</td><td>ML-DSA-65</td><td>High-security contexts</td></tr>
+<tr><td>Hashing</td><td>SHA-256 / SHA-3-256</td><td>Content addressing</td></tr>
+<tr><td>Encryption</td><td>AES-256-GCM</td><td>Payload encryption</td></tr>
+</table>
+<hr>
+<h2>8. Backward Compatibility</h2>
+<p>UATP 7.2 systems MUST support reading UATP 7.0 and 7.1 capsules, writing UATP 7.1 capsules for legacy consumers, and graceful degradation when 7.2 features unavailable.</p>
+<hr>
+<h2>9. Security & Regulatory Alignment</h2>
+<p>UATP 7.2 supports compliance with:</p>
+<ul>
+<li><strong>EU AI Act</strong>: Transparency and accountability requirements</li>
+<li><strong>GDPR</strong>: Data provenance and consent tracking</li>
+<li><strong>California CPRA</strong>: Automated decision disclosure</li>
+<li><strong>China AI Regulations</strong>: Algorithm registration requirements</li>
+</ul>
+<hr>
+<blockquote><p>"UATP 7.2 - Provenance for the edge AI era."</p></blockquote>
     </div>
 
   </div>
