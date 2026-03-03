@@ -101,20 +101,31 @@ export async function init() {
 
       // Load content
       if (type === 'pdf' && file) {
-        readerContent.innerHTML = `<iframe src="./channels/ch5/${file}" title="${title}"></iframe>`;
+        // For PDFs, embed with object tag as fallback
+        readerContent.innerHTML = `
+          <object data="./channels/ch5/${file}" type="application/pdf" width="100%" height="100%">
+            <iframe src="./channels/ch5/${file}" title="${title}" style="width:100%;height:80vh;border:none;">
+              <p>Your browser doesn't support PDF viewing. <a href="./channels/ch5/${file}" target="_blank">Download the PDF</a></p>
+            </iframe>
+          </object>`;
       } else {
         readerContent.innerHTML = docEl.innerHTML;
       }
 
-      // Scroll to top of section
-      section5.scrollTo(0, 0);
+      // Scroll to top - multiple methods for reliability
+      readerView.scrollTop = 0;
+      section5.scrollTop = 0;
+      readerView.scrollIntoView({ behavior: 'instant', block: 'start' });
     }
 
     // Back to archive function
     function backToArchive() {
       readerView.classList.remove('active');
       archiveView.classList.remove('hidden');
-      section5.scrollTo(0, 0);
+      // Scroll to top - multiple methods for reliability
+      archiveView.scrollTop = 0;
+      section5.scrollTop = 0;
+      archiveView.scrollIntoView({ behavior: 'instant', block: 'start' });
     }
 
     // Event: Click on archive items (event delegation)
