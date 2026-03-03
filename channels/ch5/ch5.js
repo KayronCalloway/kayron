@@ -10,8 +10,8 @@ export async function init() {
     return;
   }
 
-  // Check if already initialized
-  if (section5.querySelector('.archive-view')) {
+  // Check if already initialized - look for our event listener marker
+  if (section5.dataset.archiveInit === 'true') {
     console.log('Channel 5 already initialized, skipping...');
     return;
   }
@@ -66,99 +66,87 @@ export async function init() {
 
     console.log('Channel 5 archive content loaded');
 
-    // Initialize the archive functionality
-    setTimeout(() => {
-      initArchive();
-    }, 100);
+    // Get references to elements
+    const archiveView = section5.querySelector('#archiveView');
+    const readerView = section5.querySelector('#readerView');
+    const readerContent = section5.querySelector('#readerContent');
+    const readerTitle = section5.querySelector('#readerTitle');
+    const backBtn = section5.querySelector('#backBtn');
+
+    if (!archiveView || !readerView) {
+      console.error('Archive elements not found');
+      return;
+    }
+
+    // Show document function
+    function showDocument(docId) {
+      const docEl = section5.querySelector('#' + docId);
+      if (!docEl) {
+        console.error('Document not found:', docId);
+        return;
+      }
+
+      const title = docEl.dataset.title;
+      const type = docEl.dataset.type;
+      const file = docEl.dataset.file;
+
+      console.log('Opening document:', docId, 'type:', type, 'file:', file);
+
+      // Update title
+      if (readerTitle) readerTitle.textContent = title;
+
+      // Show reader view
+      archiveView.classList.add('hidden');
+      readerView.classList.add('active');
+
+      // Load content
+      if (type === 'pdf' && file) {
+        readerContent.innerHTML = `<iframe src="./channels/ch5/${file}" title="${title}"></iframe>`;
+      } else {
+        readerContent.innerHTML = docEl.innerHTML;
+      }
+
+      // Scroll to top of section
+      section5.scrollTo(0, 0);
+    }
+
+    // Back to archive function
+    function backToArchive() {
+      readerView.classList.remove('active');
+      archiveView.classList.remove('hidden');
+      section5.scrollTo(0, 0);
+    }
+
+    // Event: Click on archive items (event delegation)
+    section5.addEventListener('click', function(e) {
+      const item = e.target.closest('.archive-item');
+      if (item && item.dataset.doc) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Archive item clicked:', item.dataset.doc);
+        showDocument(item.dataset.doc);
+      }
+
+      // Back button
+      if (e.target.closest('#backBtn')) {
+        e.preventDefault();
+        backToArchive();
+      }
+    });
+
+    // Event: Keyboard escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && readerView.classList.contains('active')) {
+        backToArchive();
+      }
+    });
+
+    // Mark as initialized
+    section5.dataset.archiveInit = 'true';
+
+    console.log('UATP Archive fully initialized');
 
   } catch (err) {
     console.error('Failed to load UATP Archive:', err);
   }
-}
-
-function initArchive() {
-  const section5 = document.getElementById('section5');
-  if (!section5) {
-    console.error('Section 5 not found');
-    return;
-  }
-
-  const archiveView = section5.querySelector('#archiveView');
-  const readerView = section5.querySelector('#readerView');
-  const readerContent = section5.querySelector('#readerContent');
-  const readerTitle = section5.querySelector('#readerTitle');
-  const backBtn = section5.querySelector('#backBtn');
-  const archiveItems = section5.querySelectorAll('.archive-item');
-
-  if (!archiveView || !readerView) {
-    console.error('Archive elements not found');
-    return;
-  }
-
-  console.log('Found', archiveItems.length, 'archive items');
-
-  // No scroll isolation needed - ch5 is the last channel so users can scroll back up
-
-  // Show document
-  function showDocument(docId) {
-    const docEl = section5.querySelector('#' + docId);
-    if (!docEl) {
-      console.error('Document not found:', docId);
-      return;
-    }
-
-    const title = docEl.dataset.title;
-    const type = docEl.dataset.type;
-    const file = docEl.dataset.file;
-
-    // Update title
-    if (readerTitle) readerTitle.textContent = title;
-
-    // Show reader view
-    archiveView.classList.add('hidden');
-    readerView.classList.add('active');
-
-    // Load content
-    if (type === 'pdf' && file) {
-      readerContent.innerHTML = `<iframe src="./channels/ch5/${file}" title="${title}"></iframe>`;
-    } else {
-      readerContent.innerHTML = docEl.innerHTML;
-    }
-
-    // Scroll section into view
-    const section5 = document.getElementById('section5');
-    if (section5) section5.scrollTo(0, 0);
-  }
-
-  // Back to archive
-  function backToArchive() {
-    readerView.classList.remove('active');
-    archiveView.classList.remove('hidden');
-    const section5 = document.getElementById('section5');
-    if (section5) section5.scrollTo(0, 0);
-  }
-
-  // Event: Click archive item (using event delegation)
-  section5.addEventListener('click', (e) => {
-    const item = e.target.closest('.archive-item');
-    if (item) {
-      const docId = item.dataset.doc;
-      console.log('Clicked archive item:', docId);
-      showDocument(docId);
-    }
-  });
-
-  // Event: Back button
-  if (backBtn) {
-    backBtn.addEventListener('click', backToArchive);
-  }
-
-  // Event: Keyboard
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && readerView && readerView.classList.contains('active')) {
-      backToArchive();
-    }
-  });
-
-  console.log('UATP Archive initialized with', archiveItems.length, 'documents');
 }
