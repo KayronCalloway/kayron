@@ -13,7 +13,7 @@
         { label: 'Status', value: 'Pre-launch Phase' }
       ],
       galleryImages: [
-        { src: 'visuals/reflections.png', alt: 'Reflections of You Concept Visual' },
+        { src: 'visuals/reflections.jpg', alt: 'Reflections of You Concept Visual' },
         { 
           customHtml: `
             <div style="width: 100%; height: 100%; background-color: #f2f2f2; display: flex; flex-direction: column; padding: 20px;">

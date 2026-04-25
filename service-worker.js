@@ -1,6 +1,6 @@
 // service-worker.js
 
-const CACHE_VERSION = 'tv-portfolio-cache-v2';
+const CACHE_VERSION = 'tv-portfolio-cache-v3';
 const CACHE_ASSETS = [
   './',
   './index.html',
@@ -9,8 +9,13 @@ const CACHE_ASSETS = [
   './manifest.json',
   './youtube-setup.js',
   './menu-manager.js',
+  './robots.txt',
+  './sitemap.xml',
   './visuals/Merova.otf',
   './visuals/favicon.svg',
+  './visuals/icon-192.png',
+  './visuals/icon-512.png',
+  './visuals/full-logo.svg',
   './audio/channel-click1.mp3',
   './audio/channel-click2.mp3',
   './audio/channel-click3.mp3',
@@ -22,6 +27,7 @@ const CACHE_ASSETS = [
   './audio/channel-click9.mp3',
   './audio/channel-click10.mp3',
   './audio/channel-click11.mp3',
+  './audio/click.mp3',
   './resume_v2.html'
 ];
 
