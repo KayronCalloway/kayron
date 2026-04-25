@@ -869,7 +869,6 @@
             openProjectModal(projectId);
             setActiveCard(card);
           }, 10);
-        } else {
         }
       }
     });
@@ -899,7 +898,6 @@
           setTimeout(() => {
             openProjectModal(projectId);
           }, 10);
-        } else {
         }
       }
     });
@@ -1079,7 +1077,6 @@
           closeProjectModal();
           return false;
         };
-      } else {
       }
     }, 100);
   }

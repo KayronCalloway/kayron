@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         navigator.vibrate([50, 30, 50]);
       }
     } catch (e) {
+      // Haptic not supported
     }
   };
 
@@ -135,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
       notifyChannelChanged();
     }
   } catch (err) {
-    // silent
+    // Channel module load failed — deferred
   }
 };
 
@@ -306,7 +307,6 @@ const resetMenuStyles = () => {
         const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
         dateDisplay.textContent = monthNames[now.getMonth()] + ' ' + now.getFullYear();
       }
-    };
     window.ensureTVGuideStandardStyling = ensureTVGuideStandardStyling;
 
   // --- TV Guide Menu Toggle ---
@@ -504,7 +504,6 @@ const resetMenuStyles = () => {
           // Load module content
           if (moduleName) {
             loadChannelContent(moduleName);
-          } else {
           }
           
           distortAndWarpContent();
@@ -637,7 +636,7 @@ const resetMenuStyles = () => {
                   }
                 }
               }
-            }));
+            }).catch(() => {});
           }
         } else {
           if (youtubePlayer && typeof youtubePlayer.mute === "function") {
@@ -651,20 +650,6 @@ const resetMenuStyles = () => {
     ytObserver.observe(channel1);
   }
 
-  // --- Intersection Observer for Channel 4 (UATP Archive) ---
-  const channel4 = document.getElementById("section4");
-  const channel4ObserverOptions = { root: null, threshold: 0.7 };
-  const channel4Observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.target.id === "section4") {
-        /* no-op */
-      }
-    });
-  }, channel4ObserverOptions);
-  if (channel4) {
-    channel4Observer.observe(channel4);
-  }
-  
   // --- Intersection Observer for Channel 5 YouTube Video Control ---
   const channel5 = document.getElementById("section5");
   const channel5ObserverOptions = { root: null, threshold: 0.7 };

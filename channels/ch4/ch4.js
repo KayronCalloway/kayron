@@ -279,8 +279,10 @@ function setupModalEventListeners() {
   // Close all modals on Escape key press
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
-      const allModals = [warrenModal, charlieModal, annualLetterModal];
-      const allButtons = [warrenButton, charlieButton, annualLetterButton];
+      const allModals = ['warrenModal', 'charlieModal', 'annualLetterModal']
+        .map(id => document.getElementById(id));
+      const allButtons = ['warrenButton', 'charlieButton', 'annualLetterButton']
+        .map(id => document.getElementById(id));
       
       allModals.forEach((modal, index) => {
         if (modal && !modal.classList.contains('hidden')) {
@@ -395,44 +397,6 @@ export async function init() {
           }
         `;
         document.head.appendChild(loadingStyle);
-        
-        // Delayed application of styles to YouTube iframe after it's loaded
-        const applyYouTubeStyles = () => {
-          setTimeout(() => {
-            const youtubePlayer = document.getElementById('youtube-player-5');
-            if (youtubePlayer) {
-              
-              // More conservative styling for mobile to prevent freeze
-              if (isMobileDevice()) {
-                youtubePlayer.style.willChange = 'auto'; // Less aggressive on mobile
-                youtubePlayer.style.transform = 'none'; // Avoid transforms that can cause issues
-                youtubePlayer.style.backfaceVisibility = 'visible';
-                youtubePlayer.style.webkitBackfaceVisibility = 'visible';
-                youtubePlayer.style.maxWidth = '100%';
-                youtubePlayer.style.height = 'auto';
-              } else {
-                // Full hardware acceleration for desktop
-                youtubePlayer.style.willChange = 'transform';
-                youtubePlayer.style.transform = 'translateZ(0)';
-                youtubePlayer.style.backfaceVisibility = 'hidden';
-                youtubePlayer.style.perspective = '1000px';
-              }
-            } else {
-              // If no YouTube player yet, try again in 1 second (up to 5 attempts)
-              if (window.youtubeStyleAttempts === undefined) {
-                window.youtubeStyleAttempts = 0;
-              }
-              
-              if (window.youtubeStyleAttempts < 5) {
-                window.youtubeStyleAttempts++;
-                applyYouTubeStyles(); // Try again
-              }
-            }
-          }, 1000);
-        };
-        
-        // Start style application process
-        applyYouTubeStyles();
       }
       
       
@@ -445,7 +409,6 @@ export async function init() {
         // Ensure TV Guide has correct positioning - USING GLOBAL STANDARD
         if (typeof window.ensureTVGuideStandardStyling === 'function') {
           window.ensureTVGuideStandardStyling();
-        } else {
         }
 
         // Apply Merova font to all CH4 buttons and handle mobile layout
@@ -487,7 +450,7 @@ export async function init() {
 
           // Create the YouTube player for channel 4
           window.channel4Player = new YT.Player('youtube-player-4', {
-            videoId: 'OFlnSoPm7x4', // Same video as channel 4 for consistency
+            videoId: 'OFlnSoPm7x4', // Background video for channel 4
             playerVars: {
               autoplay: 1, // Always autoplay for background video effect
               controls: 0, // No controls for background video
@@ -524,13 +487,11 @@ export async function init() {
               }
             }
           });
-        } else if (window.channel4Player) {
-        } else {
         }
       }, 500);
       
-    } else {
     }
   } catch (err) {
+    // Channel 4 section not ready
   }
 }

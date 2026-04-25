@@ -145,5 +145,6 @@ export async function init() {
     section5.dataset.archiveInit = 'true';
 
   } catch (err) {
+    // Archive section not yet available
   }
 }

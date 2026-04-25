@@ -40,9 +40,9 @@ export async function init() {
         }
       }, 100);
       
-    } else {
     }
   } catch (err) {
+    // Music player not yet available
   }
 }
 

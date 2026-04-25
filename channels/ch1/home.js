@@ -132,6 +132,7 @@ export async function init() {
     // Apply mobile-specific modal optimizations
     applyMobileOptimizations();
   } catch (err) {
+    // Modal setup not yet available
   }
 }
 
