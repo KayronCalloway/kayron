@@ -41,10 +41,8 @@ export async function init() {
       }, 100);
       
     } else {
-      console.error('Section 3 not found');
     }
   } catch (err) {
-    console.error('Failed to load music interface:', err);
   }
 }
 
@@ -179,7 +177,6 @@ function setupTrackSelection() {
 function playTrack(index) {
   
   if (index < 0 || index >= tracks.length) {
-    console.error('Invalid track index:', index, 'tracks length:', tracks.length);
     return;
   }
   
@@ -208,7 +205,6 @@ function loadYouTubeVideo(videoId) {
   
   const playerContainer = document.getElementById('music-video-player');
   if (!playerContainer) {
-    console.error('Player container not found');
     return;
   }
   
@@ -272,7 +268,6 @@ function loadLocalVideo(videoPath) {
   
   const playerContainer = document.getElementById('music-video-player');
   if (!playerContainer) {
-    console.error('Player container not found');
     return;
   }
   
@@ -293,10 +288,8 @@ function loadLocalVideo(videoPath) {
   // Test if video file is accessible
   fetch(videoPath).then(response => {
     if (!response.ok) {
-      console.error('Video file not accessible:', response.status, response.statusText);
     }
   }).catch(error => {
-    console.error('Video file fetch error:', error);
   });
   
   // Add event listeners
@@ -340,9 +333,6 @@ function loadLocalVideo(videoPath) {
   
   // Handle autoplay errors
   video.addEventListener('error', (e) => {
-    console.error('Video error:', e.target.error);
-    console.error('Error code:', e.target.error?.code);
-    console.error('Error message:', e.target.error?.message);
     const playPauseBtn = document.getElementById('playPause');
     if (playPauseBtn) playPauseBtn.textContent = '▶';
   });
@@ -395,7 +385,6 @@ async function fetchVideoDuration(videoId) {
     
     return estimatedDurations[videoId] || 210; // Default 3.5 minutes
   } catch (error) {
-    console.error('Could not fetch video duration:', error);
     return 180; // 3 minute fallback
   }
 }

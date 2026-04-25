@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   const playRandomChannelSound = () => {
     const randomIndex = Math.floor(Math.random() * channelSounds.length);
-    channelSounds[randomIndex].play().catch(error => console.error('Audio playback failed:', error));
+    channelSounds[randomIndex].play().catch(() => {});
   };
   
   // Volume control functionality removed
@@ -117,9 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
       targetSection = document.getElementById('section5');
     }
     
-    if (targetSection) {
-    }
-    
+
     if (moduleName === 'home') {
       // Preload Channel 1 with higher priority
       module = await import(`./channels/ch1/home.js`);
@@ -138,29 +136,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (module) {
       await module.init();
-      
-      // Verify content was actually inserted
-      if (targetSection) {
-        if (targetSection.innerHTML.length < 100) {
-          console.warn(`⚠️ Warning: ${targetSection.id} has very little content after init`);
-        }
-      }
-      
-      // Don't force menu button visibility - let MenuManager sync with header
-      
-      // Notify that channel has changed to trigger any observers
       notifyChannelChanged();
-    } else {
-      console.warn(`⚠️ No module definition found for "${moduleName}"`);
     }
   } catch (err) {
-    console.error(`❌ Module for "${moduleName}" failed to load or initialize:`, err);
-    console.error(`📝 Full error stack:`, err.stack);
-    
-    // Try to provide more debugging info
-    if (err.message.includes('Failed to fetch')) {
-      console.error(`🌐 Network error - check if files exist and server is running`);
-    }
+    // silent
   }
 };
 
@@ -181,9 +160,7 @@ const resetMenuStyles = () => {
   // --- Service Worker Registration ---
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./service-worker.js')
-        .then(reg => console.log('Service Worker registered:', reg))
-        .catch(err => console.error('Service Worker registration failed:', err));
+      navigator.serviceWorker.register('./service-worker.js');
     });
   }
   
@@ -249,7 +226,7 @@ const resetMenuStyles = () => {
   powerButton.addEventListener('click', () => {
     powerButton.style.pointerEvents = 'none';
     if (clickSound) {
-      clickSound.play().catch(error => console.error('Click sound failed:', error));
+      clickSound.play().catch(() => {});
     }
     // Mark TV as turned on
     document.body.classList.add('tv-on');
@@ -323,7 +300,6 @@ const resetMenuStyles = () => {
       return true;
     }
     
-    console.error('TV Guide element not found');
     return false;
   };
 
@@ -342,7 +318,6 @@ const resetMenuStyles = () => {
     }
     
     if (!tvGuide) {
-      console.error("TV Guide element not found");
       return;
     }
     
@@ -487,9 +462,6 @@ const resetMenuStyles = () => {
   const observerCallback = entries => {
     entries.forEach(entry => {
       const sectionId = entry.target.id;
-      const visibilityPercent = Math.round(entry.intersectionRatio * 100);
-      
-      
       if (entry.isIntersecting) {
         const newChannel = entry.target.id;
         const moduleName = entry.target.dataset.module;
@@ -530,7 +502,6 @@ const resetMenuStyles = () => {
           if (moduleName) {
             loadChannelContent(moduleName);
           } else {
-            console.warn(`⚠️ No data-module attribute found for ${newChannel}`);
           }
           
           distortAndWarpContent();
@@ -663,7 +634,7 @@ const resetMenuStyles = () => {
                   }
                 }
               }
-            }).catch(err => console.log("Battery API not available", err));
+            }));
           }
         } else {
           if (youtubePlayer && typeof youtubePlayer.mute === "function") {
@@ -683,9 +654,7 @@ const resetMenuStyles = () => {
   const channel4Observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.target.id === "section4") {
-        if (entry.intersectionRatio >= 0.7) {
-        } else {
-        }
+        /* no-op */
       }
     });
   }, channel4ObserverOptions);

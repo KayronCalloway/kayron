@@ -5,13 +5,11 @@ export async function init() {
     // Container validation
     const container = document.getElementById('section2');
     if (!container) {
-      console.error("Channel 2 container not found");
       return;
     }
     
     // Prevent duplicate initialization
     if (container.querySelector('#portfolio-browse')) {
-      console.log("Portfolio browser already loaded; skipping initialization.");
       return;
     }
     
@@ -34,15 +32,13 @@ export async function init() {
     setTimeout(() => {
       import('../../menu-manager.js').then(({ notifyChannelChanged }) => {
         notifyChannelChanged();
-        console.log("Notified MenuManager to ensure header and guide button visibility");
-      }).catch(err => console.error("Error importing MenuManager:", err));
+      }));
       
       // BULLETPROOF: Ensure Channel 2's event system doesn't interfere with TV Guide
       const menuButton = document.getElementById('menuButton');
       if (menuButton) {
         // Add event listener that fires in capture phase BEFORE Channel 2's handlers
         menuButton.addEventListener('click', (e) => {
-          console.log("Channel 2: Menu button click intercepted for TV Guide");
           // Don't stop propagation here - let it reach the main handler
           // Just ensure the button is properly styled
           if (typeof window.ensureTVGuideStandardStyling === 'function') {
@@ -68,12 +64,10 @@ export async function init() {
       // Verify portfolio browse elements exist
       const portfolioBrowse = document.getElementById('portfolio-browse');
       if (portfolioBrowse) {
-        console.log("Portfolio browser initialized successfully");
         
         // Verify cards have click handlers
         const cards = document.querySelectorAll('.project-card');
         if (cards.length > 0) {
-          console.log(`Found ${cards.length} project cards`);
           
           // Ensure cards have proper CSS for clicking
           cards.forEach(card => {
@@ -86,7 +80,6 @@ export async function init() {
             // Log when cards are clicked
             card.addEventListener('click', () => {
               const projectId = card.getAttribute('data-project');
-              console.log(`Card clicked: ${projectId}`);
             });
           });
           
@@ -99,24 +92,18 @@ export async function init() {
             featuredCta.style.zIndex = '3';
           }
         } else {
-          console.error("No project cards found in portfolio browser");
         }
       } else {
-        console.error("Portfolio browser container not found");
       }
     }, 500);
     
     // Ensure TV Guide has correct positioning - USING GLOBAL STANDARD
     if (typeof window.ensureTVGuideStandardStyling === 'function') {
       window.ensureTVGuideStandardStyling();
-      console.log('Channel 2: Applied standard TV Guide styling');
     } else {
-      console.warn('Channel 2: Global TV Guide styling function not available');
     }
     
-    console.log("Channel 2 initialized successfully with portfolio studio");
   } catch (error) {
-    console.error("Failed to load Channel 2 markup:", error);
     const container = document.getElementById('section2');
     if (container) {
       container.innerHTML = `<div class="error">Error loading portfolio studio content.</div>

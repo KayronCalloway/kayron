@@ -132,7 +132,6 @@ export async function init() {
     // Apply mobile-specific modal optimizations
     applyMobileOptimizations();
   } catch (err) {
-    console.error('Failed to load modals:', err);
   }
 }
 
@@ -282,7 +281,6 @@ function setupModalEventListeners() {
     
     
     if (!button || !modal || !closeButton) {
-      console.error(`Missing elements for ${modalId}. Cannot setup modal.`);
       return;
     }
     
@@ -462,7 +460,6 @@ function setupModalEventListeners() {
 function setupPDFDownload() {
   const downloadButton = document.getElementById('downloadPDF');
   if (!downloadButton) {
-    console.error('Download PDF button not found');
     return;
   }
 
@@ -487,7 +484,6 @@ function setupPDFDownload() {
       }, 1000);
 
     } catch (error) {
-      console.error('Resume open failed:', error);
       alert('Failed to open resume. Please check popup blockers.');
       
       // Reset button state

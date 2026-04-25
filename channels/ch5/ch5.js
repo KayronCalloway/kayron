@@ -2,17 +2,14 @@
 // Loads the standalone archive into the main site
 
 export async function init() {
-  console.log('Channel 5 UATP Archive init started');
 
   const section5 = document.getElementById('section5');
   if (!section5) {
-    console.error('Section 5 not found');
     return;
   }
 
   // Check if already initialized - look for our event listener marker
   if (section5.dataset.archiveInit === 'true') {
-    console.log('Channel 5 already initialized, skipping...');
     return;
   }
 
@@ -51,7 +48,6 @@ export async function init() {
       styleEl.id = 'ch5-styles';
       styleEl.textContent = cssText;
       document.head.appendChild(styleEl);
-      console.log('Channel 5 styles injected (scoped to #section5)');
     }
 
     // Extract body content
@@ -64,8 +60,6 @@ export async function init() {
     // Insert content
     section5.innerHTML = bodyContent + overlayHTML;
 
-    console.log('Channel 5 archive content loaded');
-
     // Get references to elements
     const archiveView = section5.querySelector('#archiveView');
     const readerView = section5.querySelector('#readerView');
@@ -74,7 +68,6 @@ export async function init() {
     const backBtn = section5.querySelector('#backBtn');
 
     if (!archiveView || !readerView) {
-      console.error('Archive elements not found');
       return;
     }
 
@@ -82,15 +75,12 @@ export async function init() {
     function showDocument(docId) {
       const docEl = section5.querySelector('#' + docId);
       if (!docEl) {
-        console.error('Document not found:', docId);
         return;
       }
 
       const title = docEl.dataset.title;
       const type = docEl.dataset.type;
       const file = docEl.dataset.file;
-
-      console.log('Opening document:', docId, 'type:', type, 'file:', file);
 
       // Update title
       if (readerTitle) readerTitle.textContent = title;
@@ -134,7 +124,6 @@ export async function init() {
       if (item && item.dataset.doc) {
         e.preventDefault();
         e.stopPropagation();
-        console.log('Archive item clicked:', item.dataset.doc);
         showDocument(item.dataset.doc);
       }
 
@@ -155,9 +144,6 @@ export async function init() {
     // Mark as initialized
     section5.dataset.archiveInit = 'true';
 
-    console.log('UATP Archive fully initialized');
-
   } catch (err) {
-    console.error('Failed to load UATP Archive:', err);
   }
 }

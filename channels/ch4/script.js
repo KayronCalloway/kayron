@@ -31,10 +31,9 @@ const soundManager = {
       const sound = this.sounds[soundId];
       if (sound) {
         sound.currentTime = 0;
-        sound.play().catch(err => console.warn(`Sound play failed: ${err.message}`));
+        sound.play().catch(() => {});
       }
     } catch (error) {
-      console.error('Error playing sound:', error);
     }
   }
 };
@@ -89,7 +88,6 @@ const Analytics = {
     };
     this.events.push(event);
     // In production, send to analytics service
-    console.log('Analytics Event:', event);
   },
 
   /**
@@ -225,19 +223,15 @@ window.GameShow = (function() {
   let elements = {};
 
   function init() {
-    console.log('GameShow.init() called!');
     
     // Setup game container
     const container = document.getElementById('game-show-container');
-    console.log('Looking for game-show-container:', container);
     
     if (!container) {
-      console.error('Game container not found - available elements:', 
-        Array.from(document.querySelectorAll('[id*="game"], [id*="show"]')).map(el => el.id));
+
       return;
     }
     
-    console.log('Game container found, proceeding with initialization...');
     
     // Initialize DOM elements
     elements = {
@@ -258,10 +252,6 @@ window.GameShow = (function() {
     };
     
     // Debug: Check which elements were found
-    console.log('Found screens:', Object.keys(elements.screens).map(key => 
-      `${key}: ${elements.screens[key] ? 'found' : 'missing'}`));
-    console.log('Found game elements:', Object.keys(elements.game).map(key => 
-      `${key}: ${elements.game[key] ? 'found' : 'missing'}`));
 
     // Create options container
     elements.game.optionsContainer.className = 'options-container';
@@ -289,14 +279,12 @@ window.GameShow = (function() {
       soundManager.sounds.background.volume = 0.3;
       soundManager.play('background');
     } catch (error) {
-      console.warn('Could not play background sound:', error);
     }
 
     // Initialize timer
     initializeTimer();
     
     // Show host intro - user will manually start game
-    console.log('Attempting to show host-intro screen...');
     showScreen('host-intro');
     
     // Initialize analytics
@@ -352,7 +340,6 @@ window.GameShow = (function() {
   }
 
   function showScreen(screenName) {
-    console.log(`showScreen called with: ${screenName}`);
     
     // Hide all screens
     Object.values(elements.screens).forEach(screen => {
@@ -371,16 +358,12 @@ window.GameShow = (function() {
       actualScreenName = 'results';
     }
     
-    console.log(`Mapped to actualScreenName: ${actualScreenName}`);
-    console.log(`Screen element exists:`, elements.screens[actualScreenName]);
     
     // Show requested screen
     if (elements.screens[actualScreenName]) {
       elements.screens[actualScreenName].classList.remove('hidden');
       gameState.currentScreen = screenName;
-      console.log(`Successfully showed screen: ${screenName}`);
     } else {
-      console.error(`Screen not found: ${actualScreenName}`);
     }
   }
 

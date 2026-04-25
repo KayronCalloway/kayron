@@ -59,7 +59,7 @@
       ],
       processStages: [
         { name: 'Concept Development', description: 'Establishing philosophical foundation and conceptual frameworks for the multidimensional narrative.' },
-        { name: 'Olfactory Design', description: 'Developing proprietary fragrance formulations that evolve with the wearer's body chemistry throughout the day.' },
+        { name: 'Olfactory Design', description: `Developing proprietary fragrance formulations that evolve with the wearer's body chemistry throughout the day.` },
         { name: 'Visual Storytelling', description: 'Creating film and photography elements that complement and extend the fragrance experience.' },
         { name: 'Product Engineering', description: 'Designing physical artifacts and packaging to create a complete sensory journey.' }
       ]
@@ -312,7 +312,7 @@
       ]
     },
     'luxury-brand': {
-      title: 'C'est Bon Paris Fashion Week',
+      title: `C'est Bon Paris Fashion Week`,
       tagline: 'Audio design and narration for SS23 runway presentation',
       description: `Contributed audio design and narration for C'est Bon's Spring/Summer 2023 Collection showcased at Paris Fashion Week. The collection, which received coverage in fashion publications including Vogue, explored themes of nature and architecture. My role involved creating audio elements that complemented the designs while also providing consulting services for the presentation.`,
       projectUrl: 'https://pausemag.co.uk/2022/06/cest-bon-spring-summer-2023-collection/',
@@ -322,14 +322,14 @@
         { label: 'Coverage', value: 'Vogue, Pause Magazine' }
       ],
       galleryImages: [
-        { src: 'visuals/dou.jpg', alt: 'C'est Bon - Runway Presentation' },
-        { src: 'visuals/sobe.jpeg', alt: 'C'est Bon - Collection Details' },
-        { src: 'visuals/VOL 1. FIRST c.001.jpeg', alt: 'C'est Bon - Show Experience' }
+        { src: 'visuals/dou.jpg', alt: `C'est Bon - Runway Presentation` },
+        { src: 'visuals/sobe.jpeg', alt: `C'est Bon - Collection Details` },
+        { src: 'visuals/VOL 1. FIRST c.001.jpeg', alt: `C'est Bon - Show Experience` }
       ],
       processStages: [
-        { name: 'Concept Development', description: 'Understanding the collection's themes to create complementary audio elements.' },
+        { name: 'Concept Development', description: `Understanding the collection's themes to create complementary audio elements.` },
         { name: 'Audio Design', description: 'Crafting a sonic atmosphere that enhanced the visual and emotional impact of designs.' },
-        { name: 'Narration', description: 'Recording evocative narrative elements that communicated the brand's vision.' },
+        { name: 'Narration', description: `Recording evocative narrative elements that communicated the brand's vision.` },
         { name: 'Consultation', description: 'Providing strategic input to optimize the overall presentation experience.' }
       ]
     },
@@ -492,7 +492,7 @@
     },
     'coloring-with-gray': {
       title: 'Coloring with Gray',
-      tagline: 'Berlin Commercial Awards RAW Selection across 3 categories - Multidisciplinary creative house','
+      tagline: `Berlin Commercial Awards RAW Selection across 3 categories - Multidisciplinary creative house`,
       description: `Multidisciplinary creative house developing integrated experiences across film, fragrance, print, and digital platforms. Berlin Commercial Awards RAW Selection across 3 competitive categories (Cultural Impact, Craft: Idea, and Commercials & Branded Content) demonstrating creative excellence spanning conceptual innovation, technical execution, and commercial viability. Established premium market positioning with scalable creative systems and international recognition.`,
       projectUrl: 'https://coloringwithgray.github.io/coloring-page/',
       metaInfo: [
@@ -625,7 +625,6 @@
         
         // Function to fully destroy and remove the video
         function destroyVideo() {
-          console.log('Completely destroying video...');
           
           // First set src to empty to stop all activity
           videoPlayer.src = '';
@@ -636,21 +635,18 @@
           // Add a placeholder for future restoration if channel 2 is revisited
           videoPlayer.setAttribute('data-original-src', originalVideoSrc || '');
           
-          console.log('Video element destroyed and marked');
         }
         
         // Function to reload and reset the video when coming back to channel 2
         function restoreVideo() {
           // Only restore if it was previously destroyed
           if (videoPlayer.getAttribute('data-destroyed') === 'true') {
-            console.log('Preparing to restore video...');
             
             // Get the original source
             const storedSrc = videoPlayer.getAttribute('data-original-src');
             
             // Only proceed if we have a valid source
             if (storedSrc && storedSrc.length > 10) {
-              console.log('Restoring video with appropriate state...');
               
               // Create a restoration source with proper settings
               let restorationSrc = storedSrc;
@@ -677,7 +673,6 @@
               videoPlayer.removeAttribute('data-destroyed');
               
               
-              console.log('Video restored with sound ' + (soundEnabled ? 'enabled' : 'disabled'));
             }
           }
         }
@@ -688,33 +683,28 @@
         // Function to unmute the video when requested
         function unmuteVideo() {
           if (videoPlayer.src && videoPlayer.src.includes('mute=1')) {
-            console.log('Unmuting video...');
             
             // Replace mute=1 with mute=0 to enable sound
             videoPlayer.src = videoPlayer.src.replace('mute=1', 'mute=0');
             soundEnabled = true;
             
-            console.log('Video unmuted');
           }
         }
         
         // Function to mute the video 
         function muteVideo() {
           if (videoPlayer.src && videoPlayer.src.includes('mute=0')) {
-            console.log('Muting video...');
             
             // Replace mute=0 with mute=1 to disable sound
             videoPlayer.src = videoPlayer.src.replace('mute=0', 'mute=1');
             soundEnabled = false;
             
-            console.log('Video muted');
           }
         }
         
         // Function to prepare video for visibility and auto-play with sound
         function activateVideo() {
           if (videoPlayer.src) {
-            console.log('Activating video...');
             
             // Ensure autoplay and loop are enabled
             if (videoPlayer.src.includes('autoplay=0')) {
@@ -740,14 +730,12 @@
             }
             
             
-            console.log('Video activated, sound state: ' + (soundEnabled ? 'enabled' : 'disabled'));
           }
         }
         
         // Function to deactivate video when not in focus
         function deactivateVideoSound() {
           if (videoPlayer.src && videoPlayer.src.includes('mute=0')) {
-            console.log('Temporarily muting video since not in focus...');
             
             // Remember that sound was enabled
             soundEnabled = true;
@@ -755,7 +743,6 @@
             // Replace mute=0 with mute=1 to disable sound
             videoPlayer.src = videoPlayer.src.replace('mute=0', 'mute=1');
             
-            console.log('Video temporarily muted');
           }
         }
         
@@ -883,7 +870,6 @@
             setActiveCard(card);
           }, 10);
         } else {
-          console.error("No project ID found on card");
         }
       }
     });
@@ -914,7 +900,6 @@
             openProjectModal(projectId);
           }, 10);
         } else {
-          console.error("No project ID found on featured CTA");
         }
       }
     });
@@ -974,7 +959,6 @@
   // Open the project modal with mobile optimizations
   function openProjectModal(projectId) {
     if (!projectData[projectId]) {
-      console.error(`Project data not found for ID: ${projectId}`);
       return;
     }
     
@@ -1096,7 +1080,6 @@
           return false;
         };
       } else {
-        console.error("Close button not found in modal");
       }
     }, 100);
   }
@@ -1384,7 +1367,6 @@
           if (isInScrollArea || isInRow) {
             // This will effectively block the event from reaching any other handlers
             e.stopPropagation();
-            console.log('Blocked channel change from project scroll area');
             
             // Create and dispatch a custom event so we know this was handled
             const customEvent = new CustomEvent('projectScrollHandled', {
@@ -1438,7 +1420,6 @@
       const videoPlayer = document.getElementById('featured-video-player');
       
       if (activeChannel !== 'ch2' && videoPlayer && videoPlayer.src) {
-        console.log('Site loaded on a channel other than 2, preemptively disabling video');
         videoPlayer.src = '';
         
         // Set a flag to indicate video was never properly initialized

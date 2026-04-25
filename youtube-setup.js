@@ -19,7 +19,6 @@ function onYouTubeIframeAPIReady() {
   // First check if the player container exists
   const playerContainer = document.getElementById('youtube-player');
   if (!playerContainer) {
-    console.error('YouTube player container #youtube-player not found in the DOM');
     // Try to create it if missing
     const section1 = document.getElementById('section1');
     if (section1) {
@@ -34,7 +33,6 @@ function onYouTubeIframeAPIReady() {
   
   // Try again to find the container
   if (!document.getElementById('youtube-player')) {
-    console.error('Could not create YouTube player container, aborting player initialization');
     return;
   }
   
@@ -78,54 +76,21 @@ function onYouTubeIframeAPIReady() {
           event.target.setPlaybackQuality('small');
         }
         
-        // Force playback on mobile devices with enhanced iOS support
+        // Mobile autoplay is restricted; iOS requires user interaction for unmuted playback.
+        // Muted autoplay is already attempted above. Retry once, then defer to touch.
         if (isMobile) {
-          // iOS-specific detection
-          const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-          
-          // More aggressive retry strategy especially for iOS
-          const forcePlay = () => {
+          const retryOnce = () => {
             if (event.target.getPlayerState() !== YT.PlayerState.PLAYING) {
               event.target.playVideo();
-              
-              // Check if video is actually playing after a short delay
-              if (isiOS) {
-                setTimeout(() => {
-                  if (event.target.getPlayerState() !== YT.PlayerState.PLAYING) {
-                    event.target.playVideo();
-                  }
-                }, 300);
-              }
             }
           };
-          
-          // Initial attempt
-          forcePlay();
-          
-          // More frequent retries for iOS
-          if (isiOS) {
-            // iOS needs multiple attempts with user interaction context
-            for (let i = 1; i <= 5; i++) {
-              setTimeout(forcePlay, i * 600); // More frequent retries
-            }
-            
-            // Additional attempts after page stabilizes
-            setTimeout(forcePlay, 3000);
-            setTimeout(forcePlay, 5000);
-            
-            // Attempt playback on first user interaction
-            const attemptPlayOnInteraction = () => {
-              event.target.playVideo();
-              // Clean up after first attempt
-              document.removeEventListener('touchstart', attemptPlayOnInteraction);
-            };
-            
-            document.addEventListener('touchstart', attemptPlayOnInteraction, {once: true, passive: true});
-          } else {
-            // Standard retry for non-iOS
-            setTimeout(forcePlay, 1000);
-            setTimeout(forcePlay, 3000);
-          }
+          setTimeout(retryOnce, 800);
+
+          const attemptOnTouch = () => {
+            event.target.playVideo();
+            document.removeEventListener('touchstart', attemptOnTouch);
+          };
+          document.addEventListener('touchstart', attemptOnTouch, { once: true, passive: true });
         }
         
         // Apply styles to containing divs
@@ -156,7 +121,6 @@ function onYouTubeIframeAPIReady() {
             iframe.style.transform = 'translateZ(0)'; // Hardware acceleration
             iframe.style.willChange = 'transform'; // Optimize for animations
           } else {
-            console.error('YouTube iframe not found for styling');
           }
         }, 200); // Reduced from 500ms to 200ms
       },
@@ -167,7 +131,6 @@ function onYouTubeIframeAPIReady() {
         }
       },
       onError: event => {
-        console.error('YouTube player error:', event.data);
         // On error, apply an optimized fallback background quickly
         const section1 = document.getElementById('section1');
         if (section1) {
@@ -178,7 +141,6 @@ function onYouTubeIframeAPIReady() {
             videoBackground.style.background = "#000000 url('visuals/static.gif') center center repeat";
             videoBackground.style.backgroundSize = 'cover';
             videoBackground.style.opacity = '0.8';
-            console.log('Applied optimized fallback background due to YouTube error');
           }
         }
       }

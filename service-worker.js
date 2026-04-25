@@ -26,10 +26,8 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_VERSION)
       .then(cache => {
-        console.log('Opened cache');
         return cache.addAll(CACHE_ASSETS);
       })
-      .catch(error => console.error('Failed to cache assets during install:', error))
   );
 });
 
@@ -73,7 +71,6 @@ self.addEventListener('sync', event => {
 });
 
 async function sendAnalyticsData() {
-  console.log("Background Sync: Analytics data sent.");
   // Implement sending queued analytics data here if needed.
   return Promise.resolve();
 }
@@ -86,7 +83,6 @@ self.addEventListener('periodicsync', event => {
 });
 
 async function updateCachedContent() {
-  console.log("Periodic Sync: Content updated.");
   // Implement periodic cache updates if needed.
   return Promise.resolve();
 }

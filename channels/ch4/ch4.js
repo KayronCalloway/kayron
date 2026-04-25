@@ -323,18 +323,15 @@ function setupModalEventListeners() {
 }
 
 export async function init() {
-  console.log('Channel 4 Under the Influence init started');
 
   // Prevent duplicate initialization
   const section4 = document.getElementById('section4');
   if (section4 && section4.querySelector('.channel4-buttons')) {
-    console.log('Channel 4 already initialized, skipping...');
     return;
   }
   
   try {
     // Load the influence content
-    console.log('Loading Channel 4 influence content...');
     const response = await fetch('./channels/ch4/index.html');
     if (!response.ok) {
       throw new Error(`Failed to fetch influence content: ${response.status} ${response.statusText}`);
@@ -404,7 +401,6 @@ export async function init() {
           setTimeout(() => {
             const youtubePlayer = document.getElementById('youtube-player-5');
             if (youtubePlayer) {
-              console.log('YouTube iframe found, applying optimized styles for mobile');
               
               // More conservative styling for mobile to prevent freeze
               if (isMobileDevice()) {
@@ -414,14 +410,12 @@ export async function init() {
                 youtubePlayer.style.webkitBackfaceVisibility = 'visible';
                 youtubePlayer.style.maxWidth = '100%';
                 youtubePlayer.style.height = 'auto';
-                console.log('Applied mobile-optimized YouTube styles');
               } else {
                 // Full hardware acceleration for desktop
                 youtubePlayer.style.willChange = 'transform';
                 youtubePlayer.style.transform = 'translateZ(0)';
                 youtubePlayer.style.backfaceVisibility = 'hidden';
                 youtubePlayer.style.perspective = '1000px';
-                console.log('Applied desktop-optimized YouTube styles');
               }
             } else {
               // If no YouTube player yet, try again in 1 second (up to 5 attempts)
@@ -431,7 +425,6 @@ export async function init() {
               
               if (window.youtubeStyleAttempts < 5) {
                 window.youtubeStyleAttempts++;
-                console.log(`YouTube iframe not found, retry attempt ${window.youtubeStyleAttempts}`);
                 applyYouTubeStyles(); // Try again
               }
             }
@@ -443,7 +436,6 @@ export async function init() {
       }
       
       
-      console.log('Channel 4 influence content loaded successfully');
       
       // Create and set up the modals
       createModals();
@@ -453,9 +445,7 @@ export async function init() {
         // Ensure TV Guide has correct positioning - USING GLOBAL STANDARD
         if (typeof window.ensureTVGuideStandardStyling === 'function') {
           window.ensureTVGuideStandardStyling();
-          console.log('Channel 4: Applied standard TV Guide styling');
         } else {
-          console.warn('Channel 4: Global TV Guide styling function not available');
         }
 
         // Apply Merova font to all CH4 buttons and handle mobile layout
@@ -495,7 +485,6 @@ export async function init() {
         if (typeof YT !== 'undefined' && YT.Player && !window.channel4Player) {
           const isMobile = isMobileDevice();
 
-          console.log("Creating Channel 4 YouTube player...");
           // Create the YouTube player for channel 4
           window.channel4Player = new YT.Player('youtube-player-4', {
             videoId: 'OFlnSoPm7x4', // Same video as channel 4 for consistency
@@ -516,7 +505,6 @@ export async function init() {
             },
             events: {
               onReady: event => {
-                console.log("Channel 4 YouTube Player ready");
                 event.target.mute();
                 event.target.playVideo();
               },
@@ -527,7 +515,6 @@ export async function init() {
                 }
               },
               onError: (event) => {
-                console.error('Channel 4 YouTube player error:', event.data);
                 // Simple recovery
                 setTimeout(() => {
                   if (window.channel4Player) {
@@ -538,16 +525,12 @@ export async function init() {
             }
           });
         } else if (window.channel4Player) {
-          console.log("Channel 4 YouTube player already exists, reusing...");
         } else {
-          console.error("YouTube API not available for Channel 4.");
         }
       }, 500);
       
     } else {
-      console.error('Section 4 not found');
     }
   } catch (err) {
-    console.error('Failed to load influence content:', err);
   }
 }
