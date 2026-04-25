@@ -90,7 +90,6 @@ body {
   z-index: 150;
   pointer-events: none;
 }
-}
 
 /* --- Fixed Header (Hidden Initially) --- */
 #header {

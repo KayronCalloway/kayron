@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Channel-Click Sounds ---
   const channelSounds = Array.from({ length: 11 }, (_, i) => {
-    const audio = new Audio(`audio/channel-click${i + 1}.aif`);
+    const audio = new Audio(`audio/channel-click${i + 1}.mp3`);
     audio.preload = 'auto';
     return audio;
   });
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const randomIndex = Math.floor(Math.random() * channelSounds.length);
     channelSounds[randomIndex].play().catch(() => {});
   };
-  
+
   // Volume control functionality removed
 
   // --- Haptic Feedback ---
@@ -111,11 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Get target section for debugging
     let targetSection = null;
-    if (moduleName === 'skill games') {
-      targetSection = document.getElementById('section4');
-    } else if (moduleName === 'under the influence') {
-      targetSection = document.getElementById('section5');
-    }
+    // Dead code removed - module names are 'home', 'ch2', 'ch3', 'ch4', 'ch5'
     
 
     if (moduleName === 'home') {
@@ -304,7 +300,14 @@ const resetMenuStyles = () => {
   };
 
   // Make function globally available for all channels
-  window.ensureTVGuideStandardStyling = ensureTVGuideStandardStyling;
+      const dateDisplay = document.querySelector('.date-display');
+      if (dateDisplay) {
+        const now = new Date();
+        const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        dateDisplay.textContent = monthNames[now.getMonth()] + ' ' + now.getFullYear();
+      }
+    };
+    window.ensureTVGuideStandardStyling = ensureTVGuideStandardStyling;
 
   // --- TV Guide Menu Toggle ---
   // Keep track of TV Guide state to prevent conflicting operations

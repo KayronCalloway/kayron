@@ -22,10 +22,9 @@ const soundManager = {
     correct: new Audio('./audio/ka-ching.mp3'),
     incorrect: new Audio('./audio/click.mp3'),
     success: new Audio('./audio/whoosh.mp3'),
-    background: new Audio('./audio/ticker-hum.mp3'),
-    gameshow: new Audio('./audio/gameshow.aif')
+    background: new Audio('./audio/ticker-hum.mp3')
   },
-  
+
   play(soundId) {
     try {
       const sound = this.sounds[soundId];
