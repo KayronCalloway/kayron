@@ -14,7 +14,6 @@ export const MenuManager = {
     this.header = document.getElementById('header');
     this.closeGuide = document.getElementById('closeGuide');
     this.bindEvents();
-    console.log('MenuManager initialized');
     // Don't show on initialization - will show based on header visibility
   },
   
@@ -24,7 +23,6 @@ export const MenuManager = {
   bindEvents() {
     // Listen for channel change events
     document.addEventListener('channelChanged', () => {
-      console.log('Channel changed event detected, syncing menu visibility with header');
       this.show();
     });
     
@@ -33,7 +31,6 @@ export const MenuManager = {
       this.menuButton.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log('MenuManager: Menu button clicked');
         this.toggleTVGuide();
       });
     }
@@ -42,19 +39,12 @@ export const MenuManager = {
     if (this.closeGuide) {
       this.closeGuide.addEventListener('click', (e) => {
         e.preventDefault();
-        console.log('MenuManager: Close guide clicked');
         this.hideTVGuide();
       });
     }
     
-    // Create a mutation observer to detect style changes that might hide the menu
-    this.createVisibilityObserver();
     
-    // Create a mutation observer to detect header visibility changes
-    this.createHeaderObserver();
     
-    // Periodically check visibility as a fallback
-    setInterval(() => this.ensureVisibility(), 2000);
   },
   
   /**
@@ -69,7 +59,6 @@ export const MenuManager = {
           // If style changes and menu is hidden, show it
           const computedStyle = window.getComputedStyle(this.menuButton);
           if (computedStyle.display === 'none' || parseFloat(computedStyle.opacity) < 0.5) {
-            console.log('Menu visibility changed by mutation, restoring');
             this.show();
           }
         }
@@ -77,7 +66,6 @@ export const MenuManager = {
     });
     
     observer.observe(this.menuButton, { attributes: true });
-    console.log('Menu visibility observer started');
   },
   
   /**
@@ -108,13 +96,11 @@ export const MenuManager = {
       this.menuButton.style.minHeight = "44px";
       this.menuButton.style.minWidth = "44px";
       
-      console.log('Menu button EXACTLY matching header visibility');
     } else {
       // Hide menu when header is hidden
       this.menuButton.style.display = 'none';
       this.menuButton.style.opacity = '0';
       this.menuButton.style.visibility = 'hidden';
-      console.log('Menu button hidden because header is not visible');
     }
   },
   
@@ -142,7 +128,6 @@ export const MenuManager = {
     });
     
     observer.observe(this.header, { attributes: true });
-    console.log('Header visibility observer started');
   },
   
   /**
@@ -152,7 +137,6 @@ export const MenuManager = {
     if (typeof window.toggleTVGuide === 'function') {
       window.toggleTVGuide();
     } else {
-      console.error('Global toggleTVGuide function not found');
     }
   },
   
@@ -170,5 +154,4 @@ export const MenuManager = {
 export const notifyChannelChanged = () => {
   const event = new CustomEvent('channelChanged');
   document.dispatchEvent(event);
-  console.log('Channel changed event dispatched');
 };

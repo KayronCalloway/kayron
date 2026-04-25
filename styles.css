@@ -86,12 +86,10 @@ body {
     transparent 2px,
     transparent 3px
   );
-  animation: static 0.2s infinite;
+  opacity: 0;
   z-index: 150;
   pointer-events: none;
 }
-@keyframes static {
-  100% { background-position: 0 3px; }
 }
 
 /* --- Fixed Header (Hidden Initially) --- */
@@ -957,12 +955,8 @@ body {
   
   /* Fix for iOS Safari */
   html, body {
-    height: -webkit-fill-available;
     height: 100%;
-    /* Prevent overscroll bounce effect in iOS */
-    position: fixed;
-    width: 100%;
-    overflow: hidden;
+    overflow: hidden; /* mainContent handles scrolling */
   }
   
   #mainContent {

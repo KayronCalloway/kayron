@@ -1,11 +1,9 @@
 // Channel 3: Music/Audio Works JavaScript
 
 export async function init() {
-  console.log('Channel 3 Music init started');
   
   try {
     // Load the music interface HTML
-    console.log('Loading Channel 3 music interface...');
     const response = await fetch('./channels/ch3/index.html');
     if (!response.ok) {
       throw new Error(`Failed to fetch music interface: ${response.status} ${response.statusText}`);
@@ -23,7 +21,6 @@ export async function init() {
       musicStylesheet.href = './channels/ch3/styles.css';
       document.head.appendChild(musicStylesheet);
       
-      console.log('Channel 3 music interface loaded successfully');
       
       // Initialize music player functionality
       setupMusicPlayer();
@@ -39,9 +36,7 @@ export async function init() {
       setTimeout(() => {
         if (typeof window.ensureTVGuideStandardStyling === 'function') {
           window.ensureTVGuideStandardStyling();
-          console.log('Channel 3: Applied standard TV Guide styling');
         } else {
-          console.warn('Channel 3: Global TV Guide styling function not available');
         }
       }, 100);
       
@@ -59,7 +54,6 @@ let tracks = [];
 let autoAdvanceTimer = null; // Track the auto-advance timer
 
 function setupMusicPlayer() {
-  console.log('Setting up music player...');
   
   // Get track data from the DOM - supports both YouTube and local videos
   tracks = Array.from(document.querySelectorAll('.track-card')).map((card, index) => ({
@@ -78,7 +72,6 @@ function setupMusicPlayer() {
   // Set up channel visibility detection for audio control
   setupChannelVisibilityDetection();
   
-  console.log('Found tracks:', tracks);
   
   // Setup control buttons
   const playPauseBtn = document.getElementById('playPause');
@@ -125,7 +118,6 @@ function setupMusicPlayer() {
 }
 
 function setupTrackSelection() {
-  console.log('Setting up track selection...');
   
   const trackCards = document.querySelectorAll('.track-card');
   const isMobile = window.innerWidth <= 768;
@@ -185,7 +177,6 @@ function setupTrackSelection() {
 }
 
 function playTrack(index) {
-  console.log('Playing track:', index, 'out of', tracks.length, 'tracks');
   
   if (index < 0 || index >= tracks.length) {
     console.error('Invalid track index:', index, 'tracks length:', tracks.length);
@@ -195,7 +186,6 @@ function playTrack(index) {
   currentTrackIndex = index;
   const track = tracks[index];
   
-  console.log('Selected track:', track);
   
   // Update visual states
   updateTrackStates();
@@ -209,7 +199,6 @@ function playTrack(index) {
 }
 
 function loadYouTubeVideo(videoId) {
-  console.log('Loading YouTube video:', videoId);
   
   // Clear any existing auto-advance timer
   if (autoAdvanceTimer) {
@@ -274,7 +263,6 @@ function loadYouTubeVideo(videoId) {
 }
 
 function loadLocalVideo(videoPath) {
-  console.log('Loading local video:', videoPath);
   
   // Clear any existing auto-advance timer
   if (autoAdvanceTimer) {
@@ -301,12 +289,9 @@ function loadLocalVideo(videoPath) {
   video.preload = 'auto'; // Preload the entire video
   video.id = 'local-video-player';
   
-  console.log('Creating video element with source:', videoPath);
-  console.log('Full video path:', window.location.origin + '/' + videoPath);
   
   // Test if video file is accessible
   fetch(videoPath).then(response => {
-    console.log('Video file fetch response:', response.status, response.ok);
     if (!response.ok) {
       console.error('Video file not accessible:', response.status, response.statusText);
     }
@@ -316,18 +301,15 @@ function loadLocalVideo(videoPath) {
   
   // Add event listeners
   video.addEventListener('loadedmetadata', () => {
-    console.log('Local video loaded, duration:', video.duration);
     // Set auto-advance timer based on actual duration
     if (video.duration > 0) {
       autoAdvanceTimer = setTimeout(() => {
-        console.log('Auto-advancing to next video...');
         playNextTrack();
       }, (video.duration - 2) * 1000); // Advance 2 seconds before end
     }
   });
   
   video.addEventListener('ended', () => {
-    console.log('Local video ended - auto advancing');
     playNextTrack();
   });
   
@@ -343,18 +325,14 @@ function loadLocalVideo(videoPath) {
   
   // Handle video loading states
   video.addEventListener('loadstart', () => {
-    console.log('Video load started');
   });
   
   video.addEventListener('canplay', () => {
-    console.log('Video can play');
     // Try to start playing once it can play
     video.play().then(() => {
-      console.log('Video started playing');
       const playPauseBtn = document.getElementById('playPause');
       if (playPauseBtn) playPauseBtn.textContent = '⏸';
     }).catch(error => {
-      console.log('Play failed:', error);
       const playPauseBtn = document.getElementById('playPause');
       if (playPauseBtn) playPauseBtn.textContent = '▶';
     });
@@ -387,17 +365,14 @@ function setupAutoAdvance(videoId) {
   // First, try to get video duration from YouTube API
   fetchVideoDuration(videoId).then(duration => {
     if (duration > 0) {
-      console.log(`Video ${videoId} duration: ${duration} seconds`);
       
       // Set timer to auto-advance slightly before video ends
       autoAdvanceTimer = setTimeout(() => {
-        console.log('Auto-advancing to next video...');
         playNextTrack();
       }, (duration - 2) * 1000); // Advance 2 seconds before end
     } else {
       // Fallback: assume average video length and auto-advance
       autoAdvanceTimer = setTimeout(() => {
-        console.log('Auto-advancing to next video (fallback timing)...');
         playNextTrack();
       }, 180000); // 3 minutes fallback
     }
@@ -475,19 +450,15 @@ function onPlayerStateChange(event) {
   const playPauseBtn = document.getElementById('playPause');
   
   if (event.data === window.YT.PlayerState.PLAYING) {
-    console.log('Video is playing');
     if (playPauseBtn) playPauseBtn.textContent = '⏸';
   } else if (event.data === window.YT.PlayerState.PAUSED) {
-    console.log('Video is paused');
     if (playPauseBtn) playPauseBtn.textContent = '▶';
   } else if (event.data === window.YT.PlayerState.ENDED) {
-    console.log('Video ended - auto advancing');
     playNextTrack();
   }
 }
 
 function playPreviousTrack() {
-  console.log('Previous track clicked, current index:', currentTrackIndex);
   if (tracks.length === 0) return;
   
   // If no track is currently selected, start from the last one
@@ -497,12 +468,10 @@ function playPreviousTrack() {
   }
   
   const newIndex = currentTrackIndex > 0 ? currentTrackIndex - 1 : tracks.length - 1;
-  console.log('Going to previous track:', newIndex);
   playTrack(newIndex);
 }
 
 function playNextTrack() {
-  console.log('Next track triggered, current index:', currentTrackIndex);
   if (tracks.length === 0) return;
   
   // If no track is currently selected, start from the first one
@@ -513,23 +482,19 @@ function playNextTrack() {
   
   // Move to next track, or loop back to start
   const newIndex = currentTrackIndex < tracks.length - 1 ? currentTrackIndex + 1 : 0;
-  console.log('Auto-advancing to track:', newIndex);
   playTrack(newIndex);
 }
 
 function playRandomTrack() {
-  console.log('Playing random track...');
   if (tracks.length === 0) return;
   
   const randomIndex = Math.floor(Math.random() * tracks.length);
-  console.log('Selected random track:', randomIndex, '(' + tracks[randomIndex].title + ')');
   playTrack(randomIndex);
 }
 
 // Removed toggleMute function since mute button was removed
 
 function setupBroadcastSignals() {
-  console.log('Setting up broadcast signals...');
   
   const sendBtn = document.getElementById('sendSignal');
   const messageInput = document.getElementById('signalMessage');
@@ -617,13 +582,11 @@ function setupChannelVisibilityDetection() {
         
         // If channel became invisible and there's a current player, handle it
         if (wasVisible && !isChannelVisible && currentPlayer) {
-          console.log('Channel 3 left viewport - pausing media');
           pauseCurrentMedia();
         }
         
         // If channel became visible and there was a paused player, resume it
         if (!wasVisible && isChannelVisible && currentPlayer) {
-          console.log('Channel 3 entered viewport - resuming media');
           // Note: Instagram embeds don't support programmatic play/pause
           // But we can track the state for user experience
         }
@@ -642,7 +605,6 @@ function setupChannelVisibilityDetection() {
   // Also listen for visibility change events (when user switches tabs)
   document.addEventListener('visibilitychange', () => {
     if (document.hidden && currentPlayer) {
-      console.log('Tab became hidden - pausing media');
       pauseCurrentMedia();
     }
   });

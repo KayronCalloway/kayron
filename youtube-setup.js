@@ -14,7 +14,6 @@ let apiReady = false;
 
 // Called by the YouTube IFrame API when it's ready.
 function onYouTubeIframeAPIReady() {
-  console.log('YouTube API ready, initializing player');
   apiReady = true;
   
   // First check if the player container exists
@@ -26,7 +25,6 @@ function onYouTubeIframeAPIReady() {
     if (section1) {
       const videoBackground = section1.querySelector('.video-background');
       if (videoBackground) {
-        console.log('Found video background container, creating player element');
         const playerDiv = document.createElement('div');
         playerDiv.id = 'youtube-player';
         videoBackground.appendChild(playerDiv);
@@ -40,7 +38,6 @@ function onYouTubeIframeAPIReady() {
     return;
   }
   
-  console.log('Creating YouTube player with ID: KISNE4qOIBM');
   
   // Check for mobile devices or low bandwidth signal set by the Channel 1 module
   const isMobile = window.innerWidth <= 600;
@@ -49,7 +46,6 @@ function onYouTubeIframeAPIReady() {
   // Determine optimal quality based on device and connection
   let suggestedQuality = 'hd720'; // Default quality
   if (isMobile || optimizedMode) {
-    console.log('Loading optimized YouTube video for mobile/low bandwidth');
     suggestedQuality = 'small'; // Lower quality for mobile/low bandwidth
   }
   
@@ -73,7 +69,6 @@ function onYouTubeIframeAPIReady() {
     },
     events: {
       onReady: event => {
-        console.log('YouTube player ready, applying styles and starting playback');
         // Mute the video initially to allow autoplay.
         event.target.mute();
         event.target.playVideo();
@@ -91,14 +86,12 @@ function onYouTubeIframeAPIReady() {
           // More aggressive retry strategy especially for iOS
           const forcePlay = () => {
             if (event.target.getPlayerState() !== YT.PlayerState.PLAYING) {
-              console.log('Forcing video playback on mobile');
               event.target.playVideo();
               
               // Check if video is actually playing after a short delay
               if (isiOS) {
                 setTimeout(() => {
                   if (event.target.getPlayerState() !== YT.PlayerState.PLAYING) {
-                    console.log("Video still not playing on iOS, retrying...");
                     event.target.playVideo();
                   }
                 }, 300);
@@ -111,7 +104,6 @@ function onYouTubeIframeAPIReady() {
           
           // More frequent retries for iOS
           if (isiOS) {
-            console.log("iOS device detected, using enhanced playback strategy");
             // iOS needs multiple attempts with user interaction context
             for (let i = 1; i <= 5; i++) {
               setTimeout(forcePlay, i * 600); // More frequent retries
@@ -124,7 +116,6 @@ function onYouTubeIframeAPIReady() {
             // Attempt playback on first user interaction
             const attemptPlayOnInteraction = () => {
               event.target.playVideo();
-              console.log("Attempting play on iOS user interaction");
               // Clean up after first attempt
               document.removeEventListener('touchstart', attemptPlayOnInteraction);
             };
@@ -149,7 +140,6 @@ function onYouTubeIframeAPIReady() {
             videoBackground.style.height = '100%';
             videoBackground.style.zIndex = '-1';
             videoBackground.style.overflow = 'hidden';
-            console.log('Video background container styled');
           }
         }
         
@@ -165,14 +155,12 @@ function onYouTubeIframeAPIReady() {
             // Add loading optimization
             iframe.style.transform = 'translateZ(0)'; // Hardware acceleration
             iframe.style.willChange = 'transform'; // Optimize for animations
-            console.log('YouTube iframe styles applied with optimizations');
           } else {
             console.error('YouTube iframe not found for styling');
           }
         }, 200); // Reduced from 500ms to 200ms
       },
       onStateChange: event => {
-        console.log(`YouTube player state changed: ${event.data}`);
         // If video ends or pauses unexpectedly, try to restart it
         if (event.data === YT.PlayerState.ENDED || event.data === YT.PlayerState.PAUSED) {
           event.target.playVideo();

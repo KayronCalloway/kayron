@@ -6,7 +6,6 @@ window.soundAllowed = false;
 const enableSound = () => {
   if (!window.soundAllowed) {
     window.soundAllowed = true;
-    console.log("User interaction detected – sound now allowed. Channel observers will handle unmuting if channels are visible.");
     // No direct unmute attempt here. Rely on observers to pick up the soundAllowed flag.
   }
 };
@@ -26,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuButton = document.getElementById('menuButton');
   const tvGuide = document.getElementById('tvGuide');
   const closeGuide = document.getElementById('closeGuide');
-  const guideItems = document.querySelectorAll('.tv-guide-list nav ul li');
   const staticOverlay = document.getElementById('staticOverlay');
   const clickSound = document.getElementById('clickSound');
   const backToTop = document.getElementById('backToTop');
@@ -48,24 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Volume control functionality removed
 
-  // --- Analytics Reporting using Web Vitals ---
-  const sendToAnalytics = (metricName, metric) => {
-    const body = {};
-    body[metricName] = metric.value;
-    body.path = window.location.pathname;
-    navigator.sendBeacon('/analytics', JSON.stringify(body));
-    console.log(`Tracked ${metricName}:`, metric.value);
-  };
-  
-  // Check if webVitals is available before using it
-  if (typeof window.webVitals !== 'undefined') {
-    window.webVitals.getCLS(metric => sendToAnalytics('CLS', metric));
-    window.webVitals.getFID(metric => sendToAnalytics('FID', metric));
-    window.webVitals.getLCP(metric => sendToAnalytics('LCP', metric));
-  } else {
-    console.log("Web Vitals not loaded, skipping performance tracking");
-  }
-
   // --- Haptic Feedback ---
   const triggerHaptic = () => {
     try {
@@ -73,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
         navigator.vibrate([50, 30, 50]);
       }
     } catch (e) {
-      console.log('Vibration API not supported');
     }
   };
 
@@ -122,14 +101,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let targetIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
     targetIndex = Math.max(0, Math.min(sections.length - 1, targetIndex));
     sections[targetIndex].scrollIntoView({ behavior: 'smooth' });
-    console.log(`Now viewing channel ${targetIndex + 1}`);
     triggerHaptic();
   };
 
   // --- Dynamic Module Loading ---
   const loadChannelContent = async moduleName => {
   try {
-    console.log(`🔄 Loading module for "${moduleName}"...`);
     let module;
     
     // Get target section for debugging
@@ -141,37 +118,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     if (targetSection) {
-      console.log(`🎯 Target section found: ${targetSection.id}, current content length: ${targetSection.innerHTML.length}`);
     }
     
     if (moduleName === 'home') {
       // Preload Channel 1 with higher priority
-      console.log('Loading home module for Channel 1');
       module = await import(`./channels/ch1/home.js`);
     } else if (moduleName === 'ch2') {
       module = await import(`./channels/ch2/ch2.js`);
     } else if (moduleName === 'ch3') {
       // Music Channel
-      console.log('📂 Importing CH3 module (Music Channel)...');
       module = await import(`./channels/ch3/ch3.js`);
     } else if (moduleName === 'ch4') {
       // Under the Influence
-      console.log('📂 Importing CH4 module (Under the Influence)...');
       module = await import(`./channels/ch4/ch4.js`);
     } else if (moduleName === 'ch5') {
       // UATP Archive
-      console.log('📂 Importing CH5 module (UATP Archive)...');
       module = await import(`./channels/ch5/ch5.js`);
     }
     
     if (module) {
-      console.log(`✅ Module for "${moduleName}" loaded successfully, calling init...`);
       await module.init();
-      console.log(`🎉 Module for "${moduleName}" initialized successfully`);
       
       // Verify content was actually inserted
       if (targetSection) {
-        console.log(`📏 Target section after init, content length: ${targetSection.innerHTML.length}`);
         if (targetSection.innerHTML.length < 100) {
           console.warn(`⚠️ Warning: ${targetSection.id} has very little content after init`);
         }
@@ -209,7 +178,6 @@ const resetMenuStyles = () => {
   }
 };
 
-
   // --- Service Worker Registration ---
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -236,7 +204,7 @@ const resetMenuStyles = () => {
 
   // --- Reveal Main Content & Reveal Header ---
   const revealMainContent = () => {
-    window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
+    mainContent.scrollTo({ top: 0, behavior: 'smooth' });
     gsap.to(landing, {
       duration: 0.5,
       opacity: 0,
@@ -259,7 +227,6 @@ const resetMenuStyles = () => {
           opacity: 1,
           onComplete: () => {
             // After header is fully visible, let MenuManager handle menu button
-            console.log("Header reveal complete");
             
             // Don't directly modify menu button - let MenuManager sync with header
             
@@ -274,7 +241,6 @@ const resetMenuStyles = () => {
   // Simplified menu visibility - let MenuManager handle everything
   const ensureMenuButtonVisibility = () => {
     // Don't manually control menu button - let MenuManager handle it
-    console.log("Menu button visibility delegated to MenuManager");
     
     // Apply standard TV Guide styling
     ensureTVGuideStandardStyling();
@@ -294,7 +260,6 @@ const resetMenuStyles = () => {
       powerButton.style.visibility = "hidden";
       powerButton.style.opacity = 0;
       powerButton.style.zIndex = "-1";
-      console.log("Power button force hidden");
     }, 100);
     
     gsap.to(powerButton, {
@@ -333,11 +298,11 @@ const resetMenuStyles = () => {
 
   // --- Back to Top Button ---
   const toggleBackToTop = () => {
-    backToTop.style.display = window.pageYOffset > 300 ? 'block' : 'none';
+    backToTop.style.display = mainContent.scrollTop > 300 ? 'block' : 'none';
   };
   window.addEventListener('scroll', throttle(toggleBackToTop, 100));
   backToTop.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    mainContent.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
   // --- TV Guide Simple Styling Function ---
@@ -355,7 +320,6 @@ const resetMenuStyles = () => {
       tvGuide.style.pointerEvents = 'auto';
       tvGuide.style.webkitOverflowScrolling = 'touch';
       
-      console.log('TV Guide styling applied');
       return true;
     }
     
@@ -397,7 +361,7 @@ const resetMenuStyles = () => {
     
     if (show) {
       // Store current scroll position 
-      window.savedScrollPosition = window.scrollY;
+      window.savedScrollPosition = mainContent.scrollTop;
       
       // Highlight current channel
       if (currentChannel) {
@@ -413,18 +377,12 @@ const resetMenuStyles = () => {
         }
       }
       
-      // Simple overlay positioning
+      // Show guide overlay
       tvGuide.style.display = 'flex';
-      tvGuide.style.position = 'absolute';
-      tvGuide.style.top = `${window.scrollY}px`;
-      tvGuide.style.left = '0';
-      tvGuide.style.width = '100vw';
-      tvGuide.style.height = '100vh';
-      tvGuide.style.zIndex = '999999';
       tvGuide.style.opacity = '1';
       
       // Prevent background scrolling
-      document.body.style.overflow = 'hidden';
+      mainContent.style.overflow = 'hidden';
 
       // Auto-scroll guide to current channel for better context
       if (currentChannel) {
@@ -440,12 +398,13 @@ const resetMenuStyles = () => {
       tvGuide.style.opacity = '0';
       
       // Restore scrolling
-      document.body.style.overflow = 'auto';
+      mainContent.style.overflow = 'auto';
       
-      setTimeout(() => { 
+      setTimeout(() => {
         tvGuide.style.display = 'none';
         tvGuideIsVisible = false;
         tvGuideToggleInProgress = false;
+        mainContent.scrollTop = window.savedScrollPosition || 0;
       }, 300);
     }
   };
@@ -454,15 +413,7 @@ const resetMenuStyles = () => {
   window.toggleTVGuide = toggleTVGuide;
   
   // MenuManager handles all menu button events - no duplicate setup needed
-  console.log("Menu button events delegated to MenuManager");
   
-  // Simplified backup: Just ensure TV Guide styling every 3 seconds
-  setInterval(() => {
-    if (document.body.classList.contains('tv-on')) {
-      ensureTVGuideStandardStyling();
-      // Let MenuManager handle menu button visibility
-    }
-  }, 3000);
   
   // Close guide handler moved to MenuManager
   // Channel descriptions for TV Guide
@@ -525,7 +476,6 @@ const resetMenuStyles = () => {
             toggleTVGuide(false);
           }, 200);
           
-          console.log(`Now viewing ${channelTitle}`);
           triggerHaptic();
         }, 500);
       }
@@ -539,13 +489,11 @@ const resetMenuStyles = () => {
       const sectionId = entry.target.id;
       const visibilityPercent = Math.round(entry.intersectionRatio * 100);
       
-      console.log(`👁️ Intersection: ${sectionId} - ${visibilityPercent}% visible, intersecting: ${entry.isIntersecting}`);
       
       if (entry.isIntersecting) {
         const newChannel = entry.target.id;
         const moduleName = entry.target.dataset.module;
         
-        console.log(`🎯 Section ${newChannel} became visible, module: "${moduleName}"`);
         
         if (currentChannel !== newChannel) {
           // Dispatch channel change event to stop any running audio (only if not entering Channel 3)
@@ -554,7 +502,6 @@ const resetMenuStyles = () => {
             document.dispatchEvent(channelChangeEvent);
           }
           
-          console.log(`📺 Channel change: from ${currentChannel} to ${newChannel}`);
           
           // Hide all channel numbers first
           document.querySelectorAll('.channel-number-overlay').forEach(overlay => {
@@ -578,11 +525,9 @@ const resetMenuStyles = () => {
           playRandomChannelSound();
           triggerChannelStatic();
           animateChannelNumber(newChannel);
-          console.log(`📺 Now viewing channel ${newChannel.slice(-1)}`);
           
           // Load module content
           if (moduleName) {
-            console.log(`🚀 Triggering loadChannelContent for "${moduleName}"`);
             loadChannelContent(moduleName);
           } else {
             console.warn(`⚠️ No data-module attribute found for ${newChannel}`);
@@ -696,7 +641,6 @@ const resetMenuStyles = () => {
         if (entry.intersectionRatio >= 0.7) {
           if (youtubePlayer && typeof youtubePlayer.unMute === "function") {
             youtubePlayer.unMute();
-            console.log("Channel 1 active: Unmuting video.");
           }
           
           // Mobile optimization: If on mobile device, check battery level
@@ -706,7 +650,6 @@ const resetMenuStyles = () => {
               if (battery.level < 0.2 && !battery.charging) {
                 const videoBackground = document.querySelector('.video-background');
                 if (videoBackground && window.innerWidth < 768) {
-                  console.log("Low battery detected on mobile. Using static background.");
                   // Only apply if not already applied
                   if (!videoBackground.classList.contains('battery-saving')) {
                     // Hide YouTube iframe
@@ -725,7 +668,6 @@ const resetMenuStyles = () => {
         } else {
           if (youtubePlayer && typeof youtubePlayer.mute === "function") {
             youtubePlayer.mute();
-            console.log("Channel 1 inactive: Muting video.");
           }
         }
       }
@@ -742,9 +684,7 @@ const resetMenuStyles = () => {
     entries.forEach(entry => {
       if (entry.target.id === "section4") {
         if (entry.intersectionRatio >= 0.7) {
-          console.log("Channel 4 active: UATP Archive in view.");
         } else {
-          console.log("Channel 4 inactive: UATP Archive out of view.");
         }
       }
     });
@@ -760,7 +700,6 @@ const resetMenuStyles = () => {
     entries.forEach(entry => {
       if (entry.target.id === "section5") {
         if (entry.intersectionRatio >= 0.7) {
-          console.log("Channel 5 active: Under the Influence in view.");
 
           // Ensure video is playing; if paused or not started, play it muted
           if (window.channel5Player && typeof window.channel5Player.playVideo === "function") {
@@ -776,7 +715,6 @@ const resetMenuStyles = () => {
           const unmuteWhenPlaying = () => {
             if (!window.channel5Player || typeof window.channel5Player.getPlayerState !== 'function') {
               // Player not fully initialized, retry shortly
-              console.log("Channel 5: Player not ready, will retry unmuteWhenPlaying.");
               setTimeout(unmuteWhenPlaying, 250);
               return;
             }
@@ -787,15 +725,12 @@ const resetMenuStyles = () => {
               if (!isMobile || window.soundAllowed) {
                 if (typeof window.channel5Player.unMute === 'function') {
                   window.channel5Player.unMute();
-                  console.log("Channel 5 active: Unmuted (state: PLAYING, permission granted).");
                 }
               } else {
                 // Mobile, sound not yet allowed: keep polling
-                console.log("Channel 5 active: Player PLAYING, but sound not yet allowed on mobile. Retrying unmute.");
                 setTimeout(unmuteWhenPlaying, 250);
               }
             } else { // Player is NOT PLAYING (e.g., -1 unstarted, 0 ended, 2 paused, 3 buffering, 5 cued)
-              console.log(`Channel 5 active: Player not in PLAYING state (current state: ${st}). Attempting to play and will retry unmute.`);
               if (typeof window.channel5Player.playVideo === 'function') {
                 window.channel5Player.playVideo(); // Ensure it's trying to play
               }
@@ -804,7 +739,6 @@ const resetMenuStyles = () => {
           };
           unmuteWhenPlaying(); // Initial call
         } else {
-          console.log("Channel 5 inactive: Muting video (continues playing for TV realism).");
           if (window.channel5Player && typeof window.channel5Player.mute === "function") {
             window.channel5Player.mute();
           }
@@ -829,65 +763,23 @@ const resetMenuStyles = () => {
   
   // After TV powers on, MenuManager will control all menu visibility
   
-// Set initial intersection observer to detect when we first see Channel 1
-setTimeout(() => {
-  // Only run observer after the landing sequence
-  if (landingSequenceComplete) {
-    const initialObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && entry.target.id === 'section1') {
-          console.log("Channel 1 initially visible, checking header visibility");
-          // If header is visible, show menu button
-          if (window.getComputedStyle(header).opacity > 0.9) {
-            console.log("Header is visible, notifying for menu sync");
-            notifyChannelChanged();
-          }
-        }
-      });
-    }, { threshold: 0.7 });
-    
-    const section1 = document.getElementById('section1');
-    if (section1) {
-      initialObserver.observe(section1);
-    }
-  }
-}, 2500);
 
 // Preload channels so their content is ready
-console.log('🔄 Starting channel preloading...');
 setTimeout(() => {
-  console.log('🚀 Preloading Channel 4 (UATP Archive)...');
   loadChannelContent('ch4');
 }, 2000);
 
 setTimeout(() => {
-  console.log('🚀 Preloading Channel 5 (Under the Influence)...');
   loadChannelContent('ch5');
 }, 3000);
 
-// Add manual testing functions to window for debugging
-window.debugChannels = {
-  loadCh3: () => loadChannelContent('ch3'),
-  loadCh4: () => loadChannelContent('ch4'),
-  loadCh5: () => loadChannelContent('ch5'),
-  testIntersection: () => {
-    console.log('🔍 Current intersection state:');
-    document.querySelectorAll('.channel-section').forEach(section => {
-      const rect = section.getBoundingClientRect();
-      const visible = rect.top < window.innerHeight && rect.bottom > 0;
-      const visPercent = visible ? Math.max(0, Math.min(1, (window.innerHeight - rect.top) / rect.height)) * 100 : 0;
-      console.log(`📊 ${section.id}: ${Math.round(visPercent)}% visible, module: "${section.dataset.module}"`);
-    });
-  },
-  checkContent: () => {
-    console.log('📏 Content check:');
-    const s4 = document.getElementById('section4');
-    const s5 = document.getElementById('section5');
-    console.log(`Section 4 content length: ${s4?.innerHTML.length || 0}`);
-    console.log(`Section 5 content length: ${s5?.innerHTML.length || 0}`);
-  }
-};
   
+  // Escape key closes TV Guide
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && tvGuideIsVisible) {
+      toggleTVGuide(false);
+    }
+  });
   // --- Throttle Utility Function ---
   function throttle(fn, wait) {
     let lastTime = 0;

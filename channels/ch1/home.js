@@ -1,7 +1,6 @@
 // channels/ch1/home.js
 
 export async function init() {
-  console.log('Channel 1 init started');
   
   // Fix for Channel 1 content with mobile optimization
   const section1 = document.getElementById('section1');
@@ -15,11 +14,9 @@ export async function init() {
       videoBackground.style.height = '100%';
       videoBackground.style.overflow = 'hidden';
       videoBackground.style.background = "#000000 url('../visuals/static.gif') center center repeat";
-      console.log('Video background styles applied');
       
       // Mobile optimization for video background
       if (window.innerWidth <= 600 || isMobileDevice() || isLowBandwidth()) {
-        console.log('Mobile device or low bandwidth detected - optimizing video');
         
         // Apply battery-saving mode for mobile
         videoBackground.classList.add('battery-saving');
@@ -40,10 +37,8 @@ export async function init() {
         iframeCheckCount++;
         
         if (iframe) {
-          console.log('YouTube iframe detected, video loading successfully');
           clearInterval(checkInterval);
         } else if (iframeCheckCount >= 8) { // Check 8 times over 2 seconds
-          console.log('YouTube iframe not found after checks, applying optimized fallback');
           videoBackground.style.backgroundSize = 'cover';
           videoBackground.style.opacity = '0.8';
           clearInterval(checkInterval);
@@ -93,7 +88,6 @@ export async function init() {
         }
       });
       
-      console.log('Channel buttons styles applied with mobile optimization');
     }
   }
   
@@ -125,7 +119,6 @@ export async function init() {
   }
   
   try {
-    console.log('Loading Channel 1 modals...');
     const response = await fetch('./channels/ch1/modals.html');
     if (!response.ok) {
       throw new Error(`Failed to fetch modals: ${response.status} ${response.statusText}`);
@@ -134,7 +127,6 @@ export async function init() {
     const container = document.createElement('div');
     container.innerHTML = html;
     document.body.appendChild(container);
-    console.log('Channel 1 modals loaded successfully');
     setupModalEventListeners();
     
     // Apply mobile-specific modal optimizations
@@ -149,7 +141,6 @@ function applyMobileOptimizations() {
   const isMobile = window.innerWidth <= 600;
   if (!isMobile) return;
 
-  console.log('Applying mobile optimizations to modals');
   
   // Improve modal scrolling on mobile devices
   const modalBoxes = document.querySelectorAll('.modal-box');
@@ -208,7 +199,6 @@ function applyMobileOptimizations() {
 }
 
 function setupModalEventListeners() {
-  console.log('Setting up modal event listeners');
   
   // Check if it's a mobile device
   const isMobile = window.innerWidth <= 600 || 
@@ -290,7 +280,6 @@ function setupModalEventListeners() {
     const modal = document.getElementById(modalId);
     const closeButton = document.getElementById(closeButtonId);
     
-    console.log(`Setting up ${modalId}: Button=${!!button}, Modal=${!!modal}, CloseButton=${!!closeButton}`);
     
     if (!button || !modal || !closeButton) {
       console.error(`Missing elements for ${modalId}. Cannot setup modal.`);
@@ -304,7 +293,6 @@ function setupModalEventListeners() {
     
     // Create open handler with touch support
     const openHandler = (e) => {
-      console.log(`${buttonId} clicked/touched`);
       
       // Prevent default for touch events to avoid double-firing
       if (e.type === 'touchstart') {
@@ -328,7 +316,6 @@ function setupModalEventListeners() {
         modal.classList.remove('hidden');
         modal.style.display = 'flex';
         
-        console.log(`Opening modal ${modalId}, current display: ${modal.style.display}`);
         
         animateModalIn(modal);
         
@@ -344,28 +331,29 @@ function setupModalEventListeners() {
     
     // Create close handler with touch support
     const closeHandler = (e) => {
-      // Prevent default for touch events
       if (e.type === 'touchstart') {
         e.preventDefault();
       }
-      
-      // Visual feedback
       closeButton.style.transform = 'scale(0.9)';
-      
       setTimeout(() => {
         closeButton.style.transform = '';
         animateModalOut(modal);
-        
-        // Make button re-clickable after animation completes
         setTimeout(() => {
           button.style.pointerEvents = 'auto';
+          // Restore focus to the button that opened the modal
+          button.focus();
+          // Remove inert from background
+          const mainContent = document.getElementById('mainContent');
+          if (mainContent) mainContent.removeAttribute('inert');
+          const header = document.getElementById('header');
+          if (header) header.removeAttribute('inert');
+          const menuButton = document.getElementById('menuButton');
+          if (menuButton) menuButton.removeAttribute('inert');
+          modal.setAttribute('aria-hidden', 'true');
         }, isMobile ? 400 : 600);
       }, 50);
     };
     
-    // Clear existing listeners to prevent duplicates
-    button.removeEventListener('click', openHandler);
-    closeButton.removeEventListener('click', closeHandler);
     
     // Setup click and touch events for the open button
     button.addEventListener('click', openHandler);
@@ -416,11 +404,17 @@ function setupModalEventListeners() {
         
         // Animate the modal out
         animateModalOut(modal);
-        
-        // Make the button clickable again after animation completes
         if (button) {
           setTimeout(() => {
             button.style.pointerEvents = 'auto';
+            button.focus();
+            const mainContent = document.getElementById('mainContent');
+            if (mainContent) mainContent.removeAttribute('inert');
+            const header = document.getElementById('header');
+            if (header) header.removeAttribute('inert');
+            const menuButton = document.getElementById('menuButton');
+            if (menuButton) menuButton.removeAttribute('inert');
+            modal.setAttribute('aria-hidden', 'true');
           }, isMobile ? 400 : 600);
         }
       }
@@ -440,16 +434,24 @@ function setupModalEventListeners() {
     if (e.key === 'Escape') {
       const allModals = [resumeModal, aboutModal, contactModal];
       const allButtons = [resumeButton, aboutButton, contactButton];
-      
+      let closed = false;
       allModals.forEach((modal, index) => {
         if (modal && !modal.classList.contains('hidden')) {
           animateModalOut(modal);
-          
-          // Make corresponding button re-clickable
+          closed = true;
           setTimeout(() => {
-            if (allButtons[index]) {
-              allButtons[index].style.pointerEvents = 'auto';
+            const btn = allButtons[index];
+            if (btn) {
+              btn.style.pointerEvents = 'auto';
+              btn.focus();
             }
+            const mainContent = document.getElementById('mainContent');
+            if (mainContent) mainContent.removeAttribute('inert');
+            const header = document.getElementById('header');
+            if (header) header.removeAttribute('inert');
+            const menuButton = document.getElementById('menuButton');
+            if (menuButton) menuButton.removeAttribute('inert');
+            modal.setAttribute('aria-hidden', 'true');
           }, 600);
         }
       });
@@ -472,7 +474,7 @@ function setupPDFDownload() {
       downloadButton.disabled = true;
 
       // Open the new resume HTML file in a new window for printing
-      const printWindow = window.open('/resume_v2.html', '_blank', 'width=800,height=1000');
+      const printWindow = window.open('./resume_v2.html', '_blank', 'width=800,height=1000');
       
       if (!printWindow) {
         throw new Error('Popup blocked or failed to open');
