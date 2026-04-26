@@ -64,76 +64,12 @@
 #section2 .featured-project {
   position: relative;
   width: 100%;
-  height: 50vh; /* Reduced from 60vh to give more room to projects below */
-  min-height: 300px; /* Reduced from 350px */
-  max-height: 500px; /* Reduced from 600px */
-  margin-bottom: 10px; /* Reduced margin to move content up */
+  height: 60vh;
+  min-height: 350px;
+  max-height: 600px;
+  margin-bottom: 15px;
   overflow: hidden;
   flex-shrink: 0;
-}
-
-/* Video featured styles */
-#section2 .video-featured {
-  position: relative;
-  background-color: black;
-}
-
-#section2 .video-container {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-  background-color: black; /* Ensures black background if video isn't filling the space */
-}
-
-#section2 .video-placeholder {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  cursor: pointer;
-}
-
-#section2 .play-button-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(to bottom, 
-    rgba(0, 0, 0, 0.1) 0%,
-    rgba(0, 0, 0, 0.4) 60%,
-    rgba(0, 0, 0, 0.7) 100%
-  );
-  transition: background-color 0.3s ease;
-}
-
-#section2 .play-button {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 3px solid white;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s ease, background-color 0.3s ease;
-}
-
-#section2 .video-placeholder:hover .play-button {
-  transform: scale(1.1);
-  background-color: rgba(60, 134, 255, 0.8);
-}
-
-#section2 .gray-featured .featured-backdrop img {
-  object-fit: contain;
-  object-position: 65% center;
-  background-color: rgba(20, 20, 20, 0.95);
-  filter: brightness(1.3) contrast(1.1);
-  opacity: 1;
 }
 
 #section2 .featured-backdrop {
@@ -199,18 +135,6 @@
   text-transform: uppercase;
   color: var(--ch2-accent-color);
   margin-bottom: var(--ch2-spacing-xs);
-}
-
-.featured-brand {
-  display: inline-block;
-  font-size: var(--ch2-font-xs);
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #aaaaaa;
-  margin-bottom: var(--ch2-spacing-md);
-  border-bottom: 1px solid #555555;
-  padding-bottom: 5px;
 }
 
 .featured-title {
@@ -294,12 +218,6 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 30px;
-  /* Add custom touch handling class to prevent channel changes */
-  touch-action: pan-x; /* Only allow horizontal panning */
-  /* Ensure this element has proper z-index for capturing events */
-  z-index: 10;
-  /* Move the entire section up */
-  margin-top: -15px;
 }
 
 .single-row {
@@ -334,30 +252,15 @@
 
 .project-scroller {
   display: flex;
-  gap: 20px;
+  gap: var(--ch2-spacing-lg);
   overflow-x: auto;
-  padding: var(--ch2-spacing-md) 20px; /* Reduced side padding without arrows */
+  padding: var(--ch2-spacing-md) 45px;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch; /* Better touch scroll behavior */
   flex: 1;
   align-items: center;
-  /* Ensure scroller has a width to be able to scroll */
-  width: 100%;
-  /* Fix for iOS */
-  -webkit-overflow-scrolling: touch;
-  /* Hardware acceleration */
-  transform: translateZ(0);
-  will-change: scroll-position;
-  /* Fix for WebKit */
-  overflow-x: scroll !important;
-  /* Improve appearance */
-  touch-action: pan-x;
-  /* Better snap behavior on touch */
-  scroll-snap-type: x mandatory;
-  /* Add momentum scrolling */
-  -webkit-overflow-scrolling: touch;
 }
 
 .single-row .project-scroller {
@@ -369,39 +272,64 @@
   display: none; /* Chrome, Safari, Opera */
 }
 
-/* Scroll indicators - removed completely */
+/* Scroll indicators */
 .scroll-indicator {
-  display: none !important;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  background-color: rgba(25, 25, 25, 0.8);
+  color: var(--ch2-text-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all var(--ch2-transition-fast);
+  z-index: 5;
+  font-size: 18px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.scroll-indicator:hover {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+  background-color: var(--ch2-accent-color);
+  box-shadow: 0 3px 12px rgba(62, 146, 204, 0.5);
+}
+
+.scroll-left {
+  left: 15px;
+}
+
+.scroll-right {
+  right: 15px;
 }
 
 /* === Project Cards === */
 .project-card {
   flex: 0 0 auto;
-  width: 250px; /* Slightly smaller default width */
-  min-width: 225px; /* Smaller minimum width */
+  width: 280px;
   height: fit-content;
   transition: all var(--ch2-transition-medium);
   cursor: pointer;
   position: relative;
-  border-radius: 12px; /* More rounded corners */
+  border-radius: 8px;
   overflow: hidden;
   /* Ensure clicks work, with Safari-specific enhancements */
   pointer-events: auto;
   z-index: 1;
-  /* Add stronger visual feedback to make it obvious cards are clickable */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  /* Add subtle visual feedback to make it obvious cards are clickable */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   /* Safari-specific fixes */
   -webkit-appearance: button; /* Make Safari treat it like a button */
   -webkit-transform: translateZ(0); /* Hardware acceleration for Safari */
-  -webkit-tap-highlight-color: rgba(62, 146, 204, 0.3); /* Better visual feedback in Safari */
+  -webkit-tap-highlight-color: rgba(62, 146, 204, 0.2); /* Visual feedback in Safari */
   touch-action: manipulation; /* Optimize touch behavior */
-  margin: 10px 5px; /* Less horizontal margin with no arrows */
-  /* Cancel nowrap from parent */
-  white-space: normal;
-  /* Force display */
-  display: block;
-  /* Enable snap scrolling */
-  scroll-snap-align: center;
+  margin: 10px 0;
 }
 
 .project-card:hover {
@@ -423,70 +351,6 @@
   height: 100%;
   object-fit: cover;
   transition: transform var(--ch2-transition-medium);
-}
-
-/* SVG specific handling for logos */
-.card-poster img[src$=".svg"] {
-  object-fit: contain;
-  padding: 20px;
-  background-color: #fff;
-}
-
-/* Video thumbnail styles */
-.video-thumbnail {
-  width: 100%;
-  height: 100%;
-  background-color: #000;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* More subtle pattern that matches the Netflix aesthetic */
-  background-image: linear-gradient(45deg, rgba(30,30,30,0.7) 25%, rgba(40,40,40,0.7) 25%, rgba(40,40,40,0.7) 50%, rgba(30,30,30,0.7) 50%, rgba(30,30,30,0.7) 75%, rgba(40,40,40,0.7) 75%, rgba(40,40,40,0.7) 100%);
-  background-size: 8px 8px;
-  /* Add a hint of the accent color to tie it together */
-  border-bottom: 2px solid var(--ch2-accent-color);
-}
-
-.video-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* More Netflix-like gradient overlay */
-  background: linear-gradient(to bottom, 
-    rgba(0, 0, 0, 0.2) 0%,
-    rgba(0, 0, 0, 0.4) 60%,
-    rgba(0, 0, 0, 0.7) 100%
-  );
-  transition: background-color var(--ch2-transition-medium);
-}
-
-.play-icon {
-  width: 60px;
-  height: 60px;
-  background-color: rgba(0, 0, 0, 0.7);
-  border: 2px solid rgba(255, 255, 255, 0.9);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  color: white;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-  transition: transform var(--ch2-transition-medium), background-color var(--ch2-transition-fast);
-  /* Add subtle text shadow for better visibility */
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.project-card:hover .play-icon {
-  transform: scale(1.1);
-  background-color: var(--ch2-accent-color);
-  border-color: white;
 }
 
 .project-card:hover .card-poster img {
@@ -531,15 +395,9 @@
 }
 
 .card-info {
-  padding: var(--ch2-spacing-sm) var(--ch2-spacing-sm) var(--ch2-spacing-sm); /* More bottom padding */
+  padding: var(--ch2-spacing-sm) var(--ch2-spacing-sm) var(--ch2-spacing-xs);
   background-color: rgba(20, 20, 20, 0.95);
   border-top: 1px solid rgba(62, 146, 204, 0.2);
-  /* Ensure minimum height for title visibility */
-  min-height: 60px;
-  /* Center content vertically */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 .card-title {
@@ -552,9 +410,6 @@
   text-overflow: ellipsis;
   letter-spacing: 0.03em;
   text-align: center;
-  /* Ensure proper vertical spacing */
-  line-height: 1.3;
-  padding: 5px 0;
 }
 
 .project-card:hover .card-title {
@@ -914,34 +769,10 @@
     -webkit-overflow-scrolling: touch; /* Improve iOS scrolling */
   }
   
-  /* iPhone vertical-specific enhancements */
-  @supports (-webkit-touch-callout: none) and (orientation: portrait) {
-    /* iOS-specific portfolio optimizations */
-    #section2 #portfolio-browse {
-      /* Account for iPhone safe areas */
-      padding-top: calc(30px + env(safe-area-inset-top, 0px));
-      padding-bottom: env(safe-area-inset-bottom, 0px);
-    }
-    
-    /* Better touch feedback on iOS */
-    .project-card {
-      -webkit-tap-highlight-color: rgba(62, 146, 204, 0.3);
-      transform: translateZ(0); /* Force GPU acceleration */
-    }
-    
-    /* Make scroll indicators more thumb-friendly */
-    .scroll-indicator {
-      bottom: calc(20px + env(safe-area-inset-bottom, 0px));
-      top: auto; /* Place at bottom instead of middle for thumb reach */
-      transform: none; /* Remove vertical centering */
-      opacity: 0.95; /* More visible */
-    }
-  }
-  
   /* Enhanced Featured Project Section */
   .featured-project {
-    height: 30vh; /* Reduced to give more space to projects below */
-    min-height: 170px; /* Smaller minimum height */
+    height: 35vh;
+    min-height: 200px;
   }
   
   .featured-content {
@@ -963,63 +794,35 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow for depth */
   }
   
-  /* Enhanced Project Cards for Mobile */
+  /* Enhanced Project Cards */
   .project-card {
-    width: 180px; /* Better size for mobile - fits ~2 cards per screen */
-    min-width: 180px; /* Force consistent card size */
-    margin: 10px 5px; /* Tighter spacing with no arrows */
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35); /* Enhanced shadow for visibility */
+    width: 200px; /* Slightly wider for better visibility */
+    margin: 15px 10px; /* More space between cards */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
     touch-action: manipulation; /* Better touch handling */
-    -webkit-tap-highlight-color: rgba(62, 146, 204, 0.5); /* More visible tap feedback */
-    scroll-snap-align: center; /* Better snapping */
-    border-radius: 12px; /* More rounded corners for mobile aesthetic */
-    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for definition */
+    -webkit-tap-highlight-color: rgba(62, 146, 204, 0.3); /* Better tap feedback */
   }
   
   .project-card:active {
-    transform: scale(0.96); /* Stronger touch feedback */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Shadow changes on tap */
+    transform: scale(0.98); /* Add touch feedback */
   }
   
   .card-poster {
-    height: 130px; /* Taller for better visibility */
-  }
-
-  /* Make the hover effect work on touch */
-  .project-card:hover, .project-card:active {
-    transform: scale(0.96); /* Only scale down slightly on mobile - no rising up */
+    height: 120px; /* Slightly taller for better visibility */
   }
   
   .card-info {
-    padding: 15px 10px; /* More vertical padding */
-    min-height: 70px; /* Taller on mobile for better visibility */
-    /* Add subtle background gradient for better visibility */
-    background: linear-gradient(to bottom, rgba(15, 15, 15, 0.95), rgba(25, 25, 25, 0.98));
-    /* Ensure it's not clipped */
-    position: relative;
-    z-index: 5;
-    /* Round bottom corners to match card */
-    border-radius: 0 0 12px 12px;
+    padding: 12px 10px; /* More vertical padding */
   }
   
   .card-title {
-    font-size: 1.05rem; /* Larger for better readability */
-    padding: 8px 5px; /* More padding around text */
-    line-height: 1.4; /* More space between lines */
-    /* Add subtle text shadow for better contrast */
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    font-size: 1rem; /* Slightly larger for readability */
   }
   
-  /* Improved Scrolling and Layout */
+  /* Improved Scrolling */
   .category-row {
     padding: 0 var(--ch2-spacing-xs);
-    margin-bottom: 35px; /* Much more space below the row to prevent cutoff */
-    padding-bottom: 20px; /* Additional bottom padding */
-    /* Add bottom spacing to ensure cards aren't cut off */
-    position: relative;
-    /* Add subtle bottom edge for visual separation */
-    border-bottom: 1px solid rgba(62, 146, 204, 0.1);
-    z-index: 1;
+    margin-bottom: 25px; /* More separation between rows */
   }
   
   .project-scroller {
@@ -1034,20 +837,11 @@
   
   /* Enhanced Scroll Indicators */
   .scroll-indicator {
-    width: 60px; /* Much larger touch target */
-    height: 60px; /* Much larger touch target */
-    font-size: 24px; /* Larger arrow */
-    opacity: 0.95; /* More visible */
-    background-color: rgba(25, 25, 25, 0.95); /* More opaque */
-    border: 2px solid rgba(255, 255, 255, 0.3); /* More visible border */
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5); /* Enhanced shadow */
-    /* Ensure it works with touch */
-    transform: translateY(-50%) translateZ(0);
-    -webkit-transform: translateY(-50%) translateZ(0);
-    /* iOS touch improvements */
-    -webkit-tap-highlight-color: rgba(62, 146, 204, 0.6);
-    touch-action: manipulation;
-    z-index: 100; /* Make sure it's clickable */
+    width: 50px; /* Larger touch target */
+    height: 50px; /* Larger touch target */
+    font-size: 22px; /* Larger arrow */
+    opacity: 0.9; /* More visible */
+    background-color: rgba(25, 25, 25, 0.9); /* More opaque */
   }
   
   .scroll-left {
@@ -1056,13 +850,6 @@
   
   .scroll-right {
     right: 5px; /* Closer to edge */
-  }
-  
-  /* Improved hover/tap state for mobile */
-  .scroll-indicator:hover, .scroll-indicator:active {
-    background-color: var(--ch2-accent-color);
-    transform: translateY(-50%);
-    -webkit-transform: translateY(-50%);
   }
   
   /* Modal Enhancements */
@@ -1191,34 +978,4 @@
 
 .external-link:hover .link-arrow {
   transform: translateX(4px);
-}
-
-/* === ADDITIONAL SAFE MOBILE ENHANCEMENTS (ADDITIVE ONLY) === */
-
-/* Enhanced video container for mobile touch optimization */
-#section2 .video-container iframe {
-  /* Optimize iframe for touch interactions */
-  touch-action: auto; /* Allow native touch behavior for video controls */
-}
-
-/* Enhanced project scroller for better mobile performance */
-#section2 .project-scroller {
-  /* Optimize scrolling performance on mobile */
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-  /* Add momentum scrolling for iOS */
-  overscroll-behavior-x: contain;
-}
-
-/* Enhanced featured CTA for consistency with other channels */
-#section2 .featured-cta {
-  /* Ensure consistent touch optimization across channels */
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: rgba(58, 134, 255, 0.3);
-  transition: transform 0.1s ease-out, box-shadow 0.2s ease-out;
-}
-
-#section2 .featured-cta:active {
-  /* Subtle press feedback consistent with other channels */
-  transform: scale(0.98);
 }

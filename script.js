@@ -61,13 +61,13 @@ document.addEventListener('DOMContentLoaded', () => {
   let touchStartX = 0;
   let touchStartY = 0; // Track vertical position to detect diagonal swipes
   let touchStartTime = 0; // Track time for velocity-based gestures
-  
+
   document.addEventListener('touchstart', e => {
     touchStartX = e.changedTouches[0].screenX;
     touchStartY = e.changedTouches[0].screenY;
     touchStartTime = Date.now();
   }, { passive: true }); // Add passive flag for better performance on iOS
-  
+
   document.addEventListener('touchend', e => {
     // Don't interfere with project cards or interactive elements in Channel 2
     if (e.target.closest('.project-card') ||
@@ -109,11 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const loadChannelContent = async moduleName => {
   try {
     let module;
-    
+
     // Get target section for debugging
     let targetSection = null;
     // Dead code removed - module names are 'home', 'ch2', 'ch3', 'ch4', 'ch5'
-    
 
     if (moduleName === 'home') {
       // Preload Channel 1 with higher priority
@@ -130,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // UATP Archive
       module = await import(`./channels/ch5/ch5.js`);
     }
-    
+
     if (module) {
       await module.init();
       notifyChannelChanged();
@@ -143,12 +142,12 @@ document.addEventListener('DOMContentLoaded', () => {
 // Function to reset menu button styles and ensure its visibility
 const resetMenuStyles = () => {
   if (menuButton) {
-    menuButton.style.fontSize = ''; 
+    menuButton.style.fontSize = '';
     menuButton.style.padding = '10px 15px';
     menuButton.style.border = '2px solid var(--primary-color)';
     menuButton.style.color = 'var(--primary-color)';
     menuButton.style.background = 'transparent';
-    
+
     // Let MenuManager handle visibility based on header
     notifyChannelChanged();
   }
@@ -160,11 +159,11 @@ const resetMenuStyles = () => {
       navigator.serviceWorker.register('./service-worker.js');
     });
   }
-  
+
   // Initialize MenuManager for cross-channel menu control
   // Only initialize after DOM is loaded
   MenuManager.init();
-  
+
   // Ensure TV Guide styling is applied on initial load
   setTimeout(() => {
     ensureTVGuideStandardStyling();
@@ -187,23 +186,23 @@ const resetMenuStyles = () => {
         powerButton.style.display = "none";
         powerButton.style.opacity = 0;
         powerButton.style.visibility = "hidden";
-        
+
         landing.style.display = "none";
         mainContent.style.display = "block";
         document.body.style.overflow = "auto";
-        
+
         // Mark TV as fully turned on
         document.body.classList.add('tv-on');
-        
+
         // Reveal the header after landing completes
-        gsap.to(header, { 
-          duration: 0.5, 
+        gsap.to(header, {
+          duration: 0.5,
           opacity: 1,
           onComplete: () => {
             // After header is fully visible, let MenuManager handle menu button
-            
+
             // Don't directly modify menu button - let MenuManager sync with header
-            
+
             // Notify channel changed to sync other components
             notifyChannelChanged();
           }
@@ -211,11 +210,11 @@ const resetMenuStyles = () => {
       }
     });
   };
-  
+
   // Simplified menu visibility - let MenuManager handle everything
   const ensureMenuButtonVisibility = () => {
     // Don't manually control menu button - let MenuManager handle it
-    
+
     // Apply standard TV Guide styling
     ensureTVGuideStandardStyling();
   };
@@ -227,7 +226,7 @@ const resetMenuStyles = () => {
     }
     // Mark TV as turned on
     document.body.classList.add('tv-on');
-    
+
     // Force immediate style changes to ensure power button is hidden
     setTimeout(() => {
       powerButton.style.display = "none";
@@ -235,7 +234,7 @@ const resetMenuStyles = () => {
       powerButton.style.opacity = 0;
       powerButton.style.zIndex = "-1";
     }, 100);
-    
+
     gsap.to(powerButton, {
       duration: 0.3,
       opacity: 0,
@@ -283,7 +282,7 @@ const resetMenuStyles = () => {
   // Simple, effective TV Guide styling without over-engineering
   const ensureTVGuideStandardStyling = () => {
     const tvGuide = document.getElementById('tvGuide');
-    
+
     if (tvGuide) {
       tvGuide.style.position = 'fixed';
       tvGuide.style.top = '0';
@@ -293,10 +292,10 @@ const resetMenuStyles = () => {
       tvGuide.style.zIndex = '999999';
       tvGuide.style.pointerEvents = 'auto';
       tvGuide.style.webkitOverflowScrolling = 'touch';
-      
+
       return true;
     }
-    
+
     return false;
   };
 
@@ -319,46 +318,46 @@ const resetMenuStyles = () => {
     if (typeof show === 'undefined') {
       show = !tvGuideIsVisible;
     }
-    
+
     if (!tvGuide) {
       return;
     }
-    
+
     // Ensure standard styling before any toggle operation
     ensureTVGuideStandardStyling();
-    
+
     if (tvGuideToggleInProgress) {
       return;
     }
-    
+
     if (show === tvGuideIsVisible) {
       return;
     }
-    
+
     tvGuideToggleInProgress = true;
-    
+
     if (show) {
-      // Store current scroll position 
+      // Store current scroll position
       window.savedScrollPosition = mainContent.scrollTop;
-      
+
       // Highlight current channel
       if (currentChannel) {
         document.querySelectorAll('.tv-guide-channel').forEach(item => {
           item.style.backgroundColor = '';
           item.style.boxShadow = '';
         });
-        
+
         const currentGuideItem = document.querySelector(`.tv-guide-channel[data-target="${currentChannel}"]`);
         if (currentGuideItem) {
           currentGuideItem.style.backgroundColor = 'rgba(62, 146, 204, 0.3)';
           currentGuideItem.style.boxShadow = '0 0 15px rgba(62, 146, 204, 0.4)';
         }
       }
-      
+
       // Show guide overlay
       tvGuide.style.display = 'flex';
       tvGuide.style.opacity = '1';
-      
+
       // Prevent background scrolling
       mainContent.style.overflow = 'hidden';
 
@@ -374,10 +373,10 @@ const resetMenuStyles = () => {
       tvGuideToggleInProgress = false;
     } else {
       tvGuide.style.opacity = '0';
-      
+
       // Restore scrolling
       mainContent.style.overflow = 'auto';
-      
+
       setTimeout(() => {
         tvGuide.style.display = 'none';
         tvGuideIsVisible = false;
@@ -386,13 +385,12 @@ const resetMenuStyles = () => {
       }, 300);
     }
   };
-  
+
   // Expose globally for MenuManager delegation
   window.toggleTVGuide = toggleTVGuide;
-  
+
   // MenuManager handles all menu button events - no duplicate setup needed
-  
-  
+
   // Close guide handler moved to MenuManager
   // Channel descriptions for TV Guide
   const channelDescriptions = {
@@ -402,7 +400,7 @@ const resetMenuStyles = () => {
     'section4': 'Examine influences and inspirations that shape creative direction.',
     'section5': 'Universal Agent Trust Protocol - AI accountability infrastructure documentation.'
   };
-  
+
   // Make TV Guide channels clickable
   document.querySelectorAll('.tv-guide-channel').forEach(item => {
     // Highlight effect on hover to show current selection
@@ -412,48 +410,47 @@ const resetMenuStyles = () => {
       if (currentInfoText) {
         currentInfoText.textContent = channelDescriptions[targetId] || 'Channel information unavailable';
       }
-      
+
       // Enhance selection effect
       item.style.backgroundColor = 'rgba(62, 146, 204, 0.15)';
       item.style.transition = 'background-color 0.2s ease-out';
     });
-    
+
     item.addEventListener('mouseleave', () => {
       item.style.backgroundColor = '';
     });
-    
+
     // Channel selection handling
     item.addEventListener('click', () => {
       // Get the target section before triggering audio cleanup
       const targetId = item.getAttribute('data-target');
       const targetSection = document.getElementById(targetId);
-      
+
       // Add selection effect
       gsap.to(item, {
         backgroundColor: 'rgba(62, 146, 204, 0.3)',
         boxShadow: '0 0 15px rgba(62, 146, 204, 0.4)',
         duration: 0.3
       });
-      
+
       // Get the channel title for logging
-      const channelTitle = item.querySelector('.channel-title') ? 
-                          item.querySelector('.channel-title').textContent : 
+      const channelTitle = item.querySelector('.channel-title') ?
+                          item.querySelector('.channel-title').textContent :
                           `Channel ${targetId.slice(-1)}`;
-      
-      // Dispatch channel change event to stop any running audio
-      const channelChangeEvent = new Event('channelChange');
-      document.dispatchEvent(channelChangeEvent);
-      
+
+      // Channel switch notification for modules that need it
+      document.dispatchEvent(new CustomEvent('channelSwitch', { detail: { from: currentChannel, to: targetId } }));
+
       if (targetSection) {
         // Create delayed closing effect for more TV-like experience
         setTimeout(() => {
           targetSection.scrollIntoView({ behavior: 'smooth' });
-          
+
           // Close TV Guide with a slight delay for a more authentic TV experience
           setTimeout(() => {
             toggleTVGuide(false);
           }, 200);
-          
+
           triggerHaptic();
         }, 500);
       }
@@ -468,51 +465,46 @@ const resetMenuStyles = () => {
       if (entry.isIntersecting) {
         const newChannel = entry.target.id;
         const moduleName = entry.target.dataset.module;
-        
-        
+
         if (currentChannel !== newChannel) {
-          // Dispatch channel change event to stop any running audio (only if not entering Channel 3)
-          if (newChannel !== 'section3') {
-            const channelChangeEvent = new Event('channelChange');
-            document.dispatchEvent(channelChangeEvent);
-          }
-          
-          
+          // Audio isolation: channels with media should use IntersectionObserver
+          // to pause/resume based on visibility rather than global events
+
           // Hide all channel numbers first
           document.querySelectorAll('.channel-number-overlay').forEach(overlay => {
             overlay.style.display = 'none';
           });
-          
+
           // Only show the current channel number
           const currentOverlay = document.querySelector(`#${newChannel} .channel-number-overlay`);
           if (currentOverlay) {
             currentOverlay.style.display = 'block';
           }
-          
+
           // Don't force menu button visibility - let MenuManager sync with header
           // Notify system about channel change for any observers
           notifyChannelChanged();
-          
+
           // Ensure TV Guide styling is consistent on channel change - GLOBAL STANDARD
           ensureTVGuideStandardStyling();
-          
+
           currentChannel = newChannel;
           playRandomChannelSound();
           triggerChannelStatic();
           animateChannelNumber(newChannel);
-          
+
           // Load module content
           if (moduleName) {
             loadChannelContent(moduleName);
           }
-          
+
           distortAndWarpContent();
-          
+
           // Let MenuManager handle menu button visibility based on header status
           setTimeout(() => {
             // Don't force menu button visibility - let it sync with header
             notifyChannelChanged();
-              
+
             // Extra check for button functionality if visible
             if (menuButton) {
               menuButton.style.cursor = 'pointer';
@@ -529,31 +521,31 @@ const resetMenuStyles = () => {
   const triggerChannelStatic = () => {
     // Randomize static effect intensity for more TV-like behavior
     const staticIntensity = 0.3 + (Math.random() * 0.2);
-    
+
     // First flash of static
     gsap.to(staticOverlay, {
       duration: 0.15,
       opacity: staticIntensity,
       onComplete: () => {
         // Brief pause
-        gsap.to(staticOverlay, { 
-          duration: 0.05, 
+        gsap.to(staticOverlay, {
+          duration: 0.05,
           opacity: 0.1,
           onComplete: () => {
             // Second flash of static - more TV-like effect
             gsap.to(staticOverlay, {
               duration: 0.15,
               opacity: staticIntensity * 0.8,
-              onComplete: () => gsap.to(staticOverlay, { 
-                duration: 0.2, 
-                opacity: 0 
+              onComplete: () => gsap.to(staticOverlay, {
+                duration: 0.2,
+                opacity: 0
               })
             });
           }
         });
       }
     });
-    
+
   };
 
   // --- Animate Channel Number Overlay ---
@@ -562,10 +554,10 @@ const resetMenuStyles = () => {
     if (channelOverlay) {
       // Make sure channel number is visible
       channelOverlay.style.display = 'block';
-      
+
       // More TV-like animation sequence
       const tl = gsap.timeline();
-      tl.fromTo(channelOverlay, 
+      tl.fromTo(channelOverlay,
         { scale: 0.8, opacity: 0, filter: "brightness(1)" },
         { scale: 1, opacity: 1, filter: "brightness(2)", duration: 0.3, ease: "back.out(1.2)" })
         .to(channelOverlay, { scale: 1.2, duration: 0.2, ease: "power1.inOut" })
@@ -578,7 +570,7 @@ const resetMenuStyles = () => {
   const distortAndWarpContent = () => {
     // Create more authentic TV channel change distortion effect
     const tl = gsap.timeline();
-    
+
     // First stage: blur and vertical distortion
     tl.fromTo(
       mainContent,
@@ -615,7 +607,7 @@ const resetMenuStyles = () => {
           if (youtubePlayer && typeof youtubePlayer.unMute === "function") {
             youtubePlayer.unMute();
           }
-          
+
           // Mobile optimization: If on mobile device, check battery level
           if (window.navigator.getBattery) {
             window.navigator.getBattery().then(battery => {
@@ -628,7 +620,7 @@ const resetMenuStyles = () => {
                     // Hide YouTube iframe
                     const ytFrame = videoBackground.querySelector('iframe');
                     if (ytFrame) ytFrame.style.display = 'none';
-                    
+
                     // Add battery saving mode class and background
                     videoBackground.classList.add('battery-saving');
                     videoBackground.style.backgroundImage = 'url("visuals/static.gif")';
@@ -717,9 +709,8 @@ const resetMenuStyles = () => {
   };
   // Only hide initially - MenuManager will take over after power on
   initMenuHidden();
-  
+
   // After TV powers on, MenuManager will control all menu visibility
-  
 
 // Preload channels so their content is ready
 setTimeout(() => {
@@ -730,7 +721,6 @@ setTimeout(() => {
   loadChannelContent('ch5');
 }, 3000);
 
-  
   // Escape key closes TV Guide
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && tvGuideIsVisible) {

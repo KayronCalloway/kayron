@@ -16,7 +16,7 @@ export const MenuManager = {
     this.bindEvents();
     // Don't show on initialization - will show based on header visibility
   },
-  
+
   /**
    * Bind event listeners for channel changes and menu interactions
    */
@@ -25,7 +25,7 @@ export const MenuManager = {
     document.addEventListener('channelChanged', () => {
       this.show();
     });
-    
+
     // Set up menu button click handler
     if (this.menuButton) {
       this.menuButton.addEventListener('click', (e) => {
@@ -34,7 +34,7 @@ export const MenuManager = {
         this.toggleTVGuide();
       });
     }
-    
+
     // Set up close guide button handler
     if (this.closeGuide) {
       this.closeGuide.addEventListener('click', (e) => {
@@ -42,17 +42,17 @@ export const MenuManager = {
         this.hideTVGuide();
       });
     }
-    
-    
-    
+
+
+
   },
-  
+
   /**
    * Set up an observer to detect changes that might hide the menu
    */
   createVisibilityObserver() {
     if (!this.menuButton) return;
-    
+
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.attributeName === 'style') {
@@ -64,20 +64,20 @@ export const MenuManager = {
         }
       });
     });
-    
+
     observer.observe(this.menuButton, { attributes: true });
   },
-  
+
   /**
    * Show the menu button only when header is visible - exact header behavior
    */
   show() {
     if (!this.menuButton || !this.header) return;
-    
+
     // Get header computed style
     const headerStyle = window.getComputedStyle(this.header);
     const isHeaderVisible = headerStyle.display !== 'none' && parseFloat(headerStyle.opacity) > 0.5;
-    
+
     // ONLY show menu button if header is visible (exact header behavior)
     if (isHeaderVisible) {
       // EXACTLY match header visibility
@@ -85,17 +85,17 @@ export const MenuManager = {
       this.menuButton.style.opacity = headerStyle.opacity;
       this.menuButton.style.visibility = headerStyle.visibility;
       this.menuButton.style.pointerEvents = 'auto';
-      
+
       // Ensure proper position
       this.menuButton.style.position = "fixed";
       this.menuButton.style.top = "10px";
       this.menuButton.style.right = "20px";
       this.menuButton.style.zIndex = "999999";
-      
+
       // Ensure tap target size is at least 44x44px for iOS Safari
       this.menuButton.style.minHeight = "44px";
       this.menuButton.style.minWidth = "44px";
-      
+
     } else {
       // Hide menu when header is hidden
       this.menuButton.style.display = 'none';
@@ -103,7 +103,7 @@ export const MenuManager = {
       this.menuButton.style.visibility = 'hidden';
     }
   },
-  
+
   /**
    * Check and enforce menu visibility
    */
@@ -111,35 +111,34 @@ export const MenuManager = {
     // Refresh references
     this.menuButton = document.getElementById('menuButton');
     this.header = document.getElementById('header');
-    
+
     // Sync with header visibility
     this.show();
   },
-  
+
   /**
    * Add header visibility observer
    */
   createHeaderObserver() {
     if (!this.header) return;
-    
+
     const observer = new MutationObserver(() => {
       // When header style changes, sync menu button visibility
       this.show();
     });
-    
+
     observer.observe(this.header, { attributes: true });
   },
-  
+
   /**
    * Toggle TV Guide visibility - delegate to global implementation in script.js
    */
   toggleTVGuide() {
     if (typeof window.toggleTVGuide === 'function') {
       window.toggleTVGuide();
-    } else {
     }
   },
-  
+
   /**
    * Hide TV Guide (for close button) - delegate
    */

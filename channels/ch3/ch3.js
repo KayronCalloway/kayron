@@ -576,8 +576,13 @@ function setupChannelVisibilityDetection() {
         
         // If channel became visible and there was a paused player, resume it
         if (!wasVisible && isChannelVisible && currentPlayer) {
-          // Note: Instagram embeds don't support programmatic play/pause
-          // But we can track the state for user experience
+          if (currentPlayer.playVideo) {
+            currentPlayer.playVideo();
+          } else if (currentPlayer.tagName === 'VIDEO') {
+            currentPlayer.play();
+          }
+          const playPauseBtn = document.getElementById('playPause');
+          if (playPauseBtn) playPauseBtn.textContent = 'II';
         }
       }
     });
