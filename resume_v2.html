@@ -3,133 +3,204 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kayron Calloway</title>
+  <title>Kayron Calloway — Resume</title>
+  <meta name="description" content="Kayron Calloway — independent designer and advisor. Fragrance, film, AI governance, and entertainment finance infrastructure.">
+  <link rel="canonical" href="https://kayroncalloway.com/resume_v2.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --black: #111;
-      --gray-dark: #444;
+      --black: #0e0e0e;
+      --gray-dark: #3a3a3a;
       --gray-mid: #666;
       --gray-light: #999;
-      --gray-border: #ddd;
+      --gray-border: #e0e0e0;
+      --gray-bg: #f8f8f8;
       --white: #fff;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Inter', -apple-system, system-ui, sans-serif;
       font-size: 10.5px;
-      line-height: 1.5;
+      line-height: 1.55;
       color: var(--black);
       background: var(--white);
       max-width: 8.5in;
       margin: 0 auto;
-      padding: 0.5in 0.6in;
+      padding: 0.55in 0.65in;
     }
 
-    @page {
-      size: letter;
-      margin: 0.5in;
-    }
+    @page { size: letter; margin: 0.5in; }
 
     /* HEADER */
     header {
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       padding-bottom: 16px;
       border-bottom: 2px solid var(--black);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
     }
 
-    h1 {
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      margin-bottom: 8px;
-    }
-
-    .tagline {
-      font-size: 12px;
+    .header-left h1 {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 26px;
       font-weight: 400;
-      color: var(--gray-dark);
-      margin-bottom: 12px;
+      letter-spacing: 0.01em;
+      margin-bottom: 3px;
+    }
+
+    .header-left .title {
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gray-mid);
     }
 
     .contact {
-      font-size: 10px;
+      font-size: 9.5px;
       color: var(--gray-mid);
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
+      text-align: right;
+      line-height: 1.7;
     }
 
-    .contact a {
+    .contact a { color: var(--gray-mid); text-decoration: none; }
+
+    /* PRACTICE STATEMENT */
+    .practice {
+      margin-bottom: 24px;
+      padding: 16px 18px;
+      background: var(--gray-bg);
+      border-left: 2.5px solid var(--black);
+    }
+
+    .practice-label {
+      font-size: 8.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
       color: var(--gray-mid);
-      text-decoration: none;
+      margin-bottom: 7px;
+    }
+
+    .practice-thesis {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--black);
+      margin-bottom: 8px;
+    }
+
+    .practice-proof {
+      font-size: 10px;
+      color: var(--gray-dark);
+      line-height: 1.6;
+    }
+
+    .practice-proof em {
+      font-style: normal;
+      font-weight: 500;
+      color: var(--black);
+    }
+
+    .practice-kicker {
+      margin-top: 8px;
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--gray-dark);
+      font-style: italic;
     }
 
     /* SECTIONS */
-    section {
-      margin-bottom: 20px;
-    }
+    section { margin-bottom: 22px; }
 
     h2 {
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       color: var(--gray-mid);
-      margin-bottom: 10px;
-      padding-bottom: 4px;
+      margin-bottom: 12px;
+      padding-bottom: 5px;
       border-bottom: 1px solid var(--gray-border);
     }
 
-    /* PROOF SECTION */
-    .proof-grid {
+    /* THREE EXPRESSIONS GRID */
+    .expressions {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-bottom: 20px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
     }
 
-    .proof-item {
-      padding: 12px;
-      background: #f8f8f8;
-      border-left: 2px solid var(--black);
+    .expression {
+      padding: 14px;
+      border: 1px solid var(--gray-border);
+      border-top: 2.5px solid var(--black);
     }
 
-    .proof-number {
-      font-size: 18px;
+    .expression-material {
+      font-size: 8px;
       font-weight: 600;
-      color: var(--black);
-      line-height: 1;
-      margin-bottom: 2px;
-    }
-
-    .proof-label {
-      font-size: 9px;
-      color: var(--gray-mid);
       text-transform: uppercase;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.12em;
+      color: var(--gray-mid);
+      margin-bottom: 5px;
     }
 
-    /* EXPERIENCE */
+    .expression-name {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 14px;
+      font-weight: 400;
+      margin-bottom: 4px;
+      letter-spacing: 0.01em;
+    }
+
+    .expression-why {
+      font-size: 9.5px;
+      color: var(--gray-dark);
+      font-style: italic;
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--gray-border);
+      line-height: 1.45;
+    }
+
+    .expression-body {
+      font-size: 9.5px;
+      color: var(--gray-dark);
+      line-height: 1.45;
+    }
+
+    .expression-body strong { color: var(--black); font-weight: 500; }
+
+    .expression-body a {
+      color: var(--gray-mid);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--gray-border);
+    }
+
+    .expression ul { padding-left: 12px; margin-top: 6px; }
+
+    .expression li {
+      font-size: 9.5px;
+      color: var(--gray-dark);
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+
+    /* ROLE BLOCKS */
     .role {
-      margin-bottom: 16px;
-      padding-bottom: 14px;
+      margin-bottom: 15px;
+      padding-bottom: 13px;
       border-bottom: 1px solid var(--gray-border);
     }
 
-    .role:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
+    .role:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
 
     .role-header {
       display: flex;
@@ -143,13 +214,10 @@
       font-weight: 600;
     }
 
-    .date {
-      font-size: 9px;
-      color: var(--gray-light);
-    }
+    .date { font-size: 9px; color: var(--gray-light); }
 
     .company {
-      font-size: 10px;
+      font-size: 9.5px;
       color: var(--gray-mid);
       margin-bottom: 6px;
     }
@@ -157,161 +225,189 @@
     .role-summary {
       font-size: 10px;
       color: var(--gray-dark);
-      margin-bottom: 8px;
+      margin-bottom: 7px;
       font-style: italic;
+      line-height: 1.5;
     }
 
-    ul {
-      padding-left: 14px;
-      margin: 0;
+    .role-note {
+      font-size: 9.5px;
+      color: var(--gray-mid);
+      margin-top: 6px;
+      line-height: 1.45;
     }
+
+    ul { padding-left: 14px; margin: 0; }
 
     li {
       font-size: 10px;
       color: var(--gray-dark);
-      margin-bottom: 4px;
+      margin-bottom: 3px;
       line-height: 1.45;
     }
 
-    li:last-child {
-      margin-bottom: 0;
-    }
+    li:last-child { margin-bottom: 0; }
 
-    /* TWO COLUMN SECTION */
+    /* TWO COLUMN */
     .two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 24px;
+      gap: 28px;
     }
 
-    .col h2 {
-      margin-bottom: 8px;
-    }
-
-    .skill-block {
-      margin-bottom: 10px;
-    }
-
-    .skill-block:last-child {
-      margin-bottom: 0;
-    }
+    .skill-block { margin-bottom: 10px; }
+    .skill-block:last-child { margin-bottom: 0; }
 
     .skill-title {
       font-size: 9px;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.04em;
       color: var(--black);
-      margin-bottom: 2px;
+      margin-bottom: 3px;
     }
 
     .skill-list {
       font-size: 9.5px;
       color: var(--gray-dark);
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
-    /* EDUCATION & RECOGNITION */
+    /* BOTTOM ROW */
     .info-row {
       display: flex;
-      gap: 24px;
+      gap: 28px;
       padding-top: 16px;
       border-top: 1px solid var(--gray-border);
       margin-top: 4px;
     }
 
-    .info-block {
-      flex: 1;
-    }
+    .info-block { flex: 1; }
 
     .info-block h4 {
       font-size: 9px;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.07em;
       color: var(--gray-mid);
-      margin-bottom: 4px;
+      margin-bottom: 5px;
     }
 
     .info-block p {
       font-size: 9.5px;
       color: var(--gray-dark);
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
-    .info-block strong {
-      font-weight: 500;
-      color: var(--black);
-    }
+    .info-block p + p { margin-top: 7px; }
 
-    /* FOOTER */
-    .footer {
-      margin-top: 20px;
-      padding-top: 12px;
-      border-top: 2px solid var(--black);
-      text-align: center;
-    }
+    .info-block strong { font-weight: 500; color: var(--black); }
 
-    .footer-tagline {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      color: var(--black);
-    }
-
-    /* PRINT */
     @media print {
-      body {
-        padding: 0;
-      }
-
-      .proof-item {
+      body { padding: 0; }
+      .practice, .expression {
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
     }
+
+    @media (max-width: 680px) {
+      header { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .contact { text-align: left; }
+      .expressions { grid-template-columns: 1fr; }
+      .two-col { grid-template-columns: 1fr; gap: 18px; }
+      .info-row { flex-direction: column; gap: 14px; }
+    }
   </style>
 </head>
 <body>
+
   <header>
-    <h1>Kayron Calloway</h1>
-    <div class="tagline">Independent designer and advisor. Fragrance, film, publishing, and financial infrastructure.<br>M.S. Candidate, USC Iovine and Young Academy — graduating August 2027.</div>
+    <div class="header-left">
+      <h1>Kayron Calloway</h1>
+      <div class="title">Independent Designer &amp; Advisor — Los Angeles</div>
+    </div>
     <div class="contact">
-      <span>Los Angeles, CA</span>
-      <span>310.498.8059</span>
-      <a href="mailto:KayronCalloway@gmail.com">KayronCalloway@gmail.com</a>
-      <a href="https://kayroncalloway.com">kayroncalloway.com</a>
+      <span>310.498.8059</span><br>
+      <a href="mailto:KayronCalloway@gmail.com">KayronCalloway@gmail.com</a><br>
+      <a href="https://kayroncalloway.com">kayroncalloway.com</a><br>
+      <a href="https://github.com/KayronCalloway">github.com/KayronCalloway</a>
     </div>
   </header>
 
-  <!-- PROOF POINTS -->
-  <div class="proof-grid">
-    <div class="proof-item">
-      <div class="proof-number">Berlin '25</div>
-      <div class="proof-label">Commercial Awards RAW Selection (3 categories)</div>
-    </div>
-    <div class="proof-item">
-      <div class="proof-number">Vogue, WWD, LA Times</div>
-      <div class="proof-label">Press coverage</div>
-    </div>
+  <div class="practice">
+    <div class="practice-label">Practice</div>
+    <p class="practice-thesis">I build systems that make hidden forces legible: memory through fragrance, film, and publishing; authorship through AI governance; value through entertainment finance infrastructure.</p>
+    <p class="practice-proof">Berlin Commercial Awards RAW Selection (2025) — 3 categories. Press: <em>Vogue, Complex, V Magazine, WWD, Hypebeast, LA Times.</em></p>
+    <p class="practice-kicker">Different bodies. Same practice.</p>
   </div>
 
-  <!-- EXPERIENCE -->
   <section>
-    <h2>Experience</h2>
+    <h2>Current Work</h2>
+    <div class="expressions">
+
+      <div class="expression">
+        <div class="expression-material">Emotional · 2024 — Present</div>
+        <div class="expression-name">Coloring with Gray</div>
+        <div class="expression-why">Makes memory wearable and shareable.</div>
+        <div class="expression-body">
+          Memory design house. Fragrance, film, and packaging as memory interfaces.
+          <ul>
+            <li><strong>Berlin Commercial Awards RAW Selection</strong> — Cultural Impact, Craft: Idea, Branded Content</li>
+            <li>Designed a fragrance around olfactory disappearance: fading from the wearer's self-perception while persisting in others' memory</li>
+            <li>Time-activated packaging: book-safe, thermochromic ink, fingerprint overlays</li>
+            <li>Live consultation interface at <a href="https://coloringwithgray.com">coloringwithgray.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="expression">
+        <div class="expression-material">Structural · 2024 — Present</div>
+        <div class="expression-name">UATP</div>
+        <div class="expression-why">Makes AI behavior inspectable before trust becomes blind faith.</div>
+        <div class="expression-body">
+          Unified Agent Trust Protocol. The same authorship question, formalized as AI governance infrastructure.
+          <ul>
+            <li>Built a capsule-based evidence architecture for AI decisions: signed records of reasoning, confidence, attribution, and decision rationale</li>
+            <li>Continuing development at USC Iovine and Young Academy</li>
+            <li><a href="https://github.com/KayronCalloway/uatp">github.com/KayronCalloway/uatp</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="expression">
+        <div class="expression-material">Financial · 2026 — Present</div>
+        <div class="expression-name">Residuals OS</div>
+        <div class="expression-why">Makes entertainment payments traceable end-to-end.</div>
+        <div class="expression-body">
+          Entertainment finance infrastructure. Replacing opaque SAG-AFTRA settlement workflows with a deterministic engine and full math-chain traceability.
+          <ul>
+            <li>Built deterministic settlement logic for theatrical, SVOD, AVOD, and PayTV residual calculations</li>
+            <li>Intelligent parsing pipeline (LlamaParse + Claude Vision + SheetJS) with confidence scoring and human-in-the-loop flagging</li>
+            <li>Multi-sided marketplace architecture — studios, guilds, performers</li>
+            <li><a href="https://github.com/KayronCalloway/resid.os">github.com/KayronCalloway/resid.os</a></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Origin &amp; Operating History</h2>
 
     <div class="role">
       <div class="role-header">
-        <h3>Founder & Director</h3>
-        <span class="date">2024 — Present</span>
+        <h3>Residuals Analyst</h3>
+        <span class="date">2019 — 2026</span>
       </div>
-      <div class="company">Coloring with Gray — Memory Design House — Los Angeles</div>
-      <div class="role-summary">A memory design house working in fragrance, film, and publishing. Products as memory interfaces, not commodities.</div>
+      <div class="company">Cast &amp; Crew Entertainment Services — Los Angeles</div>
+      <div class="role-summary">Seven years inside SAG-AFTRA settlement workflow — the direct origin of Residuals OS. Primary client point of contact through dispute, settlement, and payout phases for major studio productions.</div>
       <ul>
-        <li><strong>Berlin Commercial Awards RAW Selection</strong> — 3 categories: Cultural Impact, Craft: Idea, Branded Content</li>
-        <li><strong>Designed a fragrance</strong> that fades from the wearer's self-perception while persisting in others' experience</li>
-        <li><strong>Built time-activated packaging:</strong> book-safe, thermochromic ink, fingerprint overlays</li>
-        <li><strong>Deployed live consultation system</strong> at coloringwithgray.com — personalized fragrance recommendations through a conversational interface</li>
+        <li>Administered residuals for Netflix, HBO, Apple, and Amazon productions — reviewed talent contracts, identified made-for-market residuals, maintained historical payment records</li>
+        <li>Compiled distributor statements, revenue receipts, and distribution agreements to calculate payments against guild deadlines and contract provisions</li>
+        <li>Resolved discrepancies; reissued lost and stale-dated checks; maintained direct relationships with production teams and studio finance</li>
+        <li>Working knowledge of SAG-AFTRA residual provisions, fringes, pension calculations, and regulatory deadlines — audit-ready output standard</li>
       </ul>
     </div>
 
@@ -321,127 +417,71 @@
         <span class="date">2016 — Present</span>
       </div>
       <div class="company">Select Engagements</div>
-      <div class="role-summary">Strategy, marketing, taste, creative direction, and financial advice.</div>
+      <div class="role-summary">Strategy, creative direction, taste, and financial advisory across entertainment, tech, and luxury.</div>
       <ul>
-        <li>Selected work: Jordan Brand (Jordan Brand Classic, Marathon Family Fest), C'est Bon, No Plastic, Mamadou Bah, Kris Fe, Upgrade Labs, Dipset × BB Simon — among others.</li>
-        <li>Ongoing rollout and design advisory for private clients.</li>
+        <li>Selected: Jordan Brand (Jordan Brand Classic, Marathon Family Fest), C'est Bon, No Plastic, Mamadou Bah, Kris Fe, Upgrade Labs, Dipset × BB Simon</li>
       </ul>
+      <div class="role-note">Ongoing rollout and design advisory for private clients.</div>
     </div>
 
     <div class="role">
       <div class="role-header">
-        <h3>Residuals Analyst</h3>
-        <span class="date">2019 — 2026</span>
-      </div>
-      <div class="company">Cast & Crew Entertainment Services — Los Angeles</div>
-      <div class="role-summary">Processed residuals payments and managed end-to-end SAG-AFTRA settlement workflows for major studio productions. Reviewed talent contracts, interpreted guild provisions, and resolved discrepancies to ensure accurate performer payouts. Primary client point of contact through dispute, settlement, and payout phases. Direct origin of Residuals OS.</div>
-      <ul>
-        <li>Administered residuals setups for Netflix, HBO, Apple, and Amazon productions — reviewed talent contracts, identified made-for-market residuals, and maintained accurate historical payment records</li>
-        <li>Compiled distributor statements, revenue receipts, and distribution agreements to calculate and process payments in accordance with guild deadlines and contract provisions</li>
-        <li>Resolved payment discrepancies and reissued lost, stolen, and stale-dated checks; maintained direct relationships with production teams and studio finance departments</li>
-        <li>Maintained working knowledge of SAG-AFTRA residual provisions, fringes, pension calculations, and regulatory deadlines to ensure compliant, audit-ready outputs</li>
-      </ul>
-    </div>
-
-    <div class="role">
-      <div class="role-header">
-        <h3>Co-Founder & Director</h3>
+        <h3>Co-Founder &amp; Director</h3>
         <span class="date">2015 — 2017</span>
       </div>
       <div class="company">Modern Tea Room — Los Angeles</div>
-      <div class="role-summary">Built a profitable specialty tea concept from the ground up. Marketing, spatial design, brand, programming, and operations — all of it.</div>
+      <div class="role-summary">First version of the practice. Profitable specialty tea concept built from zero — brand, spatial experience, programming, and operations.</div>
       <ul>
-        <li>Controlled all marketing: brand positioning, campaigns, paid media, and influencer strategy across Facebook and YouTube</li>
         <li>Designed the full spatial experience: interior, signage, typography, and materials</li>
-        <li>Curated 25+ artist exhibitions and community programming</li>
+        <li>Curated 25+ artist exhibitions; drove community growth through paid media and influencer strategy</li>
       </ul>
     </div>
   </section>
 
-  <!-- INDEPENDENT PROJECTS -->
-  <section>
-    <h2>Independent Projects</h2>
-
-    <div class="role">
-      <div class="role-header">
-        <h3>UATP (Unified Agent Trust Protocol)</h3>
-        <span class="date">2024 — Present</span>
-      </div>
-      <div class="company">Governance Infrastructure</div>
-      <div class="role-summary">Making AI behavior inspectable, attributable, and accountable. Continuing development at USC Iovine and Young Academy.</div>
-      <ul>
-        <li><strong>Built capsule-based evidence architecture</strong> — cryptographically signed records capturing reasoning, confidence, attribution, and ethical justification for AI decisions</li>
-        <li><strong>GitHub:</strong> <a href="https://github.com/KayronCalloway/uatp" style="color: var(--gray-mid); text-decoration: none; border-bottom: 1px dotted var(--gray-border);">github.com/KayronCalloway/uatp</a></li>
-      </ul>
-    </div>
-
-    <div class="role">
-      <div class="role-header">
-        <h3>Residuals OS</h3>
-        <span class="date">2026 — Present</span>
-      </div>
-      <div class="company">Financial Infrastructure</div>
-      <div class="role-summary">Building the financial infrastructure for entertainment residuals. A multi-sided marketplace replacing manual SAG-AFTRA settlement workflows with deterministic calculation engines and intelligent document parsing.</div>
-      <ul>
-        <li><strong>Designed settlement engine</strong> handling theatrical residuals: time-unit (0.2/day, cap 5), salary-unit (0.2/scale, cap 10), and SVOD/AVOD/PayTV straight-percentage calculations — replacing spreadsheet-based manual workflows</li>
-        <li><strong>Built intelligent parsing pipeline</strong> using LlamaParse + Claude Vision + SheetJS to extract structured data from multi-section, handwritten, and mixed-format guild documents with confidence scoring and human-in-the-loop flagging</li>
-        <li><strong>Multi-sided marketplace architecture</strong> serving studios, guilds, and performers with transaction take-rate and subscription revenue models — "Stripe for residuals"</li>
-        <li><strong>Domain expertise from Cast & Crew operations</strong> directly informing product design: one document in, one calculated output, full math-chain traceability for audit and legibility</li>
-        <li><strong>GitHub:</strong> <a href="https://github.com/KayronCalloway/resid.os" style="color: var(--gray-mid); text-decoration: none; border-bottom: 1px dotted var(--gray-border);">github.com/KayronCalloway/resid.os</a></li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- SKILLS & CAPABILITIES -->
   <section class="two-col">
-    <div class="col">
+    <div>
       <h2>Capabilities</h2>
       <div class="skill-block">
         <div class="skill-title">Strategic</div>
-        <div class="skill-list">Brand strategy, product strategy, entertainment finance workflows, paid media, deck development</div>
+        <div class="skill-list">Brand and product strategy, entertainment finance workflows, paid media, deck development</div>
       </div>
       <div class="skill-block">
         <div class="skill-title">Direction</div>
         <div class="skill-list">Campaign, art, and film direction; team coordination; C-level communication</div>
       </div>
       <div class="skill-block">
-        <div class="skill-title">AI & Technology</div>
-        <div class="skill-list">Multi-agent orchestration (Hermes, Claude Code, Gemini Antigravity). API + local models (Ollama, DeepSeek, Kimi, OpenAI). Generative media (Runway, Seedance, MidJourney, ElevenLabs). Web (Next.js, Prisma, PostgreSQL).</div>
+        <div class="skill-title">AI &amp; Technology</div>
+        <div class="skill-list">Multi-agent orchestration (Hermes, Claude Code, Gemini Antigravity). API and local models (Ollama, DeepSeek, Kimi, OpenAI). Generative media (Runway, Seedance, MidJourney, ElevenLabs). Web stack (Next.js, Prisma, PostgreSQL).</div>
       </div>
       <div class="skill-block">
         <div class="skill-title">Craft</div>
         <div class="skill-list">Fragrance, packaging, spatial design, typography, photography, web</div>
       </div>
     </div>
-    <div class="col">
+    <div>
       <h2>Approach</h2>
       <div class="skill-block">
-        <div class="skill-list" style="line-height: 1.6;">
-          <strong>I design systems, not deliverables.</strong> Coherent worlds where concept, execution, symbolism, and perception reinforce each other.<br><br>
-          <strong>I work on the same question from three directions.</strong> Coloring with Gray explores authorship dissolution emotionally. UATP formalizes it structurally. Residuals OS operationalizes it financially — replacing opaque manual processes with inspectable, deterministic systems.<br><br>
-          <strong>I understand luxury as psychology, not price.</strong> Scarcity, permanence, restraint. The object and its justification are designed together.<br><br>
-          <strong>Philosophy is operational.</strong> Logic, ethics, computational thinking — informs how I approach meaning, legitimacy, and accountability.
+        <div class="skill-list" style="line-height: 1.7;">
+          <strong>Systems, not deliverables.</strong> The concept and its justification are designed together. The explanation lives inside the object.<br><br>
+          <strong>Luxury as psychology, not price.</strong> Scarcity, permanence, restraint. Designed for how it lands, not what it costs.<br><br>
+          <strong>Philosophy is operational.</strong> Logic, ethics, and computational thinking — the operating system underneath the work, not decoration on top of it.
         </div>
       </div>
     </div>
   </section>
 
-  <!-- EDUCATION & RECOGNITION -->
   <div class="info-row">
     <div class="info-block">
       <h4>Education</h4>
       <p><strong>M.S. Integrated Design, Business and Technology</strong><br>University of Southern California, Iovine and Young Academy<br>Expected Graduation: August 2027</p>
-      <p style="margin-top: 8px;"><strong>B.A. Philosophy</strong><br>California State University, Fullerton<br>Concentration: Logic, Ethics, Computational Thinking</p>
+      <p><strong>B.A. Philosophy</strong><br>California State University, Fullerton<br>Concentration: Logic, Ethics, Computational Thinking</p>
     </div>
     <div class="info-block">
       <h4>Recognition</h4>
-      <p><strong>Berlin Commercial Awards RAW Selection</strong> (2025) — 3 categories<br>
-      <strong>Press:</strong> Vogue, Complex, V Magazine, WWD, Hypebeast, LA Times</p>
+      <p><strong>Berlin Commercial Awards RAW Selection</strong> (2025) — Cultural Impact, Craft: Idea, Branded Content</p>
+      <p><strong>Press:</strong> Vogue, Complex, V Magazine, WWD, Hypebeast, LA Times</p>
     </div>
   </div>
 
-  <div class="footer">
-    <div class="footer-tagline">Art = Creation × Consumption</div>
-  </div>
 </body>
 </html>
