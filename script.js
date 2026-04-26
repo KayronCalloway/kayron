@@ -644,6 +644,59 @@ const resetMenuStyles = () => {
     ytObserver.observe(channel1);
   }
 
+  // --- Intersection Observer for Channel 4 YouTube Video Control ---
+  const channel4 = document.getElementById("section4");
+  const channel4ObserverOptions = { root: null, threshold: 0.7 };
+  const channel4Observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.target.id === "section4") {
+        if (entry.intersectionRatio >= 0.7) {
+          // Ensure video is playing
+          if (window.channel4Player && typeof window.channel4Player.playVideo === "function") {
+            const state = window.channel4Player.getPlayerState ? window.channel4Player.getPlayerState() : null;
+            if (state !== 1) {
+              window.channel4Player.playVideo();
+            }
+          }
+
+          // Unmute once player confirms it is playing
+          const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+          const unmuteWhenPlaying = () => {
+            if (!window.channel4Player || typeof window.channel4Player.getPlayerState !== 'function') {
+              setTimeout(unmuteWhenPlaying, 250);
+              return;
+            }
+
+            const st = window.channel4Player.getPlayerState();
+
+            if (st === 1) { // Player is PLAYING
+              if (!isMobile || window.soundAllowed) {
+                if (typeof window.channel4Player.unMute === 'function') {
+                  window.channel4Player.unMute();
+                }
+              } else {
+                setTimeout(unmuteWhenPlaying, 250);
+              }
+            } else {
+              if (typeof window.channel4Player.playVideo === 'function') {
+                window.channel4Player.playVideo();
+              }
+              setTimeout(unmuteWhenPlaying, 250);
+            }
+          };
+          unmuteWhenPlaying();
+        } else {
+          if (window.channel4Player && typeof window.channel4Player.mute === "function") {
+            window.channel4Player.mute();
+          }
+        }
+      }
+    });
+  }, channel4ObserverOptions);
+  if (channel4) {
+    channel4Observer.observe(channel4);
+  }
+
   // --- Intersection Observer for Channel 5 YouTube Video Control ---
   const channel5 = document.getElementById("section5");
   const channel5ObserverOptions = { root: null, threshold: 0.7 };
