@@ -1,4 +1,4 @@
-/* channels/ch4/styles.css - Under the Influence */
+/* channels/ch4/styles.css - Systems & Code */
 #section4 .video-background {
   position: absolute;
   top: 60px; /* Space for header */
@@ -255,7 +255,7 @@
   text-align: left;
 }
 
-/* Annual Letter Link */
+/* External Link Button */
 #section4 .annual-letter-link {
   margin-top: 30px;
   display: flex;

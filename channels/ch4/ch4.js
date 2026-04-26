@@ -1,84 +1,62 @@
-// Channel 4: Under the Influence JavaScript
+// Channel 4: Systems & Code JavaScript
 
 function createModals() {
-  // Create the Warren Buffett modal
-  const warrenModalHTML = `
-    <div id="warrenModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true">
+  // Create the UATP modal
+  const uatpModalHTML = `
+    <div id="uatpModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true">
       <div class="modal-box" tabindex="-1">
-        <button id="closeWarren" class="close-modal" aria-label="Close Warren Modal">&times;</button>
-        <div class="modal-static" id="warrenStatic"></div>
+        <button id="closeUatp" class="close-modal" aria-label="Close UATP Modal">&times;</button>
+        <div class="modal-static" id="uatpStatic"></div>
         <div class="modal-content">
-          <h2>Under The Influence</h2>
-          <h3>Warren Buffett</h3>
+          <h2>Systems & Code</h2>
+          <h3>UATP</h3>
           <div class="role-model-description">
-            <p>I admire Warren Buffett not for his extraordinary wealth, but for his unwavering commitment to integrity and ethical principles. His philosophy transcends business, offering profound wisdom on continuous learning, long-term thinking, and living with purpose. He embodies what it means to succeed while remaining principled—a rare quality that inspires me to pursue both excellence and character in everything I do.</p>
-          </div>
-          <div class="role-model-quotes">
-            <div class="role-model-quote">
-              <p>"You can't make a good deal with a bad person."</p>
-              <p class="quote-author">— Warren Buffett</p>
-            </div>
-            <div class="role-model-quote">
-              <p>"It takes 20 years to build a reputation and five minutes to ruin it. If you think about that, you'll do things differently."</p>
-              <p class="quote-author">— Warren Buffett</p>
-            </div>
-            <div class="role-model-quote">
-              <p>"The most important investment you can make is in yourself."</p>
-              <p class="quote-author">— Warren Buffett</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  // Create the Charlie Munger modal
-  const charlieModalHTML = `
-    <div id="charlieModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true">
-      <div class="modal-box" tabindex="-1">
-        <button id="closeCharlie" class="close-modal" aria-label="Close Charlie Modal">&times;</button>
-        <div class="modal-static" id="charlieStatic"></div>
-        <div class="modal-content">
-          <h2>Under The Influence</h2>
-          <h3>Charlie Munger</h3>
-          <div class="role-model-description">
-            <p>Charlie Munger's mental models approach to decision-making has profoundly influenced how I think about problems. His emphasis on multidisciplinary learning and avoiding cognitive biases serves as a north star for my own intellectual development. I strive to emulate his clarity of thought, rigorous rationality, and willingness to admit mistakes - qualities that made him not just a successful investor but a truly wise individual.</p>
-          </div>
-          <div class="role-model-quotes">
-            <div class="role-model-quote">
-              <p>"The best way to get what you want is to deserve what you want. How could it be otherwise?"</p>
-              <p class="quote-author">— Charlie Munger</p>
-            </div>
-            <div class="role-model-quote">
-              <p>"Someone will always be getting richer faster than you. This is not a tragedy."</p>
-              <p class="quote-author">— Charlie Munger</p>
-            </div>
-            <div class="role-model-quote">
-              <p>"Knowing what you don't know is more useful than being brilliant."</p>
-              <p class="quote-author">— Charlie Munger</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  // Create the Annual Letter modal
-  const annualLetterModalHTML = `
-    <div id="annualLetterModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true">
-      <div class="modal-box" tabindex="-1">
-        <button id="closeAnnualLetter" class="close-modal" aria-label="Close Annual Letter Modal">&times;</button>
-        <div class="modal-static" id="letterStatic"></div>
-        <div class="modal-content">
-          <h2>Berkshire Hathaway Annual Letter</h2>
-          <div class="role-model-description">
-            <p>Warren Buffett's annual letter to Berkshire Hathaway shareholders is a masterclass in clear communication, business principles, and investment wisdom. For over 50 years, these letters have provided invaluable insights not just for investors, but for anyone interested in business, leadership, and decision-making.</p>
-            <p>The letters combine financial reports with Buffett's straightforward explanations of complex concepts, all delivered with his characteristic wit and wisdom.</p>
+            <p>Unified Agent Trust Protocol — governance infrastructure making AI behavior inspectable, attributable, and accountable. Built as a deployable system, not a theoretical framework.</p>
+            <p>Capsule-based evidence architecture with cryptographically signed records capturing reasoning, confidence, attribution, and ethical justification for AI decisions.</p>
           </div>
           <div class="annual-letter-link">
-            <p>Read the latest annual letter:</p>
-            <a href="https://www.berkshirehathaway.com/letters/2025ltr.pdf" target="_blank" rel="noopener noreferrer" class="letter-button">2025 Annual Letter</a>
-            <p>Or visit the <a href="https://www.berkshirehathaway.com/letters/letters.html" target="_blank" rel="noopener noreferrer">complete archive</a> of letters dating back to 1977.</p>
+            <a href="https://github.com/KayronCalloway/uatp" target="_blank" rel="noopener noreferrer" class="letter-button">View on GitHub</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Create the Residuals OS modal
+  const residualsModalHTML = `
+    <div id="residualsModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal-box" tabindex="-1">
+        <button id="closeResiduals" class="close-modal" aria-label="Close Residuals OS Modal">&times;</button>
+        <div class="modal-static" id="residualsStatic"></div>
+        <div class="modal-content">
+          <h2>Systems & Code</h2>
+          <h3>Residuals OS</h3>
+          <div class="role-model-description">
+            <p>Financial infrastructure for entertainment residuals. A multi-sided marketplace replacing manual SAG-AFTRA settlement workflows with deterministic calculation engines and intelligent document parsing.</p>
+            <p>Settlement engine handling theatrical residuals with full math-chain traceability. Intelligent parsing pipeline using LlamaParse + Claude Vision + SheetJS for guild documents.</p>
+          </div>
+          <div class="annual-letter-link">
+            <a href="https://github.com/KayronCalloway/resid.os" target="_blank" rel="noopener noreferrer" class="letter-button">View on GitHub</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Create the GitHub modal
+  const githubModalHTML = `
+    <div id="githubModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal-box" tabindex="-1">
+        <button id="closeGithub" class="close-modal" aria-label="Close GitHub Modal">&times;</button>
+        <div class="modal-static" id="githubStatic"></div>
+        <div class="modal-content">
+          <h2>Systems & Code</h2>
+          <h3>GitHub</h3>
+          <div class="role-model-description">
+            <p>All systems, experiments, and infrastructure code are open for inspection. No black boxes.</p>
+          </div>
+          <div class="annual-letter-link">
+            <a href="https://github.com/KayronCalloway" target="_blank" rel="noopener noreferrer" class="letter-button">github.com/KayronCalloway</a>
           </div>
         </div>
       </div>
@@ -87,7 +65,7 @@ function createModals() {
 
   // Append all modals to the body
   const container = document.createElement('div');
-  container.innerHTML = warrenModalHTML + charlieModalHTML + annualLetterModalHTML;
+  container.innerHTML = uatpModalHTML + residualsModalHTML + githubModalHTML;
   document.body.appendChild(container);
 }
 
@@ -258,9 +236,9 @@ function setupModalEventListeners() {
   };
 
   // Set up each modal with enhanced touch handling
-  setupModalButton('warrenButton', 'warrenModal', 'closeWarren');
-  setupModalButton('charlieButton', 'charlieModal', 'closeCharlie');
-  setupModalButton('annualLetterButton', 'annualLetterModal', 'closeAnnualLetter');
+  setupModalButton('uatpButton', 'uatpModal', 'closeUatp');
+  setupModalButton('residualsButton', 'residualsModal', 'closeResiduals');
+  setupModalButton('githubButton', 'githubModal', 'closeGithub');
   
   // Handle modal scroll behavior for iOS
   if (isMobile) {
@@ -279,9 +257,9 @@ function setupModalEventListeners() {
   // Close all modals on Escape key press
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
-      const allModals = ['warrenModal', 'charlieModal', 'annualLetterModal']
+      const allModals = ['uatpModal', 'residualsModal', 'githubModal']
         .map(id => document.getElementById(id));
-      const allButtons = ['warrenButton', 'charlieButton', 'annualLetterButton']
+      const allButtons = ['uatpButton', 'residualsButton', 'githubButton']
         .map(id => document.getElementById(id));
       
       allModals.forEach((modal, index) => {
@@ -333,10 +311,10 @@ export async function init() {
   }
   
   try {
-    // Load the influence content
+    // Load the channel content
     const response = await fetch('./channels/ch4/index.html');
     if (!response.ok) {
-      throw new Error(`Failed to fetch influence content: ${response.status} ${response.statusText}`);
+      throw new Error(`Failed to fetch channel content: ${response.status} ${response.statusText}`);
     }
     const html = await response.text();
     
@@ -353,11 +331,11 @@ export async function init() {
         section4.insertAdjacentHTML('beforeend', overlayHTML);
       }
       
-      // Load influence styles
-      const influenceStylesheet = document.createElement('link');
-      influenceStylesheet.rel = 'stylesheet';
-      influenceStylesheet.href = './channels/ch4/styles.css';
-      document.head.appendChild(influenceStylesheet);
+      // Load channel styles
+      const channelStylesheet = document.createElement('link');
+      channelStylesheet.rel = 'stylesheet';
+      channelStylesheet.href = './channels/ch4/styles.css';
+      document.head.appendChild(channelStylesheet);
       
       // Add loading indicator style for mobile
       if (isMobileDevice()) {

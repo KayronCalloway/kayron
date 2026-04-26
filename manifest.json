@@ -1,7 +1,7 @@
 {
-  "name": "Kayron Calloway \u2014 Creative Systems Architect",
-  "short_name": "Kayron Calloway",
-  "description": "Portfolio of Kayron Calloway: Creative Systems Architect. Coloring with Gray, UATP, and Residuals OS.",
+  "name": "Kayron Calloway",
+  "short_name": "Kayron",
+  "description": "Portfolio of Kayron Calloway. Coloring with Gray, UATP, and Residuals OS.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
