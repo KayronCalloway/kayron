@@ -293,6 +293,14 @@ const resetMenuStyles = () => {
       tvGuide.style.pointerEvents = 'auto';
       tvGuide.style.webkitOverflowScrolling = 'touch';
 
+      // Update TV Guide date display dynamically
+      const dateDisplay = document.querySelector('.date-display');
+      if (dateDisplay) {
+        const now = new Date();
+        const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        dateDisplay.textContent = monthNames[now.getMonth()] + ' ' + now.getFullYear();
+      }
+
       return true;
     }
 
@@ -300,13 +308,7 @@ const resetMenuStyles = () => {
   };
 
   // Make function globally available for all channels
-      const dateDisplay = document.querySelector('.date-display');
-      if (dateDisplay) {
-        const now = new Date();
-        const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-        dateDisplay.textContent = monthNames[now.getMonth()] + ' ' + now.getFullYear();
-      }
-    window.ensureTVGuideStandardStyling = ensureTVGuideStandardStyling;
+  window.ensureTVGuideStandardStyling = ensureTVGuideStandardStyling;
 
   // --- TV Guide Menu Toggle ---
   // Keep track of TV Guide state to prevent conflicting operations
