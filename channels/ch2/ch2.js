@@ -34,19 +34,6 @@ export async function init() {
 
     await loadScript('./channels/ch2/script.js');
 
-    setTimeout(() => {
-      const portfolioBrowse = document.getElementById('portfolio-browse');
-      if (portfolioBrowse) {
-        const cards = document.querySelectorAll('.project-card');
-        cards.forEach(card => {
-          card.style.pointerEvents = 'auto';
-          card.style.cursor = 'pointer';
-          card.style.position = 'relative';
-          card.style.zIndex = '1';
-        });
-      }
-    }, 500);
-
     const tvGuide = document.getElementById('tvGuide');
     if (tvGuide) {
       tvGuide.style.position = 'fixed';
