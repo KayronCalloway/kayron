@@ -27,9 +27,17 @@ export async function init() {
       setupTrackSelection();
       setupBroadcastSignals();
       
-      // Auto-load the first track (Field Trippin) on channel load
+      // Only auto-load the first track if ch3 is currently visible
       setTimeout(() => {
-        playTrack(0); // Index 0 = Track 1 = Field Trippin
+        const section3 = document.getElementById('section3');
+        if (section3) {
+          const rect = section3.getBoundingClientRect();
+          const isVisible = rect.top < window.innerHeight && rect.bottom > 0 && 
+                           rect.top >= -rect.height * 0.5 && rect.top <= window.innerHeight * 0.5;
+          if (isVisible) {
+            playTrack(0); // Index 0 = Track 1 = Field Trippin
+          }
+        }
       }, 1000);
       
       // Ensure TV Guide has correct positioning - USING GLOBAL STANDARD
@@ -183,6 +191,8 @@ function playTrack(index) {
   currentTrackIndex = index;
   const track = tracks[index];
   
+  // Reset userPaused when starting a new track
+  userPaused = false;
   
   // Update visual states
   updateTrackStates();
@@ -411,25 +421,31 @@ function togglePlayPause() {
     if (playPauseBtn.textContent === '▶') {
       currentPlayer.playVideo();
       playPauseBtn.textContent = '⏸';
+      userPaused = false; // User resumed playback
     } else {
       currentPlayer.pauseVideo();
       playPauseBtn.textContent = '▶';
+      userPaused = true; // User paused playback
     }
   } else if (currentPlayer.tagName === 'VIDEO') {
     // HTML5 video element (local video)
     if (currentPlayer.paused) {
       currentPlayer.play();
       playPauseBtn.textContent = '⏸';
+      userPaused = false; // User resumed playback
     } else {
       currentPlayer.pause();
       playPauseBtn.textContent = '▶';
+      userPaused = true; // User paused playback
     }
   } else {
     // Iframe fallback - just update button state
     if (playPauseBtn.textContent === '▶') {
       playPauseBtn.textContent = '⏸';
+      userPaused = false;
     } else {
       playPauseBtn.textContent = '▶';
+      userPaused = true;
     }
   }
 }
@@ -559,6 +575,8 @@ style.textContent = `
 document.head.appendChild(style);
 
 // Channel visibility detection for audio control
+let userPaused = false; // Track if user manually paused
+
 function setupChannelVisibilityDetection() {
   let isChannelVisible = false;
   
@@ -569,13 +587,16 @@ function setupChannelVisibilityDetection() {
         const wasVisible = isChannelVisible;
         isChannelVisible = entry.isIntersecting && entry.intersectionRatio > 0.5;
         
-        // If channel became invisible and there's a current player, handle it
+        // If channel became invisible and there's a current player, pause it
         if (wasVisible && !isChannelVisible && currentPlayer) {
-          pauseCurrentMedia();
+          // Only auto-pause if user hasn't already paused
+          if (!userPaused) {
+            pauseCurrentMedia(true); // true = system pause
+          }
         }
         
-        // If channel became visible and there was a paused player, resume it
-        if (!wasVisible && isChannelVisible && currentPlayer) {
+        // If channel became visible and player was system-paused (not user-paused), resume
+        if (!wasVisible && isChannelVisible && currentPlayer && !userPaused) {
           if (currentPlayer.playVideo) {
             currentPlayer.playVideo();
           } else if (currentPlayer.tagName === 'VIDEO') {
@@ -598,14 +619,19 @@ function setupChannelVisibilityDetection() {
   
   // Also listen for visibility change events (when user switches tabs)
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden && currentPlayer) {
-      pauseCurrentMedia();
+    if (document.hidden && currentPlayer && !userPaused) {
+      pauseCurrentMedia(true); // system pause
     }
   });
 }
 
-function pauseCurrentMedia() {
+function pauseCurrentMedia(isSystemPause = false) {
   const playPauseBtn = document.getElementById('playPause');
+  
+  // If this is a user-initiated pause (not system), mark it
+  if (!isSystemPause) {
+    userPaused = true;
+  }
   
   // Try to actually pause the media if possible
   if (currentPlayer) {
