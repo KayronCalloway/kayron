@@ -123,6 +123,53 @@
       margin: 0;
     }
 
+    /* Featured Vision */
+    .featured-vision {
+      max-width: 720px;
+      margin: 0 auto 48px;
+      padding: 0 24px;
+    }
+
+    .featured-card {
+      border-left: 3px solid #64a0ff;
+      padding: 32px 28px;
+      background: rgba(100, 160, 255, 0.05);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .featured-card:hover {
+      background: rgba(100, 160, 255, 0.08);
+      padding-left: 36px;
+    }
+
+    .featured-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: #64a0ff;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .featured-card h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin: 0 0 12px 0;
+      color: #fff;
+      transition: color 0.2s ease;
+    }
+
+    .featured-card:hover h2 {
+      color: #64a0ff;
+    }
+
+    .featured-card p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.5);
+      margin: 0;
+    }
+
     /* Footer */
     .archive-footer {
       text-align: center;
@@ -422,6 +469,14 @@
       <p class="archive-subtitle">my idea for the future</p>
     </header>
 
+    <div class="featured-vision">
+      <article class="featured-card" data-doc="doc-12">
+        <div class="featured-label">Current — April 2026</div>
+        <h2>The Vision</h2>
+        <p>Extraction, ownership, symbiosis, and the memory layer that makes AI accountable to the humans who built it.</p>
+      </article>
+    </div>
+
     <main class="archive-list">
       <article class="archive-item" data-doc="doc-01">
         <div class="item-meta"><span class="item-version">v6.0</span><span class="item-date">July 1, 2025</span></div>
@@ -469,12 +524,6 @@
         <div class="item-meta"><span class="item-version">v7.0</span><span class="item-date">July 15, 2025</span></div>
         <h2>Executive Summary</h2>
         <p>One-page overview for stakeholders. The essential UATP brief.</p>
-      </article>
-
-      <article class="archive-item" data-doc="doc-12">
-        <div class="item-meta"><span class="item-version">v1.1</span><span class="item-date">April 2026</span></div>
-        <h2>The Vision</h2>
-        <p>The current statement. Extraction, ownership, symbiosis, and the memory layer that makes AI accountable to the humans who built it.</p>
       </article>
 
       <article class="archive-item" data-doc="doc-07">
