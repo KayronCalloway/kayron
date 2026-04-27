@@ -471,10 +471,16 @@
         <p>One-page overview for stakeholders. The essential UATP brief.</p>
       </article>
 
+      <article class="archive-item" data-doc="doc-12">
+        <div class="item-meta"><span class="item-version">v1.1</span><span class="item-date">April 2026</span></div>
+        <h2>The Vision</h2>
+        <p>The current statement. Extraction, ownership, symbiosis, and the memory layer that makes AI accountable to the humans who built it.</p>
+      </article>
+
       <article class="archive-item" data-doc="doc-07">
         <div class="item-meta"><span class="item-version">v7.0</span><span class="item-date">December 2025</span></div>
-        <h2>Complete Vision</h2>
-        <p>The full vision document. From Trusted Siri to Post-Labor Economics.</p>
+        <h2>Complete Vision (Historical)</h2>
+        <p>The full vision document from December 2025. From Trusted Siri to Post-Labor Economics.</p>
       </article>
 
       <article class="archive-item" data-doc="doc-10">
@@ -744,6 +750,68 @@ sealed = engine.seal_capsule(capsule)</code></pre>
 <li><strong>Governance Innovation</strong>: AI-powered dispute resolution</li>
 </ul>
 <blockquote><p>"The world's first working AI civilization infrastructure."</p></blockquote>
+    </div>
+
+    <!-- Doc 12: The Vision (April 2026) -->
+    <div id="doc-12" data-title="UATP Vision">
+<h1>UATP Vision</h1>
+<h2>The Stakes</h2>
+<p>A handful of companies built the most powerful systems in history by treating human expression as free raw material. Every post, every debugged line, every image shared, every late-night answer — scraped, ingested, and monetized without consent, without compensation, and without a mechanism to opt out.</p>
+<p>At the same time, AI is entering high-stakes domains where opacity is unacceptable. When a robotaxi crashes, when a doctor's AI recommends the wrong medication, when a bank algorithm denies a mortgage, there is no record of what was decided, with what reasoning, at what moment. Liability is unprovable. Trust collapses.</p>
+<p>Both failures trace to the same absence: memory — verifiable memory, owned by the people who created it.</p>
+<hr>
+<h2>The Insight</h2>
+<p>The infrastructure that makes AI decisions auditable is the same infrastructure that makes AI influences attributable.</p>
+<p>Cryptographically signed records — capsules — capture what an AI decided, what inputs it used, and how it reasoned. Ed25519 signatures make them tamper-evident. RFC 3161 timestamps prove when they existed. Anyone can verify without trusting UATP.</p>
+<p>This works in multiple directions at once.</p>
+<p><strong>Forward:</strong> It makes AI court-admissible and insurable. Enterprises can deploy in medicine, finance, and transportation because liability is bounded by cryptographic proof.</p>
+<p><strong>Backward:</strong> It captures structured records of how AI actually thinks under real conditions — reasoning chains, confidence scores, error cases, corrections, and outcomes. This is more valuable than scraped text because it contains process, not just product. Model trainers will pay for it because it teaches models to reason, not just to pattern-match.</p>
+<p>Point the same provenance layer backward again, and it traces which human contributions shaped the model. One primitive. Three directions. Trust, training data, and attribution from the same root.</p>
+<hr>
+<h2>The Flywheel</h2>
+<p>This creates a self-sustaining loop:</p>
+<ol>
+<li><strong>Audit.</strong> High-stakes AI deployments require provable decision records. Capsules make them court-admissible and insurable. Enterprises adopt because the liability gap closes.</li>
+<li><strong>Capture.</strong> Those audited decisions contain something scarce: structured training data that shows how AI reasons under real-world constraints. Not the output — the process that produced it. This is what model trainers actually need.</li>
+<li><strong>Attribute.</strong> The same provenance chains that prove what the AI decided can prove what shaped the AI. Human contributions become visible, traceable, and linkable to the outputs they influenced.</li>
+<li><strong>Own.</strong> Participation is opt-in. You control your capsules. You choose whether to list them in the training marketplace, set your price, and define your terms. This is not a handout or a tax on AI companies. It is economic participation in a market for something that was previously taken without asking.</li>
+<li><strong>Filter.</strong> Quality is rewarded; slop is ignored. Precise, useful data gets licensed and compensated. Low-value noise does not. The market of model trainers decides what is valuable — no central committee required.</li>
+</ol>
+<p>The loop closes automatically. Better data feeds better AI, which produces better decisions, which generate better data. Creators are compensated, so they keep creating. AI improves, so enterprises deploy more widely. More deployment means more audited decisions, more training data, and more attribution.</p>
+<hr>
+<h2>Symbiosis, Not Replacement</h2>
+<p>Most people assume AI replaces human contribution. The more interesting case is that it amplifies it — if the link between the two is preserved.</p>
+<p>When a researcher sees their reasoning shape a medical AI, they dig deeper. When a writer watches their style inform a generation of models, they write more. When an open-source maintainer knows their code underpins critical infrastructure, they maintain with purpose. Recognition is not a bonus. It is a structural requirement for sustained contribution.</p>
+<p>Without it, creators become extractable inputs and the well dries up.</p>
+<p>With it, AI becomes an extension of human reputation rather than a replacement for human effort. The result is not managed decline or passive redistribution. It is productive symbiosis: human ingenuity amplified by artificial intelligence, with the link between the two preserved in verifiable memory.</p>
+<p>This also addresses a structural problem no one wants to name. As AI automates cognitive work, the economic value it generates will concentrate in fewer hands unless the flow is restructured. Universal attribution is not utopian. It is a practical mechanism to keep wealth from calcifying at the top while billions are displaced. The world only stays stable when the people who power the system participate in its rewards.</p>
+<hr>
+<h2>What We Are Building</h2>
+<ul>
+<li><strong>Verifiable memory</strong> for AI decisions and influences</li>
+<li><strong>Provenance chains</strong> that keep the human link intact</li>
+<li><strong>Economic rails</strong> for value to flow back to its sources</li>
+</ul>
+<p>We are not building the AI, the insurance products, the regulatory frameworks, or the end applications. We are building the memory layer that makes all of them trustworthy, attributable, and economically sustainable.</p>
+<p>Think of UATP like TCP/IP — invisible infrastructure that makes everything else possible.</p>
+<hr>
+<h2>The Bet</h2>
+<ol>
+<li><strong>Trust is the bottleneck.</strong> Enterprises will not deploy AI in medicine, finance, or transportation without audit trails. Solve trust, and adoption follows.</li>
+<li><strong>The extraction model is ending.</strong> Scraping the open web for free training data is becoming legally untenable and socially unsustainable. The companies that transition to consent-based, attributed data will outlast the ones that do not.</li>
+<li><strong>Process data is more valuable than product data.</strong> Model trainers do not need more text. They need structured records of reasoning, error, and correction. Audit trails produce exactly this.</li>
+<li><strong>Attribution is a prerequisite, not a feature.</strong> Precisely tracing influence across model training remains an open research problem. Verifiable memory is the foundation any serious solution must build on.</li>
+<li><strong>Symbiosis beats replacement.</strong> Systems that carry their creators forward outlast systems that consume them.</li>
+<li><strong>Wealth concentration without redistribution destabilizes.</strong> As AI displaces work, the political and economic pressure for participation in the gains will intensify. Infrastructure that routes value back to sources is not idealism. It is survival.</li>
+<li><strong>The future belongs to intelligence that remembers where it came from.</strong></li>
+</ol>
+<hr>
+<h2>The Bottom Line</h2>
+<p>UATP builds the infrastructure for AI to remember its human origins — and for humans to own the memory.</p>
+<p>Not to slow AI down. To stop treating the people behind it as free raw material. To give creators control, consent, and a share of the value they produce.</p>
+<p>Quality is rewarded. Ambition is sustained. Slop is ignored. Wealth circulates through verifiable channels instead of concentrating by default. And everyone who contributed carries forward.</p>
+<p><strong>Systems that shape the world should leave verifiable memory behind.</strong></p>
+<p>Everything else follows from that.</p>
     </div>
 
     <!-- Doc 07 -->
