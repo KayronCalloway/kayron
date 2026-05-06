@@ -1,6 +1,6 @@
 // service-worker.js
 
-const CACHE_VERSION = 'tv-portfolio-cache-v3';
+const CACHE_VERSION = 'tv-portfolio-cache-v4';
 const CACHE_ASSETS = [
   './',
   './index.html',
