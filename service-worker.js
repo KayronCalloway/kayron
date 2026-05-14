@@ -1,6 +1,6 @@
 // service-worker.js
 
-const CACHE_VERSION = 'tv-portfolio-cache-v10';
+const CACHE_VERSION = 'tv-portfolio-cache-v11';
 const CACHE_ASSETS = [
   './',
   './index.html',
@@ -20,6 +20,8 @@ const CACHE_ASSETS = [
   './channels/ch6/assets/03-masquerade.jpg',
   './channels/ch6/assets/04-the-tree-of-life.jpg',
   './channels/ch6/assets/05-the-zone-of-interest.jpg',
+  './channels/ch6/assets/instagram-dx909pw.jpg',
+  './channels/ch6/assets/tidal-cover.jpg',
   './visuals/Merova.otf',
   './visuals/favicon.svg',
   './visuals/icon-192.png',
@@ -82,7 +84,7 @@ self.addEventListener('fetch', event => {
   })());
 });
 
-// Background Sync for Analytics
+// Background Sync hook retained for browsers that registered it previously
 self.addEventListener('sync', event => {
   if (event.tag === 'analytics') {
     event.waitUntil(sendAnalyticsData());
@@ -90,11 +92,11 @@ self.addEventListener('sync', event => {
 });
 
 async function sendAnalyticsData() {
-  // Implement sending queued analytics data here if needed.
+  // Analytics are intentionally disabled for this static portfolio.
   return Promise.resolve();
 }
 
-// Periodic Sync for Content Updates
+// Periodic Sync hook retained for browsers that registered it previously
 self.addEventListener('periodicsync', event => {
   if (event.tag === 'content-update') {
     event.waitUntil(updateCachedContent());
@@ -102,6 +104,6 @@ self.addEventListener('periodicsync', event => {
 });
 
 async function updateCachedContent() {
-  // Implement periodic cache updates if needed.
+  // Static content updates arrive through cache-version bumps.
   return Promise.resolve();
 }

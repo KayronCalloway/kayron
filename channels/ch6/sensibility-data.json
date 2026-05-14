@@ -58,10 +58,73 @@
       "followers": "2,155",
       "following": "790",
       "posts": "37"
+    },
+    "postUrl": "https://www.instagram.com/p/DX909pwDy50/",
+    "post": {
+      "url": "https://www.instagram.com/p/DX909pwDy50/",
+      "caption": "In the end it’ll all make sense…",
+      "date": "May 5, 2026",
+      "type": "carousel",
+      "imageLocal": "./channels/ch6/assets/instagram-dx909pw.jpg"
     }
   },
   "tidal": {
-    "url": "https://tidal.com/artist/ARTIST_PUBLIC_PLAYLIST/view-all?artistId=57512096",
-    "status": "TIDAL did not expose playlist contents from this public artist playlist listing without a specific playlist URL or authenticated API."
+    "url": "https://tidal.com/playlist/3af6c79e-e956-47bd-9370-30f201c5256a",
+    "title": "May 🏫",
+    "description": "Playlist - May 🏫 - 31 items",
+    "trackCount": "31 tracks",
+    "duration": "1:42:57",
+    "cover": "https://resources.tidal.com/images/2146d3f6/d543/4a79/ace9/c46573cffaa1/1080x1080.jpg",
+    "coverLocal": "./channels/ch6/assets/tidal-cover.jpg",
+    "tracks": [
+      {
+        "title": "The Fall",
+        "artist": "MIKE, SURF GANG",
+        "album": "POMPEII // UTILITY",
+        "duration": "1:36"
+      },
+      {
+        "title": "Minty",
+        "artist": "MIKE, SURF GANG",
+        "album": "POMPEII // UTILITY",
+        "duration": "1:48"
+      },
+      {
+        "title": "Shutter Island",
+        "artist": "MIKE, SURF GANG",
+        "album": "POMPEII // UTILITY",
+        "duration": "1:14"
+      },
+      {
+        "title": ":( again :)",
+        "artist": "Earl Sweatshirt, SURF GANG",
+        "album": "POMPEII // UTILITY",
+        "duration": "2:06"
+      },
+      {
+        "title": "Home on the Range",
+        "artist": "Earl Sweatshirt, SURF GANG",
+        "album": "POMPEII // UTILITY",
+        "duration": "1:38"
+      },
+      {
+        "title": "Drums of Death",
+        "artist": "FKA twigs, Koreless",
+        "album": "EUSEXUA",
+        "duration": "3:11"
+      },
+      {
+        "title": "Valentine's Day Freestyle '25",
+        "artist": "JPEGMAFIA",
+        "album": "Valentine's Day Freestyle '25",
+        "duration": "3:30"
+      },
+      {
+        "title": "babygirl",
+        "artist": "JPEGMAFIA",
+        "album": "babygirl",
+        "duration": "2:27"
+      }
+    ]
   }
 }

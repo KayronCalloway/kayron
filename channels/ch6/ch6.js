@@ -48,8 +48,8 @@ async function hydrateSensibility(section) {
   }
 }
 
-function appendText(parent, className, text) {
-  const el = document.createElement('span');
+function appendText(parent, className, text, tagName = 'span') {
+  const el = document.createElement(tagName);
   el.className = className;
   el.textContent = text || '';
   parent.appendChild(el);
@@ -60,11 +60,29 @@ function renderInstagram(section, instagram) {
   const mount = section.querySelector('[data-instagram-preview]');
   if (!mount || !instagram) return;
 
+  const parentLink = mount.closest('a');
+  if (parentLink && instagram.post?.url) {
+    parentLink.href = instagram.post.url;
+  }
+
   mount.textContent = '';
-  const badge = document.createElement('div');
-  badge.className = 'instagram-badge';
-  badge.textContent = '@';
-  mount.appendChild(badge);
+
+  if (instagram.post?.imageLocal) {
+    const frame = document.createElement('figure');
+    frame.className = 'instagram-post-frame';
+
+    const img = document.createElement('img');
+    img.src = instagram.post.imageLocal;
+    img.alt = instagram.post.caption || 'Instagram post preview';
+    img.loading = 'lazy';
+    frame.appendChild(img);
+
+    const caption = document.createElement('figcaption');
+    appendText(caption, 'instagram-post-type', instagram.post.type || 'post');
+    appendText(caption, 'instagram-post-copy', instagram.post.caption || '');
+    frame.appendChild(caption);
+    mount.appendChild(frame);
+  }
 
   const stats = document.createElement('div');
   stats.className = 'instagram-stats';
@@ -90,7 +108,7 @@ function renderLetterboxd(section, letterboxd) {
     const poster = document.createElement('span');
     poster.className = 'film-poster';
 
-    if (film.poster) {
+    if (film.poster || film.posterLocal) {
       const img = document.createElement('img');
       img.src = film.posterLocal || film.poster;
       img.alt = `${film.title}${film.year ? ` (${film.year})` : ''}`;
@@ -111,16 +129,40 @@ function renderTidal(section, tidal) {
   const mount = section.querySelector('[data-tidal-preview]');
   if (!mount || !tidal) return;
 
-  mount.textContent = '';
-  const waveform = document.createElement('div');
-  waveform.className = 'tidal-waveform';
-  [22, 48, 70, 38, 88, 56, 32, 62].forEach((height, index) => {
-    const bar = document.createElement('span');
-    bar.style.setProperty('--bar-height', `${height}%`);
-    if (index === 2 || index === 4) bar.classList.add('gold');
-    waveform.appendChild(bar);
-  });
+  const parentLink = mount.closest('a');
+  if (parentLink && tidal.url) {
+    parentLink.href = tidal.url;
+  }
 
-  mount.appendChild(waveform);
-  appendText(mount, 'tidal-note', 'TIDAL needs a direct playlist URL to expose tracks here.');
+  mount.textContent = '';
+
+  const cover = document.createElement('img');
+  cover.className = 'tidal-cover';
+  cover.src = tidal.coverLocal || tidal.cover;
+  cover.alt = `${tidal.title || 'TIDAL playlist'} cover`;
+  cover.loading = 'lazy';
+  mount.appendChild(cover);
+
+  const details = document.createElement('div');
+  details.className = 'tidal-details';
+  appendText(details, 'tidal-title', tidal.title || 'TIDAL playlist');
+  appendText(details, 'tidal-note', [tidal.trackCount, tidal.duration].filter(Boolean).join(' · '));
+
+  if (tidal.tracks?.length) {
+    const list = document.createElement('ol');
+    list.className = 'tidal-tracks';
+    tidal.tracks.slice(0, 6).forEach((track) => {
+      const item = document.createElement('li');
+      const main = document.createElement('span');
+      main.className = 'track-main';
+      appendText(main, 'track-title', track.title);
+      appendText(main, 'track-artist', track.artist);
+      item.appendChild(main);
+      appendText(item, 'track-time', track.duration);
+      list.appendChild(item);
+    });
+    details.appendChild(list);
+  }
+
+  mount.appendChild(details);
 }
