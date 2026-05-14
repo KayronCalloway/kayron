@@ -1,0 +1,67 @@
+{
+  "letterboxd": {
+    "profile": "https://letterboxd.com/greyiscolor/",
+    "rss": "https://letterboxd.com/greyiscolor/rss/",
+    "films": [
+      {
+        "title": "Jeanne Dielman, 23, quai du Commerce, 1080 Bruxelles",
+        "year": "1975",
+        "rating": "5.0",
+        "watchedDate": "2025-09-19",
+        "link": "https://letterboxd.com/greyiscolor/film/jeanne-dielman-23-quai-du-commerce-1080-bruxelles/",
+        "poster": "https://a.ltrbxd.com/resized/film-poster/2/1/1/4/9/21149-jeanne-dielman-23-quai-du-commerce-1080-bruxelles-0-600-0-900-crop.jpg?v=952ed786ed",
+        "posterLocal": "./channels/ch6/assets/01-jeanne-dielman-23-quai-du-commerce-1080-bruxelle.jpg"
+      },
+      {
+        "title": "Poor Pierrot",
+        "year": "1892",
+        "rating": null,
+        "watchedDate": "2025-08-30",
+        "link": "https://letterboxd.com/greyiscolor/film/poor-pierrot/",
+        "poster": "https://a.ltrbxd.com/resized/film-poster/7/4/2/2/2/74222-poor-pierrot-0-600-0-900-crop.jpg?v=7ef548c7cd",
+        "posterLocal": "./channels/ch6/assets/02-poor-pierrot.jpg"
+      },
+      {
+        "title": "Masquerade",
+        "year": "2022",
+        "rating": null,
+        "watchedDate": "2025-07-01",
+        "link": "https://letterboxd.com/greyiscolor/film/masquerade-2022/",
+        "poster": "https://a.ltrbxd.com/resized/film-poster/8/0/3/4/4/3/803443-masquerade-0-600-0-900-crop.jpg?v=0f4701d6e6",
+        "posterLocal": "./channels/ch6/assets/03-masquerade.jpg"
+      },
+      {
+        "title": "The Tree of Life",
+        "year": "2011",
+        "rating": null,
+        "watchedDate": "2025-04-17",
+        "link": "https://letterboxd.com/greyiscolor/film/the-tree-of-life-2011/",
+        "poster": "https://a.ltrbxd.com/resized/film-poster/4/7/4/6/8/47468-the-tree-of-life-0-600-0-900-crop.jpg?v=1794f394ea",
+        "posterLocal": "./channels/ch6/assets/04-the-tree-of-life.jpg"
+      },
+      {
+        "title": "The Zone of Interest",
+        "year": "2023",
+        "rating": null,
+        "watchedDate": "2025-04-08",
+        "link": "https://letterboxd.com/greyiscolor/film/the-zone-of-interest/",
+        "poster": "https://a.ltrbxd.com/resized/film-poster/3/9/8/8/0/0/398800-the-zone-of-interest-0-600-0-900-crop.jpg?v=0514f658e1",
+        "posterLocal": "./channels/ch6/assets/05-the-zone-of-interest.jpg"
+      }
+    ]
+  },
+  "instagram": {
+    "profile": "https://www.instagram.com/coolwithakay/",
+    "title": "Kayron (@coolwithakay) • Instagram photos and videos",
+    "description": "2,155 Followers, 790 Following, 37 Posts - See Instagram photos and videos from Kayron (@coolwithakay)",
+    "stats": {
+      "followers": "2,155",
+      "following": "790",
+      "posts": "37"
+    }
+  },
+  "tidal": {
+    "url": "https://tidal.com/artist/ARTIST_PUBLIC_PLAYLIST/view-all?artistId=57512096",
+    "status": "TIDAL did not expose playlist contents from this public artist playlist listing without a specific playlist URL or authenticated API."
+  }
+}

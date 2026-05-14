@@ -1,6 +1,6 @@
 // service-worker.js
 
-const CACHE_VERSION = 'tv-portfolio-cache-v9';
+const CACHE_VERSION = 'tv-portfolio-cache-v10';
 const CACHE_ASSETS = [
   './',
   './index.html',
@@ -14,6 +14,12 @@ const CACHE_ASSETS = [
   './channels/ch6/index.html',
   './channels/ch6/styles.css',
   './channels/ch6/ch6.js',
+  './channels/ch6/sensibility-data.json',
+  './channels/ch6/assets/01-jeanne-dielman-23-quai-du-commerce-1080-bruxelle.jpg',
+  './channels/ch6/assets/02-poor-pierrot.jpg',
+  './channels/ch6/assets/03-masquerade.jpg',
+  './channels/ch6/assets/04-the-tree-of-life.jpg',
+  './channels/ch6/assets/05-the-zone-of-interest.jpg',
   './visuals/Merova.otf',
   './visuals/favicon.svg',
   './visuals/icon-192.png',
