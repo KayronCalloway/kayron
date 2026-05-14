@@ -85,6 +85,15 @@ export async function init() {
       // Update title
       if (readerTitle) readerTitle.textContent = title;
 
+      // Save scroll position, lock main content, and clear transform so fixed overlay is viewport-relative
+      const mainContent = document.getElementById('mainContent');
+      if (mainContent) {
+        section6.dataset.savedScroll = String(mainContent.scrollTop);
+        section6.dataset.savedTransform = mainContent.style.transform;
+        mainContent.style.overflow = 'hidden';
+        mainContent.style.transform = '';
+      }
+
       // Show reader view
       archiveView.classList.add('hidden');
       readerView.classList.add('active');
@@ -102,20 +111,28 @@ export async function init() {
         readerContent.innerHTML = docEl.innerHTML;
       }
 
-      // Scroll to top - multiple methods for reliability
+      // Scroll reader to top
       readerView.scrollTop = 0;
-      section6.scrollTop = 0;
-      readerView.scrollIntoView({ behavior: 'instant', block: 'start' });
     }
 
     // Back to archive function
     function backToArchive() {
       readerView.classList.remove('active');
       archiveView.classList.remove('hidden');
-      // Scroll to top - multiple methods for reliability
-      archiveView.scrollTop = 0;
-      section6.scrollTop = 0;
-      archiveView.scrollIntoView({ behavior: 'instant', block: 'start' });
+
+      // Unlock main content and restore scroll + transform
+      const mainContent = document.getElementById('mainContent');
+      if (mainContent) {
+        mainContent.style.overflow = '';
+        const saved = section6.dataset.savedScroll;
+        if (saved) {
+          mainContent.scrollTop = parseFloat(saved);
+        }
+        const savedTransform = section6.dataset.savedTransform;
+        if (savedTransform !== undefined) {
+          mainContent.style.transform = savedTransform;
+        }
+      }
     }
 
     // Event: Click on archive items (event delegation)
