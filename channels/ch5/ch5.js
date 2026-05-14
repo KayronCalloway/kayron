@@ -1,15 +1,15 @@
-// Channel 5: UATP Archive
+// Channel 6: UATP Archive
 // Loads the standalone archive into the main site
 
 export async function init() {
 
-  const section5 = document.getElementById('section5');
-  if (!section5) {
+  const section6 = document.getElementById('section6');
+  if (!section6) {
     return;
   }
 
   // Check if already initialized - look for our event listener marker
-  if (section5.dataset.archiveInit === 'true') {
+  if (section6.dataset.archiveInit === 'true') {
     return;
   }
 
@@ -25,7 +25,7 @@ export async function init() {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
 
-    // Extract and scope styles to #section5 only (prevents global style leakage)
+    // Extract and scope styles to #section6 only (prevents global style leakage)
     const styles = doc.querySelector('style');
     if (styles && !document.getElementById('ch5-styles')) {
       let cssText = styles.textContent;
@@ -35,13 +35,13 @@ export async function init() {
       cssText = cssText.replace(/body\s*\{[^}]*\}/g, ''); // Remove body { }
       cssText = cssText.replace(/html\s*\{[^}]*\}/g, ''); // Remove html { }
 
-      // Scope all remaining selectors to #section5
+      // Scope all remaining selectors to #section6
       cssText = cssText.replace(/([^\r\n,{}]+)(,(?=[^}]*{)|\s*{)/g, (match, selector, suffix) => {
         // Skip if already scoped or is a @rule
-        if (selector.trim().startsWith('@') || selector.trim().startsWith('#section5')) {
+        if (selector.trim().startsWith('@') || selector.trim().startsWith('#section6')) {
           return match;
         }
-        return `#section5 ${selector.trim()}${suffix}`;
+        return `#section6 ${selector.trim()}${suffix}`;
       });
 
       const styleEl = document.createElement('style');
@@ -54,18 +54,18 @@ export async function init() {
     const bodyContent = doc.body.innerHTML;
 
     // Preserve channel overlay
-    const existingOverlay = section5.querySelector('.channel-number-overlay');
-    const overlayHTML = existingOverlay ? existingOverlay.outerHTML : '<div class="channel-number-overlay">CH 05</div>';
+    const existingOverlay = section6.querySelector('.channel-number-overlay');
+    const overlayHTML = existingOverlay ? existingOverlay.outerHTML : '<div class="channel-number-overlay">CH 06</div>';
 
     // Insert content
-    section5.innerHTML = bodyContent + overlayHTML;
+    section6.innerHTML = bodyContent + overlayHTML;
 
     // Get references to elements
-    const archiveView = section5.querySelector('#archiveView');
-    const readerView = section5.querySelector('#readerView');
-    const readerContent = section5.querySelector('#readerContent');
-    const readerTitle = section5.querySelector('#readerTitle');
-    const backBtn = section5.querySelector('#backBtn');
+    const archiveView = section6.querySelector('#archiveView');
+    const readerView = section6.querySelector('#readerView');
+    const readerContent = section6.querySelector('#readerContent');
+    const readerTitle = section6.querySelector('#readerTitle');
+    const backBtn = section6.querySelector('#backBtn');
 
     if (!archiveView || !readerView) {
       return;
@@ -73,7 +73,7 @@ export async function init() {
 
     // Show document function
     function showDocument(docId) {
-      const docEl = section5.querySelector('#' + docId);
+      const docEl = section6.querySelector('#' + docId);
       if (!docEl) {
         return;
       }
@@ -104,7 +104,7 @@ export async function init() {
 
       // Scroll to top - multiple methods for reliability
       readerView.scrollTop = 0;
-      section5.scrollTop = 0;
+      section6.scrollTop = 0;
       readerView.scrollIntoView({ behavior: 'instant', block: 'start' });
     }
 
@@ -114,12 +114,12 @@ export async function init() {
       archiveView.classList.remove('hidden');
       // Scroll to top - multiple methods for reliability
       archiveView.scrollTop = 0;
-      section5.scrollTop = 0;
+      section6.scrollTop = 0;
       archiveView.scrollIntoView({ behavior: 'instant', block: 'start' });
     }
 
     // Event: Click on archive items (event delegation)
-    section5.addEventListener('click', function(e) {
+    section6.addEventListener('click', function(e) {
       const item = e.target.closest('.archive-item');
       if (item && item.dataset.doc) {
         e.preventDefault();
@@ -142,7 +142,7 @@ export async function init() {
     });
 
     // Mark as initialized
-    section5.dataset.archiveInit = 'true';
+    section6.dataset.archiveInit = 'true';
 
   } catch (err) {
     // Archive section not yet available

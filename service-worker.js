@@ -1,6 +1,6 @@
 // service-worker.js
 
-const CACHE_VERSION = 'tv-portfolio-cache-v7';
+const CACHE_VERSION = 'tv-portfolio-cache-v9';
 const CACHE_ASSETS = [
   './',
   './index.html',
@@ -11,6 +11,9 @@ const CACHE_ASSETS = [
   './menu-manager.js',
   './robots.txt',
   './sitemap.xml',
+  './channels/ch6/index.html',
+  './channels/ch6/styles.css',
+  './channels/ch6/ch6.js',
   './visuals/Merova.otf',
   './visuals/favicon.svg',
   './visuals/icon-192.png',

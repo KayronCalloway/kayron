@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Get target section for debugging
     let targetSection = null;
-    // Dead code removed - module names are 'home', 'ch2', 'ch3', 'ch4', 'ch5'
+    // Dead code removed - module names are 'home', 'ch2', 'ch3', 'ch4', 'ch5', 'ch6'
 
     if (moduleName === 'home') {
       // Preload Channel 1 with higher priority
@@ -128,6 +128,9 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (moduleName === 'ch5') {
       // UATP Archive
       module = await import(`./channels/ch5/ch5.js`);
+    } else if (moduleName === 'ch6') {
+      // Sensibility
+      module = await import(`./channels/ch6/ch6.js`);
     }
 
     if (module) {
@@ -400,7 +403,8 @@ const resetMenuStyles = () => {
     'section2': 'Discover creative works and brand strategies in a showcase format.',
     'section3': 'Audio archives and creative process documentation.',
     'section4': 'Examine influences and inspirations that shape creative direction.',
-    'section5': 'Universal Agent Trust Protocol - AI accountability infrastructure documentation.'
+    'section5': 'A reference layer for images, films, and listening.',
+    'section6': 'Universal Agent Trust Protocol - AI accountability infrastructure documentation.'
   };
 
   // Make TV Guide channels clickable
@@ -697,63 +701,6 @@ const resetMenuStyles = () => {
     channel4Observer.observe(channel4);
   }
 
-  // --- Intersection Observer for Channel 5 YouTube Video Control ---
-  const channel5 = document.getElementById("section5");
-  const channel5ObserverOptions = { root: null, threshold: 0.7 };
-  const channel5Observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.target.id === "section5") {
-        if (entry.intersectionRatio >= 0.7) {
-
-          // Ensure video is playing; if paused or not started, play it muted
-          if (window.channel5Player && typeof window.channel5Player.playVideo === "function") {
-            const state = window.channel5Player.getPlayerState ? window.channel5Player.getPlayerState() : null;
-            // 1 = playing, 2 = paused, -1 = unstarted
-            if (state !== 1) {
-              window.channel5Player.playVideo();
-            }
-          }
-
-          // Unmute once player confirms it is playing (robust against slow loads)
-          const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
-          const unmuteWhenPlaying = () => {
-            if (!window.channel5Player || typeof window.channel5Player.getPlayerState !== 'function') {
-              // Player not fully initialized, retry shortly
-              setTimeout(unmuteWhenPlaying, 250);
-              return;
-            }
-
-            const st = window.channel5Player.getPlayerState();
-
-            if (st === 1) { // Player is PLAYING
-              if (!isMobile || window.soundAllowed) {
-                if (typeof window.channel5Player.unMute === 'function') {
-                  window.channel5Player.unMute();
-                }
-              } else {
-                // Mobile, sound not yet allowed: keep polling
-                setTimeout(unmuteWhenPlaying, 250);
-              }
-            } else { // Player is NOT PLAYING (e.g., -1 unstarted, 0 ended, 2 paused, 3 buffering, 5 cued)
-              if (typeof window.channel5Player.playVideo === 'function') {
-                window.channel5Player.playVideo(); // Ensure it's trying to play
-              }
-              setTimeout(unmuteWhenPlaying, 250); // Retry until player is playing and conditions met
-            }
-          };
-          unmuteWhenPlaying(); // Initial call
-        } else {
-          if (window.channel5Player && typeof window.channel5Player.mute === "function") {
-            window.channel5Player.mute();
-          }
-        }
-      }
-    });
-  }, channel5ObserverOptions);
-  if (channel5) {
-    channel5Observer.observe(channel5);
-  }
-
   // Initialize menu as hidden before TV powers on
   const initMenuHidden = () => {
     if (menuButton) {
@@ -773,8 +720,12 @@ setTimeout(() => {
 }, 2000);
 
 setTimeout(() => {
-  loadChannelContent('ch5');
+  loadChannelContent('ch6');
 }, 3000);
+
+setTimeout(() => {
+  loadChannelContent('ch5');
+}, 3600);
 
   // Escape key closes TV Guide
   document.addEventListener('keydown', e => {
