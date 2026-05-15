@@ -1,7 +1,12 @@
 // Channel 3: Music/Audio Works JavaScript
 
 export async function init() {
-  
+  // Prevent duplicate initialization — same guard pattern as CH4
+  const section3 = document.getElementById('section3');
+  if (section3 && section3.querySelector('#music-video-player')) {
+    return;
+  }
+
   try {
     // Load the music interface HTML
     const response = await fetch('./channels/ch3/index.html');
