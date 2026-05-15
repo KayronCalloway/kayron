@@ -260,9 +260,9 @@ const resetMenuStyles = () => {
       .to(landing, { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" })
       .to(staticOverlay, { duration: 0.2, opacity: 0.3 })
       .to(staticOverlay, { duration: 0.2, opacity: 0 })
-      .to(landingName, { duration: 0.6, width: "100%", opacity: 1, ease: "power2.out" })
-      .to(landingSubtitle, { duration: 0.4, opacity: 1, ease: "power2.out" }, "-=0.2")
-      .to("#landingSubtitle .subtitle-item", { duration: 0.6, opacity: 1, ease: "power2.out", stagger: 0.3 }, "+=0.2");
+      .to(landingName, { duration: 0.35, width: "100%", opacity: 1, ease: "power2.out" })
+      .to(landingSubtitle, { duration: 0.25, opacity: 1, ease: "power2.out" }, "-=0.15")
+      .to("#landingSubtitle .subtitle-item", { duration: 0.35, opacity: 1, ease: "power2.out", stagger: 0.15 }, "+=0.1");
   });
 
   window.addEventListener('scroll', () => {
