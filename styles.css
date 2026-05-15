@@ -254,9 +254,9 @@ body {
   overflow: hidden;
 }
 
-/* Section 5 (UATP Archive) - last channel */
+/* Section 5 (UATP Archive) - last channel, no snap */
 #section5 {
-  scroll-snap-align: start;
+  scroll-snap-align: none;
   height: auto;
   min-height: 100vh;
 }
