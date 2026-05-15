@@ -6,102 +6,17 @@
     <div class="video-display">
       <div id="music-video-player"></div>
     </div>
-    
+
     <!-- TV-Style Controls -->
     <div class="tv-controls">
-      <div class="control-panel">
-        <button class="control-btn" id="prevTrack" aria-label="Previous Track">⏮</button>
-        <button class="control-btn" id="playPause" aria-label="Play/Pause">▶</button>
-        <button class="control-btn" id="nextTrack" aria-label="Next Track">⏭</button>
+      <button class="control-btn" id="prevTrack" aria-label="Previous Track">⏮</button>
+      <div class="now-playing">
+        <div class="channel-number">CH3</div>
+        <div class="now-playing-title" id="nowPlayingTitle">Select a track</div>
       </div>
-      
-      <div class="channel-display">
-        <span class="channel-number">CH3</span>
-        <span class="channel-name">MUSIC CHANNEL</span>
-      </div>
+      <button class="control-btn" id="playPause" aria-label="Play/Pause">▶</button>
+      <button class="control-btn" id="nextTrack" aria-label="Next Track">⏭</button>
     </div>
   </div>
-  
-  <!-- Track Selection / Timeline -->
-  <div class="track-selection">
-    <h2 class="section-title">CREATIVE TIMELINE</h2>
-    <div class="track-grid">
-      
-      <!-- Track 1 -->
-      <div class="track-card" data-youtube-id="ftp_QMl9BgU" data-track-title="Field Trippin" data-year="2024">
-        <div class="track-preview">
-          <div class="track-info">
-            <h3 class="track-title">Field Trippin</h3>
-            <p class="track-meta">Visual Journey</p>
-            <p class="track-description">Adventure through creative spaces</p>
-          </div>
-        </div>
-        <button class="play-track-btn" aria-label="Play Field Trippin">PLAY</button>
-      </div>
-      
-      <!-- Track 2 -->
-      <div class="track-card" data-youtube-id="tpeUkuGCzOU" data-track-title="date" data-year="2023">
-        <div class="track-preview">
-          <div class="track-info">
-            <h3 class="track-title">date</h3>
-            <p class="track-meta">Intimate Moments</p>
-            <p class="track-description">Personal creative expression</p>
-          </div>
-        </div>
-        <button class="play-track-btn" aria-label="Play date">PLAY</button>
-      </div>
-      
-      <!-- Track 3 -->
-      <div class="track-card" data-youtube-id="ptNBEZ6pPp4" data-track-title="Shibuya Subway Slide" data-year="2023">
-        <div class="track-preview">
-          <div class="track-info">
-            <h3 class="track-title">Shibuya Subway Slide</h3>
-            <p class="track-meta">Urban Movement</p>
-            <p class="track-description">Tokyo underground experience</p>
-          </div>
-        </div>
-        <button class="play-track-btn" aria-label="Play Shibuya Subway Slide">PLAY</button>
-      </div>
-      
-      
-    </div>
-  </div>
-  
-  <!-- Behind the Scenes / Documentary Section -->
-  <div class="documentary-section">
-    <h2 class="section-title">CREATIVE PROCESS</h2>
-    <div class="process-grid">
-      
-      <div class="process-card">
-        <h3>Philosophy Meets Street</h3>
-        <p>How academic philosophy informs authentic creative expression through music and performance.</p>
-      </div>
-      
-      <div class="process-card">
-        <h3>Audio as Memory</h3>
-        <p>Exploring how sonic experiences create lasting impressions and shape identity over time.</p>
-      </div>
-      
-      <div class="process-card">
-        <h3>Multidisciplinary Practice</h3>
-        <p>Connecting audio work to broader creative strategy, from fashion week sonic branding to personal expression.</p>
-      </div>
-      
-    </div>
-  </div>
-  
-  <!-- Visitor Interaction -->
-  <div class="broadcast-signals">
-    <h2 class="section-title">BROADCAST SIGNALS</h2>
-    <div class="signals-container">
-      <div class="signal-input">
-        <textarea id="signalMessage" placeholder="Leave a signal in the broadcast..."></textarea>
-        <button id="sendSignal">TRANSMIT</button>
-      </div>
-      <div class="signals-feed" id="signalsFeed">
-        <!-- Signals will appear here -->
-      </div>
-    </div>
-  </div>
-  
+
 </div>

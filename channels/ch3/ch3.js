@@ -24,7 +24,6 @@ export async function init() {
       
       // Initialize music player functionality
       setupMusicPlayer();
-      setupTrackSelection();
       setupBroadcastSignals();
       
       // Only auto-load the first track if ch3 is currently visible
@@ -55,149 +54,72 @@ export async function init() {
 }
 
 let currentPlayer = null;
-let currentTrackIndex = -1; // Start with -1 to indicate no track selected
-let tracks = [];
-let autoAdvanceTimer = null; // Track the auto-advance timer
+let currentTrackIndex = -1;
+let autoAdvanceTimer = null;
+
+// Track data — no longer depends on DOM cards
+const tracks = [
+  { id: 'ftp_QMl9BgU', title: 'Field Trippin', year: '2024', isLocal: false },
+  { id: 'tpeUkuGCzOU', title: 'date', year: '2023', isLocal: false },
+  { id: 'ptNBEZ6pPp4', title: 'Shibuya Subway Slide', year: '2023', isLocal: false }
+];
 
 function setupMusicPlayer() {
-  
-  // Get track data from the DOM - supports both YouTube and local videos
-  tracks = Array.from(document.querySelectorAll('.track-card')).map((card, index) => ({
-    id: card.dataset.youtubeId,
-    videoPath: card.dataset.videoPath,
-    title: card.dataset.trackTitle,
-    year: card.dataset.year,
-    element: card,
-    index: index,
-    isLocal: !!card.dataset.videoPath
-  }));
-  
-  // Don't fetch video titles since we already have the correct ones
-  // fetchVideoTitles();
-  
-  // Set up channel visibility detection for audio control
   setupChannelVisibilityDetection();
-  
-  
-  // Setup control buttons
+
   const playPauseBtn = document.getElementById('playPause');
   const prevBtn = document.getElementById('prevTrack');
   const nextBtn = document.getElementById('nextTrack');
   const isMobile = window.innerWidth <= 768;
-  
-  // Enhanced mobile touch support for control buttons
+
   const addMobileSupport = (btn, handler) => {
     if (!btn) return;
-    
     btn.addEventListener('click', handler);
-    
     if (isMobile) {
-      // Touch feedback
       btn.addEventListener('touchstart', () => {
         btn.style.transform = 'scale(0.9)';
         btn.style.transition = 'transform 0.1s ease';
       }, { passive: true });
-      
       btn.addEventListener('touchend', () => {
         btn.style.transform = '';
-        setTimeout(handler, 50); // Small delay for visual feedback
+        setTimeout(handler, 50);
       }, { passive: true });
-      
-      // Prevent text selection
       btn.style.userSelect = 'none';
       btn.style.webkitUserSelect = 'none';
       btn.style.webkitTouchCallout = 'none';
     }
   };
-  
+
   addMobileSupport(playPauseBtn, () => {
-    // If no track is playing, start with the first track (Field Trippin)
     if (currentTrackIndex === -1) {
-      playTrack(0); // Start with the first track
+      playTrack(0);
     } else {
       togglePlayPause();
     }
   });
-  
+
   addMobileSupport(prevBtn, playPreviousTrack);
   addMobileSupport(nextBtn, playNextTrack);
 }
 
-function setupTrackSelection() {
-  
-  const trackCards = document.querySelectorAll('.track-card');
-  const isMobile = window.innerWidth <= 768;
-  
-  trackCards.forEach((card, index) => {
-    const playBtn = card.querySelector('.play-track-btn');
-    
-    // Enhanced touch support for mobile
-    if (isMobile) {
-      // Add touch feedback
-      card.style.cursor = 'pointer';
-      card.style.userSelect = 'none';
-      card.style.webkitUserSelect = 'none';
-      card.style.webkitTouchCallout = 'none';
-      
-      // Touch start feedback
-      card.addEventListener('touchstart', () => {
-        card.style.transform = 'scale(0.98)';
-        card.style.transition = 'transform 0.1s ease';
-      }, { passive: true });
-      
-      // Touch end cleanup
-      card.addEventListener('touchend', () => {
-        card.style.transform = '';
-      }, { passive: true });
-    }
-    
-    if (playBtn) {
-      playBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent card click
-        playTrack(index); // Play specific track
-      });
-      
-      // Mobile touch optimization
-      if (isMobile) {
-        playBtn.addEventListener('touchstart', (e) => {
-          e.stopPropagation();
-          playBtn.style.transform = 'scale(0.95)';
-        }, { passive: true });
-        
-        playBtn.addEventListener('touchend', (e) => {
-          e.stopPropagation();
-          playBtn.style.transform = '';
-          playTrack(index);
-        }, { passive: true });
-      }
-    }
-    
-    // Add click to whole card as well
-    card.addEventListener('click', (e) => {
-      // Don't trigger if clicking the button directly
-      if (!e.target.classList.contains('play-track-btn')) {
-        playTrack(index); // Play specific track
-      }
-    });
-  });
+function updateNowPlaying() {
+  const titleEl = document.getElementById('nowPlayingTitle');
+  if (!titleEl) return;
+  if (currentTrackIndex >= 0 && tracks[currentTrackIndex]) {
+    const t = tracks[currentTrackIndex];
+    titleEl.textContent = `${t.title} \u00b7 ${t.year}`;
+  } else {
+    titleEl.textContent = 'Select a track';
+  }
 }
 
 function playTrack(index) {
-  
-  if (index < 0 || index >= tracks.length) {
-    return;
-  }
-  
+  if (index < 0 || index >= tracks.length) return;
   currentTrackIndex = index;
   const track = tracks[index];
-  
-  // Reset userPaused when starting a new track
   userPaused = false;
-  
-  // Update visual states
-  updateTrackStates();
-  
-  // Load video (YouTube or local)
+  updateNowPlaying();
+
   if (track.isLocal) {
     loadLocalVideo(track.videoPath);
   } else {
@@ -396,18 +318,6 @@ async function fetchVideoDuration(videoId) {
     return estimatedDurations[videoId] || 210; // Default 3.5 minutes
   } catch (error) {
     return 180; // 3 minute fallback
-  }
-}
-
-function updateTrackStates() {
-  // Remove active state from all tracks
-  tracks.forEach(track => {
-    track.element.classList.remove('active');
-  });
-  
-  // Add active state to current track
-  if (tracks[currentTrackIndex]) {
-    tracks[currentTrackIndex].element.classList.add('active');
   }
 }
 

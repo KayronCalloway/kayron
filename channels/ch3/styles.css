@@ -64,16 +64,36 @@
 /* TV Controls - Scoped to Section 3 */
 #section3 .tv-controls {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 20px;
   background: rgba(20, 20, 20, 0.9);
   border-top: 1px solid #c9a961;
+  gap: 24px;
 }
 
-#section3 .control-panel {
+#section3 .now-playing {
   display: flex;
-  gap: 15px;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 160px;
+}
+
+#section3 .now-playing .channel-number {
+  font-size: 18px;
+  font-weight: bold;
+  color: #c9a961;
+  text-shadow: 0 0 10px rgba(201, 169, 97, 0.7);
+}
+
+#section3 .now-playing-title {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  min-height: 1.3em;
 }
 
 #section3 .control-btn {
@@ -106,12 +126,6 @@
   font-weight: bold;
   color: #c9a961;
   text-shadow: 0 0 10px rgba(201, 169, 97, 0.7);
-}
-
-#section3 .channel-name {
-  font-size: 12px;
-  color: #ffffff;
-  letter-spacing: 2px;
 }
 
 /* Track Selection - Scoped to Section 3 */
