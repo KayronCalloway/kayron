@@ -78,7 +78,6 @@ function renderInstagram(section, instagram) {
     frame.appendChild(img);
 
     const caption = document.createElement('figcaption');
-    appendText(caption, 'instagram-post-type', instagram.post.type || 'post');
     appendText(caption, 'instagram-post-copy', instagram.post.caption || '');
     frame.appendChild(caption);
     mount.appendChild(frame);
@@ -95,30 +94,48 @@ function renderLetterboxd(section, letterboxd) {
   if (!mount || !letterboxd?.films?.length) return;
 
   mount.textContent = '';
-  letterboxd.films.slice(0, 5).forEach((film) => {
-    const poster = document.createElement('span');
-    poster.className = 'film-poster';
 
-    if (film.poster || film.posterLocal) {
-      const img = document.createElement('img');
-      img.src = film.posterLocal || film.poster;
-      img.alt = `${film.title}${film.year ? ` (${film.year})` : ''}`;
-      img.loading = 'lazy';
-      img.referrerPolicy = 'no-referrer';
-      poster.appendChild(img);
-    }
+  // Featured film (most recent)
+  const featured = letterboxd.films[0];
+  const featuredWrap = document.createElement('div');
+  featuredWrap.className = 'featured-film';
 
-    const caption = document.createElement('span');
-    caption.className = 'film-caption';
-    caption.textContent = film.title || '';
-    poster.appendChild(caption);
+  if (featured.poster || featured.posterLocal) {
+    const img = document.createElement('img');
+    img.src = featured.posterLocal || featured.poster;
+    img.alt = `${featured.title}${featured.year ? ` (${featured.year})` : ''}`;
+    img.loading = 'lazy';
+    img.referrerPolicy = 'no-referrer';
+    featuredWrap.appendChild(img);
+  }
 
-    const yearEl = document.createElement('span');
-    yearEl.className = 'film-year';
-    yearEl.textContent = film.year ? `${film.year}` : '';
-    poster.appendChild(yearEl);
-    mount.appendChild(poster);
-  });
+  const caption = document.createElement('span');
+  caption.className = 'film-caption';
+  caption.textContent = featured.title || '';
+  featuredWrap.appendChild(caption);
+
+  const yearEl = document.createElement('span');
+  yearEl.className = 'film-year';
+  yearEl.textContent = featured.year ? `${featured.year}` : '';
+  featuredWrap.appendChild(yearEl);
+  mount.appendChild(featuredWrap);
+
+  // Strip of remaining films
+  if (letterboxd.films.length > 1) {
+    const strip = document.createElement('div');
+    strip.className = 'film-strip';
+    letterboxd.films.slice(1, 5).forEach((film) => {
+      if (film.poster || film.posterLocal) {
+        const img = document.createElement('img');
+        img.src = film.posterLocal || film.poster;
+        img.alt = film.title || '';
+        img.loading = 'lazy';
+        img.referrerPolicy = 'no-referrer';
+        strip.appendChild(img);
+      }
+    });
+    mount.appendChild(strip);
+  }
 }
 
 function renderTidal(section, tidal) {
@@ -143,22 +160,5 @@ function renderTidal(section, tidal) {
   details.className = 'tidal-details';
   appendText(details, 'tidal-title', tidal.title || 'TIDAL playlist');
   appendText(details, 'tidal-note', [tidal.trackCount, tidal.duration].filter(Boolean).join(' · '));
-
-  if (tidal.tracks?.length) {
-    const list = document.createElement('ol');
-    list.className = 'tidal-tracks';
-    tidal.tracks.slice(0, 6).forEach((track) => {
-      const item = document.createElement('li');
-      const main = document.createElement('span');
-      main.className = 'track-main';
-      appendText(main, 'track-title', track.title);
-      appendText(main, 'track-artist', track.artist);
-      item.appendChild(main);
-      appendText(item, 'track-time', track.duration);
-      list.appendChild(item);
-    });
-    details.appendChild(list);
-  }
-
   mount.appendChild(details);
 }
