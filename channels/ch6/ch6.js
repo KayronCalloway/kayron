@@ -84,19 +84,10 @@ function renderInstagram(section, instagram) {
     mount.appendChild(frame);
   }
 
-  const stats = document.createElement('div');
-  stats.className = 'instagram-stats';
-  [
-    ['posts', instagram.stats?.posts],
-    ['followers', instagram.stats?.followers],
-    ['following', instagram.stats?.following]
-  ].forEach(([label, value]) => {
-    const item = document.createElement('span');
-    appendText(item, 'stat-value', value || '—');
-    appendText(item, 'stat-label', label);
-    stats.appendChild(item);
-  });
-  mount.appendChild(stats);
+  const date = document.createElement('span');
+  date.className = 'instagram-post-date';
+  date.textContent = instagram.post?.date || '';
+  mount.appendChild(date);
 }
 
 function renderLetterboxd(section, letterboxd) {
@@ -119,8 +110,13 @@ function renderLetterboxd(section, letterboxd) {
 
     const caption = document.createElement('span');
     caption.className = 'film-caption';
-    caption.textContent = film.rating ? `${film.rating} ★` : film.year || '';
+    caption.textContent = film.title || '';
     poster.appendChild(caption);
+
+    const yearEl = document.createElement('span');
+    yearEl.className = 'film-year';
+    yearEl.textContent = film.year ? `${film.year}` : '';
+    poster.appendChild(yearEl);
     mount.appendChild(poster);
   });
 }
