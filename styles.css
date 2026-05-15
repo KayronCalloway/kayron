@@ -230,7 +230,7 @@ body {
 #mainContent {
   display: none;
   overflow-y: auto;
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: y proximity;
   height: 100vh;
   padding-top: 60px; /* Prevents content from hiding behind the fixed header */
 }
@@ -252,6 +252,12 @@ body {
 /* Section 4 - contain absolute positioned children */
 #section4 {
   overflow: hidden;
+}
+
+/* Section 5 (Sensibility) - grow to fit tall asymmetric grid */
+#section5 {
+  height: auto;
+  min-height: 100vh;
 }
 
 /* Section 6 (UATP Archive) - last channel, no snap */

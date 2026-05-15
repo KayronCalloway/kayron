@@ -9,7 +9,6 @@
   --sensibility-gold: #c9a961;
   background: #070706;
   color: var(--sensibility-ink);
-  overflow: hidden auto;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
