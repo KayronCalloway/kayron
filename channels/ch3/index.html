@@ -1,12 +1,22 @@
-<!-- Channel 3: Sound -->
-<div class="video-background">
-  <div id="youtube-player-3"></div>
-</div>
+<!-- Channel 3: Music/Audio Works -->
+<div id="music-interface" role="region" aria-label="Music Channel Interface">
+  
+  <!-- Main Video Display -->
+  <div class="music-player-container">
+    <div class="video-display">
+      <div id="music-video-player"></div>
+    </div>
 
-<div class="channel3-buttons">
-  <button id="track1Button" class="channel-button" aria-label="Field Trippin">Field Trippin</button>
-  <button id="track2Button" class="channel-button" aria-label="date">date</button>
-  <button id="track3Button" class="channel-button" aria-label="Shibuya Subway Slide">Shibuya Subway Slide</button>
-</div>
+    <!-- TV-Style Controls -->
+    <div class="tv-controls">
+      <button class="control-btn" id="prevTrack" aria-label="Previous Track">⏮</button>
+      <div class="now-playing">
+        <div class="channel-number">CH 03</div>
+        <div class="now-playing-title" id="nowPlayingTitle">Select a track</div>
+      </div>
+      <button class="control-btn" id="playPause" aria-label="Play/Pause">▶</button>
+      <button class="control-btn" id="nextTrack" aria-label="Next Track">⏭</button>
+    </div>
+  </div>
 
-<div class="channel-number-overlay">CH 03</div>
+</div>
