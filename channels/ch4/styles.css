@@ -57,7 +57,7 @@
   padding: 12px 20px;
   background-color: rgba(0, 0, 0, 0.7);
   color: #ffffff;
-  border: 2px solid #1e90ff;
+  border: 2px solid #c9a961;
   border-radius: 6px;
   font-size: 1.1rem;
   font-weight: 500;
@@ -68,7 +68,7 @@
 }
 
 #section4 .channel-button:hover {
-  background-color: rgba(30, 144, 255, 0.2);
+  background-color: rgba(201, 169, 97, 0.18);
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
@@ -80,7 +80,7 @@
 
 /* Additional class added to buttons on mobile */
 #section4 .channel-button.mobile-enhanced {
-  box-shadow: 0 4px 12px rgba(30, 144, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(201, 169, 97, 0.24);
   border-width: 2.5px;
 }
 
@@ -170,7 +170,7 @@
   color: #fff;
   padding: 30px;
   border-radius: 10px;
-  border-left: 4px solid #1e90ff;
+  border-left: 4px solid #c9a961;
   backdrop-filter: blur(8px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   text-align: center;
@@ -182,7 +182,7 @@
 #section4 .role-model-content h2 {
   font-size: 2.2rem;
   margin: 0 0 5px 0;
-  color: #1e90ff;
+  color: #c9a961;
   font-weight: 600;
   letter-spacing: 1px;
   cursor: pointer;
@@ -201,7 +201,7 @@
 }
 
 #section4 .dropdown-toggle:hover {
-  color: #4db8ff;
+  color: #d4b978;
 }
 
 #section4 .dropdown-content {
@@ -228,8 +228,8 @@
   font-style: italic;
   position: relative;
   padding: 0 20px;
-  border-left: 3px solid #1e90ff;
-  background: rgba(30, 144, 255, 0.1);
+  border-left: 3px solid #c9a961;
+  background: rgba(201, 169, 97, 0.10);
   border-radius: 5px;
   padding: 15px;
 }
@@ -273,27 +273,27 @@
   text-decoration: none;
   font-weight: bold;
   margin: 10px 0;
-  border: 2px solid #3e92cc;
+  border: 2px solid #c9a961;
   transition: all 0.2s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
-  box-shadow: 0 0 10px rgba(62, 146, 204, 0.3);
+  box-shadow: 0 0 10px rgba(201, 169, 97, 0.18);
 }
 
 #section4 .letter-button:hover {
-  background: rgba(62, 146, 204, 0.2);
+  background: rgba(201, 169, 97, 0.16);
   transform: translateY(-3px);
-  box-shadow: 0 0 10px rgba(62, 146, 204, 0.5);
+  box-shadow: 0 0 10px rgba(201, 169, 97, 0.28);
 }
 
 #section4 .annual-letter-link a {
-  color: #1e90ff;
+  color: #c9a961;
   text-decoration: underline;
   transition: color 0.3s ease;
 }
 
 #section4 .annual-letter-link a:hover {
-  color: #4db8ff;
+  color: #d4b978;
 }
 
 /* Animation */
@@ -317,7 +317,7 @@
     width: 100%; /* Full width buttons */
     padding: 15px 25px; /* More padding */
     font-size: 1.2rem; /* Larger text */
-    -webkit-tap-highlight-color: rgba(30, 144, 255, 0.4); /* Visual feedback on tap */
+    -webkit-tap-highlight-color: rgba(201, 169, 97, 0.28); /* Visual feedback on tap */
     margin: 5px 0; /* Vertical spacing */
   }
 
@@ -418,7 +418,7 @@
     min-width: 48px;
     /* Enhanced touch feedback */
     touch-action: manipulation;
-    -webkit-tap-highlight-color: rgba(30, 144, 255, 0.3);
+    -webkit-tap-highlight-color: rgba(201, 169, 97, 0.24);
     /* Consistent scaling with other channels */
     transition: transform 0.1s ease-out, box-shadow 0.2s ease-out;
   }
@@ -474,6 +474,6 @@
     /* iOS-style button enhancements */
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    -webkit-tap-highlight-color: rgba(30, 144, 255, 0.4);
+    -webkit-tap-highlight-color: rgba(201, 169, 97, 0.28);
   }
 }

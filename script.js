@@ -25,6 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuButton = document.getElementById('menuButton');
   const tvGuide = document.getElementById('tvGuide');
   const closeGuide = document.getElementById('closeGuide');
+  if (tvGuide && tvGuide.parentElement !== document.body) {
+    document.body.appendChild(tvGuide);
+  }
   const staticOverlay = document.getElementById('staticOverlay');
   const clickSound = document.getElementById('clickSound');
   const backToTop = document.getElementById('backToTop');
@@ -260,9 +263,15 @@ const resetMenuStyles = () => {
       .to(landing, { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" })
       .to(staticOverlay, { duration: 0.2, opacity: 0.3 })
       .to(staticOverlay, { duration: 0.2, opacity: 0 })
-      .to(landingName, { duration: 0.6, width: "100%", opacity: 1, ease: "power2.out" })
-      .to(landingSubtitle, { duration: 0.4, opacity: 1, ease: "power2.out" }, "-=0.2")
-      .to("#landingSubtitle .subtitle-item", { duration: 0.6, opacity: 1, ease: "power2.out", stagger: 0.15 }, "+=0.05");
+      .to(landingName, { duration: 0.6, width: "100%", opacity: 1, ease: "power2.out" });
+
+    if (landingSubtitle) {
+      tl.to(landingSubtitle, { duration: 0.4, opacity: 1, ease: "power2.out" }, "-=0.2");
+      const subtitleItems = landingSubtitle.querySelectorAll('.subtitle-item');
+      if (subtitleItems.length) {
+        tl.to(subtitleItems, { duration: 0.6, opacity: 1, ease: "power2.out", stagger: 0.15 }, "+=0.05");
+      }
+    }
   });
 
   window.addEventListener('scroll', () => {
@@ -348,14 +357,12 @@ const resetMenuStyles = () => {
       // Highlight current channel
       if (currentChannel) {
         document.querySelectorAll('.tv-guide-channel').forEach(item => {
-          item.style.backgroundColor = '';
-          item.style.boxShadow = '';
+          item.classList.remove('is-current');
         });
 
         const currentGuideItem = document.querySelector(`.tv-guide-channel[data-target="${currentChannel}"]`);
         if (currentGuideItem) {
-          currentGuideItem.style.backgroundColor = 'rgba(62, 146, 204, 0.3)';
-          currentGuideItem.style.boxShadow = '0 0 15px rgba(62, 146, 204, 0.4)';
+          currentGuideItem.classList.add('is-current');
         }
       }
 
@@ -399,12 +406,12 @@ const resetMenuStyles = () => {
   // Close guide handler moved to MenuManager
   // Channel descriptions for TV Guide
   const channelDescriptions = {
-    'section1': 'Explore Kayron\'s portfolio home, featuring skills and professional background.',
-    'section2': 'Discover creative works and brand strategies in a showcase format.',
-    'section3': 'Audio archives and creative process documentation.',
-    'section4': 'Examine influences and inspirations that shape creative direction.',
-    'section5': 'A reference layer for images, films, and listening.',
-    'section6': 'Universal Agent Trust Protocol - AI accountability infrastructure documentation.'
+    'section1': 'Entry point: resume, background, contact, and the basic working frame.',
+    'section2': 'Selected work: creative direction, campaign systems, brand worlds, and project proof.',
+    'section3': 'Sound: music videos and the image/sound layer of the practice.',
+    'section4': 'Influences: judgment, restraint, reference material, and the thinking behind the taste.',
+    'section5': 'Sensibility: active inputs across images, film, listening, and cultural reference.',
+    'section6': 'Archive: UATP, provenance, AI accountability, and systems-level authorship.'
   };
 
   // Make TV Guide channels clickable
@@ -417,25 +424,25 @@ const resetMenuStyles = () => {
         currentInfoText.textContent = channelDescriptions[targetId] || 'Channel information unavailable';
       }
 
-      // Enhance selection effect
-      item.style.backgroundColor = 'rgba(62, 146, 204, 0.15)';
-      item.style.transition = 'background-color 0.2s ease-out';
+      item.classList.add('is-previewed');
     });
 
     item.addEventListener('mouseleave', () => {
-      item.style.backgroundColor = '';
+      item.classList.remove('is-previewed');
     });
 
     // Channel selection handling
-    item.addEventListener('click', () => {
+    const selectChannel = () => {
       // Get the target section before triggering audio cleanup
       const targetId = item.getAttribute('data-target');
       const targetSection = document.getElementById(targetId);
 
       // Add selection effect
+      document.querySelectorAll('.tv-guide-channel').forEach(channel => channel.classList.remove('is-current'));
+      item.classList.add('is-current');
       gsap.to(item, {
-        backgroundColor: 'rgba(62, 146, 204, 0.3)',
-        boxShadow: '0 0 15px rgba(62, 146, 204, 0.4)',
+        backgroundColor: 'rgba(201, 169, 97, 0.10)',
+        boxShadow: 'inset 3px 0 0 #c9a961',
         duration: 0.3
       });
 
@@ -459,6 +466,14 @@ const resetMenuStyles = () => {
 
           triggerHaptic();
         }, 500);
+      }
+    };
+
+    item.addEventListener('click', selectChannel);
+    item.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        selectChannel();
       }
     });
   });

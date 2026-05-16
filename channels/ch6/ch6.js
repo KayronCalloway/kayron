@@ -159,6 +159,6 @@ function renderTidal(section, tidal) {
   const details = document.createElement('div');
   details.className = 'tidal-details';
   appendText(details, 'tidal-title', tidal.title || 'TIDAL playlist');
-  appendText(details, 'tidal-note', [tidal.trackCount, tidal.duration].filter(Boolean).join(' · '));
+  appendText(details, 'tidal-note', 'Playlist');
   mount.appendChild(details);
 }

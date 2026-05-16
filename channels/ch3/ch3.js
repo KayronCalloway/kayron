@@ -64,9 +64,9 @@ let autoAdvanceTimer = null;
 
 // Track data — no longer depends on DOM cards
 const tracks = [
-  { id: 'ftp_QMl9BgU', title: 'Field Trippin', year: '2024', isLocal: false },
-  { id: 'tpeUkuGCzOU', title: 'date', year: '2023', isLocal: false },
-  { id: 'ptNBEZ6pPp4', title: 'Shibuya Subway Slide', year: '2023', isLocal: false }
+  { id: 'ftp_QMl9BgU', title: 'Field Trippin', year: '2024', poster: './visuals/music-field-trippin.jpg', isLocal: false },
+  { id: 'tpeUkuGCzOU', title: 'date', year: '2023', poster: './visuals/music-date.jpg', isLocal: false },
+  { id: 'ptNBEZ6pPp4', title: 'Shibuya Subway Slide', year: '2023', poster: './visuals/music-shibuya-subway-slide.jpg', isLocal: false }
 ];
 
 function setupMusicPlayer() {
@@ -133,66 +133,41 @@ function playTrack(index) {
 }
 
 function loadYouTubeVideo(videoId) {
-  
-  // Clear any existing auto-advance timer
   if (autoAdvanceTimer) {
     clearTimeout(autoAdvanceTimer);
     autoAdvanceTimer = null;
   }
-  
+
   const playerContainer = document.getElementById('music-video-player');
-  if (!playerContainer) {
-    return;
-  }
-  
-  // Clear previous content
+  if (!playerContainer) return;
+
+  const track = tracks[currentTrackIndex] || {};
+  const youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
+  const posterUrl = track.poster || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+
   playerContainer.innerHTML = '';
-  
-  // Create YouTube player using the iframe API
-  if (window.YT && window.YT.Player) {
-    // Create a div for the YouTube player
-    const playerDiv = document.createElement('div');
-    playerDiv.id = 'yt-player-' + Date.now();
-    playerContainer.appendChild(playerDiv);
-    
-    currentPlayer = new window.YT.Player(playerDiv.id, {
-      videoId: videoId,
-      width: '100%',
-      height: '100%',
-      playerVars: {
-        autoplay: 1,
-        controls: 1,
-        rel: 0,
-        showinfo: 0,
-        enablejsapi: 1
-      },
-      events: {
-        onStateChange: onPlayerStateChange
-      }
-    });
-  } else {
-    // Fallback to iframe if YT API not loaded
-    const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&rel=0&showinfo=0&enablejsapi=1`;
-    iframe.width = '100%';
-    iframe.height = '100%';
-    iframe.frameBorder = '0';
-    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-    iframe.allowFullscreen = true;
-    iframe.id = 'youtube-player-iframe';
-    
-    playerContainer.appendChild(iframe);
-    currentPlayer = iframe;
-    
-    // Use timer-based auto-advance as fallback
-    setupAutoAdvance(videoId);
-  }
-  
-  // Update play button state
+
+  const poster = document.createElement('a');
+  poster.className = 'youtube-poster';
+  poster.href = youtubeUrl;
+  poster.target = '_blank';
+  poster.rel = 'noopener noreferrer';
+  poster.setAttribute('aria-label', `Watch ${track.title || 'video'} on YouTube`);
+  poster.innerHTML = `
+    <img src="${posterUrl}" alt="${track.title || 'Music video'} video still" loading="eager" onerror="this.style.display='none'">
+    <span class="youtube-poster-veil" aria-hidden="true"></span>
+    <span class="youtube-poster-copy">
+      <span class="youtube-poster-kicker">Video</span>
+      <span class="youtube-poster-title">${track.title || 'Watch on YouTube'}</span>
+      <span class="youtube-poster-action">Watch on YouTube →</span>
+    </span>
+  `;
+
+  playerContainer.appendChild(poster);
+  currentPlayer = null;
+
   const playPauseBtn = document.getElementById('playPause');
-  if (playPauseBtn) {
-    playPauseBtn.textContent = '⏸';
-  }
+  if (playPauseBtn) playPauseBtn.textContent = '▶';
 }
 
 function loadLocalVideo(videoPath) {
@@ -328,7 +303,14 @@ async function fetchVideoDuration(videoId) {
 
 function togglePlayPause() {
   const playPauseBtn = document.getElementById('playPause');
-  if (!playPauseBtn || !currentPlayer) return;
+  if (!playPauseBtn) return;
+
+  if (!currentPlayer && currentTrackIndex >= 0 && tracks[currentTrackIndex]) {
+    window.open(`https://www.youtube.com/watch?v=${tracks[currentTrackIndex].id}`, '_blank', 'noopener,noreferrer');
+    return;
+  }
+
+  if (!currentPlayer) return;
   
   // Check if we have a YouTube API player
   if (currentPlayer.pauseVideo && currentPlayer.playVideo) {
@@ -450,7 +432,7 @@ function addSignalToFeed(message, isSystem = false) {
   const signal = document.createElement('div');
   signal.style.marginBottom = '10px';
   signal.style.padding = '8px';
-  signal.style.borderLeft = isSystem ? '3px solid #3e92cc' : '3px solid #5d9edd';
+  signal.style.borderLeft = isSystem ? '3px solid #c9a961' : '3px solid #d4b978';
   signal.style.backgroundColor = 'rgba(30, 35, 45, 0.3)';
   signal.style.borderRadius = '4px';
   
@@ -458,7 +440,7 @@ function addSignalToFeed(message, isSystem = false) {
   const prefix = isSystem ? '[SYSTEM]' : '[SIGNAL]';
   
   signal.innerHTML = `
-    <div style="color: ${isSystem ? '#3e92cc' : '#5d9edd'}; font-size: 10px; margin-bottom: 4px;">
+    <div style="color: ${isSystem ? '#c9a961' : '#d4b978'}; font-size: 10px; margin-bottom: 4px;">
       ${prefix} ${timestamp}
     </div>
     <div style="color: #ffffff; font-size: 12px; line-height: 1.4;">
@@ -474,17 +456,17 @@ function addSignalToFeed(message, isSystem = false) {
 const style = document.createElement('style');
 style.textContent = `
   #section3 .track-card.active {
-    border-color: #3e92cc !important;
-    background: rgba(62, 146, 204, 0.1) !important;
-    box-shadow: 0 0 20px rgba(62, 146, 204, 0.3) !important;
+    border-color: #c9a961 !important;
+    background: rgba(201, 169, 97, 0.10) !important;
+    box-shadow: 0 0 20px rgba(201, 169, 97, 0.18) !important;
   }
   
   #section3 .track-card.active .track-title {
-    color: #3e92cc !important;
+    color: #c9a961 !important;
   }
   
   #section3 .track-card.active .play-track-btn {
-    background: linear-gradient(45deg, #5d9edd, #3e92cc) !important;
+    background: linear-gradient(45deg, #d4b978, #c9a961) !important;
   }
 `;
 document.head.appendChild(style);

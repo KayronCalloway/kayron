@@ -142,16 +142,22 @@
 
   <!-- TV Guide Overlay Menu -->
   <div id="tvGuide" class="tv-guide" aria-hidden="true" style="display: none;">
-    <div class="tv-guide-header">PROGRAM GUIDE</div>
-    <div class="tv-guide-grid">
-      <div class="tv-guide-time-header">
-        <div class="time-slot-header">8:00 PM</div>
-        <div class="time-slot-header">9:00 PM</div>
-        <div class="time-slot-header">10:00 PM</div>
-        <div class="time-slot-header">11:00 PM</div>
+    <button id="closeGuide" class="close-guide" aria-label="Close channel guide">Close</button>
+
+    <header class="tv-guide-header">
+      <p class="guide-kicker">Channel Guide</p>
+      <h2>Kayron Calloway</h2>
+    </header>
+
+    <div class="tv-guide-grid" aria-label="Portfolio channel lineup">
+      <div class="tv-guide-time-header" aria-hidden="true">
+        <div class="time-slot-header">Entry</div>
+        <div class="time-slot-header">Work</div>
+        <div class="time-slot-header">Signal</div>
+        <div class="time-slot-header">Archive</div>
       </div>
       <div class="tv-guide-channels">
-        <div class="tv-guide-channel" data-target="section1">
+        <div class="tv-guide-channel" data-target="section1" tabindex="0" role="button">
           <div class="channel-info">
             <span class="channel-number">CH 01</span>
             <span class="channel-title">Home</span>
@@ -159,15 +165,15 @@
           <div class="program-grid">
             <div class="program-item" style="grid-column: 1 / span 2;">
               <div class="program-title">Resume</div>
-              <div class="program-time">8:00 - 9:30 PM</div>
+              <div class="program-time">Background / roles / contact</div>
             </div>
             <div class="program-item" style="grid-column: 3 / span 2;">
-              <div class="program-title">About & Contact</div>
-              <div class="program-time">9:30 - 11:00 PM</div>
+              <div class="program-title">About</div>
+              <div class="program-time">Point of view / working language</div>
             </div>
           </div>
         </div>
-        <div class="tv-guide-channel" data-target="section2">
+        <div class="tv-guide-channel" data-target="section2" tabindex="0" role="button">
           <div class="channel-info">
             <span class="channel-number">CH 02</span>
             <span class="channel-title">Selected Work</span>
@@ -175,27 +181,27 @@
           <div class="program-grid">
             <div class="program-item" style="grid-column: 1 / span 2;">
               <div class="program-title">Coloring with Gray</div>
-              <div class="program-time">8:00 - 9:30 PM</div>
+              <div class="program-time">Creative direction / brand world</div>
             </div>
             <div class="program-item" style="grid-column: 3 / span 2;">
               <div class="program-title">Project Index</div>
-              <div class="program-time">9:30 - 11:00 PM</div>
+              <div class="program-time">Campaigns / systems / proof</div>
             </div>
           </div>
         </div>
-        <div class="tv-guide-channel" data-target="section3">
+        <div class="tv-guide-channel" data-target="section3" tabindex="0" role="button">
           <div class="channel-info">
             <span class="channel-number">CH 03</span>
             <span class="channel-title">Sound</span>
           </div>
           <div class="program-grid">
             <div class="program-item" style="grid-column: 1 / span 4;">
-              <div class="program-title">Audio Works & Compositions</div>
-              <div class="program-time">8:00 - 11:00 PM</div>
+              <div class="program-title">Music Videos</div>
+              <div class="program-time">Sound / image / authorship</div>
             </div>
           </div>
         </div>
-        <div class="tv-guide-channel" data-target="section4">
+        <div class="tv-guide-channel" data-target="section4" tabindex="0" role="button">
           <div class="channel-info">
             <span class="channel-number">CH 04</span>
             <span class="channel-title">Under the Influence</span>
@@ -203,19 +209,19 @@
           <div class="program-grid">
             <div class="program-item" style="grid-column: 1 / span 2;">
               <div class="program-title">Warren Buffett</div>
-              <div class="program-time">8:00 - 9:00 PM</div>
+              <div class="program-time">Judgment / restraint</div>
             </div>
             <div class="program-item" style="grid-column: 3 / span 1;">
               <div class="program-title">Charlie Munger</div>
-              <div class="program-time">9:00 - 10:00 PM</div>
+              <div class="program-time">Mental models</div>
             </div>
             <div class="program-item" style="grid-column: 4 / span 1;">
               <div class="program-title">Annual Letter</div>
-              <div class="program-time">10:00 - 11:00 PM</div>
+              <div class="program-time">Reference text</div>
             </div>
           </div>
         </div>
-        <div class="tv-guide-channel" data-target="section5">
+        <div class="tv-guide-channel" data-target="section5" tabindex="0" role="button">
           <div class="channel-info">
             <span class="channel-number">CH 05</span>
             <span class="channel-title">Sensibility</span>
@@ -223,19 +229,19 @@
           <div class="program-grid">
             <div class="program-item" style="grid-column: 1 / span 4;">
               <div class="program-title">Images, Film & Listening</div>
-              <div class="program-time">8:00 - 11:00 PM</div>
+              <div class="program-time">Cultural references / active inputs</div>
             </div>
           </div>
         </div>
-        <div class="tv-guide-channel" data-target="section6">
+        <div class="tv-guide-channel" data-target="section6" tabindex="0" role="button">
           <div class="channel-info">
             <span class="channel-number">CH 06</span>
             <span class="channel-title">UATP Archive</span>
           </div>
           <div class="program-grid">
             <div class="program-item" style="grid-column: 1 / span 4;">
-              <div class="program-title">Unified Agent Trust Protocol</div>
-              <div class="program-time">8:00 - 11:00 PM</div>
+              <div class="program-title">Universal Agent Trust Protocol</div>
+              <div class="program-time">AI accountability / provenance</div>
             </div>
           </div>
         </div>
@@ -243,15 +249,14 @@
     </div>
     <div class="tv-guide-info">
       <div class="now-showing">
-        <h3>NOW SHOWING</h3>
-        <p id="current-channel-info">Select a channel to view details</p>
+        <h3>Now Showing</h3>
+        <p id="current-channel-info">Choose a channel to jump through the portfolio.</p>
       </div>
       <div class="time-slot">
-        <div class="time-indicator">8:00 PM - 11:00 PM</div>
-        <div class="date-display">February 2026</div>
+        <div class="time-indicator">Live portfolio signal</div>
+        <div class="date-display">May 2026</div>
       </div>
     </div>
-    <button id="closeGuide" class="close-guide" aria-label="Close TV Guide">Close Guide</button>
   </div>
 
   <!-- Back to Top Button -->

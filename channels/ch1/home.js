@@ -166,7 +166,7 @@ function applyMobileOptimizations() {
     button.style.right = '5px';
     button.style.lineHeight = '1';
     // Add touch feedback
-    button.style.webkitTapHighlightColor = 'rgba(62, 146, 204, 0.3)';
+    button.style.webkitTapHighlightColor = 'rgba(201, 169, 97, 0.24)';
   });
   
   // Optimize resume modal for mobile
