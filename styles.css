@@ -231,19 +231,23 @@ body {
   display: none;
   overflow-y: auto;
   scroll-snap-type: y proximity;
-  height: 100vh;
+  scroll-behavior: smooth;
+  height: 100svh;
   padding-top: 60px; /* Prevents content from hiding behind the fixed header */
+  overscroll-behavior-y: contain;
 }
 
 /* --- Channel Sections --- */
 .channel-section {
   height: 100vh;
+  min-height: 100svh;
   padding: 80px 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   scroll-snap-align: start;
+  scroll-snap-stop: always;
   position: relative;
   background: transparent;
   text-align: center;
@@ -260,9 +264,9 @@ body {
   min-height: 100vh;
 }
 
-/* Section 6 (UATP Archive) - last channel, no snap */
+/* Section 6 (UATP Archive) - long channel, snaps on entry then releases for reading */
 #section6 {
-  scroll-snap-align: none;
+  scroll-snap-align: start;
   height: auto;
   min-height: 100vh;
 }

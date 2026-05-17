@@ -99,12 +99,27 @@ document.addEventListener('DOMContentLoaded', () => {
       navigateChannels(direction);
     }
   }, { passive: true });
+  const getChannelTop = section => section.offsetTop - mainContent.offsetTop;
+
+  let snapReleaseTimer = null;
+  let isProgrammaticSnap = false;
+
+  const scrollToChannel = (section, behavior = 'smooth') => {
+    if (!section) return;
+    isProgrammaticSnap = true;
+    mainContent.scrollTo({ top: getChannelTop(section), behavior });
+    window.clearTimeout(snapReleaseTimer);
+    snapReleaseTimer = window.setTimeout(() => {
+      isProgrammaticSnap = false;
+    }, behavior === 'instant' ? 80 : 760);
+  };
+
   const navigateChannels = direction => {
     const sections = Array.from(document.querySelectorAll('.channel-section'));
     const currentIndex = sections.findIndex(sec => sec.id === currentChannel);
     let targetIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
     targetIndex = Math.max(0, Math.min(sections.length - 1, targetIndex));
-    sections[targetIndex].scrollIntoView({ behavior: 'smooth' });
+    scrollToChannel(sections[targetIndex]);
     triggerHaptic();
   };
 
@@ -433,7 +448,7 @@ const resetMenuStyles = () => {
       if (targetSection) {
         toggleTVGuide(false);
         requestAnimationFrame(() => {
-          mainContent.scrollTop = targetSection.offsetTop - mainContent.offsetTop;
+          scrollToChannel(targetSection, 'instant');
         });
         triggerHaptic();
       }
@@ -507,6 +522,58 @@ const resetMenuStyles = () => {
   };
   const observer = new IntersectionObserver(observerCallback, observerOptions);
   document.querySelectorAll('.channel-section').forEach(section => observer.observe(section));
+
+  const setupChannelSnap = () => {
+    const sections = Array.from(document.querySelectorAll('.channel-section'));
+    if (!sections.length || !mainContent) return;
+
+    let settleTimer = null;
+    const slack = 96;
+
+    mainContent.addEventListener('scroll', () => {
+      if (isProgrammaticSnap || tvGuideIsVisible) return;
+
+      window.clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(() => {
+        if (isProgrammaticSnap || tvGuideIsVisible) return;
+
+        const y = mainContent.scrollTop;
+        const viewport = mainContent.clientHeight;
+        const viewportMid = y + viewport * 0.5;
+
+        const current = sections.find(section => {
+          const top = getChannelTop(section);
+          const bottom = top + section.offsetHeight;
+          return viewportMid >= top && viewportMid < bottom;
+        });
+
+        if (current) {
+          const top = getChannelTop(current);
+          const bottom = top + current.offsetHeight;
+          const isLong = current.offsetHeight > viewport + slack * 2;
+          const insideLongContent = isLong && y > top + slack && y < bottom - viewport - slack;
+
+          if (insideLongContent) return;
+
+          if (!isLong || Math.abs(y - top) <= viewport * 0.42) {
+            scrollToChannel(current);
+            return;
+          }
+        }
+
+        const nearest = sections.reduce((best, section) => {
+          const distance = Math.abs(y - getChannelTop(section));
+          return !best || distance < best.distance ? { section, distance } : best;
+        }, null);
+
+        if (nearest && nearest.distance <= viewport * 0.48) {
+          scrollToChannel(nearest.section);
+        }
+      }, 150);
+    }, { passive: true });
+  };
+
+  setupChannelSnap();
 
   // --- Trigger Static Overlay Effect ---
   const triggerChannelStatic = () => {
@@ -703,6 +770,10 @@ const resetMenuStyles = () => {
 setTimeout(() => {
   loadChannelContent('ch4');
 }, 2000);
+
+setTimeout(() => {
+  loadChannelContent('ch3');
+}, 2400);
 
 setTimeout(() => {
   loadChannelContent('ch6');
