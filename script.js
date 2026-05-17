@@ -286,7 +286,7 @@ const resetMenuStyles = () => {
       .to(staticOverlay, { duration: 0.16, opacity: 0.28 })
       .to(staticOverlay, { duration: 0.18, opacity: 0 })
       .to(landingName, {
-        duration: prefersReducedMotion ? 0.01 : 1.05,
+        duration: prefersReducedMotion ? 0.01 : 3.5,
         width: '100%',
         opacity: 1,
         filter: 'blur(0px)',
