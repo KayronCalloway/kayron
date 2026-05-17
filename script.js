@@ -424,12 +424,12 @@ const resetMenuStyles = () => {
   // Close guide handler moved to MenuManager
   // Channel descriptions for TV Guide
   const channelDescriptions = {
-    'section1': 'CH 01 · Origin: resume, background, contact, and the working frame.',
-    'section2': 'CH 02 · Work: creative direction, campaign systems, brand worlds, and project proof.',
-    'section3': 'CH 03 · Sound: music videos and the image/sound layer of the practice.',
-    'section4': 'CH 04 · Influence: judgment, restraint, reference material, and the thinking behind the taste.',
-    'section5': 'CH 05 · Sensibility: active inputs across images, film, listening, and cultural reference.',
-    'section6': 'CH 06 · Archive: UATP, provenance, AI accountability, and systems-level authorship.'
+    'section1': 'Entry point: resume, background, contact, and the basic working frame.',
+    'section2': 'Selected work: creative direction, campaign systems, brand worlds, and project proof.',
+    'section3': 'Sound: music videos and the image/sound layer of the practice.',
+    'section4': 'Influences: judgment, restraint, reference material, and the thinking behind the taste.',
+    'section5': 'Sensibility: active inputs across images, film, listening, and cultural reference.',
+    'section6': 'Archive: UATP, provenance, AI accountability, and systems-level authorship.'
   };
 
   // Make TV Guide channels clickable

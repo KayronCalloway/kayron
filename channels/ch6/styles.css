@@ -194,8 +194,12 @@
 /* Channel overlay */
 #section5 .channel-number-overlay {
   position: fixed;
-  right: calc(18px + env(safe-area-inset-right, 0px));
-  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  bottom: 10px;
+  right: 10px;
+  font-size: 2.5rem;
+  color: var(--primary-color, #fff);
+  opacity: 0.9;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
   z-index: 9995;
 }
 

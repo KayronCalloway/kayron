@@ -28,8 +28,7 @@ export async function init() {
     if (!container.querySelector('.channel-number-overlay')) {
       const channelOverlay = document.createElement('div');
       channelOverlay.className = 'channel-number-overlay';
-      channelOverlay.setAttribute('aria-label', 'Channel 02 Work');
-      channelOverlay.innerHTML = '<span class="channel-code">CH 02</span><span class="channel-label">Work</span>';
+      channelOverlay.textContent = 'CH 02';
       container.appendChild(channelOverlay);
     }
 
@@ -48,7 +47,7 @@ export async function init() {
     const container = document.getElementById('section2');
     if (container) {
       container.innerHTML = `<div class="error">Error loading portfolio studio content.</div>
-                         <div class="channel-number-overlay" aria-label="Channel 02 Work"><span class="channel-code">CH 02</span><span class="channel-label">Work</span></div>`;
+                         <div class="channel-number-overlay">CH 02</div>`;
     }
   }
 }

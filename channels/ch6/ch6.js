@@ -23,7 +23,7 @@ export async function init() {
 
     const html = await response.text();
     const existingOverlay = section5.querySelector('.channel-number-overlay');
-    const overlayHTML = existingOverlay ? existingOverlay.outerHTML : '<div class="channel-number-overlay" aria-label="Channel 05 Sensibility"><span class="channel-code">CH 05</span><span class="channel-label">Sensibility</span></div>';
+    const overlayHTML = existingOverlay ? existingOverlay.outerHTML : '<div class="channel-number-overlay">CH 05</div>';
 
     section5.innerHTML = html + overlayHTML;
     section5.dataset.sensibilityInit = 'true';
