@@ -268,8 +268,8 @@ const resetMenuStyles = () => {
     });
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     gsap.set(landingName, prefersReducedMotion
-      ? { opacity: 1, x: 0, clipPath: 'inset(0 0% 0 0)', filter: 'none' }
-      : { opacity: 0, x: '112vw', clipPath: 'inset(0 100% 0 0)', filter: 'blur(2px)' }
+      ? { opacity: 1, width: '100%', filter: 'none' }
+      : { opacity: 0, width: 0, filter: 'blur(1px)' }
     );
 
     const tl = gsap.timeline({
@@ -278,7 +278,7 @@ const resetMenuStyles = () => {
         landingSequenceComplete = true;
         autoScrollTimeout = setTimeout(() => {
           if (landing.style.display !== "none") revealMainContent();
-        }, 2400);
+        }, 2200);
       }
     });
     tl.to(landing, { duration: 0.12, backgroundColor: "#fff", ease: "power2.out" })
@@ -286,12 +286,11 @@ const resetMenuStyles = () => {
       .to(staticOverlay, { duration: 0.16, opacity: 0.28 })
       .to(staticOverlay, { duration: 0.18, opacity: 0 })
       .to(landingName, {
-        duration: prefersReducedMotion ? 0.01 : 1.35,
-        x: 0,
+        duration: prefersReducedMotion ? 0.01 : 1.05,
+        width: '100%',
         opacity: 1,
-        clipPath: 'inset(0 0% 0 0)',
         filter: 'blur(0px)',
-        ease: 'power3.out'
+        ease: 'power2.out'
       });
 
     if (landingSubtitle) {

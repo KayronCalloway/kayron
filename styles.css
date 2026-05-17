@@ -205,17 +205,15 @@ body {
   font-size: 4rem;
   color: var(--primary-color);
   opacity: 0;
-  width: auto;
+  width: 0;
   max-width: min(92vw, 1160px);
   overflow: hidden;
   white-space: nowrap;
   text-align: center;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   line-height: 0.95;
   text-transform: uppercase;
   text-shadow: 0 0 28px rgba(255, 255, 255, 0.12);
-  transform: translate3d(105vw, 0, 0);
-  clip-path: inset(0 100% 0 0);
 }
 .landing-subtitle {
   font-size: 1.2rem;
@@ -1018,8 +1016,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .landing-name {
     opacity: 1;
-    transform: none;
-    clip-path: none;
+    width: 100%;
   }
 }
 /* Battery-saving mode for mobile */
