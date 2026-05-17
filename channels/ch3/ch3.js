@@ -2,10 +2,11 @@
 const tracks = [
   { id: 'ftp_QMl9BgU', title: 'Field Trippin', year: '2024' },
   { id: 'tpeUkuGCzOU', title: 'date', year: '2023' },
-  { id: 'ptNBEZ6pPp4', title: 'Shibuya Subway Slide', year: '2023' }
+  { id: 'ptNBEZ6pPp4', title: 'Shibuya Subway Slide', year: '2023' },
+  { id: '_z0Xf5W3jyg', title: 'Hit the Curve Slow (No Faking)', year: '2024' }
 ];
 
-let currentIndex = 0;
+let currentIndex = Math.floor(Math.random() * tracks.length);
 let player = null;
 let playerReady = false;
 let sectionVisible = false;

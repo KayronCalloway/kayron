@@ -3,16 +3,6 @@
 let youtubePlayer;
 let apiReady = false;
 
-const channel1Videos = [
-  'KISNE4qOIBM',
-  '_z0Xf5W3jyg'
-];
-
-const chooseChannel1Video = () => {
-  const index = Math.floor(Math.random() * channel1Videos.length);
-  return channel1Videos[index];
-};
-
 // Preload YouTube API faster
 (function() {
   const tag = document.createElement('script');
@@ -57,18 +47,15 @@ function onYouTubeIframeAPIReady() {
     suggestedQuality = 'small'; // Lower quality for mobile/low bandwidth
   }
   
-  const selectedVideoId = chooseChannel1Video();
-  window.channel1VideoId = selectedVideoId;
-
   youtubePlayer = new YT.Player('youtube-player', {
-    videoId: selectedVideoId,
+    videoId: 'KISNE4qOIBM', // Original video ID
     width: '100%',
     height: '100%',
     playerVars: {
       autoplay: 1,
       controls: 0,
       loop: 1,
-      playlist: selectedVideoId, // Required for looping the selected video
+      playlist: 'KISNE4qOIBM', // Required for looping the same video
       modestbranding: 1,
       rel: 0,
       playsinline: 1, // Important for iOS
