@@ -40,6 +40,30 @@ function onYouTubeIframeAPIReady() {
   // Check for mobile devices or low bandwidth signal set by the Channel 1 module
   const isMobile = window.innerWidth <= 600;
   const optimizedMode = window.useLowQualityVideo || document.querySelector('.video-background[data-optimized="true"]');
+  const section1 = document.getElementById('section1');
+  const videoBackground = section1 ? section1.querySelector('.video-background') : null;
+  let handoffTimer;
+
+  const ensureChromeVeil = () => {
+    if (!videoBackground) return null;
+    let veil = videoBackground.querySelector('.youtube-chrome-veil');
+    if (!veil) {
+      veil = document.createElement('div');
+      veil.className = 'youtube-chrome-veil';
+      veil.setAttribute('aria-hidden', 'true');
+      videoBackground.appendChild(veil);
+    }
+    return veil;
+  };
+
+  const veilLoopHandoff = (duration = 520) => {
+    if (!videoBackground || !ensureChromeVeil()) return;
+    window.clearTimeout(handoffTimer);
+    videoBackground.classList.add('is-loop-handoff');
+    handoffTimer = window.setTimeout(() => {
+      videoBackground.classList.remove('is-loop-handoff');
+    }, duration);
+  };
   
   // Determine optimal quality based on device and connection
   let suggestedQuality = 'hd720'; // Default quality
@@ -73,6 +97,7 @@ function onYouTubeIframeAPIReady() {
         // Mute the video initially to allow autoplay.
         event.target.mute();
         event.target.playVideo();
+        ensureChromeVeil();
         
         // Set quality level based on device type
         if (isMobile || optimizedMode) {
@@ -97,9 +122,7 @@ function onYouTubeIframeAPIReady() {
         }
         
         // Apply styles to containing divs
-        const section1 = document.getElementById('section1');
         if (section1) {
-          const videoBackground = section1.querySelector('.video-background');
           if (videoBackground) {
             videoBackground.style.position = 'absolute';
             videoBackground.style.top = '0';
@@ -128,9 +151,17 @@ function onYouTubeIframeAPIReady() {
         }, 200); // Reduced from 500ms to 200ms
       },
       onStateChange: event => {
-        // Do not fight YouTube's native loop transition. Calling playVideo() on
-        // transient PAUSED/ENDED loop states makes the iframe flash its pause UI.
+        // Keep CH01 feeling like authored signal, not a web player. If YouTube
+        // exposes native chrome during a pause/end handoff, veil that moment as
+        // broadcast flicker while the underlying player recovers.
+        if (event.data === YT.PlayerState.PAUSED) {
+          veilLoopHandoff(520);
+          event.target.playVideo();
+          return;
+        }
+
         if (event.data !== YT.PlayerState.ENDED) return;
+        veilLoopHandoff(720);
 
         // Only recover if the native loop actually stalls after the handoff.
         setTimeout(() => {

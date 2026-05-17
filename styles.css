@@ -1021,6 +1021,32 @@ body {
   background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.78) 58%, #000 100%);
 }
 
+.youtube-chrome-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.20) 33%, transparent 58%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.045) 0, rgba(255, 255, 255, 0.045) 1px, transparent 1px, transparent 4px),
+    rgba(0, 0, 0, 0.22);
+  mix-blend-mode: multiply;
+  transition: opacity 90ms linear;
+}
+
+.video-background.is-loop-handoff .youtube-chrome-veil {
+  opacity: 1;
+  animation: signal-handoff 420ms steps(2, end);
+}
+
+@keyframes signal-handoff {
+  0% { transform: translate3d(0, 0, 0); filter: brightness(0.82) contrast(1.14); }
+  33% { transform: translate3d(-1px, 0, 0); filter: brightness(0.68) contrast(1.24); }
+  66% { transform: translate3d(1px, 0, 0); filter: brightness(0.76) contrast(1.18); }
+  100% { transform: translate3d(0, 0, 0); filter: brightness(0.92) contrast(1.06); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .landing-name {
     opacity: 1;
