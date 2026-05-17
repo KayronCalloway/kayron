@@ -29,7 +29,7 @@ export async function init() {
     if (!res.ok) throw new Error(String(res.status));
 
     const existingOverlay = section3.querySelector('.channel-number-overlay');
-    const overlayHTML = existingOverlay ? existingOverlay.outerHTML : '<div class="channel-number-overlay">CH 03</div>';
+    const overlayHTML = existingOverlay ? existingOverlay.outerHTML : '<div class="channel-number-overlay" aria-label="Channel 03 Sound"><span class="channel-code">CH 03</span><span class="channel-label">Sound</span></div>';
 
     section3.innerHTML = await res.text();
     if (!section3.querySelector('.channel-number-overlay')) {

@@ -55,7 +55,7 @@ export async function init() {
 
     // Preserve channel overlay
     const existingOverlay = section6.querySelector('.channel-number-overlay');
-    const overlayHTML = existingOverlay ? existingOverlay.outerHTML : '<div class="channel-number-overlay">CH 06</div>';
+    const overlayHTML = existingOverlay ? existingOverlay.outerHTML : '<div class="channel-number-overlay" aria-label="Channel 06 Archive"><span class="channel-code">CH 06</span><span class="channel-label">Archive</span></div>';
 
     // Insert content
     section6.innerHTML = bodyContent + overlayHTML;

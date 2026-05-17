@@ -343,16 +343,9 @@
 /* === CHANNEL OVERLAY ================================================= */
 #section2 .channel-number-overlay {
   position: fixed;
-  bottom: 16px;
-  right: 16px;
-  background: var(--ch2-bg);
-  color: var(--ch2-text);
-  border: 1px solid var(--ch2-line);
-  padding: 5px 10px;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  font-weight: 500;
-  z-index: 10;
+  right: calc(18px + env(safe-area-inset-right, 0px));
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  z-index: 9995;
 }
 
 /* === RESPONSIVE ====================================================== */
