@@ -390,8 +390,11 @@
     height: 38vh;
     min-height: 260px;
   }
-  #section2 .ch2-eyebrow { font-size: 10px; margin-bottom: 10px; }
-  #section2 .ch2-hero-caption { font-size: 10px; }
+  #section2 .ch2-eyebrow { font-size: 9px; margin-bottom: 10px; letter-spacing: 0.22em; }
+  #section2 .ch2-hero-copy { left: 7%; right: 7%; bottom: 8%; max-width: 86%; }
+  #section2 .ch2-hero-title { line-height: 0.95; max-width: 8ch; }
+  #section2 .ch2-hero-caption { font-size: 9px; line-height: 1.35; max-width: 28ch; }
+  #section2 .ch2-hero-cta { font-size: 10px; letter-spacing: 0.16em; }
   #section2 .ch2-card { flex-basis: 160px; }
   #section2 .ch2-cap-title { font-size: 13px; }
   #section2 .ch2-cap-meta { font-size: 9px; }

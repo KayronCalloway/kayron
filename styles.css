@@ -186,6 +186,19 @@ body {
   pointer-events: none;
   animation: pulsate 1.5s infinite;
 }
+.power-button::before {
+  content: "POWER ON";
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 22px);
+  transform: translateX(-50%);
+  color: rgba(232, 230, 225, 0.58);
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
 @keyframes pulsate {
   0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
   50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.9; }
@@ -772,12 +785,15 @@ body {
 /* --- Responsive Mobile Enhancements --- */
 @media (max-width: 600px) {
   .landing-name {
-    font-size: 2.2rem;
-    letter-spacing: 0.08em;
-    max-width: 95%;
+    font-size: clamp(2.15rem, 10vw, 2.85rem);
+    letter-spacing: 0.065em;
+    max-width: min(92vw, 420px);
     margin: 0 auto;
-    padding: 0 2%;
+    padding: 0 4vw;
     overflow: hidden;
+    white-space: normal;
+    overflow-wrap: normal;
+    line-height: 0.92;
   }
   .header-name {
     font-size: 1.3rem; /* Adjusted for mobile */
@@ -819,13 +835,18 @@ body {
   }
   
   .channel-button {
-    padding: 16px 30px; /* Larger touch target on mobile */
+    padding: 15px 24px; /* Larger touch target on mobile */
     width: 100%; /* Full width buttons on mobile */
-    min-height: 65px; /* Taller for better tapping */
-    margin: 8px 0; /* Increase spacing between buttons */
-    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.2); /* Better tap feedback */
-    font-size: 1.3rem; /* Larger text for better visibility */
-    letter-spacing: 0.05em; /* Better text spacing */
+    min-height: 58px; /* Touch target without app-like bulk */
+    margin: 2px 0;
+    -webkit-tap-highlight-color: rgba(201, 169, 97, 0.18);
+    font-size: 1rem;
+    letter-spacing: 0.16em;
+    border-width: 1px;
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0.28);
+    box-shadow: none;
+    text-transform: uppercase;
   }
   
   /* iPhone vertical-specific button optimizations */
@@ -837,17 +858,17 @@ body {
     }
     
     .channel-button {
-      min-height: 70px; /* Even taller for better tapping */
-      border-radius: 12px; /* More rounded corners for iOS feel */
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Enhanced shadow for depth */
-      border-width: 2px; /* Slightly thicker border */
-      transition: transform 0.2s, background-color 0.2s; /* Faster transitions */
-      background-color: rgba(0, 0, 0, 0.5); /* Slightly more visible background */
+      min-height: 58px;
+      border-radius: 0;
+      box-shadow: none;
+      border-width: 1px;
+      transition: transform 0.16s ease, background-color 0.16s ease, color 0.16s ease;
+      background-color: rgba(0, 0, 0, 0.34);
     }
     
     .channel-button:active {
-      transform: scale(0.97); /* Visual feedback on tap */
-      background-color: rgba(255, 255, 255, 0.15); /* Subtle highlight when pressed */
+      transform: scale(0.985);
+      background-color: rgba(201, 169, 97, 0.16);
     }
     
     /* Channel 4 specific button optimizations */
@@ -897,9 +918,10 @@ body {
   }
   
   .channel-number-overlay {
-    font-size: 3rem;
-    bottom: calc(10px + env(safe-area-inset-bottom));
-    right: 10px;
+    font-size: clamp(1.85rem, 8vw, 2.35rem);
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    right: 14px;
+    opacity: 0.76;
   }
   
   /* Fix for iOS Safari */

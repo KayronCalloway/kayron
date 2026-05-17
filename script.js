@@ -267,6 +267,7 @@ const resetMenuStyles = () => {
       }
     });
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobileViewport = window.matchMedia('(max-width: 600px)').matches;
     gsap.set(landingName, prefersReducedMotion
       ? { opacity: 1, width: '100%', filter: 'none' }
       : { opacity: 0, width: 0, filter: 'blur(1px)' }
@@ -284,7 +285,7 @@ const resetMenuStyles = () => {
       .to(staticOverlay, { duration: 0.16, opacity: 0.28 })
       .to(staticOverlay, { duration: 0.18, opacity: 0 })
       .to(landingName, {
-        duration: prefersReducedMotion ? 0.01 : 3.5,
+        duration: prefersReducedMotion ? 0.01 : (isMobileViewport ? 1.45 : 3.5),
         width: '100%',
         opacity: 1,
         filter: 'blur(0px)',

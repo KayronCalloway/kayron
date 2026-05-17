@@ -128,23 +128,17 @@ function onYouTubeIframeAPIReady() {
         }, 200); // Reduced from 500ms to 200ms
       },
       onStateChange: event => {
-        // Keep re-starting if the player genuinely stops or errors; let YouTube's
-        // native loop+playlist handle normal seamless looping without flashing
-        // the pause overlay each cycle.
-        if (event.data === YT.PlayerState.ENDED || event.data === YT.PlayerState.PAUSED) {
-          // Throttle: only restart if the video has actually stopped for more
-          // than 150 ms, otherwise we're fighting the native loop transition.
-          if (event.data === YT.PlayerState.ENDED && event.target.getLoopPlaylistIndex) {
-            // Trust the built-in loop — only kick-start on genuine stalls.
-            return;
+        // Do not fight YouTube's native loop transition. Calling playVideo() on
+        // transient PAUSED/ENDED loop states makes the iframe flash its pause UI.
+        if (event.data !== YT.PlayerState.ENDED) return;
+
+        // Only recover if the native loop actually stalls after the handoff.
+        setTimeout(() => {
+          if (event.target.getPlayerState && event.target.getPlayerState() === YT.PlayerState.ENDED) {
+            event.target.seekTo(0, true);
+            event.target.playVideo();
           }
-          // For all else (mobile pause, user stop, etc.), gently resume once.
-          setTimeout(() => {
-            if (event.target.getPlayerState && event.target.getPlayerState() !== YT.PlayerState.PLAYING) {
-              event.target.playVideo();
-            }
-          }, 800);
-        }
+        }, 1200);
       },
       onError: event => {
         // On error, apply an optimized fallback background quickly

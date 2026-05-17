@@ -6,7 +6,7 @@ const tracks = [
   { id: '_z0Xf5W3jyg', title: 'Hit the Curve Slow (No Faking)', year: '2024' }
 ];
 
-let currentIndex = Math.floor(Math.random() * tracks.length);
+let currentIndex = 0;
 let player = null;
 let playerReady = false;
 let sectionVisible = false;
