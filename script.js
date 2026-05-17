@@ -266,19 +266,33 @@ const resetMenuStyles = () => {
         powerButton.style.zIndex = "-1";
       }
     });
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    gsap.set(landingName, prefersReducedMotion
+      ? { opacity: 1, x: 0, clipPath: 'inset(0 0% 0 0)', filter: 'none' }
+      : { opacity: 0, x: '112vw', clipPath: 'inset(0 100% 0 0)', filter: 'blur(2px)' }
+    );
+
     const tl = gsap.timeline({
+      defaults: { overwrite: 'auto' },
       onComplete: () => {
         landingSequenceComplete = true;
         autoScrollTimeout = setTimeout(() => {
           if (landing.style.display !== "none") revealMainContent();
-        }, 3000);
+        }, 2400);
       }
     });
-    tl.to(landing, { duration: 0.15, backgroundColor: "#fff", ease: "power2.out" })
-      .to(landing, { duration: 0.15, backgroundColor: "var(--bg-color)", ease: "power2.in" })
-      .to(staticOverlay, { duration: 0.2, opacity: 0.3 })
-      .to(staticOverlay, { duration: 0.2, opacity: 0 })
-      .to(landingName, { duration: 0.6, width: "100%", opacity: 1, ease: "power2.out" });
+    tl.to(landing, { duration: 0.12, backgroundColor: "#fff", ease: "power2.out" })
+      .to(landing, { duration: 0.16, backgroundColor: "var(--bg-color)", ease: "power2.in" })
+      .to(staticOverlay, { duration: 0.16, opacity: 0.28 })
+      .to(staticOverlay, { duration: 0.18, opacity: 0 })
+      .to(landingName, {
+        duration: prefersReducedMotion ? 0.01 : 1.35,
+        x: 0,
+        opacity: 1,
+        clipPath: 'inset(0 0% 0 0)',
+        filter: 'blur(0px)',
+        ease: 'power3.out'
+      });
 
     if (landingSubtitle) {
       tl.to(landingSubtitle, { duration: 0.4, opacity: 1, ease: "power2.out" }, "-=0.2");

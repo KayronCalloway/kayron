@@ -119,6 +119,9 @@ async function createPlayer() {
       playsinline: 1,
       fs: 0,
       showinfo: 0,
+      iv_load_policy: 3,
+      disablekb: 1,
+      cc_load_policy: 0,
       enablejsapi: 1,
       origin: window.location.origin,
       vq: window.innerWidth <= 768 ? 'medium' : 'hd720'

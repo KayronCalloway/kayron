@@ -205,12 +205,17 @@ body {
   font-size: 4rem;
   color: var(--primary-color);
   opacity: 0;
-  width: 0;
+  width: auto;
+  max-width: min(92vw, 1160px);
   overflow: hidden;
   white-space: nowrap;
   text-align: center;
-  letter-spacing: 0.2em;
-  transition: width 0.5s ease, opacity 0.5s ease;
+  letter-spacing: 0.18em;
+  line-height: 0.95;
+  text-transform: uppercase;
+  text-shadow: 0 0 28px rgba(255, 255, 255, 0.12);
+  transform: translate3d(105vw, 0, 0);
+  clip-path: inset(0 100% 0 0);
 }
 .landing-subtitle {
   font-size: 1.2rem;
@@ -770,11 +775,11 @@ body {
 @media (max-width: 600px) {
   .landing-name {
     font-size: 2.2rem;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
     max-width: 95%;
     margin: 0 auto;
     padding: 0 2%;
-    overflow: visible;
+    overflow: hidden;
   }
   .header-name {
     font-size: 1.3rem; /* Adjusted for mobile */
@@ -976,11 +981,46 @@ body {
   background: #000000 url('visuals/static.gif') center center repeat; /* Fallback with static gif */
 }
 .video-background iframe {
-  width: 100% !important;
-  height: 100% !important;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100vw, 177.78vh) !important;
+  height: max(56.25vw, 100vh) !important;
   pointer-events: none;
   border: 0;
   object-fit: cover;
+  transform: translate(-50%, -50%) scale(1.36) !important;
+}
+
+.video-background::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.52) 0%, rgba(0, 0, 0, 0.10) 15%, transparent 34%, transparent 62%, rgba(0, 0, 0, 0.34) 82%, rgba(0, 0, 0, 0.78) 100%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.028) 0, rgba(255, 255, 255, 0.028) 1px, transparent 1px, transparent 3px);
+}
+
+.video-background::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: clamp(76px, 13vh, 142px);
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.78) 58%, #000 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-name {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
 }
 /* Battery-saving mode for mobile */
 .video-background.battery-saving {

@@ -461,6 +461,9 @@ export async function init() {
               playsinline: 1,
               fs: 0,
               showinfo: 0,
+              iv_load_policy: 3,
+              disablekb: 1,
+              cc_load_policy: 0,
               enablejsapi: 1,
               origin: window.location.origin,
               vq: isMobile ? 'medium' : 'hd720', // Slightly higher quality on mobile but not too high

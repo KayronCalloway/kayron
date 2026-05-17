@@ -61,6 +61,9 @@ function onYouTubeIframeAPIReady() {
       playsinline: 1, // Important for iOS
       fs: 0,
       showinfo: 0,
+      iv_load_policy: 3,
+      disablekb: 1,
+      cc_load_policy: 0,
       vq: suggestedQuality, // Suggest initial quality level
       enablejsapi: 1, // Enable JS API for better control
       origin: window.location.origin // Specify origin for faster loading
@@ -115,10 +118,10 @@ function onYouTubeIframeAPIReady() {
             iframe.style.width = '100%';
             iframe.style.height = '100%';
             iframe.style.position = 'absolute';
-            iframe.style.top = '0';
-            iframe.style.left = '0';
-            // Add loading optimization
-            iframe.style.transform = 'translateZ(0)'; // Hardware acceleration
+            iframe.style.top = '50%';
+            iframe.style.left = '50%';
+            // Overscan/crop the YouTube frame so native chrome and watermarks stay off the TV surface.
+            iframe.style.transform = 'translate(-50%, -50%) scale(1.36)';
             iframe.style.willChange = 'transform'; // Optimize for animations
           } else {
           }

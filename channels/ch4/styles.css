@@ -10,6 +10,29 @@
   background: #000; /* fallback background color */
 }
 
+#section4 .video-background::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.50), transparent 20%, transparent 62%, rgba(0, 0, 0, 0.46) 82%, #000 100%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.026) 0, rgba(255, 255, 255, 0.026) 1px, transparent 1px, transparent 3px);
+}
+
+#section4 .video-background::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: clamp(76px, 13vh, 142px);
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.80) 60%, #000 100%);
+}
+
 /* Ensure the YouTube iframe fills the container */
 #section4 #youtube-player-4 iframe {
   position: absolute;
