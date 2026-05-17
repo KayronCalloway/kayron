@@ -128,9 +128,22 @@ function onYouTubeIframeAPIReady() {
         }, 200); // Reduced from 500ms to 200ms
       },
       onStateChange: event => {
-        // If video ends or pauses unexpectedly, try to restart it
+        // Keep re-starting if the player genuinely stops or errors; let YouTube's
+        // native loop+playlist handle normal seamless looping without flashing
+        // the pause overlay each cycle.
         if (event.data === YT.PlayerState.ENDED || event.data === YT.PlayerState.PAUSED) {
-          event.target.playVideo();
+          // Throttle: only restart if the video has actually stopped for more
+          // than 150 ms, otherwise we're fighting the native loop transition.
+          if (event.data === YT.PlayerState.ENDED && event.target.getLoopPlaylistIndex) {
+            // Trust the built-in loop — only kick-start on genuine stalls.
+            return;
+          }
+          // For all else (mobile pause, user stop, etc.), gently resume once.
+          setTimeout(() => {
+            if (event.target.getPlayerState && event.target.getPlayerState() !== YT.PlayerState.PLAYING) {
+              event.target.playVideo();
+            }
+          }, 800);
         }
       },
       onError: event => {

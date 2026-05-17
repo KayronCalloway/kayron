@@ -276,9 +276,7 @@ const resetMenuStyles = () => {
       defaults: { overwrite: 'auto' },
       onComplete: () => {
         landingSequenceComplete = true;
-        autoScrollTimeout = setTimeout(() => {
-          if (landing.style.display !== "none") revealMainContent();
-        }, 2200);
+        if (landing.style.display !== "none") revealMainContent();
       }
     });
     tl.to(landing, { duration: 0.12, backgroundColor: "#fff", ease: "power2.out" })
