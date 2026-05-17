@@ -1,568 +1,99 @@
-// Channel 3: Music/Audio Works JavaScript
-
+// Channel 3: Music — TV-style player
 export async function init() {
-  // Prevent duplicate initialization — same guard pattern as CH4
   const section3 = document.getElementById('section3');
-  if (section3 && section3.querySelector('#music-video-player')) {
-    return;
-  }
+  if (section3?.querySelector('#music-video-player iframe')) return;
 
   try {
-    // Load the music interface HTML
-    const response = await fetch('./channels/ch3/index.html');
-    if (!response.ok) {
-      throw new Error(`Failed to fetch music interface: ${response.status} ${response.statusText}`);
-    }
-    const html = await response.text();
-    
-    // Insert into the section
-    const section3 = document.getElementById('section3');
-    if (section3) {
-      section3.innerHTML = html;
-      
-      // Load music-specific styles
-      const musicStylesheet = document.createElement('link');
-      musicStylesheet.rel = 'stylesheet';
-      musicStylesheet.href = './channels/ch3/styles.css';
-      document.head.appendChild(musicStylesheet);
-      
-      
-      // Initialize music player functionality
-      setupMusicPlayer();
-      setupBroadcastSignals();
-      
-      // Only auto-load the first track if ch3 is currently visible
-      setTimeout(() => {
-        const section3 = document.getElementById('section3');
-        if (section3) {
-          const rect = section3.getBoundingClientRect();
-          const isVisible = rect.top < window.innerHeight && rect.bottom > 0 && 
-                           rect.top >= -rect.height * 0.5 && rect.top <= window.innerHeight * 0.5;
-          if (isVisible) {
-            playTrack(0); // Index 0 = Track 1 = Field Trippin
-          }
-        }
-      }, 1000);
-      
-      // Ensure TV Guide has correct positioning - USING GLOBAL STANDARD
-      setTimeout(() => {
-        if (typeof window.ensureTVGuideStandardStyling === 'function') {
-          window.ensureTVGuideStandardStyling();
-        } else {
-        }
-      }, 100);
-      
-    }
-  } catch (err) {
-    // Music player not yet available
+    const res = await fetch('./channels/ch3/index.html');
+    if (!res.ok) throw new Error(String(res.status));
+    if (!section3) return;
+
+    section3.innerHTML = await res.text();
+
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = './channels/ch3/styles.css';
+    document.head.appendChild(css);
+
+    initPlayer(section3);
+  } catch {
+    /* channel deferred */
   }
 }
 
-let currentPlayer = null;
-let currentTrackIndex = -1;
-let autoAdvanceTimer = null;
-
-// Track data — no longer depends on DOM cards
 const tracks = [
-  { id: 'ftp_QMl9BgU', title: 'Field Trippin', year: '2024', poster: './visuals/music-field-trippin.jpg', isLocal: false },
-  { id: 'tpeUkuGCzOU', title: 'date', year: '2023', poster: './visuals/music-date.jpg', isLocal: false },
-  { id: 'ptNBEZ6pPp4', title: 'Shibuya Subway Slide', year: '2023', poster: './visuals/music-shibuya-subway-slide.jpg', isLocal: false }
+  { id: 'ftp_QMl9BgU', title: 'Field Trippin', year: '2024' },
+  { id: 'tpeUkuGCzOU', title: 'date', year: '2023' },
+  { id: 'ptNBEZ6pPp4', title: 'Shibuya Subway Slide', year: '2023' }
 ];
 
-function setupMusicPlayer() {
-  setupChannelVisibilityDetection();
+let currentIndex = 0;
+let iframe = null;
+let wasPlaying = false;
 
-  const playPauseBtn = document.getElementById('playPause');
+function initPlayer(section3) {
+  const container = document.getElementById('music-video-player');
+  if (!container) return;
+
+  iframe = document.createElement('iframe');
+  iframe.id = 'ch3-player';
+  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+  iframe.allowFullscreen = true;
+  container.appendChild(iframe);
+
   const prevBtn = document.getElementById('prevTrack');
   const nextBtn = document.getElementById('nextTrack');
-  const isMobile = window.innerWidth <= 768;
+  const playBtn = document.getElementById('playPause');
 
-  const addMobileSupport = (btn, handler) => {
-    if (!btn) return;
-    btn.addEventListener('click', handler);
-    if (isMobile) {
-      btn.addEventListener('touchstart', () => {
-        btn.style.transform = 'scale(0.9)';
-        btn.style.transition = 'transform 0.1s ease';
-      }, { passive: true });
-      btn.addEventListener('touchend', () => {
-        btn.style.transform = '';
-        setTimeout(handler, 50);
-      }, { passive: true });
-      btn.style.userSelect = 'none';
-      btn.style.webkitUserSelect = 'none';
-      btn.style.webkitTouchCallout = 'none';
-    }
-  };
+  prevBtn?.addEventListener('click', () => play(currentIndex - 1));
+  nextBtn?.addEventListener('click', () => play(currentIndex + 1));
+  playBtn?.addEventListener('click', () => togglePlay(playBtn));
 
-  addMobileSupport(playPauseBtn, () => {
-    if (currentTrackIndex === -1) {
-      playTrack(0);
-    } else {
-      togglePlayPause();
-    }
-  });
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const visible = entry.isIntersecting && entry.intersectionRatio > 0.3;
+        if (visible && !wasPlaying) {
+          play(currentIndex);
+          wasPlaying = true;
+        } else if (!visible && wasPlaying) {
+          iframe.src = '';
+          wasPlaying = false;
+          if (playBtn) playBtn.textContent = '▶';
+        }
+      });
+    },
+    { threshold: [0, 0.3, 0.5] }
+  );
 
-  addMobileSupport(prevBtn, playPreviousTrack);
-  addMobileSupport(nextBtn, playNextTrack);
+  observer.observe(section3);
 }
 
-function updateNowPlaying() {
+function play(index) {
+  if (index < 0) index = tracks.length - 1;
+  if (index >= tracks.length) index = 0;
+  currentIndex = index;
+
+  const t = tracks[currentIndex];
   const titleEl = document.getElementById('nowPlayingTitle');
-  if (!titleEl) return;
-  if (currentTrackIndex >= 0 && tracks[currentTrackIndex]) {
-    const t = tracks[currentTrackIndex];
-    titleEl.textContent = `${t.title} \u00b7 ${t.year}`;
+  if (titleEl) titleEl.textContent = `${t.title} · ${t.year}`;
+
+  if (iframe) {
+    iframe.src = `https://www.youtube.com/embed/${t.id}?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1`;
+  }
+
+  const playBtn = document.getElementById('playPause');
+  if (playBtn) playBtn.textContent = '⏸';
+}
+
+function togglePlay(btn) {
+  if (!iframe) return;
+  if (iframe.src) {
+    iframe.src = '';
+    btn.textContent = '▶';
+    wasPlaying = false;
   } else {
-    titleEl.textContent = 'Select a track';
+    play(currentIndex);
+    btn.textContent = '⏸';
   }
 }
-
-function playTrack(index) {
-  if (index < 0 || index >= tracks.length) return;
-  currentTrackIndex = index;
-  const track = tracks[index];
-  userPaused = false;
-  updateNowPlaying();
-
-  if (track.isLocal) {
-    loadLocalVideo(track.videoPath);
-  } else {
-    loadYouTubeVideo(track.id);
-  }
-}
-
-function loadYouTubeVideo(videoId) {
-  if (autoAdvanceTimer) {
-    clearTimeout(autoAdvanceTimer);
-    autoAdvanceTimer = null;
-  }
-
-  const playerContainer = document.getElementById('music-video-player');
-  if (!playerContainer) return;
-
-  const track = tracks[currentTrackIndex] || {};
-  const youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
-  const posterUrl = track.poster || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
-
-  playerContainer.innerHTML = '';
-
-  const poster = document.createElement('a');
-  poster.className = 'youtube-poster';
-  poster.href = youtubeUrl;
-  poster.target = '_blank';
-  poster.rel = 'noopener noreferrer';
-  poster.setAttribute('aria-label', `Watch ${track.title || 'video'} on YouTube`);
-  poster.innerHTML = `
-    <img src="${posterUrl}" alt="${track.title || 'Music video'} video still" loading="eager" onerror="this.style.display='none'">
-    <span class="youtube-poster-veil" aria-hidden="true"></span>
-    <span class="youtube-poster-copy">
-      <span class="youtube-poster-kicker">Video</span>
-      <span class="youtube-poster-title">${track.title || 'Watch on YouTube'}</span>
-      <span class="youtube-poster-action">Watch on YouTube →</span>
-    </span>
-  `;
-
-  playerContainer.appendChild(poster);
-  currentPlayer = null;
-
-  const playPauseBtn = document.getElementById('playPause');
-  if (playPauseBtn) playPauseBtn.textContent = '▶';
-}
-
-function loadLocalVideo(videoPath) {
-  
-  // Clear any existing auto-advance timer
-  if (autoAdvanceTimer) {
-    clearTimeout(autoAdvanceTimer);
-    autoAdvanceTimer = null;
-  }
-  
-  const playerContainer = document.getElementById('music-video-player');
-  if (!playerContainer) {
-    return;
-  }
-  
-  // Clear previous content
-  playerContainer.innerHTML = '';
-  
-  // Create HTML5 video element with proper alignment
-  const video = document.createElement('video');
-  video.src = videoPath; // Direct src assignment
-  video.controls = true;
-  video.muted = true; // Start muted to allow autoplay
-  video.autoplay = false; // Don't autoplay initially
-  video.loop = false;
-  video.preload = 'auto'; // Preload the entire video
-  video.id = 'local-video-player';
-  
-  
-  // Test if video file is accessible
-  fetch(videoPath).then(response => {
-    if (!response.ok) {
-    }
-  }).catch(error => {
-  });
-  
-  // Add event listeners
-  video.addEventListener('loadedmetadata', () => {
-    // Set auto-advance timer based on actual duration
-    if (video.duration > 0) {
-      autoAdvanceTimer = setTimeout(() => {
-        playNextTrack();
-      }, (video.duration - 2) * 1000); // Advance 2 seconds before end
-    }
-  });
-  
-  video.addEventListener('ended', () => {
-    playNextTrack();
-  });
-  
-  video.addEventListener('play', () => {
-    const playPauseBtn = document.getElementById('playPause');
-    if (playPauseBtn) playPauseBtn.textContent = '⏸';
-  });
-  
-  video.addEventListener('pause', () => {
-    const playPauseBtn = document.getElementById('playPause');
-    if (playPauseBtn) playPauseBtn.textContent = '▶';
-  });
-  
-  // Handle video loading states
-  video.addEventListener('loadstart', () => {
-  });
-  
-  video.addEventListener('canplay', () => {
-    // Try to start playing once it can play
-    video.play().then(() => {
-      const playPauseBtn = document.getElementById('playPause');
-      if (playPauseBtn) playPauseBtn.textContent = '⏸';
-    }).catch(error => {
-      const playPauseBtn = document.getElementById('playPause');
-      if (playPauseBtn) playPauseBtn.textContent = '▶';
-    });
-  });
-  
-  // Handle autoplay errors
-  video.addEventListener('error', (e) => {
-    const playPauseBtn = document.getElementById('playPause');
-    if (playPauseBtn) playPauseBtn.textContent = '▶';
-  });
-  
-  // Video should load directly with src attribute
-  
-  playerContainer.appendChild(video);
-  currentPlayer = video;
-  
-  // Set initial button state
-  const playPauseBtn = document.getElementById('playPause');
-  if (playPauseBtn) playPauseBtn.textContent = '▶';
-}
-
-// Set up auto-advance to next video
-function setupAutoAdvance(videoId) {
-  // Since we can't directly detect when a YouTube embed ends,
-  // we'll use a timer-based approach with estimated video duration
-  
-  // First, try to get video duration from YouTube API
-  fetchVideoDuration(videoId).then(duration => {
-    if (duration > 0) {
-      
-      // Set timer to auto-advance slightly before video ends
-      autoAdvanceTimer = setTimeout(() => {
-        playNextTrack();
-      }, (duration - 2) * 1000); // Advance 2 seconds before end
-    } else {
-      // Fallback: assume average video length and auto-advance
-      autoAdvanceTimer = setTimeout(() => {
-        playNextTrack();
-      }, 180000); // 3 minutes fallback
-    }
-  });
-}
-
-// Fetch video duration using YouTube oEmbed API
-async function fetchVideoDuration(videoId) {
-  try {
-    // This is a simple fallback - YouTube oEmbed doesn't provide duration
-    // For a production app, you'd want to use the YouTube Data API v3
-    // For now, we'll use estimated durations based on video type
-    
-    // Different durations for different video types - most music videos are 3-5 minutes
-    const estimatedDurations = {
-      'ftp_QMl9BgU': 240, // 4 minutes
-      'tpeUkuGCzOU': 210, // 3.5 minutes  
-      'ptNBEZ6pPp4': 180  // 3 minutes
-    };
-    
-    return estimatedDurations[videoId] || 210; // Default 3.5 minutes
-  } catch (error) {
-    return 180; // 3 minute fallback
-  }
-}
-
-function togglePlayPause() {
-  const playPauseBtn = document.getElementById('playPause');
-  if (!playPauseBtn) return;
-
-  if (!currentPlayer && currentTrackIndex >= 0 && tracks[currentTrackIndex]) {
-    window.open(`https://www.youtube.com/watch?v=${tracks[currentTrackIndex].id}`, '_blank', 'noopener,noreferrer');
-    return;
-  }
-
-  if (!currentPlayer) return;
-  
-  // Check if we have a YouTube API player
-  if (currentPlayer.pauseVideo && currentPlayer.playVideo) {
-    // YouTube API player
-    if (playPauseBtn.textContent === '▶') {
-      currentPlayer.playVideo();
-      playPauseBtn.textContent = '⏸';
-      userPaused = false; // User resumed playback
-    } else {
-      currentPlayer.pauseVideo();
-      playPauseBtn.textContent = '▶';
-      userPaused = true; // User paused playback
-    }
-  } else if (currentPlayer.tagName === 'VIDEO') {
-    // HTML5 video element (local video)
-    if (currentPlayer.paused) {
-      currentPlayer.play();
-      playPauseBtn.textContent = '⏸';
-      userPaused = false; // User resumed playback
-    } else {
-      currentPlayer.pause();
-      playPauseBtn.textContent = '▶';
-      userPaused = true; // User paused playback
-    }
-  } else {
-    // Iframe fallback - just update button state
-    if (playPauseBtn.textContent === '▶') {
-      playPauseBtn.textContent = '⏸';
-      userPaused = false;
-    } else {
-      playPauseBtn.textContent = '▶';
-      userPaused = true;
-    }
-  }
-}
-
-// YouTube API event handler
-function onPlayerStateChange(event) {
-  const playPauseBtn = document.getElementById('playPause');
-  
-  if (event.data === window.YT.PlayerState.PLAYING) {
-    if (playPauseBtn) playPauseBtn.textContent = '⏸';
-  } else if (event.data === window.YT.PlayerState.PAUSED) {
-    if (playPauseBtn) playPauseBtn.textContent = '▶';
-  } else if (event.data === window.YT.PlayerState.ENDED) {
-    playNextTrack();
-  }
-}
-
-function playPreviousTrack() {
-  if (tracks.length === 0) return;
-  
-  // If no track is currently selected, start from the last one
-  if (currentTrackIndex === -1) {
-    playTrack(tracks.length - 1);
-    return;
-  }
-  
-  const newIndex = currentTrackIndex > 0 ? currentTrackIndex - 1 : tracks.length - 1;
-  playTrack(newIndex);
-}
-
-function playNextTrack() {
-  if (tracks.length === 0) return;
-  
-  // If no track is currently selected, start from the first one
-  if (currentTrackIndex === -1) {
-    playTrack(0);
-    return;
-  }
-  
-  // Move to next track, or loop back to start
-  const newIndex = currentTrackIndex < tracks.length - 1 ? currentTrackIndex + 1 : 0;
-  playTrack(newIndex);
-}
-
-function playRandomTrack() {
-  if (tracks.length === 0) return;
-  
-  const randomIndex = Math.floor(Math.random() * tracks.length);
-  playTrack(randomIndex);
-}
-
-// Removed toggleMute function since mute button was removed
-
-function setupBroadcastSignals() {
-  
-  const sendBtn = document.getElementById('sendSignal');
-  const messageInput = document.getElementById('signalMessage');
-  const feed = document.getElementById('signalsFeed');
-  
-  if (sendBtn && messageInput && feed) {
-    sendBtn.addEventListener('click', () => {
-      const message = messageInput.value.trim();
-      if (message) {
-        addSignalToFeed(message);
-        messageInput.value = '';
-      }
-    });
-    
-    // Allow Enter key to send
-    messageInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendBtn.click();
-      }
-    });
-    
-    // Add some initial signals
-    addSignalToFeed("Channel initialized... Broadcasting memories...", true);
-    addSignalToFeed("Signal strength: STRONG", true);
-  }
-}
-
-function addSignalToFeed(message, isSystem = false) {
-  const feed = document.getElementById('signalsFeed');
-  if (!feed) return;
-  
-  const signal = document.createElement('div');
-  signal.style.marginBottom = '10px';
-  signal.style.padding = '8px';
-  signal.style.borderLeft = isSystem ? '3px solid #c9a961' : '3px solid #d4b978';
-  signal.style.backgroundColor = 'rgba(30, 35, 45, 0.3)';
-  signal.style.borderRadius = '4px';
-  
-  const timestamp = new Date().toLocaleTimeString();
-  const prefix = isSystem ? '[SYSTEM]' : '[SIGNAL]';
-  
-  signal.innerHTML = `
-    <div style="color: ${isSystem ? '#c9a961' : '#d4b978'}; font-size: 10px; margin-bottom: 4px;">
-      ${prefix} ${timestamp}
-    </div>
-    <div style="color: #ffffff; font-size: 12px; line-height: 1.4;">
-      ${message}
-    </div>
-  `;
-  
-  feed.appendChild(signal);
-  feed.scrollTop = feed.scrollHeight;
-}
-
-// Add CSS for active track state
-const style = document.createElement('style');
-style.textContent = `
-  #section3 .track-card.active {
-    border-color: #c9a961 !important;
-    background: rgba(201, 169, 97, 0.10) !important;
-    box-shadow: 0 0 20px rgba(201, 169, 97, 0.18) !important;
-  }
-  
-  #section3 .track-card.active .track-title {
-    color: #c9a961 !important;
-  }
-  
-  #section3 .track-card.active .play-track-btn {
-    background: linear-gradient(45deg, #d4b978, #c9a961) !important;
-  }
-`;
-document.head.appendChild(style);
-
-// Channel visibility detection for audio control
-let userPaused = false; // Track if user manually paused
-
-function setupChannelVisibilityDetection() {
-  let isChannelVisible = false;
-  let wasSystemMuted = false;
-
-  // Create intersection observer to detect when Channel 3 is visible
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.target.id === 'section3') {
-        const wasVisible = isChannelVisible;
-        isChannelVisible = entry.isIntersecting && entry.intersectionRatio > 0.5;
-
-        // If channel became invisible, mute (but keep playing)
-        if (wasVisible && !isChannelVisible && currentPlayer) {
-          muteMedia(true);
-        }
-
-        // If channel became visible and was system-muted, unmute
-        if (!wasVisible && isChannelVisible && currentPlayer && wasSystemMuted) {
-          unmuteMedia();
-        }
-      }
-    });
-  }, {
-    threshold: [0.1, 0.5, 0.9] // Trigger at different visibility levels
-  });
-
-  // Observe Channel 3
-  const section3 = document.getElementById('section3');
-  if (section3) {
-    observer.observe(section3);
-  }
-
-  // Also listen for visibility change events (when user switches tabs)
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden && currentPlayer) {
-      muteMedia(true);
-    } else if (!document.hidden && currentPlayer && wasSystemMuted) {
-      // Only unmute if we're also on the channel
-      const rect = section3 ? section3.getBoundingClientRect() : null;
-      const onChannel = rect && rect.top < window.innerHeight && rect.bottom > 0;
-      if (onChannel) unmuteMedia();
-    }
-  });
-
-  function muteMedia(system = false) {
-    if (currentPlayer) {
-      if (currentPlayer.mute) {
-        currentPlayer.mute();
-      } else if (currentPlayer.tagName === 'VIDEO') {
-        currentPlayer.muted = true;
-      }
-    }
-    if (system) wasSystemMuted = true;
-  }
-
-  function unmuteMedia() {
-    if (currentPlayer) {
-      if (currentPlayer.unMute) {
-        currentPlayer.unMute();
-      } else if (currentPlayer.tagName === 'VIDEO') {
-        currentPlayer.muted = false;
-      }
-    }
-    wasSystemMuted = false;
-  }
-}
-
-function pauseCurrentMedia(isSystemPause = false) {
-  const playPauseBtn = document.getElementById('playPause');
-  
-  // If this is a user-initiated pause (not system), mark it
-  if (!isSystemPause) {
-    userPaused = true;
-  }
-  
-  // Try to actually pause the media if possible
-  if (currentPlayer) {
-    if (currentPlayer.pauseVideo) {
-      // YouTube API player
-      currentPlayer.pauseVideo();
-    } else if (currentPlayer.tagName === 'VIDEO') {
-      // HTML5 video element
-      currentPlayer.pause();
-    }
-  }
-  
-  // Update button state
-  if (playPauseBtn) {
-    playPauseBtn.textContent = '▶';
-  }
-}
-

@@ -370,8 +370,8 @@ body {
 .tv-guide-grid {
   width: min(1040px, 100%);
   margin: 0 auto;
-  overflow: hidden;
-  background: rgba(20, 20, 20, 0.62);
+  overflow: visible;
+  flex-shrink: 0;
   border: 1px solid rgba(232, 230, 225, 0.10);
   border-radius: 0;
   box-shadow: none;

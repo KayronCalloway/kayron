@@ -351,9 +351,6 @@ const resetMenuStyles = () => {
     tvGuideToggleInProgress = true;
 
     if (show) {
-      // Store current scroll position
-      window.savedScrollPosition = mainContent.scrollTop;
-
       // Highlight current channel
       if (currentChannel) {
         document.querySelectorAll('.tv-guide-channel').forEach(item => {
@@ -370,10 +367,7 @@ const resetMenuStyles = () => {
       tvGuide.style.display = 'flex';
       tvGuide.style.opacity = '1';
 
-      // Prevent background scrolling
-      mainContent.style.overflow = 'hidden';
-
-      // Auto-scroll guide to current channel for better context
+      // Auto-scroll guide to current channel
       if (currentChannel) {
         const currentGuideItem = document.querySelector(`.tv-guide-channel[data-target="${currentChannel}"]`);
         if (currentGuideItem && typeof currentGuideItem.scrollIntoView === 'function') {
@@ -386,14 +380,10 @@ const resetMenuStyles = () => {
     } else {
       tvGuide.style.opacity = '0';
 
-      // Restore scrolling
-      mainContent.style.overflow = 'auto';
-
       setTimeout(() => {
         tvGuide.style.display = 'none';
         tvGuideIsVisible = false;
         tvGuideToggleInProgress = false;
-        mainContent.scrollTop = window.savedScrollPosition || 0;
       }, 300);
     }
   };
@@ -433,39 +423,19 @@ const resetMenuStyles = () => {
 
     // Channel selection handling
     const selectChannel = () => {
-      // Get the target section before triggering audio cleanup
       const targetId = item.getAttribute('data-target');
       const targetSection = document.getElementById(targetId);
 
-      // Add selection effect
-      document.querySelectorAll('.tv-guide-channel').forEach(channel => channel.classList.remove('is-current'));
+      document.querySelectorAll('.tv-guide-channel')
+        .forEach((ch) => ch.classList.remove('is-current'));
       item.classList.add('is-current');
-      gsap.to(item, {
-        backgroundColor: 'rgba(201, 169, 97, 0.10)',
-        boxShadow: 'inset 3px 0 0 #c9a961',
-        duration: 0.3
-      });
-
-      // Get the channel title for logging
-      const channelTitle = item.querySelector('.channel-title') ?
-                          item.querySelector('.channel-title').textContent :
-                          `Channel ${targetId.slice(-1)}`;
-
-      // Channel switch notification for modules that need it
-      document.dispatchEvent(new CustomEvent('channelSwitch', { detail: { from: currentChannel, to: targetId } }));
 
       if (targetSection) {
-        // Create delayed closing effect for more TV-like experience
-        setTimeout(() => {
-          targetSection.scrollIntoView({ behavior: 'smooth' });
-
-          // Close TV Guide with a slight delay for a more authentic TV experience
-          setTimeout(() => {
-            toggleTVGuide(false);
-          }, 200);
-
-          triggerHaptic();
-        }, 500);
+        toggleTVGuide(false);
+        requestAnimationFrame(() => {
+          mainContent.scrollTop = targetSection.offsetTop - mainContent.offsetTop;
+        });
+        triggerHaptic();
       }
     };
 
