@@ -2,6 +2,7 @@
 
 let youtubePlayer;
 let apiReady = false;
+let seamlessLoopTimer = null;
 
 // Preload YouTube API faster
 (function() {
@@ -73,6 +74,35 @@ function onYouTubeIframeAPIReady() {
         // Mute the video initially to allow autoplay.
         event.target.mute();
         event.target.playVideo();
+
+        // CH01 is a background signal, not an interactive YouTube player.
+        // Keep the iframe unfocusable/non-interactive so native playback chrome
+        // cannot surface over the loop and break the TV illusion.
+        const lockIframeChrome = () => {
+          const iframe = document.querySelector('#youtube-player iframe');
+          if (!iframe) return;
+          iframe.setAttribute('tabindex', '-1');
+          iframe.setAttribute('aria-hidden', 'true');
+          iframe.style.pointerEvents = 'none';
+        };
+        lockIframeChrome();
+        setTimeout(lockIframeChrome, 200);
+        setTimeout(lockIframeChrome, 1000);
+
+        // Avoid YouTube's visible end-of-video handoff entirely. Native loop can
+        // briefly expose play/pause/skip chrome; pre-roll the video back to the
+        // beginning while it is still playing so the surface remains immersive.
+        window.clearInterval(seamlessLoopTimer);
+        seamlessLoopTimer = window.setInterval(() => {
+          if (!event.target.getDuration || !event.target.getCurrentTime || !event.target.getPlayerState) return;
+          const duration = event.target.getDuration();
+          const currentTime = event.target.getCurrentTime();
+          if (!duration || duration < 1) return;
+          if (event.target.getPlayerState() === YT.PlayerState.PLAYING && duration - currentTime <= 0.45) {
+            event.target.seekTo(0, true);
+            event.target.playVideo();
+          }
+        }, 250);
         
         // Set quality level based on device type
         if (isMobile || optimizedMode) {
@@ -122,6 +152,9 @@ function onYouTubeIframeAPIReady() {
             iframe.style.left = '50%';
             // Overscan/crop the YouTube frame so native chrome and watermarks stay off the TV surface.
             iframe.style.transform = 'translate(-50%, -50%) scale(1.36)';
+            iframe.style.pointerEvents = 'none';
+            iframe.setAttribute('tabindex', '-1');
+            iframe.setAttribute('aria-hidden', 'true');
             iframe.style.willChange = 'transform'; // Optimize for animations
           } else {
           }
