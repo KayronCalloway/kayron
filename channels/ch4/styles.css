@@ -78,33 +78,36 @@
   min-height: 50px;
   min-width: 180px;
   padding: 12px 20px;
-  background-color: rgba(0, 0, 0, 0.7);
-  color: #ffffff;
-  border: 2px solid #c9a961;
-  border-radius: 6px;
-  font-size: 1.1rem;
-  font-weight: 500;
+  background-color: rgba(0, 0, 0, 0.42);
+  color: #ece8df;
+  border: 1px solid rgba(232, 230, 225, 0.72);
+  border-radius: 0;
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* Remove default mobile highlight */
+  transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease, transform 0.16s ease;
+  box-shadow: none;
+  -webkit-tap-highlight-color: rgba(201, 169, 97, 0.18);
 }
 
-#section4 .channel-button:hover {
-  background-color: rgba(201, 169, 97, 0.18);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+#section4 .channel-button:hover,
+#section4 .channel-button:focus-visible {
+  background-color: rgba(201, 169, 97, 0.10);
+  border-color: #c9a961;
+  color: #f7f2e8;
+  box-shadow: none;
 }
 
 #section4 .channel-button:active {
-  transform: translateY(1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: scale(0.985);
+  box-shadow: none;
 }
 
 /* Additional class added to buttons on mobile */
 #section4 .channel-button.mobile-enhanced {
-  box-shadow: 0 4px 12px rgba(201, 169, 97, 0.24);
-  border-width: 2.5px;
+  box-shadow: none;
+  border-width: 1px;
 }
 
 /* Modal styles */
@@ -336,16 +339,18 @@
   }
 
   #section4 .channel-button {
-    min-height: 60px; /* Larger touch target */
-    width: 100%; /* Full width buttons */
-    padding: 15px 25px; /* More padding */
-    font-size: 1.2rem; /* Larger text */
-    -webkit-tap-highlight-color: rgba(201, 169, 97, 0.28); /* Visual feedback on tap */
-    margin: 5px 0; /* Vertical spacing */
+    min-height: 58px;
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 1.02rem;
+    -webkit-tap-highlight-color: rgba(201, 169, 97, 0.18);
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
   }
 
   #section4 .channel-button:active {
-    transform: scale(0.97); /* Visual feedback on press */
+    transform: scale(0.985);
   }
 
   /* Modal optimizations */
@@ -436,14 +441,12 @@
 
   /* Enhanced channel buttons for consistent mobile experience */
   #section4 .channel-button {
-    /* Ensure proper touch targets */
     min-height: 48px;
     min-width: 48px;
-    /* Enhanced touch feedback */
     touch-action: manipulation;
-    -webkit-tap-highlight-color: rgba(201, 169, 97, 0.24);
-    /* Consistent scaling with other channels */
-    transition: transform 0.1s ease-out, box-shadow 0.2s ease-out;
+    -webkit-tap-highlight-color: rgba(201, 169, 97, 0.18);
+    transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease, transform 0.16s ease;
+    box-shadow: none;
   }
 
   #section4 .channel-button:active {
@@ -494,9 +497,9 @@
 
   /* Enhanced button feedback for iPhone */
   #section4 .channel-button {
-    /* iOS-style button enhancements */
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    -webkit-tap-highlight-color: rgba(201, 169, 97, 0.28);
+    border-radius: 0;
+    box-shadow: none;
+    border-width: 1px;
+    -webkit-tap-highlight-color: rgba(201, 169, 97, 0.18);
   }
 }

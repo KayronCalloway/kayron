@@ -116,23 +116,35 @@ body {
   font-family: 'Merova', sans-serif;
 }
 .menu-button {
-  background: transparent;
-  border: 2px solid var(--primary-color);
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(232, 230, 225, 0.72);
   color: var(--primary-color);
-  padding: 8px 20px;
+  padding: 8px 18px;
   cursor: pointer;
-  position: fixed !important; /* Fixed positioning, enforced */
-  top: 10px !important; /* Aligned with header name */
+  position: fixed !important;
+  top: 10px !important;
   right: 20px !important;
-  z-index: 999999 !important; /* High z-index but lower than TV guide */
-  opacity: 0; /* Initially hidden, will be controlled by MenuManager */
-  display: none; /* Hidden until explicitly enabled via JavaScript */
-  transition: opacity 0.3s ease; /* Smooth transition when appearing/disappearing */
-  letter-spacing: 0.02em; /* Match header name letter spacing */
-  font-weight: 600; /* Match header name font weight */
+  z-index: 999999 !important;
+  opacity: 0;
+  display: none;
+  transition: opacity 0.3s ease, border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
+  letter-spacing: 0.08em;
+  font-weight: 400;
   text-transform: uppercase;
-  font-size: 1.2rem; /* Increased font size to better match header name */
-  font-family: 'Merova', sans-serif; /* Ensure same font as header name */
+  font-size: 1.05rem;
+  font-family: 'Merova', sans-serif;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.menu-button:focus-visible,
+.channel-button:focus-visible,
+.close-guide:focus-visible,
+.close-modal:focus-visible,
+.back-to-top:focus-visible {
+  outline: 1px solid rgba(201, 169, 97, 0.86);
+  outline-offset: 2px;
+  box-shadow: none;
 }
 
 /* Menu visibility utility classes */
@@ -143,10 +155,11 @@ body {
   pointer-events: auto !important;
 }
 
-/* Ensure menu is visible when tv-guide is open */
+/* Hide the persistent guide button while the guide itself is open. */
 .tv-guide-active .menu-button {
-  display: block !important;
-  opacity: 1 !important;
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 /* --- Landing Overlay --- */
@@ -715,39 +728,36 @@ body {
 /* iPhone vertical-specific modal optimizations */
 @supports (-webkit-touch-callout: none) and (max-width: 480px) and (orientation: portrait) {
   .modal-overlay {
-    align-items: flex-end; /* Position modal from bottom for easier thumb reach */
-    padding: 0; /* Remove padding to utilize full width */
+    align-items: center;
+    padding: 12px;
   }
-  
+
   .modal-box {
-    max-width: 100%; /* Full width on iPhone */
+    max-width: 100%;
     width: 100%;
-    border-radius: 20px 20px 0 0; /* Rounded top corners only */
-    max-height: 85vh; /* Leave space at top */
-    padding: 25px 20px; /* Adjust padding */
-    border-left: none;
-    border-right: none;
-    border-bottom: none;
-    box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.5); /* Shadow from top */
-    
-    /* Extra momentum scrolling fixes for iOS */
+    border-radius: 0;
+    max-height: 86vh;
+    padding: 24px 18px;
+    border: 1px solid rgba(201, 169, 97, 0.72);
+    box-shadow: none;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
   }
-  
+
   .close-modal {
     top: 8px;
     right: 8px;
-    background: rgba(40, 40, 40, 0.6);
-    padding: 10px 15px;
-    font-size: 1.8rem; /* Larger X for easier tapping */
-    border-radius: 50%; /* Round close button */
-    height: 44px; /* iOS standard touch target */
+    background: rgba(0, 0, 0, 0.72);
+    padding: 0;
+    font-size: 1.2rem;
+    border-radius: 0;
+    border: 1px solid rgba(201, 169, 97, 0.72);
+    height: 44px;
     width: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 10; /* Ensure it's above other content */
+    z-index: 10;
   }
   
   /* Make content slightly larger for better readability */
@@ -772,31 +782,41 @@ body {
 /* --- Responsive Mobile Enhancements --- */
 @media (max-width: 600px) {
   .landing-name {
-    font-size: clamp(2.15rem, 10vw, 2.85rem);
-    letter-spacing: 0.065em;
-    max-width: min(92vw, 420px);
+    width: auto;
+    max-width: 92vw;
     margin: 0 auto;
     padding: 0 4vw;
-    overflow: hidden;
+    display: grid;
+    gap: 0.08em;
+    overflow: visible;
     white-space: normal;
     overflow-wrap: normal;
-    line-height: 0.92;
+    line-height: 0.86;
+    font-size: clamp(2.4rem, 13vw, 3.3rem);
+    letter-spacing: 0.08em;
+  }
+  .landing-name .name-line {
+    display: block;
   }
   .header-name {
-    font-size: 1.3rem; /* Adjusted for mobile */
-    margin-top: 8px; /* Keep consistent spacing from top */
+    font-size: 1.06rem;
+    margin-top: 0;
+    letter-spacing: 0.035em;
   }
   .menu-button {
-    padding: 5px 15px;
-    font-size: 1rem; /* Increased for better match with header name */
+    padding: 5px 11px;
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
     min-width: 44px;
-    min-height: 44px;
-    top: 8px !important; /* Aligned with header name in mobile */
+    min-height: 38px;
+    top: 6px !important;
     right: 10px !important;
+    border-width: 1px;
   }
   #header {
-    height: 45px; /* Slightly reduced height for mobile but still accommodates font */
-    padding: 0 15px; /* Remove vertical padding to control alignment */
+    height: 38px;
+    padding: 0 12px;
+    background-color: rgba(0, 0, 0, 0.72);
   }
   
   /* Channel section vertical optimization for mobile */
@@ -905,10 +925,10 @@ body {
   }
   
   .channel-number-overlay {
-    font-size: clamp(1.85rem, 8vw, 2.35rem);
-    bottom: calc(14px + env(safe-area-inset-bottom));
-    right: 14px;
-    opacity: 0.76;
+    font-size: clamp(1.45rem, 6.4vw, 1.95rem);
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    right: 12px;
+    opacity: 0.68;
   }
   
   /* Fix for iOS Safari */
@@ -922,10 +942,9 @@ body {
     min-height: -webkit-fill-available;
     min-height: 100%;
     height: 100%;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-    overflow-y: auto; /* Allow scrolling within mainContent instead of body */
-    /* Ensure proper safe area handling */
-    padding-top: calc(60px + env(safe-area-inset-top, 0px));
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    padding-top: calc(44px + env(safe-area-inset-top, 0px));
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
   
@@ -933,33 +952,32 @@ body {
     bottom: calc(10px + env(safe-area-inset-bottom, 0px));
     right: calc(10px + env(safe-area-inset-right, 0px));
   }
+
+  .back-to-top {
+    display: none !important;
+  }
   
   /* Improve iOS modal behavior */
   .modal-box {
     -webkit-overflow-scrolling: touch;
-    max-height: calc(85vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
-    /* Better touch targets for iOS */
-    padding: env(safe-area-inset-top, 20px) env(safe-area-inset-right, 20px) env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 20px);
+    max-height: calc(86vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    padding: max(22px, env(safe-area-inset-top, 0px) + 18px) max(18px, env(safe-area-inset-right, 0px) + 14px) max(22px, env(safe-area-inset-bottom, 0px) + 18px) max(18px, env(safe-area-inset-left, 0px) + 14px);
   }
   
   /* iOS specific enhancements */
   @supports (-webkit-touch-callout: none) {
-    /* iOS-specific rules */
     body {
-      /* Prevent pull-to-refresh */
       overscroll-behavior-y: none;
     }
-    
-    /* Fix header positioning for iOS */
+
     #header {
       padding-top: env(safe-area-inset-top, 0px);
-      height: calc(50px + env(safe-area-inset-top, 0px));
+      height: calc(38px + env(safe-area-inset-top, 0px));
     }
-    
-    /* Fix menu button positioning */
+
     .menu-button {
-      top: calc(10px + env(safe-area-inset-top, 0px)) !important;
-      right: calc(20px + env(safe-area-inset-right, 0px)) !important;
+      top: calc(6px + env(safe-area-inset-top, 0px)) !important;
+      right: calc(10px + env(safe-area-inset-right, 0px)) !important;
     }
   }
 }

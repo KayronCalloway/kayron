@@ -78,22 +78,21 @@ export const MenuManager = {
     const headerStyle = window.getComputedStyle(this.header);
     const isHeaderVisible = headerStyle.display !== 'none' && parseFloat(headerStyle.opacity) > 0.5;
 
-    // ONLY show menu button if header is visible (exact header behavior)
-    if (isHeaderVisible) {
+    // ONLY show menu button if header is visible and the guide is not already open.
+    if (isHeaderVisible && !document.body.classList.contains('tv-guide-active')) {
       // EXACTLY match header visibility
       this.menuButton.style.display = headerStyle.display;
       this.menuButton.style.opacity = headerStyle.opacity;
       this.menuButton.style.visibility = headerStyle.visibility;
       this.menuButton.style.pointerEvents = 'auto';
 
-      // Ensure proper position
+      // Ensure proper position. CSS owns mobile sizing/placement.
       this.menuButton.style.position = "fixed";
-      this.menuButton.style.top = "10px";
-      this.menuButton.style.right = "20px";
       this.menuButton.style.zIndex = "999999";
+      this.menuButton.style.pointerEvents = 'auto';
 
-      // Ensure tap target size is at least 44x44px for iOS Safari
-      this.menuButton.style.minHeight = "44px";
+      // Ensure tap target size without forcing desktop-like mobile chrome.
+      this.menuButton.style.minHeight = "38px";
       this.menuButton.style.minWidth = "44px";
 
     } else {

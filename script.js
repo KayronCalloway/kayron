@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuButton = document.getElementById('menuButton');
   const tvGuide = document.getElementById('tvGuide');
   const closeGuide = document.getElementById('closeGuide');
+  const isMobileViewport = () => window.matchMedia('(max-width: 600px)').matches;
   if (tvGuide && tvGuide.parentElement !== document.body) {
     document.body.appendChild(tvGuide);
   }
@@ -267,10 +268,15 @@ const resetMenuStyles = () => {
       }
     });
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isMobileViewport = window.matchMedia('(max-width: 600px)').matches;
+    const mobileIntro = isMobileViewport();
+    if (mobileIntro && !landingName.querySelector('.name-line')) {
+      landingName.innerHTML = '<span class="name-line">Kayron</span><span class="name-line">Calloway</span>';
+    }
     gsap.set(landingName, prefersReducedMotion
-      ? { opacity: 1, width: '100%', filter: 'none' }
-      : { opacity: 0, width: 0, filter: 'blur(1px)' }
+      ? { opacity: 1, width: mobileIntro ? 'auto' : '100%', clipPath: 'inset(0 0% 0 0)', filter: 'none' }
+      : mobileIntro
+        ? { opacity: 0, width: 'auto', clipPath: 'inset(0 0 100% 0)', filter: 'blur(1px)' }
+        : { opacity: 0, width: 0, clipPath: 'inset(0 0% 0 0)', filter: 'blur(1px)' }
     );
 
     const tl = gsap.timeline({
@@ -284,8 +290,14 @@ const resetMenuStyles = () => {
       .to(landing, { duration: 0.16, backgroundColor: "var(--bg-color)", ease: "power2.in" })
       .to(staticOverlay, { duration: 0.16, opacity: 0.28 })
       .to(staticOverlay, { duration: 0.18, opacity: 0 })
-      .to(landingName, {
-        duration: prefersReducedMotion ? 0.01 : (isMobileViewport ? 1.45 : 3.5),
+      .to(landingName, mobileIntro ? {
+        duration: prefersReducedMotion ? 0.01 : 1.35,
+        opacity: 1,
+        clipPath: 'inset(0 0 0% 0)',
+        filter: 'blur(0px)',
+        ease: 'power2.out'
+      } : {
+        duration: prefersReducedMotion ? 0.01 : 3.5,
         width: '100%',
         opacity: 1,
         filter: 'blur(0px)',
@@ -301,7 +313,7 @@ const resetMenuStyles = () => {
     }
   });
 
-  window.addEventListener('scroll', () => {
+  mainContent.addEventListener('scroll', () => {
     if (landingSequenceComplete && landing.style.display !== "none") {
       clearTimeout(autoScrollTimeout);
       revealMainContent();
@@ -312,7 +324,7 @@ const resetMenuStyles = () => {
   const toggleBackToTop = () => {
     backToTop.style.display = mainContent.scrollTop > 300 ? 'block' : 'none';
   };
-  window.addEventListener('scroll', throttle(toggleBackToTop, 100));
+  mainContent.addEventListener('scroll', throttle(toggleBackToTop, 100), { passive: true });
   backToTop.addEventListener('click', () => {
     mainContent.scrollTo({ top: 0, behavior: 'smooth' });
   });
@@ -391,8 +403,16 @@ const resetMenuStyles = () => {
       }
 
       // Show guide overlay
+      document.body.classList.add('tv-guide-active');
+      tvGuide.setAttribute('aria-hidden', 'false');
+      if (mainContent) mainContent.setAttribute('inert', '');
+      if (header) header.setAttribute('aria-hidden', 'true');
       tvGuide.style.display = 'flex';
       tvGuide.style.opacity = '1';
+
+      requestAnimationFrame(() => {
+        (closeGuide || tvGuide.querySelector('[tabindex], button, [role="button"]'))?.focus?.({ preventScroll: true });
+      });
 
       // Auto-scroll guide to current channel
       if (currentChannel) {
@@ -409,6 +429,11 @@ const resetMenuStyles = () => {
 
       setTimeout(() => {
         tvGuide.style.display = 'none';
+        tvGuide.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('tv-guide-active');
+        if (mainContent) mainContent.removeAttribute('inert');
+        if (header) header.removeAttribute('aria-hidden');
+        menuButton?.focus?.({ preventScroll: true });
         tvGuideIsVisible = false;
         tvGuideToggleInProgress = false;
       }, 300);
@@ -657,10 +682,10 @@ const resetMenuStyles = () => {
       mainContent,
       { filter: "blur(0px) contrast(1.1) hue-rotate(0deg)", transform: "skewX(0deg)", duration: 0.2, ease: "power2.out" }
     )
-    // Final stage: back to normal
+    // Final stage: back to normal and clear transform so fixed overlays stay viewport-fixed.
     .to(
       mainContent,
-      { filter: "none", transform: "skewX(0deg)", duration: 0.25, ease: "power2.out" }
+      { filter: "none", transform: "none", duration: 0.25, ease: "power2.out", clearProps: "transform,filter" }
     );
   };
 
