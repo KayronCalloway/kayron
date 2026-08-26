@@ -69,10 +69,10 @@
     }
   },
   "tidal": {
-    "url": "https://tidal.com/playlist/fe315d46-eebd-4518-9c6b-283827d767df",
-    "title": "June ☀️",
-    "description": "Playlist - June ☀️",
-    "cover": "https://resources.tidal.com/images/7bd094db/053f/4493/a06b/a258f0f2e6e1/1080x1080.jpg",
+    "url": "https://tidal.com/playlist/fb686dd4-10e3-4510-8e9c-640a08084052",
+    "title": "Aug 💰",
+    "description": "Playlist - Aug 💰",
+    "cover": "https://resources.tidal.com/images/df1e58a6/d54a/49b7/9f47/e705742dd0c9/1080x1080.jpg",
     "coverLocal": "./channels/ch6/assets/tidal-cover.jpg"
   }
 }
