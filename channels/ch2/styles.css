@@ -292,6 +292,51 @@
   line-height: 1.5;
 }
 
+/* Contribution note: revealed by pointer or keyboard; persistent on touch. */
+#section2 .ch2-contribution {
+  display: grid;
+  gap: 5px;
+  max-height: 0;
+  margin-top: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    max-height 0.4s var(--ch2-ease),
+    margin-top var(--ch2-fast),
+    opacity var(--ch2-fast),
+    transform var(--ch2-fast);
+}
+
+#section2 .ch2-card:hover .ch2-contribution,
+#section2 .ch2-card:focus-visible .ch2-contribution,
+#section2 .ch2-card:focus-within .ch2-contribution {
+  max-height: 110px;
+  margin-top: 11px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#section2 .ch2-contribution-role {
+  color: var(--ch2-accent);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+#section2 .ch2-contribution-detail {
+  color: var(--ch2-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+#section2 .ch2-card:focus-visible {
+  outline: 1px solid var(--ch2-accent);
+  outline-offset: 5px;
+}
+
 #section2 .ch2-card-soft .ch2-poster img {
   opacity: 0.7;
 }
@@ -403,6 +448,25 @@
   #section2 .ch2-poster-badge { font-size: 8px; letter-spacing: 0.13em; }
   #section2 .ch2-cap-title { font-size: 12px; }
   #section2 .ch2-cap-meta { font-size: 8px; letter-spacing: 0.11em; }
+  #section2 .ch2-contribution-role { font-size: 8px; letter-spacing: 0.1em; }
+  #section2 .ch2-contribution-detail { font-size: 10px; }
+}
+
+@media (hover: none) {
+  #section2 .ch2-contribution {
+    max-height: 110px;
+    margin-top: 9px;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #section2 .ch2-card,
+  #section2 .ch2-poster img,
+  #section2 .ch2-contribution {
+    transition: none;
+  }
 }
 
 /* === ANIMATIONS ====================================================== */
@@ -419,3 +483,13 @@
 #section2 .ch2-hero-caption { animation-delay: 0.25s; }
 #section2 .ch2-hero-body    { animation-delay: 0.35s; }
 #section2 .ch2-hero-cta     { animation-delay: 0.45s; }
+
+/* Keep the merchandise intact and both new credits fully readable. */
+#section2 .ch2-card-merch .ch2-poster { background: #ededed; }
+#section2 .ch2-card-merch .ch2-poster img { object-fit: contain; filter: none; }
+#section2 .ch2-card-merch:hover .ch2-poster img { transform: none; }
+#section2 .ch2-card-credit:hover .ch2-contribution,
+#section2 .ch2-card-credit:focus-within .ch2-contribution { max-height: 320px; }
+@media (hover: none) {
+  #section2 .ch2-card-credit .ch2-contribution { max-height: none; }
+}
