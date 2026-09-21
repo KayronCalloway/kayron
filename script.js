@@ -303,6 +303,8 @@ const resetMenuStyles = () => {
 
   powerButton.addEventListener('click', () => {
     powerButton.style.pointerEvents = 'none';
+    // Analytics: first rung of the funnel — landing screen → entered the portfolio
+    track('power_on', {});
     if (clickSound) {
       clickSound.play().catch(() => {});
     }
@@ -664,6 +666,15 @@ const resetMenuStyles = () => {
   if (contactTrigger) {
     contactTrigger.addEventListener('click', () => {
       track('contact_click', { channel: channelFor(contactTrigger), method: 'contact_button' });
+    });
+  }
+
+  // Resume button opens the CH01 resume modal. Direct visits to a resume file
+  // are counted separately by /resume-analytics.js on the resume pages themselves.
+  const resumeTrigger = document.getElementById('resumeButton');
+  if (resumeTrigger) {
+    resumeTrigger.addEventListener('click', () => {
+      track('resume_open', { resume: 'canonical', method: 'modal' });
     });
   }
 
