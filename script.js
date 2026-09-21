@@ -14,6 +14,66 @@ const enableSound = () => {
   window.addEventListener(evt, enableSound, { once: true });
 });
 
+// --- Analytics: Vercel Web Analytics custom events ---
+// The beacon itself loads from index.html (/_vercel/insights/script.js).
+// If it is blocked or absent these are silent no-ops — nothing here is load-bearing.
+const track = (name, data) => {
+  try {
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    window.va('event', { name, data: data || {} });
+  } catch (err) {
+    // Tracking must never break a visitor's experience
+  }
+};
+
+// On-screen channel label (CH 01 → CH01), read from the DOM so labels stay truthful
+const channelLabel = sectionId => {
+  const section = sectionId ? document.getElementById(sectionId) : null;
+  const overlay = section ? section.querySelector('.channel-number-overlay') : null;
+  const label = overlay ? overlay.textContent.replace(/\s+/g, '') : '';
+  return label || sectionId || 'unknown';
+};
+
+const channelTitle = sectionId => {
+  const title = sectionId
+    ? document.querySelector(`.tv-guide-channel[data-target="${sectionId}"] .channel-title`)
+    : null;
+  return title ? title.textContent.trim() : '';
+};
+
+// Returns the hostname for off-site links, null for internal/anchors/mailto
+const externalHost = href => {
+  try {
+    const url = new URL(href, location.href);
+    if (!/^https?:$/.test(url.protocol)) return null;
+    const host = url.hostname.replace(/^www\./, '');
+    const self = location.hostname.replace(/^www\./, '');
+    return host && host !== self ? url.hostname : null;
+  } catch (err) {
+    return null;
+  }
+};
+
+// Best available human label for a project link (card title → image alt → aria-label → text)
+const projectLabel = anchor => {
+  const title = anchor.querySelector('.ch2-hero-title, .ch2-cap-title, [class*="card-title"], [class*="program-title"], h2, h3, h4, strong, b');
+  let label = title ? title.textContent : '';
+  if (!label.trim()) {
+    const img = anchor.querySelector('img[alt]');
+    label = img ? img.alt : '';
+  }
+  if (!label.trim()) {
+    const aria = anchor.getAttribute('aria-label') || '';
+    label = aria.split(/[—–·|,]/)[0];
+  }
+  if (!label.trim()) label = anchor.textContent || '';
+  label = label.replace(/\s+/g, ' ').trim();
+  if (!label) {
+    try { label = new URL(anchor.href).hostname; } catch (err) { label = 'unknown'; }
+  }
+  return label.slice(0, 60);
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   // --- DOM Elements ---
   const powerButton = document.getElementById('powerButton');
@@ -536,6 +596,13 @@ const resetMenuStyles = () => {
           triggerChannelStatic();
           animateChannelNumber(newChannel);
 
+          // Analytics: one channel_change per actual channel entry
+          track('channel_change', {
+            channel: channelLabel(newChannel),
+            title: channelTitle(newChannel),
+            module: moduleName || ''
+          });
+
           // Load module content
           if (moduleName) {
             loadChannelContent(moduleName);
@@ -559,6 +626,46 @@ const resetMenuStyles = () => {
   };
   const observer = new IntersectionObserver(observerCallback, observerOptions);
   document.querySelectorAll('.channel-section').forEach(section => observer.observe(section));
+
+  // --- Analytics: outbound project links + contact intent ---
+  // Delegated at the document level so it also covers channel fragments
+  // (CH02 cards, CH05/CH06 links, CH01 modals) that are injected after load.
+  // Channel label comes from the element's own section first, so an interaction
+  // is still attributed correctly before the scroll observer has run.
+  const channelFor = element => {
+    const section = element && element.closest ? element.closest('.channel-section') : null;
+    return channelLabel((section && section.id) || currentChannel);
+  };
+
+  document.addEventListener('click', event => {
+    const target = event.target instanceof Element ? event.target : null;
+    const anchor = target ? target.closest('a[href]') : null;
+    if (!anchor) return;
+
+    const rawHref = anchor.getAttribute('href') || '';
+
+    if (/^mailto:/i.test(rawHref)) {
+      track('contact_click', { channel: channelFor(anchor), method: 'mailto' });
+      return;
+    }
+
+    const host = externalHost(rawHref);
+    if (!host) return;
+
+    track('project_open', {
+      project: projectLabel(anchor),
+      host,
+      channel: channelFor(anchor)
+    });
+  }, true);
+
+  // Contact button opens the CH01 contact modal — count the intent, not just the mailto
+  const contactTrigger = document.getElementById('contactButton');
+  if (contactTrigger) {
+    contactTrigger.addEventListener('click', () => {
+      track('contact_click', { channel: channelFor(contactTrigger), method: 'contact_button' });
+    });
+  }
 
   const setupChannelSnap = () => {
     const sections = Array.from(document.querySelectorAll('.channel-section'));
